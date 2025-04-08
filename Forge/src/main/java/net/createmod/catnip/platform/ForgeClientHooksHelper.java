@@ -13,9 +13,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import dev.engine_room.flywheel.lib.model.baked.EmptyVirtualBlockGetter;
-import dev.engine_room.flywheel.lib.model.baked.SinglePosVirtualBlockGetter;
-import dev.engine_room.flywheel.lib.model.baked.VirtualBlockGetter;
-import net.createmod.catnip.client.render.model.ForgeBakedModelBufferer;
 import net.createmod.catnip.client.render.model.ShadeSeparatedBufferSource;
 import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
 import net.createmod.catnip.impl.client.render.model.BakedModelBuffererImpl;
@@ -94,34 +91,22 @@ public class ForgeClientHooksHelper implements ModClientHooksHelper {
 
 	@Override
 	public void bufferModel(BakedModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedBufferSource bufferSource) {
-		ModelData modelData = level instanceof VirtualBlockGetter ? VirtualRenderHelper.VIRTUAL_DATA : ModelData.EMPTY;
-		BakedModelBuffererImpl.bufferModel(model, pos, level, state, poseStack, modelData, bufferSource);
+		BakedModelBuffererImpl.bufferModel(model, pos, level, state, poseStack, null, bufferSource);
 	}
 
 	@Override
 	public void bufferModel(BakedModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedResultConsumer resultConsumer) {
-		ModelData modelData = level instanceof VirtualBlockGetter ? VirtualRenderHelper.VIRTUAL_DATA : ModelData.EMPTY;
-		BakedModelBuffererImpl.bufferModel(model, pos, level, state, poseStack, modelData, resultConsumer);
+		BakedModelBuffererImpl.bufferModel(model, pos, level, state, poseStack, null, resultConsumer);
 	}
 
 	@Override
 	public void bufferBlocks(Iterator<BlockPos> posIterator, BlockAndTintGetter level, @Nullable PoseStack poseStack, boolean renderFluids, ShadeSeparatedBufferSource bufferSource) {
-		BakedModelBuffererImpl.bufferBlocks(posIterator, level, poseStack, pos -> ModelData.EMPTY, renderFluids, bufferSource);
+		BakedModelBuffererImpl.bufferBlocks(posIterator, level, poseStack, null, renderFluids, bufferSource);
 	}
 
 	@Override
 	public void bufferBlocks(Iterator<BlockPos> posIterator, BlockAndTintGetter level, @Nullable PoseStack poseStack, boolean renderFluids, ShadeSeparatedResultConsumer resultConsumer) {
-		BakedModelBuffererImpl.bufferBlocks(posIterator, level, poseStack, pos -> ModelData.EMPTY, renderFluids, resultConsumer);
-	}
-
-	@Override
-	public void bufferModelSpecial(BakedModel model, BlockPos pos, BlockState state, @Nullable PoseStack poseStack, @Nullable BlockEntity modelDataBe, ShadeSeparatedBufferSource bufferSource) {
-		SinglePosVirtualBlockGetter level = SinglePosVirtualBlockGetter.createFullBright();
-		level.pos(pos);
-		level.blockState(state);
-		level.blockEntity(modelDataBe);
-		ModelData modelData = modelDataBe != null ? modelDataBe.getModelData() : VirtualRenderHelper.VIRTUAL_DATA;
-		ForgeBakedModelBufferer.bufferModel(model, pos, level, state, poseStack, modelData, bufferSource);
+		BakedModelBuffererImpl.bufferBlocks(posIterator, level, poseStack, null, renderFluids, resultConsumer);
 	}
 
 	//

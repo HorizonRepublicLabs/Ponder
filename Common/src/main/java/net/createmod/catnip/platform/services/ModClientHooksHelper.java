@@ -63,9 +63,6 @@ public interface ModClientHooksHelper {
 	@ApiStatus.Internal
 	void bufferBlocks(Iterator<BlockPos> posIterator, BlockAndTintGetter level, @Nullable PoseStack poseStack, boolean renderFluids, ShadeSeparatedResultConsumer resultConsumer);
 
-	@ApiStatus.Internal
-	void bufferModelSpecial(BakedModel model, BlockPos pos, BlockState state, @Nullable PoseStack poseStack, @Nullable BlockEntity modelDataBe, ShadeSeparatedBufferSource bufferSource);
-
 	@Deprecated(forRemoval = true)
 	default ShadedBlockSbbBuilder createSbbBuilder(BufferBuilder builder) {
 		return new ShadedBlockSbbBuilder(builder);

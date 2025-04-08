@@ -7,9 +7,11 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import dev.engine_room.flywheel.lib.model.baked.VirtualBlockGetter;
 import net.createmod.catnip.client.render.model.ShadeSeparatedBufferSource;
 import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
 import net.createmod.catnip.impl.client.render.TransformingVertexConsumer;
+import net.createmod.ponder.render.VirtualRenderHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -21,6 +23,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.client.ChunkRenderTypeSet;
@@ -33,10 +36,14 @@ public final class BakedModelBuffererImpl {
 	private BakedModelBuffererImpl() {
 	}
 
-	public static void bufferModel(BakedModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ModelData modelData, ShadeSeparatedBufferSource bufferSource) {
+	public static void bufferModel(BakedModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, @Nullable ModelData modelData, ShadeSeparatedBufferSource bufferSource) {
 		ThreadLocalObjects objects = THREAD_LOCAL_OBJECTS.get();
 		if (poseStack == null) {
 			poseStack = objects.identityPoseStack;
+		}
+		if (modelData == null) {
+			BlockEntity blockEntity = level.getBlockEntity(pos);
+			modelData = blockEntity != null ? blockEntity.getModelData() : (level instanceof VirtualBlockGetter ? VirtualRenderHelper.VIRTUAL_DATA : ModelData.EMPTY);
 		}
 		RandomSource random = objects.random;
 		UniversalMeshEmitter universalEmitter = objects.universalEmitter;
@@ -60,7 +67,7 @@ public final class BakedModelBuffererImpl {
 		universalEmitter.clear();
 	}
 
-	public static void bufferModel(BakedModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ModelData modelData, ShadeSeparatedResultConsumer resultConsumer) {
+	public static void bufferModel(BakedModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, @Nullable ModelData modelData, ShadeSeparatedResultConsumer resultConsumer) {
 		ThreadLocalObjects objects = THREAD_LOCAL_OBJECTS.get();
 		DefaultShadeSeparatedBufferSource bufferSource = objects.defaultBufferSource;
 		bufferSource.prepare(resultConsumer);
@@ -68,10 +75,16 @@ public final class BakedModelBuffererImpl {
 		bufferSource.end();
 	}
 
-	public static void bufferBlocks(Iterator<BlockPos> posIterator, BlockAndTintGetter level, @Nullable PoseStack poseStack, Function<BlockPos, ModelData> modelDataLookup, boolean renderFluids, ShadeSeparatedBufferSource bufferSource) {
+	public static void bufferBlocks(Iterator<BlockPos> posIterator, BlockAndTintGetter level, @Nullable PoseStack poseStack, @Nullable Function<BlockPos, ModelData> modelDataLookup, boolean renderFluids, ShadeSeparatedBufferSource bufferSource) {
 		ThreadLocalObjects objects = THREAD_LOCAL_OBJECTS.get();
 		if (poseStack == null) {
 			poseStack = objects.identityPoseStack;
+		}
+		if (modelDataLookup == null) {
+			modelDataLookup = pos -> {
+				BlockEntity blockEntity = level.getBlockEntity(pos);
+				return blockEntity != null ? blockEntity.getModelData() : (level instanceof VirtualBlockGetter ? VirtualRenderHelper.VIRTUAL_DATA : ModelData.EMPTY);
+			};
 		}
 		RandomSource random = objects.random;
 		UniversalMeshEmitter universalEmitter = objects.universalEmitter;
@@ -125,7 +138,7 @@ public final class BakedModelBuffererImpl {
 		universalEmitter.clear();
 	}
 
-	public static void bufferBlocks(Iterator<BlockPos> posIterator, BlockAndTintGetter level, @Nullable PoseStack poseStack, Function<BlockPos, ModelData> modelDataLookup, boolean renderFluids, ShadeSeparatedResultConsumer resultConsumer) {
+	public static void bufferBlocks(Iterator<BlockPos> posIterator, BlockAndTintGetter level, @Nullable PoseStack poseStack, @Nullable Function<BlockPos, ModelData> modelDataLookup, boolean renderFluids, ShadeSeparatedResultConsumer resultConsumer) {
 		ThreadLocalObjects objects = THREAD_LOCAL_OBJECTS.get();
 		DefaultShadeSeparatedBufferSource bufferSource = objects.defaultBufferSource;
 		bufferSource.prepare(resultConsumer);

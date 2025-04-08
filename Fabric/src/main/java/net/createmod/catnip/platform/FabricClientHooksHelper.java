@@ -11,7 +11,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import dev.engine_room.flywheel.lib.model.baked.EmptyVirtualBlockGetter;
-import dev.engine_room.flywheel.lib.model.baked.FabricSinglePosVirtualBlockGetter;
 import io.github.fabricators_of_create.porting_lib.mixin.accessors.client.accessor.ParticleEngineAccessor;
 import net.createmod.catnip.client.render.model.ShadeSeparatedBufferSource;
 import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
@@ -98,15 +97,6 @@ public class FabricClientHooksHelper implements ModClientHooksHelper {
 	@Override
 	public void bufferBlocks(Iterator<BlockPos> posIterator, BlockAndTintGetter level, @Nullable PoseStack poseStack, boolean renderFluids, ShadeSeparatedResultConsumer resultConsumer) {
 		BakedModelBuffererImpl.bufferBlocks(posIterator, level, poseStack, renderFluids, resultConsumer);
-	}
-
-	@Override
-	public void bufferModelSpecial(BakedModel model, BlockPos pos, BlockState state, @Nullable PoseStack poseStack, @Nullable BlockEntity modelDataBe, ShadeSeparatedBufferSource bufferSource) {
-		FabricSinglePosVirtualBlockGetter level = FabricSinglePosVirtualBlockGetter.createFullBright();
-		level.pos(pos);
-		level.blockState(state);
-		level.blockEntity(modelDataBe);
-		bufferModel(model, pos, level, state, poseStack, bufferSource);
 	}
 
 	//

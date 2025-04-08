@@ -11,6 +11,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
+import dev.engine_room.flywheel.lib.model.baked.SinglePosVirtualBlockGetter;
+import net.createmod.catnip.client.render.model.BakedModelBufferer;
 import net.createmod.catnip.gui.ILightingSettings;
 import net.createmod.catnip.gui.UIRenderHelper;
 import net.createmod.catnip.impl.client.render.ColoringVertexConsumer;
@@ -192,7 +194,10 @@ public class GuiGameElement {
 
 		protected void renderModel(BlockRenderDispatcher blockRenderer, MultiBufferSource.BufferSource buffer,
 								   PoseStack ms) {
-			CatnipClientServices.CLIENT_HOOKS.bufferModelSpecial(blockModel, BlockPos.ZERO, blockState, ms, blockEntity, (layer, shade) -> {
+			SinglePosVirtualBlockGetter level = SinglePosVirtualBlockGetter.createFullBright();
+			level.blockState(blockState);
+			level.blockEntity(blockEntity);
+			BakedModelBufferer.bufferModel(blockModel, BlockPos.ZERO, level, blockState, ms, (layer, shade) -> {
 				layer = layer == RenderType.translucent() ? Sheets.translucentCullBlockSheet() : Sheets.cutoutBlockSheet();
 				return new ColoringVertexConsumer(buffer.getBuffer(layer), FastColor.ARGB32.red(color) / 255f, FastColor.ARGB32.green(color) / 255f, FastColor.ARGB32.blue(color) / 255f, 1);
 			});
