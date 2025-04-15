@@ -6,14 +6,10 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import net.createmod.catnip.animation.LerpedFloat;
-
 import net.createmod.catnip.math.AngleHelper;
 import net.createmod.catnip.math.VecHelper;
-
 import net.createmod.ponder.config.CClient;
-
 import net.createmod.ponder.enums.PonderConfig;
-
 import net.createmod.ponder.enums.PonderGuiTextures;
 
 import org.joml.Matrix4f;

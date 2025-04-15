@@ -18,6 +18,7 @@ import net.createmod.catnip.gui.widget.BoxWidget;
 import net.createmod.catnip.layout.LayoutHelper;
 import net.createmod.catnip.layout.PaginationState;
 import net.createmod.catnip.registry.RegisteredObjectsHelper;
+import net.createmod.catnip.platform.CatnipServices;
 import net.createmod.ponder.enums.PonderGuiTextures;
 import net.createmod.ponder.foundation.PonderIndex;
 import net.createmod.ponder.foundation.registration.PonderIndexExclusionHelper;

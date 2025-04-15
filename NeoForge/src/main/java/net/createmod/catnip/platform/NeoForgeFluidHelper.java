@@ -1,5 +1,7 @@
 package net.createmod.catnip.platform;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.createmod.catnip.platform.services.ModFluidHelper;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentPatch;
@@ -9,8 +11,6 @@ import net.minecraft.world.level.material.Fluid;
 
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
-
-import org.jetbrains.annotations.Nullable;
 
 public class NeoForgeFluidHelper implements ModFluidHelper<FluidStack> {
 	@Override

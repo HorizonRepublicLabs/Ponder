@@ -5,13 +5,13 @@ import javax.annotation.Nullable;
 import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.createmod.catnip.platform.CatnipClientServices;
+import dev.engine_room.flywheel.lib.model.baked.EmptyVirtualBlockGetter;
+import net.createmod.catnip.client.render.model.BakedModelBufferer;
+import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SuperBufferFactory {
@@ -29,7 +29,7 @@ public class SuperBufferFactory {
 	}
 
 	public SuperByteBuffer create(MeshData data) {
-		return new DefaultSuperByteBuffer(data);
+		return new ShadeSeparatingSuperByteBuffer(new MutableTemplateMesh(data).toImmutable());
 	}
 
 	public SuperByteBuffer createForBlock(BlockState renderedState) {
@@ -41,27 +41,21 @@ public class SuperBufferFactory {
 	}
 
 	public SuperByteBuffer createForBlock(BakedModel model, BlockState state, @Nullable PoseStack poseStack) {
-		BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
 		ThreadLocalObjects objects = THREAD_LOCAL_OBJECTS.get();
+		SbbBuilder sbbBuilder = objects.sbbBuilder;
+		sbbBuilder.prepare();
+		BakedModelBufferer.bufferModel(model, BlockPos.ZERO, EmptyVirtualBlockGetter.FULL_DARK, state, poseStack, sbbBuilder);
+		return sbbBuilder.build();
+	}
 
-		if (poseStack == null) {
-			poseStack = objects.identityPoseStack;
+	private static class SbbBuilder extends SuperByteBufferBuilder implements ShadeSeparatedResultConsumer {
+		@Override
+		public void accept(RenderType renderType, boolean shaded, RenderedBuffer data) {
+			add(data, shaded);
 		}
-		RandomSource random = objects.random;
-
-		ShadedBlockSbbBuilder sbbBuilder = objects.sbbBuilder;
-		sbbBuilder.begin();
-
-		poseStack.pushPose();
-		CatnipClientServices.CLIENT_HOOKS.tesselateBlockVirtual(dispatcher, model, state, BlockPos.ZERO, poseStack, sbbBuilder, false, random, 42L, OverlayTexture.NO_OVERLAY, null);
-		poseStack.popPose();
-
-		return sbbBuilder.end();
 	}
 
 	private static class ThreadLocalObjects {
-		public final PoseStack identityPoseStack = new PoseStack();
-		public final RandomSource random = RandomSource.createNewThreadLocalInstance();
-		public final ShadedBlockSbbBuilder sbbBuilder = ShadedBlockSbbBuilder.createForPonder();
+		public final SbbBuilder sbbBuilder = new SbbBuilder();
 	}
 }

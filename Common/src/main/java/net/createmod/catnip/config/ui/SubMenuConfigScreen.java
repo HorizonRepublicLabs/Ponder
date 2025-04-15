@@ -32,6 +32,8 @@ import net.createmod.catnip.config.ui.entries.EnumEntry;
 import net.createmod.catnip.config.ui.entries.NumberEntry;
 import net.createmod.catnip.config.ui.entries.SubMenuEntry;
 import net.createmod.catnip.config.ui.entries.ValueEntry;
+import net.createmod.catnip.data.Couple;
+import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.gui.ConfirmationScreen;
 import net.createmod.catnip.gui.ConfirmationScreen.Response;
 import net.createmod.catnip.gui.ScreenOpener;
@@ -43,13 +45,16 @@ import net.createmod.catnip.platform.CatnipServices;
 import net.createmod.catnip.data.Couple;
 import net.createmod.catnip.lang.FontHelper;
 import net.createmod.catnip.lang.FontHelper.Palette;
-import net.createmod.catnip.data.Pair;
+import net.createmod.catnip.net.ServerboundConfigPacket;
+import net.createmod.catnip.platform.CatnipServices;
 import net.createmod.catnip.theme.Color;
+import net.createmod.ponder.enums.PonderGuiTextures;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 
 public class SubMenuConfigScreen extends ConfigScreen {
