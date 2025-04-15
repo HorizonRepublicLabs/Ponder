@@ -37,7 +37,7 @@ public class MutableTemplateMesh extends TemplateMesh {
 
 	public void ensureCapacity(int vertexCount) {
 		if (vertexCount > data.length / INT_STRIDE) {
-			int[] newData = new int[vertexCount];
+			int[] newData = new int[vertexCount * INT_STRIDE];
 			System.arraycopy(data, 0, newData, 0, data.length);
 			data = newData;
 		}
@@ -119,7 +119,7 @@ public class MutableTemplateMesh extends TemplateMesh {
 	}
 
 	public TemplateMesh toImmutable() {
-		int[] newData = new int[vertexCount];
+		int[] newData = new int[vertexCount * INT_STRIDE];
 		System.arraycopy(data, 0, newData, 0, newData.length);
 		return new TemplateMesh(newData);
 	}
