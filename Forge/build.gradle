@@ -1,7 +1,9 @@
 plugins {
     id "idea"
     id "eclipse"
-    id "net.neoforged.moddev.legacyforge" version "${mdg_version}"
+    id "net.minecraftforge.gradle" version "[6.0, 6.2)"
+    id "org.spongepowered.mixin" version "0.7-SNAPSHOT"
+    id "org.parchmentmc.librarian.forgegradle" version "${librarian_version}"
 }
 
 base {
@@ -25,46 +27,60 @@ if (project.ext.mixin_enabled) {
 
 println "Java: ${System.getProperty "java.version"}, JVM: ${System.getProperty "java.vm.version"} (${System.getProperty "java.vendor"}), Arch: ${System.getProperty "os.arch"}"
 
-legacyForge {
-    version = "${minecraft_version}-${forge_version}"
+minecraft {
+    if (Boolean.parseBoolean(project.use_parchment)) {
+        mappings channel: "parchment", version: "${parchment_version}-${minecraft_version}"
+    } else {
+        mappings channel: "official", version: "${minecraft_version}"
+    }
 
-    accessTransformers.from(file('src/main/resources/META-INF/accesstransformer.cfg').absolutePath)
+    // This property allows configuring Gradle's ProcessResources task(s) to run on IDE output locations before launching the game.
+    copyIdeResources = true
 
-    parchment {
-        minecraftVersion = minecraft_version
-        mappingsVersion = parchment_version
+    if (file("src/main/resources/META-INF/accesstransformer.cfg").exists()) {
+        accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg")
     }
 
     runs {
+        // applies to all the run configs below
         configureEach {
-            systemProperty "forge.logging.console.level", "debug"
-            jvmArguments = ["-XX:+IgnoreUnrecognizedVMOptions", "-XX:+AllowEnhancedClassRedefinition"]
+            workingDirectory project.file("run")
+
+            if (inMultiModWorkspace)
+                ideaModule "createmod.ponder.Forge.main"
+            else
+                ideaModule "ponder.Forge.main"
+
+            property "forge.logging.console.level", "debug"
+            jvmArgs "-XX:+IgnoreUnrecognizedVMOptions", "-XX:+AllowEnhancedClassRedefinition"
             //jvmArgs "-XX:+UnlockCommercialFeatures" // uncomment for profiling
 
-            systemProperty "mixin.env.remapRefMap", "true"
-            systemProperty "mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg"
+            property "mixin.env.remapRefMap", "true"
+            property "mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg"
 
             if (project.ext.mixin_enabled) {
-                programArgument "-mixin.config=${mod_id}.mixins.json"
+                arg "-mixin.config=${mod_id}.mixins.json"
+            }
+
+            mods {
+                ponder {
+                    source sourceSets.main
+                    source commonProject.sourceSets.main
+                }
             }
         }
 
-        client {
-            client()
 
-            programArgument "-mixin.config=flywheel.backend.mixins.json"
-            programArgument "-mixin.config=flywheel.impl.mixins.json"
+        client {
+            taskName "Client"
+
+            arg "-mixin.config=flywheel.backend.mixins.json"
+            arg "-mixin.config=flywheel.impl.mixins.json"
+            //arg "-mixin.config=flywheel.impl.sodium.mixins.json"
         }
 
         server {
-            server()
-        }
-    }
-
-    mods {
-        "${mod_id}" {
-            sourceSet sourceSets.main
-            sourceSet commonProject.sourceSets.main
+            taskName "Server"
         }
     }
 }
@@ -73,13 +89,11 @@ legacyForge {
 //sourceSets.main.resources { srcDir "src/generated/resources" }
 
 dependencies {
+    minecraft("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
     compileOnly(commonProject)
 
-    // MDG doesn't pull this in properly/automatically due to a gradle limitation
-    compileOnly("org.jetbrains:annotations:26.0.1")
-
-    modCompileOnly("dev.engine-room.flywheel:flywheel-forge-api-${minecraft_version}:${flywheel_version}")
-    modRuntimeOnly("dev.engine-room.flywheel:flywheel-forge-${minecraft_version}:${flywheel_version}")
+    compileOnly(fg.deobf("dev.engine-room.flywheel:flywheel-forge-api-${minecraft_version}:${flywheel_version}"))
+    runtimeOnly(fg.deobf("dev.engine-room.flywheel:flywheel-forge-${minecraft_version}:${flywheel_version}"))
 
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
 }
@@ -103,12 +117,7 @@ processResources {
     from commonProject.sourceSets.main.resources
 }
 
-jar {
-    finalizedBy('reobfJar')
-    manifest.attributes([
-        "MixinConfigs": "${mod_id}.mixins.json"
-    ])
-}
+jar.finalizedBy("reobfJar")
 
 // -- MAVEN PUBLISHING --
 project.publishing {
@@ -119,6 +128,7 @@ project.publishing {
 
             artifactId base.archivesName.get()
             from components.java
+            fg.component(it)
         }
     }
 
