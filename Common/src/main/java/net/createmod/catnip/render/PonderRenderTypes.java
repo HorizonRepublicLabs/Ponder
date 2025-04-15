@@ -16,9 +16,9 @@ import net.minecraft.resources.ResourceLocation;
 public abstract class PonderRenderTypes extends RenderType {
 
 	private static final RenderType OUTLINE_SOLID =
-		RenderTypeAccessor.catnip$create(createLayerName("outline_solid"), DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, false, RenderType.CompositeState.builder()
+		RenderTypeAccessor.catnip$create(createLayerName("outline_solid"), DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, false, CompositeState.builder()
 			.setShaderState(RENDERTYPE_ENTITY_SOLID_SHADER)
-			.setTextureState(new RenderStateShard.TextureStateShard(PonderSpecialTextures.BLANK.getLocation(), false, false))
+			.setTextureState(new TextureStateShard(PonderSpecialTextures.BLANK.getLocation(), false, false))
 			.setCullState(CULL)
 			.setLightmapState(LIGHTMAP)
 			.setOverlayState(OVERLAY)
@@ -36,7 +36,7 @@ public abstract class PonderRenderTypes extends RenderType {
 			.createCompositeState(false)));
 
 	private static final RenderType FLUID =
-		RenderTypeAccessor.catnip$create(createLayerName("fluid"), DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS, 256, false, true, RenderType.CompositeState.builder()
+		RenderTypeAccessor.catnip$create(createLayerName("fluid"), DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS, 256, false, true, CompositeState.builder()
 			.setShaderState(RENDERTYPE_TRANSLUCENT_SHADER)
 			.setTextureState(BLOCK_SHEET_MIPPED)
 			.setTransparencyState(TRANSLUCENT_TRANSPARENCY)

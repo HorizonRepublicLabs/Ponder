@@ -50,6 +50,10 @@ loom {
             ideConfigGenerated(true)
             runDir("run")
         }
+
+        configureEach {
+            vmArg("-Dmixin.debug.export=true")
+        }
     }
 
     accessWidenerPath = file("src/main/resources/fabric_ponder.accesswidener")

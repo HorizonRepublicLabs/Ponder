@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
-import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.SheetedDecalTextureGenerator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -21,9 +21,7 @@ import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
 import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.math.VecHelper;
 import net.createmod.catnip.outliner.AABBOutline;
-import net.createmod.catnip.platform.CatnipServices;
 import net.createmod.catnip.registry.RegisteredObjectsHelper;
-import net.createmod.catnip.render.ShadedBlockSbbBuilder;
 import net.createmod.catnip.render.SuperByteBuffer;
 import net.createmod.catnip.render.SuperByteBufferBuilder;
 import net.createmod.catnip.render.SuperByteBufferCache;
@@ -461,7 +459,7 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 		}
 
 		@Override
-		public void accept(RenderType renderType, boolean shaded, BufferBuilder.RenderedBuffer data) {
+		public void accept(RenderType renderType, boolean shaded, MeshData data) {
 			if (renderType != this.renderType) {
 				return;
 			}

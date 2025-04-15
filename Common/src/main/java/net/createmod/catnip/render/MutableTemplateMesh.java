@@ -2,8 +2,6 @@ package net.createmod.catnip.render;
 
 import java.nio.ByteBuffer;
 
-import com.mojang.blaze3d.vertex.BufferBuilder;
-
 import com.mojang.blaze3d.vertex.MeshData;
 
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -76,7 +74,7 @@ public class MutableTemplateMesh extends TemplateMesh {
 		}
 	}
 
-	public void copyFrom(int index, BufferBuilder.RenderedBuffer data) {
+	public void copyFrom(int index, MeshData data) {
 		int vertexCount = data.drawState().vertexCount();
 		ByteBuffer vertexBuffer = data.vertexBuffer();
 		int stride = data.drawState().format().getVertexSize();

@@ -65,7 +65,7 @@ public interface ModClientHooksHelper {
 
 	@Deprecated(forRemoval = true)
 	default ShadedBlockSbbBuilder createSbbBuilder(BufferBuilder builder) {
-		return new ShadedBlockSbbBuilder(builder);
+		return ShadedBlockSbbBuilder.create();
 	}
 
 	/** <b>BROKEN - DO NOT USE</b> */

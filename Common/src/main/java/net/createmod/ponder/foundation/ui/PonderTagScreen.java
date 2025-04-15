@@ -17,6 +17,7 @@ import net.createmod.catnip.gui.widget.BoxWidget;
 import net.createmod.catnip.lang.ClientFontHelper;
 import net.createmod.catnip.layout.LayoutHelper;
 import net.createmod.catnip.platform.CatnipServices;
+import net.createmod.catnip.registry.RegisteredObjectsHelper;
 import net.createmod.ponder.Ponder;
 import net.createmod.ponder.foundation.PonderChapter;
 import net.createmod.ponder.foundation.PonderIndex;

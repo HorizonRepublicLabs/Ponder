@@ -50,7 +50,7 @@ public class SuperBufferFactory {
 
 	private static class SbbBuilder extends SuperByteBufferBuilder implements ShadeSeparatedResultConsumer {
 		@Override
-		public void accept(RenderType renderType, boolean shaded, RenderedBuffer data) {
+		public void accept(RenderType renderType, boolean shaded, MeshData data) {
 			add(data, shaded);
 		}
 	}

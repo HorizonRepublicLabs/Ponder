@@ -42,19 +42,14 @@ import net.createmod.catnip.gui.element.DelegatedStencilElement;
 import net.createmod.catnip.gui.widget.AbstractSimiWidget;
 import net.createmod.catnip.gui.widget.BoxWidget;
 import net.createmod.catnip.platform.CatnipServices;
-import net.createmod.catnip.data.Couple;
 import net.createmod.catnip.lang.FontHelper;
 import net.createmod.catnip.lang.FontHelper.Palette;
-import net.createmod.catnip.net.ServerboundConfigPacket;
-import net.createmod.catnip.platform.CatnipServices;
 import net.createmod.catnip.theme.Color;
-import net.createmod.ponder.enums.PonderGuiTextures;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 
 public class SubMenuConfigScreen extends ConfigScreen {
@@ -437,7 +432,7 @@ public class SubMenuConfigScreen extends ConfigScreen {
 		});
 	}
 
-	public void showLeavingPrompt(Consumer<ConfirmationScreen.Response> action) {
+	public void showLeavingPrompt(Consumer<Response> action) {
 		ConfirmationScreen screen = new ConfirmationScreen()
 				.centered()
 				.withThreeActions(action)

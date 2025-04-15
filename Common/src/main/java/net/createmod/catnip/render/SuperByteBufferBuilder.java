@@ -1,6 +1,6 @@
 package net.createmod.catnip.render;
 
-import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.MeshData;
 
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
@@ -17,7 +17,7 @@ public class SuperByteBufferBuilder {
 		currentShade = true;
 	}
 
-	public void add(BufferBuilder.RenderedBuffer data, boolean shaded) {
+	public void add(MeshData data, boolean shaded) {
 		if (shaded != currentShade) {
 			shadeSwapVertices.add(mesh.vertexCount());
 			currentShade = shaded;

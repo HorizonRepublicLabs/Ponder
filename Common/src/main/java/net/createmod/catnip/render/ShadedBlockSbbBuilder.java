@@ -29,7 +29,8 @@ public class ShadedBlockSbbBuilder implements VertexConsumer {
 	public static ShadedBlockSbbBuilder createForPonder() {
 		ShadedBlockSbbBuilder builder = new ShadedBlockSbbBuilder();
 		builder.invertFakeNormal = true;
-		return builder; }
+		return builder;
+	}
 
 	public void begin() {
 		bufferBuilder = new BufferBuilder(BYTE_BUFFER_BUILDER, VertexFormat.Mode.QUADS, DefaultVertexFormat.BLOCK);

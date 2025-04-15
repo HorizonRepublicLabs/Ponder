@@ -22,8 +22,10 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.LevelAccessor;
 
 public class FabricPonderClient implements ClientModInitializer {
 
@@ -39,7 +41,11 @@ public class FabricPonderClient implements ClientModInitializer {
 		});
 
 		Load.EVENT.register(e -> PonderClient.onLoadWorld(e.getLevel()));
-		Unload.EVENT.register(e -> PonderClient.onUnloadWorld(e.getLevel()));
+		Unload.EVENT.register(e -> {
+			LevelAccessor level = e.getLevel();
+			if (level != null)
+				PonderClient.onUnloadWorld(level);
+		});
 
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> PonderClient.onRenderWorld(context.matrixStack()));
 

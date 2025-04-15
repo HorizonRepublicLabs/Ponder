@@ -1,5 +1,7 @@
 package net.createmod.catnip.impl.client.render.model;
 
+import com.mojang.blaze3d.vertex.ByteBufferBuilder;
+
 import org.jetbrains.annotations.UnknownNullability;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -12,7 +14,9 @@ import net.minecraft.client.renderer.RenderType;
 // Modified from https://github.com/Engine-Room/Flywheel/blob/2f67f54c8898d91a48126c3c753eefa6cd224f84/fabric/src/lib/java/dev/engine_room/flywheel/lib/model/baked/MeshEmitter.java
 class MeshEmitter {
 	private final RenderType renderType;
-	private final BufferBuilder bufferBuilder;
+	private final ByteBufferBuilder byteBufferBuilder;
+	@UnknownNullability
+	private BufferBuilder bufferBuilder;
 
 	@UnknownNullability
 	private ShadeSeparatedResultConsumer resultConsumer;
@@ -20,7 +24,7 @@ class MeshEmitter {
 
 	MeshEmitter(RenderType renderType) {
 		this.renderType = renderType;
-		this.bufferBuilder = new BufferBuilder(renderType.bufferSize());
+		this.byteBufferBuilder = new ByteBufferBuilder(renderType.bufferSize());
 	}
 
 	public void prepare(ShadeSeparatedResultConsumer resultConsumer) {
@@ -28,7 +32,7 @@ class MeshEmitter {
 	}
 
 	public void end() {
-		if (bufferBuilder.building()) {
+		if (bufferBuilder != null) {
 			emit();
 		}
 		resultConsumer = null;
@@ -40,22 +44,23 @@ class MeshEmitter {
 	}
 
 	private void prepareForGeometry(boolean shade) {
-		if (!bufferBuilder.building()) {
-			bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.BLOCK);
+		if (bufferBuilder == null) {
+			bufferBuilder = new BufferBuilder(byteBufferBuilder, VertexFormat.Mode.QUADS, DefaultVertexFormat.BLOCK);
 		} else if (shade != currentShade) {
 			emit();
-			bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.BLOCK);
+			bufferBuilder = new BufferBuilder(byteBufferBuilder, VertexFormat.Mode.QUADS, DefaultVertexFormat.BLOCK);
 		}
 
 		currentShade = shade;
 	}
 
 	private void emit() {
-		var renderedBuffer = bufferBuilder.endOrDiscardIfEmpty();
+		var data = bufferBuilder.build();
+		bufferBuilder = null;
 
-		if (renderedBuffer != null) {
-			resultConsumer.accept(renderType, currentShade, renderedBuffer);
-			renderedBuffer.release();
+		if (data != null) {
+			resultConsumer.accept(renderType, currentShade, data);
+			data.close();
 		}
 	}
 }

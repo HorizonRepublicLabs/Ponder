@@ -24,7 +24,7 @@ public abstract class ConfigBase {
 	protected List<CValue<?, ?>> allValues = new ArrayList<>();
 	protected List<ConfigBase> children = new ArrayList<>();
 
-	public void registerAll(final ModConfigSpec.Builder builder) {
+	public void registerAll(final Builder builder) {
 		for (CValue<?, ?> cValue : allValues)
 			cValue.register(builder);
 	}
@@ -43,7 +43,7 @@ public abstract class ConfigBase {
 
 	@FunctionalInterface
 	protected interface IValueProvider<V, T extends ConfigValue<V>>
-		extends Function<ModConfigSpec.Builder, T> {
+		extends Function<Builder, T> {
 	}
 
 	protected ConfigBool b(boolean current, String name, String... comment) {
@@ -81,7 +81,7 @@ public abstract class ConfigBase {
 	protected <T extends ConfigBase> T nested(int depth, Supplier<T> constructor, String... comment) {
 		T config = constructor.get();
 		new ConfigGroup(config.getName(), depth, comment);
-		new CValue<Boolean, ModConfigSpec.BooleanValue>(config.getName(), builder -> {
+		new CValue<Boolean, BooleanValue>(config.getName(), builder -> {
 			config.depth = depth;
 			config.registerAll(builder);
 			if (config.depth > depth)

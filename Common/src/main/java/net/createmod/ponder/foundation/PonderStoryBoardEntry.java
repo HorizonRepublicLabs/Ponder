@@ -8,7 +8,7 @@ import net.createmod.ponder.api.registration.StoryBoardEntry;
 import net.createmod.ponder.api.scene.PonderStoryBoard;
 import net.minecraft.resources.ResourceLocation;
 
-public class PonderStoryBoardEntry implements net.createmod.ponder.api.registration.StoryBoardEntry {
+public class PonderStoryBoardEntry implements StoryBoardEntry {
 
 	private final PonderStoryBoard board;
 	private final String namespace;

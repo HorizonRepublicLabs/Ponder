@@ -4,7 +4,9 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
+import net.createmod.catnip.impl.client.render.model.BakedModelBuffererImpl;
 import net.createmod.catnip.registry.RegisteredObjectsHelper;
+import net.createmod.catnip.render.BasicFluidRenderer;
 import net.createmod.ponder.render.NeoForgeShadedBlockSbbBuilder;
 
 import net.neoforged.neoforge.client.RenderTypeHelper;
@@ -21,12 +23,10 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.engine_room.flywheel.lib.model.baked.EmptyVirtualBlockGetter;
 import net.createmod.catnip.client.render.model.ShadeSeparatedBufferSource;
 import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
-import net.createmod.catnip.impl.client.render.model.BakedModelBuffererImpl;
 import net.createmod.catnip.platform.services.ModClientHooksHelper;
 import net.createmod.catnip.render.ShadedBlockSbbBuilder;
 import net.createmod.catnip.theme.Color;
 import net.createmod.ponder.mixin.client.accessor.ParticleEngineAccessor;
-import net.createmod.ponder.render.ForgeShadedBlockSbbBuilder;
 import net.createmod.ponder.render.VirtualRenderHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -67,7 +67,7 @@ public class NeoForgeClientHooksHelper implements ModClientHooksHelper {
 	@SuppressWarnings("unchecked")
 	public <T extends ParticleOptions> Particle createParticleFromData(T data, ClientLevel level, double x, double y,
 																	   double z, double mx, double my, double mz) {
-		ResourceLocation key = CatnipServices.REGISTRIES.getKeyOrThrow(data.getType());
+		ResourceLocation key = RegisteredObjectsHelper.getKeyOrThrow(data.getType());
 		ParticleProvider<T> particleProvider = (ParticleProvider<T>) particleProviders.get(key);
 		return particleProvider == null ? null : particleProvider.createParticle(data, level, x, y, z, mx, my, mz);
 	}
@@ -117,7 +117,7 @@ public class NeoForgeClientHooksHelper implements ModClientHooksHelper {
 
 	@Override
 	public ShadedBlockSbbBuilder createSbbBuilder(BufferBuilder builder) {
-		return new ForgeShadedBlockSbbBuilder(builder);
+		return new NeoForgeShadedBlockSbbBuilder();
 	}
 
 	@Override

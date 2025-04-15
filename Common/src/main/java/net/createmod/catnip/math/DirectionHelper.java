@@ -17,7 +17,7 @@ import net.minecraft.core.Direction.Axis;
  */
 public class DirectionHelper {
 
-	public static Direction rotateAround(Direction dir, Direction.Axis axis) {
+	public static Direction rotateAround(Direction dir, Axis axis) {
 		switch (axis) {
 		case X:
 			if (dir != WEST && dir != EAST) {
