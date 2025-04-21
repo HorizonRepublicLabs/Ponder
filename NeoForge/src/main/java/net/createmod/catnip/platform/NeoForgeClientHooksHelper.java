@@ -4,14 +4,6 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
-import net.createmod.catnip.impl.client.render.model.BakedModelBuffererImpl;
-import net.createmod.catnip.registry.RegisteredObjectsHelper;
-import net.createmod.catnip.render.BasicFluidRenderer;
-import net.createmod.ponder.render.NeoForgeShadedBlockSbbBuilder;
-
-import net.neoforged.neoforge.client.RenderTypeHelper;
-import net.neoforged.neoforge.client.model.data.ModelData;
-
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
@@ -23,10 +15,14 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.engine_room.flywheel.lib.model.baked.EmptyVirtualBlockGetter;
 import net.createmod.catnip.client.render.model.ShadeSeparatedBufferSource;
 import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
+import net.createmod.catnip.impl.client.render.model.BakedModelBuffererImpl;
 import net.createmod.catnip.platform.services.ModClientHooksHelper;
+import net.createmod.catnip.registry.RegisteredObjectsHelper;
+import net.createmod.catnip.render.BasicFluidRenderer;
 import net.createmod.catnip.render.ShadedBlockSbbBuilder;
 import net.createmod.catnip.theme.Color;
 import net.createmod.ponder.mixin.client.accessor.ParticleEngineAccessor;
+import net.createmod.ponder.render.NeoForgeShadedBlockSbbBuilder;
 import net.createmod.ponder.render.VirtualRenderHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -53,6 +49,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
+import net.neoforged.neoforge.client.RenderTypeHelper;
+import net.neoforged.neoforge.client.model.data.ModelData;
 
 public class NeoForgeClientHooksHelper implements ModClientHooksHelper {
 	private final Map<ResourceLocation, ParticleProvider<?>> particleProviders = ((ParticleEngineAccessor) Minecraft.getInstance().particleEngine).ponder$getProviders();
@@ -95,22 +93,22 @@ public class NeoForgeClientHooksHelper implements ModClientHooksHelper {
 
 	@Override
 	public void bufferModel(BakedModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedBufferSource bufferSource) {
-		BakedModelBuffererImpl.bufferModel(model, pos, level, state, poseStack, null, bufferSource);
+		BakedModelBuffererImpl.bufferModel(model, pos, level, state, poseStack, bufferSource);
 	}
 
 	@Override
 	public void bufferModel(BakedModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedResultConsumer resultConsumer) {
-		BakedModelBuffererImpl.bufferModel(model, pos, level, state, poseStack, null, resultConsumer);
+		BakedModelBuffererImpl.bufferModel(model, pos, level, state, poseStack, resultConsumer);
 	}
 
 	@Override
 	public void bufferBlocks(Iterator<BlockPos> posIterator, BlockAndTintGetter level, @Nullable PoseStack poseStack, boolean renderFluids, ShadeSeparatedBufferSource bufferSource) {
-		BakedModelBuffererImpl.bufferBlocks(posIterator, level, poseStack, null, renderFluids, bufferSource);
+		BakedModelBuffererImpl.bufferBlocks(posIterator, level, poseStack, renderFluids, bufferSource);
 	}
 
 	@Override
 	public void bufferBlocks(Iterator<BlockPos> posIterator, BlockAndTintGetter level, @Nullable PoseStack poseStack, boolean renderFluids, ShadeSeparatedResultConsumer resultConsumer) {
-		BakedModelBuffererImpl.bufferBlocks(posIterator, level, poseStack, null, renderFluids, resultConsumer);
+		BakedModelBuffererImpl.bufferBlocks(posIterator, level, poseStack, renderFluids, resultConsumer);
 	}
 
 	//

@@ -1,10 +1,6 @@
 package net.createmod.catnip.impl.client.render.model;
 
 import java.util.Iterator;
-import java.util.function.Function;
-
-import net.neoforged.neoforge.client.ChunkRenderTypeSet;
-import net.neoforged.neoforge.client.model.data.ModelData;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -26,9 +22,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
+import net.neoforged.neoforge.client.ChunkRenderTypeSet;
+import net.neoforged.neoforge.client.model.data.ModelData;
 
 // Modified from https://github.com/Engine-Room/Flywheel/blob/2f67f54c8898d91a48126c3c753eefa6cd224f84/forge/src/lib/java/dev/engine_room/flywheel/lib/model/baked/BakedModelBufferer.java
 public final class BakedModelBuffererImpl {
@@ -37,19 +34,19 @@ public final class BakedModelBuffererImpl {
 	private BakedModelBuffererImpl() {
 	}
 
-	public static void bufferModel(BakedModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, @Nullable ModelData modelData, ShadeSeparatedBufferSource bufferSource) {
+	public static void bufferModel(BakedModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedBufferSource bufferSource) {
 		ThreadLocalObjects objects = THREAD_LOCAL_OBJECTS.get();
 		if (poseStack == null) {
 			poseStack = objects.identityPoseStack;
-		}
-		if (modelData == null) {
-			BlockEntity blockEntity = level.getBlockEntity(pos);
-			modelData = blockEntity != null ? blockEntity.getModelData() : (level instanceof VirtualBlockGetter ? VirtualRenderHelper.VIRTUAL_DATA : ModelData.EMPTY);
 		}
 		RandomSource random = objects.random;
 		UniversalMeshEmitter universalEmitter = objects.universalEmitter;
 
 		long seed = state.getSeed(pos);
+		ModelData modelData = level.getModelData(pos);
+		if (modelData == ModelData.EMPTY && level instanceof VirtualBlockGetter) {
+			modelData = VirtualRenderHelper.VIRTUAL_DATA;
+		}
 		modelData = model.getModelData(level, pos, state, modelData);
 		random.setSeed(seed);
 		ChunkRenderTypeSet renderTypes = model.getRenderTypes(state, random, modelData);
@@ -68,24 +65,18 @@ public final class BakedModelBuffererImpl {
 		universalEmitter.clear();
 	}
 
-	public static void bufferModel(BakedModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, @Nullable ModelData modelData, ShadeSeparatedResultConsumer resultConsumer) {
+	public static void bufferModel(BakedModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedResultConsumer resultConsumer) {
 		ThreadLocalObjects objects = THREAD_LOCAL_OBJECTS.get();
 		DefaultShadeSeparatedBufferSource bufferSource = objects.defaultBufferSource;
 		bufferSource.prepare(resultConsumer);
-		bufferModel(model, pos, level, state, poseStack, modelData, bufferSource);
+		bufferModel(model, pos, level, state, poseStack, bufferSource);
 		bufferSource.end();
 	}
 
-	public static void bufferBlocks(Iterator<BlockPos> posIterator, BlockAndTintGetter level, @Nullable PoseStack poseStack, @Nullable Function<BlockPos, ModelData> modelDataLookup, boolean renderFluids, ShadeSeparatedBufferSource bufferSource) {
+	public static void bufferBlocks(Iterator<BlockPos> posIterator, BlockAndTintGetter level, @Nullable PoseStack poseStack, boolean renderFluids, ShadeSeparatedBufferSource bufferSource) {
 		ThreadLocalObjects objects = THREAD_LOCAL_OBJECTS.get();
 		if (poseStack == null) {
 			poseStack = objects.identityPoseStack;
-		}
-		if (modelDataLookup == null) {
-			modelDataLookup = pos -> {
-				BlockEntity blockEntity = level.getBlockEntity(pos);
-				return blockEntity != null ? blockEntity.getModelData() : (level instanceof VirtualBlockGetter ? VirtualRenderHelper.VIRTUAL_DATA : ModelData.EMPTY);
-			};
 		}
 		RandomSource random = objects.random;
 		UniversalMeshEmitter universalEmitter = objects.universalEmitter;
@@ -119,7 +110,10 @@ public final class BakedModelBuffererImpl {
 			if (state.getRenderShape() == RenderShape.MODEL) {
 				long seed = state.getSeed(pos);
 				BakedModel model = renderDispatcher.getBlockModel(state);
-				ModelData modelData = modelDataLookup.apply(pos);
+				ModelData modelData = level.getModelData(pos);
+				if (modelData == ModelData.EMPTY && level instanceof VirtualBlockGetter) {
+					modelData = VirtualRenderHelper.VIRTUAL_DATA;
+				}
 				modelData = model.getModelData(level, pos, state, modelData);
 				random.setSeed(seed);
 				ChunkRenderTypeSet renderTypes = model.getRenderTypes(state, random, modelData);
@@ -139,11 +133,11 @@ public final class BakedModelBuffererImpl {
 		universalEmitter.clear();
 	}
 
-	public static void bufferBlocks(Iterator<BlockPos> posIterator, BlockAndTintGetter level, @Nullable PoseStack poseStack, @Nullable Function<BlockPos, ModelData> modelDataLookup, boolean renderFluids, ShadeSeparatedResultConsumer resultConsumer) {
+	public static void bufferBlocks(Iterator<BlockPos> posIterator, BlockAndTintGetter level, @Nullable PoseStack poseStack, boolean renderFluids, ShadeSeparatedResultConsumer resultConsumer) {
 		ThreadLocalObjects objects = THREAD_LOCAL_OBJECTS.get();
 		DefaultShadeSeparatedBufferSource bufferSource = objects.defaultBufferSource;
 		bufferSource.prepare(resultConsumer);
-		bufferBlocks(posIterator, level, poseStack, modelDataLookup, renderFluids, bufferSource);
+		bufferBlocks(posIterator, level, poseStack, renderFluids, bufferSource);
 		bufferSource.end();
 	}
 
