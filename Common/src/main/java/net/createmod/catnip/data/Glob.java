@@ -26,21 +26,19 @@ public class Glob {
 		boolean isNegativeLookaround = false;
 		boolean isAnchored = true;
 
-		while(i < globPattern.length()) {
+		while (i < globPattern.length()) {
 			char c = globPattern.charAt(i++);
 
-			switch(c) {
+			switch (c) {
 				case '*' -> {
 					regex.append(".*");
-					if(!inGroup)
-					{
+					if (!inGroup) {
 						isAnchored = false;
 					}
 				}
 				case '?' -> {
 					regex.append(".");
-					if(!inGroup)
-					{
+					if (!inGroup) {
 						isAnchored = true;
 					}
 				}
@@ -114,8 +112,7 @@ public class Glob {
 					}
 
 					regex.append("]");
-					if(!inGroup)
-					{
+					if (!inGroup) {
 						isAnchored = true;
 					}
 				}
@@ -130,8 +127,7 @@ public class Glob {
 					}
 
 					regex.append(next);
-					if(!inGroup)
-					{
+					if (!inGroup) {
 						isAnchored = true;
 					}
 				}
@@ -143,7 +139,7 @@ public class Glob {
 					regex.append("(?");
 					if (next(globPattern, i) == '!') {
 						isNegativeLookaround = true;
-						if(!isAnchored) {
+						if (!isAnchored) {
 							regex.append('<');
 						}
 						regex.append('!');
@@ -158,9 +154,9 @@ public class Glob {
 				case '}' -> {
 					if (inGroup) {
 						regex.append(")");
-						if(isAnchored && isNegativeLookaround) {
-							regex.append('.*');
-							isAnchored = false
+						if (isAnchored && isNegativeLookaround) {
+							regex.append(".*");
+							isAnchored = false;
 						}
 						inGroup = false;
 					} else {
@@ -174,8 +170,7 @@ public class Glob {
 					}
 
 					regex.append(c);
-					if(!inGroup)
-					{
+					if (!inGroup) {
 						isAnchored = true;
 					}
 				}
