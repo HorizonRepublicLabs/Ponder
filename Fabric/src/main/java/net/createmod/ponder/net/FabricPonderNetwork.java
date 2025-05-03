@@ -8,6 +8,9 @@ import net.createmod.catnip.net.ClientboundPacket;
 import net.createmod.catnip.net.ClientboundSimpleActionPacket;
 import net.createmod.catnip.net.ServerboundConfigPacket;
 import net.createmod.catnip.net.ServerboundPacket;
+import net.createmod.catnip.platform.CatnipServices;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
@@ -15,13 +18,15 @@ import net.minecraft.resources.ResourceLocation;
 
 public class FabricPonderNetwork {
 	public static void register() {
-
 		registerServerbound(ServerboundConfigPacket.ID, ServerboundConfigPacket::new);
 
-		registerClientbound(ClientboundSimpleActionPacket.ID, ClientboundSimpleActionPacket::new, ClientboundSimpleActionPacket.Handler::handle);
-		registerClientbound(ClientboundConfigPacket.ID, ClientboundConfigPacket::new, ClientboundConfigPacket.Handler::handle);
+		if (CatnipServices.PLATFORM.getEnv().isClient()) {
+			registerClientbound(ClientboundSimpleActionPacket.ID, ClientboundSimpleActionPacket::new, ClientboundSimpleActionPacket.Handler::handle);
+			registerClientbound(ClientboundConfigPacket.ID, ClientboundConfigPacket::new, ClientboundConfigPacket.Handler::handle);
+		}
 	}
 
+	@Environment(EnvType.CLIENT)
 	private static <T extends ClientboundPacket> void registerClientbound(ResourceLocation location, Function<FriendlyByteBuf, T> factory, Consumer<T> handler) {
 		ClientPlayNetworking.registerGlobalReceiver(location, (client, handler1, buf, responseSender) -> {
 			handler.accept(factory.apply(buf));
