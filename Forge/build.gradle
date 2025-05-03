@@ -19,9 +19,10 @@ project.logger.lifecycle("MultiModWorkspace ${inMultiModWorkspace ? "enabled" : 
 if (project.ext.mixin_enabled) {
     mixin {
         // Tells the mixin plugin where to put the generated refmap file.
-        add sourceSets.main, "${mod_id}.refmap.json"
+        add(sourceSets.main, "${mod_id}.refmap.json")
 
-        config "${mod_id}.mixins.json"
+        config("${mod_id}.mixins.json")
+        config("${mod_id}-common.mixins.json")
     }
 }
 
