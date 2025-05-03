@@ -12,22 +12,11 @@ import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 
-public class NeoForgeFluidHelper implements ModFluidHelper<FluidStack> {
-	@Override
-	public int getColor(Fluid fluid) {
-		return IClientFluidTypeExtensions.of(fluid).getTintColor();
-	}
-
+public class NeoForgeFluidHelper implements ModFluidHelper {
 	@Override
 	public int getColor(Fluid fluid, long amount, @Nullable DataComponentPatch fluidData) {
 		return IClientFluidTypeExtensions.of(fluid).getTintColor(toStack(fluid, amount, fluidData));
 	}
-
-	@Override
-	public int getLuminosity(Fluid fluid) {
-		return fluid.getFluidType().getLightLevel();
-	}
-
 
 	@Override
 	public int getLuminosity(Fluid fluid, long amount, @Nullable DataComponentPatch fluidData) {
@@ -35,22 +24,15 @@ public class NeoForgeFluidHelper implements ModFluidHelper<FluidStack> {
 	}
 
 	@Override
-	public ResourceLocation getStillTexture(Fluid fluid) {
-		return IClientFluidTypeExtensions.of(fluid).getStillTexture();
-	}
-
-
-	@Override
 	public ResourceLocation getStillTexture(Fluid fluid, long amount, @Nullable DataComponentPatch fluidData) {
 		return IClientFluidTypeExtensions.of(fluid).getStillTexture(toStack(fluid, amount, fluidData));
 	}
 
 	@Override
-	public boolean isLighterThanAir(Fluid fluid) {
+	public boolean isLighterThanAir(Fluid fluid, @Nullable DataComponentPatch fluidData) {
 		return fluid.getFluidType().isLighterThanAir();
 	}
 
-	@Override
 	public FluidStack toStack(Fluid fluid, long amount, @Nullable DataComponentPatch fluidData) {
 		FluidStack fluidStack = new FluidStack(fluid, (int) amount);
 		if (fluidData != null)

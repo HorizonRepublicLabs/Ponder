@@ -3,6 +3,7 @@ package net.createmod.ponder;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.config.ui.BaseConfigScreen;
 import net.createmod.catnip.data.Couple;
+import net.createmod.catnip.levelWrappers.WrappedClientLevel;
 import net.createmod.catnip.placement.PlacementClient;
 import net.createmod.catnip.render.StitchedSprite;
 import net.createmod.catnip.theme.Color;
@@ -10,6 +11,9 @@ import net.createmod.ponder.enums.PonderConfig;
 import net.createmod.ponder.enums.PonderKeybinds;
 import net.createmod.ponder.foundation.PonderTooltipHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -63,12 +67,24 @@ public class NeoForgePonderClient {
 
 		@SubscribeEvent
 		public static void onLoadWorld(LevelEvent.Load event) {
-			PonderClient.onLoadWorld(event.getLevel());
+			LevelAccessor level = event.getLevel();
+
+			if (!level.isClientSide())
+				return;
+
+			if (level instanceof ClientLevel && !(level instanceof WrappedClientLevel)) {
+				PonderClient.invalidateRenderers();
+				AnimationTickHolder.reset();
+			}
 		}
 
 		@SubscribeEvent
 		public static void onUnloadWorld(LevelEvent.Unload event) {
-			PonderClient.onUnloadWorld(event.getLevel());
+			if (!event.getLevel().isClientSide())
+				return;
+
+			PonderClient.invalidateRenderers();
+			AnimationTickHolder.reset();
 		}
 
 		@SubscribeEvent
@@ -76,7 +92,7 @@ public class NeoForgePonderClient {
 			if (event.getName() != VanillaGuiLayers.CROSSHAIR)
 				return;
 
-			PlacementClient.onRenderCrosshairOverlay(Minecraft.getInstance().getWindow(), event.getGuiGraphics(), AnimationTickHolder.getPartialTicksUI());
+			PlacementClient.onRenderCrosshairOverlay(event.getGuiGraphics(), AnimationTickHolder.getPartialTicksUI());
 		}
 
 		@SubscribeEvent

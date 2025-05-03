@@ -3,6 +3,7 @@
   "id": "${mod_id}",
   "version": "${version}",
   "name": "${mod_name}",
+  "icon": "logo.png",
   "description": "${mod_description}",
   "authors": [
     "${mod_author}",
@@ -15,7 +16,8 @@
   "license": "${mod_license}",
   "environment": "*",
   "mixins": [
-      "${mod_id}.mixins.json"
+    "${mod_id}.mixins.json",
+    "${mod_id}-common.mixins.json"
   ],
   "accessWidener": "fabric_ponder.accesswidener",
   "entrypoints": {

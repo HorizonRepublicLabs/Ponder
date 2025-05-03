@@ -19,21 +19,24 @@ ${mod_description}
 [[mixins]]
 config="${mod_id}.mixins.json"
 
-[[dependencies.${mod_id}]]
+[[mixins]]
+config="${mod_id}-common.mixins.json"
+
+[[dependencies."${mod_id}"]]
     modId="neoforge"
     type="required"
     versionRange="${neo_version_range}"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.${mod_id}]]
+[[dependencies."${mod_id}"]]
     modId="minecraft"
     type="required"
     versionRange="[${minecraft_version}]"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.${mod_id}]]
+[[dependencies."${mod_id}"]]
     modId="flywheel"
     type="required"
     versionRange="${flywheel_version_range}"

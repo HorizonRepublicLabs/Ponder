@@ -2,10 +2,7 @@ package net.createmod.ponder;
 
 import java.util.Optional;
 
-import io.github.fabricators_of_create.porting_lib.event.client.OverlayRenderCallback;
-import io.github.fabricators_of_create.porting_lib.event.client.RenderTooltipBorderColorCallback;
-import io.github.fabricators_of_create.porting_lib.level.events.LevelEvent.Load;
-import io.github.fabricators_of_create.porting_lib.level.events.LevelEvent.Unload;
+import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.config.ui.BaseConfigScreen;
 import net.createmod.catnip.data.Couple;
 import net.createmod.catnip.placement.PlacementClient;
@@ -19,17 +16,22 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.InvalidateRenderStateCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
 
-public class FabricPonderClient implements ClientModInitializer {
+import javax.annotation.Nullable;
 
+public class FabricPonderClient implements ClientModInitializer {
 	public static final FabricClientResourceReloadListener FABRIC$RESOURCE_RELOAD_LISTENER = new FabricClientResourceReloadListener();
+
+	@Nullable
+	public static Couple<Color> tooltipBorderColorOverride;
 
 	@Override
 	public void onInitializeClient() {
@@ -40,25 +42,15 @@ public class FabricPonderClient implements ClientModInitializer {
 			PonderTooltipHandler.tick();
 		});
 
-		Load.EVENT.register(e -> PonderClient.onLoadWorld(e.getLevel()));
-		Unload.EVENT.register(e -> {
-			LevelAccessor level = e.getLevel();
-			if (level != null)
-				PonderClient.onUnloadWorld(level);
+		InvalidateRenderStateCallback.EVENT.register(() -> {
+			PonderClient.invalidateRenderers();
+			AnimationTickHolder.reset();
 		});
-
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> PonderClient.onRenderWorld(context.matrixStack()));
 
-		OverlayRenderCallback.EVENT.register((stack, partialTicks, window, type) -> {
-			if (type != OverlayRenderCallback.Types.CROSSHAIRS)
-				return false;
-
-			PlacementClient.onRenderCrosshairOverlay(window, stack, partialTicks);
-			return false;
-		});
+		HudRenderCallback.EVENT.register((graphics, deltaTracker) -> PlacementClient.onRenderCrosshairOverlay(graphics, AnimationTickHolder.getPartialTicksUI()));
 
 		ItemTooltipCallback.EVENT.register((stack, context, flag, lines) -> PonderTooltipHandler.addToTooltip(lines, stack));
-		RenderTooltipBorderColorCallback.EVENT.register(FabricPonderClient::getItemTooltipColor);
 		PonderKeybinds.register(KeyBindingHelper::registerKeyBinding);
 
 		ClientLifecycleEvents.CLIENT_STARTED.register(FabricPonderClient::onClientStarted);
@@ -77,13 +69,5 @@ public class FabricPonderClient implements ClientModInitializer {
 
 	private static void onClientStarted(Minecraft client) {
 		PonderClient.modLoadCompleted();
-	}
-
-	public static RenderTooltipBorderColorCallback.BorderColorEntry getItemTooltipColor(ItemStack stack, int originalBorderColorStart, int originalBorderColorEnd) {
-		Optional<Couple<Color>> colors = PonderTooltipHandler.handleTooltipColor(stack);
-		return new RenderTooltipBorderColorCallback.BorderColorEntry(
-				colors.map(c -> c.getFirst().getRGB()).orElse(originalBorderColorStart),
-				colors.map(c -> c.getSecond().getRGB()).orElse(originalBorderColorEnd)
-		);
 	}
 }

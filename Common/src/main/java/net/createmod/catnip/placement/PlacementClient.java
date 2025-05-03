@@ -138,13 +138,13 @@ public class PlacementClient {
 			lastTarget = target;
 	}
 
-	public static void onRenderCrosshairOverlay(Window window, GuiGraphics graphics, float partialTicks) {
+	public static void onRenderCrosshairOverlay(GuiGraphics graphics, float partialTicks) {
 		Minecraft mc = Minecraft.getInstance();
 		Player player = mc.player;
 
 		if (player != null && animationTick > 0) {
-			float screenY = window.getGuiScaledHeight() / 2f;
-			float screenX = window.getGuiScaledWidth() / 2f;
+			float screenY = graphics.guiHeight() / 2f;
+			float screenX = graphics.guiWidth() / 2f;
 			float progress = getCurrentAlpha();
 
 			drawDirectionIndicator(graphics, partialTicks, screenX, screenY, progress);

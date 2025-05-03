@@ -3,6 +3,10 @@ package net.createmod.catnip.platform;
 import java.util.Iterator;
 import java.util.Locale;
 
+import net.createmod.catnip.render.RenderTargetExtensions;
+import net.createmod.ponder.mixin.client.ParticleEngineAccessor;
+import net.minecraft.client.resources.language.LanguageManager;
+
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
@@ -11,7 +15,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import dev.engine_room.flywheel.lib.model.baked.EmptyVirtualBlockGetter;
-import io.github.fabricators_of_create.porting_lib.mixin.accessors.client.accessor.ParticleEngineAccessor;
 import net.createmod.catnip.client.render.model.ShadeSeparatedBufferSource;
 import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
 import net.createmod.catnip.impl.client.render.model.BakedModelBuffererImpl;
@@ -25,7 +28,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -36,7 +38,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -46,15 +47,15 @@ import net.minecraft.world.level.material.FluidState;
 public class FabricClientHooksHelper implements ModClientHooksHelper {
 	@Override
 	public Locale getCurrentLocale() {
-		return Minecraft.getInstance().getLanguageManager().getJavaLocale();
+		LanguageManager languageManager = Minecraft.getInstance().getLanguageManager();
+		String[] split = languageManager.getSelected().split("_", 2);
+		return split.length == 1 ? new Locale(split[0]) : new Locale(split[0], split[1]);
 	}
 
 	@Override
 	@Nullable
 	public <T extends ParticleOptions> Particle createParticleFromData(T data, ClientLevel level, double x, double y, double z, double mx, double my, double mz) {
-		int key = BuiltInRegistries.PARTICLE_TYPE.getId(data.getType());
-		ParticleProvider<T> particleProvider = (ParticleProvider<T>) ((ParticleEngineAccessor) Minecraft.getInstance().particleEngine).port_lib$getProviders().get(key);
-		return particleProvider == null ? null : particleProvider.createParticle(data, level, x, y, z, mx, my, mz);
+		return ((ParticleEngineAccessor) Minecraft.getInstance().particleEngine).catnip$makeParticle(data, x, y, z, mx, my, mz);
 	}
 
 	@Override
@@ -71,7 +72,7 @@ public class FabricClientHooksHelper implements ModClientHooksHelper {
 
 	@Override
 	public void enableStencilBuffer(RenderTarget renderTarget) {
-		renderTarget.enableStencil();
+		((RenderTargetExtensions) renderTarget).catnip$enableStencil();
 	}
 
 	@Override

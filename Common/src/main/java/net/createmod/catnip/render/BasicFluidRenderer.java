@@ -54,7 +54,7 @@ public class BasicFluidRenderer {
 
 		Vec3 center = new Vec3(xMin + (xMax - xMin) / 2, yMin + (yMax - yMin) / 2, zMin + (zMax - zMin) / 2);
 		ms.pushPose();
-		if (invertGasses && CatnipServices.FLUID_HELPER.isLighterThanAir(fluid)) {
+		if (invertGasses && CatnipServices.FLUID_HELPER.isLighterThanAir(fluid, fluidData)) {
 			ms.translate(center.x, center.y, center.z);
 			ms.mulPose(Axis.XP.rotationDegrees(180));
 			ms.translate(-center.x, -center.y, -center.z);

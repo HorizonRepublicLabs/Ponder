@@ -82,24 +82,6 @@ public class PonderClient {
 		SuperByteBufferCache.getInstance().invalidate();
 	}
 
-	public static void onLoadWorld(LevelAccessor level) {
-		if (!level.isClientSide())
-			return;
-
-		if (level instanceof ClientLevel && !(level instanceof WrappedClientLevel)) {
-			invalidateRenderers();
-			AnimationTickHolder.reset();
-		}
-	}
-
-	public static void onUnloadWorld(LevelAccessor level) {
-		if (!level.isClientSide())
-			return;
-
-		invalidateRenderers();
-		AnimationTickHolder.reset();
-	}
-
 	public static boolean isGameActive() {
 		return Minecraft.getInstance().level != null && Minecraft.getInstance().player != null;
 	}
