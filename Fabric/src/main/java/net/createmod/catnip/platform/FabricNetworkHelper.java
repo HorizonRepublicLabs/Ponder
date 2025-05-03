@@ -33,7 +33,8 @@ public class FabricNetworkHelper implements NetworkHelper {
 			} else if (clientbound) {
 				CatnipPacketRegistry.PacketType<ClientboundPacketPayload> casted = (CatnipPacketRegistry.PacketType<ClientboundPacketPayload>) type;
 				PayloadTypeRegistry.playS2C().register(casted.type(), casted.codec());
-				ClientPlayNetworking.registerGlobalReceiver(casted.type(), (payload, ctx) -> payload.handle(ctx.player()));
+				if (CatnipServices.PLATFORM.getEnv().isClient())
+					ClientPlayNetworking.registerGlobalReceiver(casted.type(), (payload, ctx) -> payload.handle(ctx.player()));
 			} else if (serverbound) {
 				CatnipPacketRegistry.PacketType<ServerboundPacketPayload> casted = (CatnipPacketRegistry.PacketType<ServerboundPacketPayload>) type;
 				PayloadTypeRegistry.playC2S().register(casted.type(), casted.codec());
