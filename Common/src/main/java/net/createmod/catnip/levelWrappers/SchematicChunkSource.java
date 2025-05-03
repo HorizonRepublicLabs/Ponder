@@ -72,7 +72,7 @@ public class SchematicChunkSource extends ChunkSource {
 	}
 
 	public ChunkAccess getChunk(int x, int z) {
-		return new EmptierChunk(fallbackWorld.registryAccess());
+		return new EmptierChunk(fallbackWorld);
 	}
 
 	@Override
@@ -107,9 +107,8 @@ public class SchematicChunkSource extends ChunkSource {
 
 			private final RegistryAccess access;
 
-			private DummyLevel(RegistryAccess access) {
-				this(null, null, access, access.registryOrThrow(Registries.DIMENSION_TYPE)
-						.getHolderOrThrow(BuiltinDimensionTypes.OVERWORLD), null, false, false, 0, 0);
+			private DummyLevel(Level level) {
+				this(null, null, level.registryAccess(), level.dimensionTypeRegistration(), null, false, false, 0, 0);
 			}
 
 			@Override
@@ -226,8 +225,8 @@ public class SchematicChunkSource extends ChunkSource {
 			}
 		}
 
-		public EmptierChunk(RegistryAccess registryAccess) {
-			super(new DummyLevel(registryAccess), ChunkPos.ZERO);
+		public EmptierChunk(Level level) {
+			super(new DummyLevel(level), ChunkPos.ZERO);
 		}
 
 		public BlockState getBlockState(BlockPos p_180495_1_) {
