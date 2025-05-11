@@ -2,40 +2,41 @@ package net.createmod.catnip.platform.services;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.material.Fluid;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.material.FluidState;
 
+// FIXME: some of these methods are client-only and not marked at runtime. This will cause problems later!
 public interface ModFluidHelper<R> {
-	int getColor(Fluid fluid);
+	/**
+	 * <strong>Client-only! Calling this server-side will crash.</strong>
+	 */
+	int getColor(R fluid, @Nullable BlockAndTintGetter level, @Nullable BlockPos pos);
 
-	default int getColor(Fluid fluid, long amount) {
-		return getColor(fluid, amount, null);
+	int getLuminosity(R fluid);
+
+	/**
+	 * <strong>Client-only! Calling this server-side will crash.</strong>
+	 */
+	@Nullable
+	TextureAtlasSprite getStillTexture(R fluid);
+
+	/**
+	 * <strong>Client-only! Calling this server-side will crash.</strong>
+	 */
+	default TextureAtlasSprite getStillTextureOrMissing(R fluid) {
+		TextureAtlasSprite texture = this.getStillTexture(fluid);
+		if (texture != null)
+			return texture;
+
+		return Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(MissingTextureAtlasSprite.getLocation());
 	}
 
-	int getColor(Fluid fluid, long amount, @Nullable CompoundTag fluidData);
+	boolean isLighterThanAir(R fluid);
 
-	int getLuminosity(Fluid fluid);
-
-	default int getLuminosity(Fluid fluid, long amount) {
-		return getLuminosity(fluid, amount, null);
-	}
-
-	int getLuminosity(Fluid fluid, long amount, @Nullable CompoundTag fluidData);
-
-	ResourceLocation getStillTexture(Fluid fluid);
-
-	default ResourceLocation getStillTexture(Fluid fluid, long amount) {
-		return getStillTexture(fluid, amount, null);
-	}
-
-	ResourceLocation getStillTexture(Fluid fluid, long amount, @Nullable CompoundTag fluidData);
-
-	boolean isLighterThanAir(Fluid fluid);
-
-	default R toStack(Fluid fluid, long amount) {
-		return toStack(fluid, amount, null);
-	}
-
-	R toStack(Fluid fluid, long amount, @Nullable CompoundTag fluidData);
+	R toStack(FluidState state);
 }

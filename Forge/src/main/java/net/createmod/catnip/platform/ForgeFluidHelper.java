@@ -3,54 +3,43 @@ package net.createmod.catnip.platform;
 import org.jetbrains.annotations.Nullable;
 
 import net.createmod.catnip.platform.services.ModFluidHelper;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidStack;
 
 public class ForgeFluidHelper implements ModFluidHelper<FluidStack> {
 	@Override
-	public int getColor(Fluid fluid) {
-		return IClientFluidTypeExtensions.of(fluid).getTintColor();
+	public int getColor(FluidStack stack, @Nullable BlockAndTintGetter level, @Nullable BlockPos pos) {
+		Fluid fluid = stack.getFluid();
+		return IClientFluidTypeExtensions.of(fluid).getTintColor(fluid.defaultFluidState(), level, pos);
 	}
 
 	@Override
-	public int getColor(Fluid fluid, long amount, @Nullable CompoundTag fluidData) {
-		return IClientFluidTypeExtensions.of(fluid).getTintColor(toStack(fluid, amount, fluidData));
+	public int getLuminosity(FluidStack fluid) {
+		return fluid.getFluid().getFluidType().getLightLevel();
 	}
 
 	@Override
-	public int getLuminosity(Fluid fluid) {
-		return fluid.getFluidType().getLightLevel();
-	}
-
-
-	@Override
-	public int getLuminosity(Fluid fluid, long amount, @Nullable CompoundTag fluidData) {
-		return fluid.getFluidType().getLightLevel(toStack(fluid, amount, fluidData));
+	@Nullable
+	public TextureAtlasSprite getStillTexture(FluidStack fluid) {
+		ResourceLocation id = IClientFluidTypeExtensions.of(fluid.getFluid()).getStillTexture(fluid);
+		return id == null ? null : Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(id);
 	}
 
 	@Override
-	public ResourceLocation getStillTexture(Fluid fluid) {
-		return IClientFluidTypeExtensions.of(fluid).getStillTexture();
-	}
-
-
-	@Override
-	public ResourceLocation getStillTexture(Fluid fluid, long amount, @Nullable CompoundTag fluidData) {
-		return IClientFluidTypeExtensions.of(fluid).getStillTexture(toStack(fluid, amount, fluidData));
+	public boolean isLighterThanAir(FluidStack fluid) {
+		return fluid.getFluid().getFluidType().isLighterThanAir();
 	}
 
 	@Override
-	public boolean isLighterThanAir(Fluid fluid) {
-		return fluid.getFluidType().isLighterThanAir();
-	}
-
-	@Override
-	public FluidStack toStack(Fluid fluid, long amount, @Nullable CompoundTag fluidData) {
-		FluidStack fluidStack = new FluidStack(fluid, (int) amount);
-		fluidStack.setTag(fluidData);
-		return fluidStack;
+	public FluidStack toStack(FluidState state) {
+		return new FluidStack(state.getType(), 1000);
 	}
 }
