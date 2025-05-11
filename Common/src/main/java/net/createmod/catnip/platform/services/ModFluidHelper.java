@@ -1,5 +1,9 @@
 package net.createmod.catnip.platform.services;
 
+import net.createmod.catnip.annotations.Environment;
+
+import net.createmod.catnip.annotations.Environment.EnvType;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.Minecraft;
@@ -10,24 +14,17 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.material.FluidState;
 
-// FIXME: some of these methods are client-only and not marked at runtime. This will cause problems later!
 public interface ModFluidHelper<R> {
-	/**
-	 * <strong>Client-only! Calling this server-side will crash.</strong>
-	 */
+	@Environment(EnvType.CLIENT)
 	int getColor(R fluid, @Nullable BlockAndTintGetter level, @Nullable BlockPos pos);
 
 	int getLuminosity(R fluid);
 
-	/**
-	 * <strong>Client-only! Calling this server-side will crash.</strong>
-	 */
+	@Environment(EnvType.CLIENT)
 	@Nullable
 	TextureAtlasSprite getStillTexture(R fluid);
 
-	/**
-	 * <strong>Client-only! Calling this server-side will crash.</strong>
-	 */
+	@Environment(EnvType.CLIENT)
 	default TextureAtlasSprite getStillTextureOrMissing(R fluid) {
 		TextureAtlasSprite texture = this.getStillTexture(fluid);
 		if (texture != null)

@@ -1,5 +1,8 @@
 package net.createmod.catnip.platform;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.createmod.catnip.platform.services.ModFluidHelper;
@@ -15,6 +18,7 @@ import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidStack;
 
 public class ForgeFluidHelper implements ModFluidHelper<FluidStack> {
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public int getColor(FluidStack stack, @Nullable BlockAndTintGetter level, @Nullable BlockPos pos) {
 		Fluid fluid = stack.getFluid();
@@ -26,6 +30,7 @@ public class ForgeFluidHelper implements ModFluidHelper<FluidStack> {
 		return fluid.getFluid().getFluidType().getLightLevel();
 	}
 
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	@Nullable
 	public TextureAtlasSprite getStillTexture(FluidStack fluid) {
