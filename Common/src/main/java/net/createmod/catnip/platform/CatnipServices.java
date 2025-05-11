@@ -6,7 +6,6 @@ import net.createmod.catnip.platform.services.ModFluidHelper;
 import net.createmod.catnip.platform.services.ModHooksHelper;
 import net.createmod.catnip.platform.services.NetworkHelper;
 import net.createmod.catnip.platform.services.PlatformHelper;
-import net.createmod.catnip.platform.services.RegisteredObjectsHelper;
 import net.createmod.catnip.render.FluidRenderHelper;
 import net.createmod.ponder.Ponder;
 

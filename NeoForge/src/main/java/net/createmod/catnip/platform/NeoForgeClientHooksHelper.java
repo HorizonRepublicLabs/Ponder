@@ -18,7 +18,6 @@ import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
 import net.createmod.catnip.impl.client.render.model.BakedModelBuffererImpl;
 import net.createmod.catnip.platform.services.ModClientHooksHelper;
 import net.createmod.catnip.registry.RegisteredObjectsHelper;
-import net.createmod.catnip.render.BasicFluidRenderer;
 import net.createmod.catnip.render.ShadedBlockSbbBuilder;
 import net.createmod.catnip.theme.Color;
 import net.createmod.ponder.mixin.client.accessor.ParticleEngineAccessor;

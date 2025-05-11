@@ -2,6 +2,7 @@ plugins {
     id "idea"
     id "eclipse"
     id "net.neoforged.moddev" version "${mdg_version}"
+    id "net.createmod.ponder.gradle"
 }
 
 base {

@@ -1,42 +1,47 @@
 package net.createmod.catnip.platform;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.material.FluidState;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.createmod.catnip.platform.services.ModFluidHelper;
-import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.core.component.DataComponentPatch;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
 
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 
-public class NeoForgeFluidHelper implements ModFluidHelper {
+public class NeoForgeFluidHelper implements ModFluidHelper<FluidStack> {
 	@Override
-	public int getColor(Fluid fluid, long amount, @Nullable DataComponentPatch fluidData) {
-		return IClientFluidTypeExtensions.of(fluid).getTintColor(toStack(fluid, amount, fluidData));
+	public int getColor(FluidStack stack, @Nullable BlockAndTintGetter level, @Nullable BlockPos pos) {
+		Fluid fluid = stack.getFluid();
+		return IClientFluidTypeExtensions.of(fluid).getTintColor(fluid.defaultFluidState(), level, pos);
 	}
 
 	@Override
-	public int getLuminosity(Fluid fluid, long amount, @Nullable DataComponentPatch fluidData) {
-		return fluid.getFluidType().getLightLevel(toStack(fluid, amount, fluidData));
+	public int getLuminosity(FluidStack fluid) {
+		return fluid.getFluid().getFluidType().getLightLevel();
 	}
 
 	@Override
-	public ResourceLocation getStillTexture(Fluid fluid, long amount, @Nullable DataComponentPatch fluidData) {
-		return IClientFluidTypeExtensions.of(fluid).getStillTexture(toStack(fluid, amount, fluidData));
+	@Nullable
+	public TextureAtlasSprite getStillTexture(FluidStack fluid) {
+		ResourceLocation id = IClientFluidTypeExtensions.of(fluid.getFluid()).getStillTexture(fluid);
+		return id == null ? null : Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(id);
 	}
 
 	@Override
-	public boolean isLighterThanAir(Fluid fluid, @Nullable DataComponentPatch fluidData) {
-		return fluid.getFluidType().isLighterThanAir();
+	public boolean isLighterThanAir(FluidStack fluid) {
+		return fluid.getFluid().getFluidType().isLighterThanAir();
 	}
 
-	public FluidStack toStack(Fluid fluid, long amount, @Nullable DataComponentPatch fluidData) {
-		FluidStack fluidStack = new FluidStack(fluid, (int) amount);
-		if (fluidData != null)
-			fluidStack.applyComponents(fluidData);
-		return fluidStack;
+	@Override
+	public FluidStack toStack(FluidState state) {
+		return new FluidStack(state.getType(), 1000);
 	}
 }

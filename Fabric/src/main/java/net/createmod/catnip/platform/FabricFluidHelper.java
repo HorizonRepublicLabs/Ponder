@@ -1,5 +1,7 @@
 package net.createmod.catnip.platform;
 
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.createmod.catnip.platform.services.ModFluidHelper;
@@ -11,29 +13,29 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.material.FluidState;
 
-public class FabricFluidHelper implements ModFluidHelper<FluidStack> {
+public class FabricFluidHelper implements ModFluidHelper<FluidVariant> {
 	@Override
-	public int getColor(FluidStack stack, @Nullable BlockAndTintGetter level, @Nullable BlockPos pos) {
-		return FluidVariantRendering.getColor(stack.getType(), level, pos);
+	public int getColor(FluidVariant variant, @Nullable BlockAndTintGetter level, @Nullable BlockPos pos) {
+		return FluidVariantRendering.getColor(variant, level, pos);
 	}
 
 	@Override
-	public int getLuminosity(FluidStack fluid) {
-		return FluidVariantAttributes.getLuminance(fluid.getType());
+	public int getLuminosity(FluidVariant variant) {
+		return FluidVariantAttributes.getLuminance(variant);
 	}
 
 	@Override
-	public TextureAtlasSprite getStillTexture(FluidStack fluid) {
-		return FluidVariantRendering.getSprite(fluid.getType());
+	public TextureAtlasSprite getStillTexture(FluidVariant variant) {
+		return FluidVariantRendering.getSprite(variant);
 	}
 
 	@Override
-	public boolean isLighterThanAir(FluidStack fluid) {
-		return FluidVariantAttributes.isLighterThanAir(fluid.getType());
+	public boolean isLighterThanAir(FluidVariant variant) {
+		return FluidVariantAttributes.isLighterThanAir(variant);
 	}
 
 	@Override
-	public FluidStack toStack(FluidState state) {
-		return new FluidStack(state.getType(), FluidConstants.BUCKET);
+	public FluidVariant toStack(FluidState state) {
+		return FluidVariant.of(state.getType());
 	}
 }
