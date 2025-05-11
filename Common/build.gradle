@@ -1,24 +1,18 @@
 plugins {
-    id "net.neoforged.moddev.legacyforge" version "${mdg_version}"
+    id "org.spongepowered.gradle.vanilla" version "0.2.1-SNAPSHOT"
 }
 
 apply from: "../gradle/property_helper.gradle"
 
 archivesBaseName = "${mod_name}-Common-${minecraft_version}"
 
-legacyForge {
-    mcpVersion = minecraft_version
-
-    accessTransformers.from(file('src/main/resources/META-INF/ponder.accesstransformer.cfg').absolutePath)
-
-    parchment {
-        minecraftVersion = minecraft_version
-        mappingsVersion = parchment_version
-    }
+minecraft {
+    version(minecraft_version)
+    accessWideners "src/main/resources/ponder.accesswidener"
 }
 
 dependencies {
-    compileOnly "org.spongepowered:mixin:0.8.4"
+    compileOnly group: "org.spongepowered", name: "mixin", version: "0.8.4"
 
     implementation "com.electronwill.night-config:core:3.6.5"
     implementation "com.electronwill.night-config:toml:3.6.5"
