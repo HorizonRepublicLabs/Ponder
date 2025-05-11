@@ -4,34 +4,36 @@ import org.jetbrains.annotations.Nullable;
 
 import net.createmod.catnip.platform.services.ModFluidHelper;
 import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariantAttributes;
-import net.minecraft.core.component.DataComponentPatch;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.material.Fluid;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.material.FluidState;
 
-public class FabricFluidHelper implements ModFluidHelper {
+public class FabricFluidHelper implements ModFluidHelper<FluidStack> {
 	@Override
-	public int getColor(Fluid fluid, long amount, @Nullable DataComponentPatch fluidData) {
-		return FluidVariantRendering.getColor(toVariant(fluid, fluidData));
+	public int getColor(FluidStack stack, @Nullable BlockAndTintGetter level, @Nullable BlockPos pos) {
+		return FluidVariantRendering.getColor(stack.getType(), level, pos);
 	}
 
 	@Override
-	public int getLuminosity(Fluid fluid, long amount, @Nullable DataComponentPatch fluidData) {
-		return FluidVariantAttributes.getLuminance(toVariant(fluid, fluidData));
+	public int getLuminosity(FluidStack fluid) {
+		return FluidVariantAttributes.getLuminance(fluid.getType());
 	}
 
 	@Override
-	public ResourceLocation getStillTexture(Fluid fluid, long amount, @Nullable DataComponentPatch fluidData) {
-		return FluidVariantRendering.getSprite(toVariant(fluid, fluidData)).atlasLocation();
+	public TextureAtlasSprite getStillTexture(FluidStack fluid) {
+		return FluidVariantRendering.getSprite(fluid.getType());
 	}
 
 	@Override
-	public boolean isLighterThanAir(Fluid fluid, @Nullable DataComponentPatch fluidData) {
-		return FluidVariantAttributes.isLighterThanAir(toVariant(fluid, fluidData));
+	public boolean isLighterThanAir(FluidStack fluid) {
+		return FluidVariantAttributes.isLighterThanAir(fluid.getType());
 	}
 
-	private FluidVariant toVariant(Fluid fluid, @Nullable DataComponentPatch fluidData) {
-		return FluidVariant.of(fluid, fluidData == null ? DataComponentPatch.EMPTY : fluidData);
+	@Override
+	public FluidStack toStack(FluidState state) {
+		return new FluidStack(state.getType(), FluidConstants.BUCKET);
 	}
 }
