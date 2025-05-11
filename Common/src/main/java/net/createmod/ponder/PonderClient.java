@@ -3,8 +3,6 @@ package net.createmod.ponder;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.createmod.catnip.animation.AnimationTickHolder;
-import net.createmod.catnip.annotations.Environment;
-import net.createmod.catnip.annotations.Environment.EnvType;
 import net.createmod.catnip.event.ClientResourceReloadListener;
 import net.createmod.catnip.ghostblock.GhostBlocks;
 import net.createmod.catnip.gui.UIRenderHelper;
@@ -27,15 +25,11 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
 
-@Environment(EnvType.CLIENT)
 public class PonderClient {
 
-	@Environment(EnvType.CLIENT)
 	public static final ClientResourceReloadListener RESOURCE_RELOAD_LISTENER = new ClientResourceReloadListener();
-	@Environment(EnvType.SERVER)
 	public static final GhostBlocks GHOST_BLOCKS = GhostBlocks.getInstance();
 
-	@Environment(EnvType.CLIENT)
 	public static void init() {
 		SuperByteBufferCache.getInstance().registerCompartment(CachedBuffers.GENERIC_BLOCK);
 		SuperByteBufferCache.getInstance().registerCompartment(WorldSectionElementImpl.PONDER_WORLD_SECTION);
