@@ -24,7 +24,10 @@ public class NeoForgeFluidHelper implements ModFluidHelper<FluidStack> {
 	@Override
 	public int getColor(FluidStack stack, @Nullable BlockAndTintGetter level, @Nullable BlockPos pos) {
 		Fluid fluid = stack.getFluid();
-		return IClientFluidTypeExtensions.of(fluid).getTintColor(fluid.defaultFluidState(), level, pos);
+		IClientFluidTypeExtensions extension = IClientFluidTypeExtensions.of(fluid);
+		if (level == null || pos == null)
+			return extension.getTintColor(stack);
+		return extension.getTintColor(fluid.defaultFluidState(), level, pos);
 	}
 
 	@Override
