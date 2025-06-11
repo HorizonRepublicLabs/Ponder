@@ -18,9 +18,15 @@ public interface TextElementBuilder {
 
 	TextElementBuilder text(String defaultText);
 
+	TextElementBuilder text(String defaultText, Object... params);
+
 	TextElementBuilder sharedText(ResourceLocation key);
 
+	TextElementBuilder sharedText(ResourceLocation key, Object... params);
+
 	TextElementBuilder sharedText(String key);
+
+	TextElementBuilder sharedText(String key, Object... params);
 
 	TextElementBuilder placeNearTarget();
 
