@@ -6,6 +6,7 @@
   "mixins": [
     "accessor.BiomeManagerAccessor",
     "accessor.EntityAccessor",
+    "accessor.Holder\u0024ReferenceAccessor",
     "accessor.MinecraftServerAccessor"
   ],
   "client": [

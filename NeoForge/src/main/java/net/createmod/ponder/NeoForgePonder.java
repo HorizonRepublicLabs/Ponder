@@ -6,6 +6,8 @@ import java.util.Set;
 import net.createmod.catnip.command.CatnipCommands;
 import net.createmod.catnip.config.ConfigBase;
 import net.createmod.catnip.net.ConfigPathArgument;
+import net.createmod.catnip.registration.CatnipRegistry;
+import net.createmod.catnip.registration.Registration;
 import net.createmod.ponder.command.PonderCommands;
 import net.createmod.ponder.enums.PonderConfig;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
@@ -20,10 +22,10 @@ import net.neoforged.fml.common.EventBusSubscriber.Bus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.RegisterEvent;
 
 @Mod(Ponder.MOD_ID)
 public class NeoForgePonder {
@@ -34,14 +36,10 @@ public class NeoForgePonder {
 		ArgumentTypeInfos.registerByClass(ConfigPathArgument.class, SingletonArgumentInfo.contextFree(ConfigPathArgument::new)));
 
 	public NeoForgePonder(IEventBus modEventBus, ModContainer modContainer) {
-		modEventBus.addListener(NeoForgePonder::init);
-
 		COMMAND_ARGUMENT_TYPES.register(modEventBus);
 
 		registerConfigs(modContainer);
-	}
 
-	public static void init(final FMLCommonSetupEvent event) {
 		Ponder.init();
 	}
 
@@ -71,6 +69,13 @@ public class NeoForgePonder {
 		@SubscribeEvent
 		public static void onReload(ModConfigEvent.Reloading event) {
 			PonderConfig.onReload(event.getConfig());
+		}
+
+		@SubscribeEvent
+		public static void onRegister(RegisterEvent event) {
+			for (Registration<?, ?> registration : CatnipRegistry.REGISTRATIONS_VIEW.get(event.getRegistry())) {
+				registration.register();
+			}
 		}
 	}
 }

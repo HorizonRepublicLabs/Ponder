@@ -4,6 +4,8 @@ import java.util.Random;
 
 import net.createmod.catnip.net.CatnipPackets;
 
+import net.createmod.catnip.registration.TestRegistration;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,6 +29,7 @@ public class Ponder {
 
 	public static void init() {
 		CatnipPackets.register();
+		TestRegistration.init();
 	}
 
 }
