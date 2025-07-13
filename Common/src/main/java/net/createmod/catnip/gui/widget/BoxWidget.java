@@ -83,13 +83,13 @@ public class BoxWidget extends ElementWidget {
 			this.colorIdle = colorIdle;
 
 		if (colorHover != null)
-			this.colorIdle = colorHover;
+			this.colorHover = colorHover;
 
 		if (colorClick != null)
-			this.colorIdle = colorClick;
+			this.colorClick = colorClick;
 
 		if (colorDisabled != null)
-			this.colorIdle = colorDisabled;
+			this.colorDisabled = colorDisabled;
 
 		updateGradientFromState();
 		//noinspection unchecked
