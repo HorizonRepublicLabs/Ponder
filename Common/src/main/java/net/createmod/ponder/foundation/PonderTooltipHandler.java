@@ -1,7 +1,9 @@
 package net.createmod.ponder.foundation;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import com.google.common.base.Strings;
 
@@ -42,6 +44,8 @@ public class PonderTooltipHandler {
 	static ItemStack trackingStack = ItemStack.EMPTY;
 	static boolean subject = false;
 	static boolean deferTick = false;
+
+	static final List<Consumer<ItemStack>> hoveredStackCallbacks = new ArrayList<>();
 
 	public static final String HOLD_TO_PONDER = PonderLocalization.UI_PREFIX + "hold_to_ponder";
 	public static final String SUBJECT = PonderLocalization.UI_PREFIX + "subject";
@@ -130,6 +134,9 @@ public class PonderTooltipHandler {
 
 		hoveredStack = stack;
 		trackingStack = stack;
+
+		for (Consumer<ItemStack> hoveredStackCallback : hoveredStackCallbacks)
+			hoveredStackCallback.accept(hoveredStack.copy());
 	}
 
 	public static Optional<Couple<Color>> handleTooltipColor(ItemStack stack) {
@@ -188,4 +195,11 @@ public class PonderTooltipHandler {
 		return PonderKeybinds.PONDER.getKeybind();
 	}
 
+	public synchronized static void registerHoveredPonderStackCallback(Consumer<ItemStack> consumer) {
+		hoveredStackCallbacks.add(consumer);
+	}
+
+	public synchronized static void removeHoveredPonderStackCallback(Consumer<ItemStack> consumer) {
+		hoveredStackCallbacks.remove(consumer);
+	}
 }

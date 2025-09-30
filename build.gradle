@@ -66,6 +66,17 @@ subprojects {
         filesMatching(["pack.mcmeta", "fabric.mod.json", "META-INF/neoforge.mods.toml", "*.mixins.json"]) {
             expand expandProps
         }
+
         inputs.properties(expandProps)
+
+        if (project.name == "NeoForge") {
+            doLast {
+                def mixinFile = getLayout().getBuildDirectory().file("resources/main/ponder-common.mixins.json").get().asFile
+                if (mixinFile.exists()) {
+                    mixinFile.text = mixinFile.text
+                        .replaceAll(/,"refmap":".*"/, "")
+                }
+            }
+        }
     }
 }

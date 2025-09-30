@@ -1,5 +1,6 @@
 package net.createmod.ponder.foundation;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
@@ -30,10 +31,10 @@ public class PonderIndex {
 	private static final PonderSceneRegistry SCENES = new PonderSceneRegistry(LOCALIZATION);
 	private static final PonderTagRegistry TAGS = new PonderTagRegistry(LOCALIZATION);
 
-	private static final Set<PonderPlugin> plugins = new TreeSet<>(
+	private static final Set<PonderPlugin> plugins = Collections.synchronizedSet(new TreeSet<>(
 		Comparator.comparing((PonderPlugin plugin) -> !plugin.getModId().equals("create"))
 			.thenComparing(PonderPlugin::getModId)
-	);
+	));
 
 	private static final Logger LOGGER = LogManager.getLogger("PonderIndex");
 
