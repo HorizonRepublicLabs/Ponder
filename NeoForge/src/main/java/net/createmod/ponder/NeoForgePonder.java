@@ -73,8 +73,10 @@ public class NeoForgePonder {
 
 		@SubscribeEvent
 		public static void onRegister(RegisterEvent event) {
-			for (Registration<?, ?> registration : CatnipRegistry.REGISTRATIONS_VIEW.get(event.getRegistry())) {
-				registration.register();
+			for (Registration<?, ?, ?> registration : CatnipRegistry.REGISTRATIONS_VIEW.get(event.getRegistry())) {
+				if (registration != null) {
+					registration.register();
+				}
 			}
 		}
 	}

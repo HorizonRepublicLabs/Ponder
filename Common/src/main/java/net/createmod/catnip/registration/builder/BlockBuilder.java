@@ -12,13 +12,13 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class BlockBuilder<T extends Block> extends AbstractBuilder<Block, T, BlockHolder<T>> {
-	private final Function<Properties, T> blockFunc;
+	private final Function<Properties, T> factory;
 	private Supplier<Properties> initialProperties = Properties::of;
 	private Function<Properties, Properties> properties = Function.identity();
 
-	public BlockBuilder(CatnipRegistry owner, String name, Function<Properties, T> blockFunc) {
+	public BlockBuilder(CatnipRegistry owner, String name, Function<Properties, T> factory) {
 		super(owner, name, BuiltInRegistries.BLOCK);
-		this.blockFunc = blockFunc;
+		this.factory = factory;
 	}
 
 	public BlockBuilder<T> initialProperties(Supplier<T> block) {
@@ -35,7 +35,7 @@ public class BlockBuilder<T extends Block> extends AbstractBuilder<Block, T, Blo
 	T build() {
 		Properties properties = initialProperties.get();
 		properties = this.properties.apply(properties);
-		return blockFunc.apply(properties);
+		return factory.apply(properties);
 	}
 
 	@SuppressWarnings("unchecked")

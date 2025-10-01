@@ -11,12 +11,12 @@ import net.minecraft.world.item.Item.Properties;
 import java.util.function.Function;
 
 public class ItemBuilder<T extends Item> extends AbstractBuilder<Item, T, ItemHolder<T>> {
-	private final Function<Properties, T> itemFunc;
+	private final Function<Properties, T> factory;
 	private Function<Properties, Properties> properties = Function.identity();
 
-	public ItemBuilder(CatnipRegistry owner, String name, Function<Properties, T> itemFunc) {
+	public ItemBuilder(CatnipRegistry owner, String name, Function<Properties, T> factory) {
 		super(owner, name, BuiltInRegistries.ITEM);
-		this.itemFunc = itemFunc;
+		this.factory = factory;
 	}
 
 	public ItemBuilder<T> properties(Function<Properties, Properties> func) {
@@ -28,7 +28,7 @@ public class ItemBuilder<T extends Item> extends AbstractBuilder<Item, T, ItemHo
 	T build() {
 		Properties properties = new Item.Properties();
 		properties = this.properties.apply(properties);
-		return itemFunc.apply(properties);
+		return factory.apply(properties);
 	}
 
 	@Override
