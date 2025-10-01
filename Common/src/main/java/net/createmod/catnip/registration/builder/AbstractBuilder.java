@@ -24,8 +24,8 @@ public abstract class AbstractBuilder<R, T extends R, H extends BaseHolder<T>> {
 		this.registry = registry;
 	}
 
-	public void chainAfterRegisterCallback(Consumer<H> afterRegisterCallback) {
-		this.afterRegisterCallback = this.afterRegisterCallback.andThen(afterRegisterCallback);
+	public void chainAfterRegisterCallback(Consumer<H> callback) {
+		afterRegisterCallback = afterRegisterCallback.andThen(callback);
 	}
 
 	abstract T build();

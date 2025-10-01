@@ -13,15 +13,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class BlockEntityHolder<T extends BlockEntity> extends BaseHolder<BlockEntityType<?>> {
-	public BlockEntityHolder(HolderOwner<BlockEntityType<?>> owner, ResourceKey<BlockEntityType<?>> key) {
+public class BlockEntityHolder<T extends BlockEntity> extends BaseHolder<BlockEntityType<T>> {
+	public BlockEntityHolder(HolderOwner<BlockEntityType<T>> owner, ResourceKey<BlockEntityType<T>> key) {
 		super(owner, key);
 	}
 
 	@Nullable
 	public T createBlockEntity(BlockPos pos, BlockState state) {
-		//noinspection unchecked
-		return (T) value().create(pos, state);
+		return value().create(pos, state);
 	}
 
 	public boolean is(@Nullable BlockEntity blockEntity) {

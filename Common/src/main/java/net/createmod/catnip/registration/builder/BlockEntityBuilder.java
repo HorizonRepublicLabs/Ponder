@@ -3,7 +3,6 @@ package net.createmod.catnip.registration.builder;
 import dev.engine_room.flywheel.lib.visualization.SimpleBlockEntityVisualizer;
 import net.createmod.catnip.registration.CatnipRegistry;
 import net.createmod.catnip.registration.holder.BlockEntityHolder;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.BlockPos;
@@ -25,7 +24,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class BlockEntityBuilder<T extends BlockEntity> extends AbstractBuilder<BlockEntityType<?>, BlockEntityType<?>, BlockEntityHolder<T>> {
+public class BlockEntityBuilder<T extends BlockEntity> extends AbstractBuilder<BlockEntityType<?>, BlockEntityType<T>, BlockEntityHolder<T>> {
 	private final BlockEntityFactory<T> factory;
 	private final Set<Supplier<@NotNull Block>> validBlocks = new HashSet<>();
 
@@ -46,9 +45,7 @@ public class BlockEntityBuilder<T extends BlockEntity> extends AbstractBuilder<B
 
 	// TODO - ClientOnly
 	public BlockEntityBuilder<T> renderer(Supplier<@NotNull BlockEntityRendererProvider<T>> renderer) {
-		//noinspection unchecked
-		chainAfterRegisterCallback(holder ->
-			BlockEntityRenderers.register((BlockEntityType<T>) holder.value(), renderer.get()));
+		chainAfterRegisterCallback(holder -> BlockEntityRenderers.register(holder.value(), renderer.get()));
 		return this;
 	}
 
@@ -64,9 +61,8 @@ public class BlockEntityBuilder<T extends BlockEntity> extends AbstractBuilder<B
 
 	// TODO - ClientOnly
 	public BlockEntityBuilder<T> visualizer(Supplier<SimpleBlockEntityVisualizer.@NotNull Factory<T>> visualizer, Predicate<T> skipVanillaRender) {
-		//noinspection unchecked
 		chainAfterRegisterCallback(holder ->
-			SimpleBlockEntityVisualizer.builder((BlockEntityType<T>) holder.value())
+			SimpleBlockEntityVisualizer.builder(holder.value())
 				.factory(visualizer.get())
 				.skipVanillaRender(skipVanillaRender)
 				.apply()
@@ -85,7 +81,8 @@ public class BlockEntityBuilder<T extends BlockEntity> extends AbstractBuilder<B
 
 	@Override
 	BlockEntityHolder<T> getHolder(HolderOwner<BlockEntityType<?>> owner, ResourceKey<BlockEntityType<?>> key) {
-		return new BlockEntityHolder<>(owner, key);
+		//noinspection unchecked,rawtypes
+		return new BlockEntityHolder<>((HolderOwner) owner, (ResourceKey) key);
 	}
 
 	@FunctionalInterface

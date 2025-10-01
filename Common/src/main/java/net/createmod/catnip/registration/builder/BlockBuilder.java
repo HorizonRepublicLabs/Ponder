@@ -38,9 +38,9 @@ public class BlockBuilder<T extends Block> extends AbstractBuilder<Block, T, Blo
 		return factory.apply(properties);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	BlockHolder<T> getHolder(HolderOwner<Block> owner, ResourceKey<Block> key) {
+		//noinspection unchecked
 		return (BlockHolder<T>) new BlockHolder<>(owner, key);
 	}
 }
