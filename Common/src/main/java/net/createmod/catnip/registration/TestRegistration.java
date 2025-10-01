@@ -1,6 +1,6 @@
 package net.createmod.catnip.registration;
 
-import net.createmod.catnip.registration.holders.BlockHolder;
+import net.createmod.catnip.registration.holder.BlockHolder;
 import net.minecraft.world.level.block.RedstoneLampBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 

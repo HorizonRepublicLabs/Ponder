@@ -6,7 +6,9 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 
 import net.createmod.catnip.registration.builder.BlockBuilder;
+import net.createmod.catnip.registration.builder.ItemBuilder;
 import net.minecraft.core.Registry;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
@@ -31,5 +33,9 @@ public class CatnipRegistry {
 
 	public <R extends Block> BlockBuilder<R> block(String id, Function<BlockBehaviour.Properties, R> func) {
 		return new BlockBuilder<>(this, id, func);
+	}
+
+	public <R extends Item> ItemBuilder<R> item(String id, Function<Item.Properties, R> func) {
+		return new ItemBuilder<>(this, id, func);
 	}
 }

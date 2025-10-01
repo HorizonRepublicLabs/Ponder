@@ -1,7 +1,7 @@
 package net.createmod.catnip.registration.builder;
 
 import net.createmod.catnip.registration.CatnipRegistry;
-import net.createmod.catnip.registration.holders.BlockHolder;
+import net.createmod.catnip.registration.holder.BlockHolder;
 import net.minecraft.core.HolderOwner;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;

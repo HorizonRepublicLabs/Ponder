@@ -3,13 +3,14 @@ package net.createmod.catnip.registration.builder;
 import net.createmod.catnip.platform.Loader;
 import net.createmod.catnip.registration.CatnipRegistry;
 import net.createmod.catnip.registration.Registration;
+import net.createmod.catnip.registration.holder.BaseHolder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderOwner;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 
-public abstract class AbstractBuilder<R, T extends R, H extends Holder.Reference<T>> {
+public abstract class AbstractBuilder<R, T extends R, H extends BaseHolder<T>> {
 	private final CatnipRegistry owner;
 	private final ResourceLocation id;
 	private final Registry<R> registry;

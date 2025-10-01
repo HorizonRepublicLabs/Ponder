@@ -1,0 +1,43 @@
+package net.createmod.catnip.registration.holder;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderOwner;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+
+import net.minecraft.world.level.block.state.BlockState;
+
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
+
+public class BlockEntityHolder<T extends BlockEntity> extends BaseHolder<BlockEntityType<?>> {
+	public BlockEntityHolder(HolderOwner<BlockEntityType<?>> owner, ResourceKey<BlockEntityType<?>> key) {
+		super(owner, key);
+	}
+
+	@Nullable
+	public T createBlockEntity(BlockPos pos, BlockState state) {
+		//noinspection unchecked
+		return (T) value().create(pos, state);
+	}
+
+	public boolean is(@Nullable BlockEntity blockEntity) {
+		return blockEntity != null && blockEntity.getType() == value();
+	}
+
+	@Deprecated // Check if this is even used anywhere
+	public Optional<T> getOptional(BlockGetter world, BlockPos pos) {
+		return Optional.ofNullable(get(world, pos));
+	}
+
+	@Nullable
+	@Deprecated // Check if this is even used anywhere
+	public T get(BlockGetter blockGetter, BlockPos pos) {
+		BlockEntity be = blockGetter.getBlockEntity(pos);
+		//noinspection unchecked
+		return is(be) ? (T) be : null;
+	}
+}
