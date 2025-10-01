@@ -26,8 +26,8 @@ public class BlockBuilder<T extends Block> extends AbstractBuilder<Block, T, Blo
 		return this;
 	}
 
-	public BlockBuilder<T> properties(Function<Properties, Properties> func) {
-		properties = properties.andThen(func);
+	public BlockBuilder<T> properties(Function<Properties, Properties> properties) {
+		this.properties = this.properties.andThen(properties);
 		return this;
 	}
 

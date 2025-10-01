@@ -9,6 +9,7 @@ import net.minecraft.world.level.Level;
 
 import org.jetbrains.annotations.Nullable;
 
+// TODO - Unused
 public class EntityHolder<T extends Entity> extends BaseHolder<EntityType<T>> {
 	public EntityHolder(HolderOwner<EntityType<T>> owner, ResourceKey<EntityType<T>> key) {
 		super(owner, key);
