@@ -25,6 +25,8 @@ public class EntityBuilder<T extends Entity> extends AbstractBuilder<EntityType<
 		return this;
 	}
 
+	// TODO - renderer, visuals, attributes, all the other entity-y things
+
 	@Override
 	EntityType<T> build() {
 		EntityType.Builder<T> builder = this.builder;
