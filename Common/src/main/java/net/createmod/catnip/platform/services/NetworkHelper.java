@@ -1,7 +1,6 @@
 package net.createmod.catnip.platform.services;
 
-import net.createmod.catnip.annotations.Environment;
-import net.createmod.catnip.annotations.Environment.EnvType;
+import net.createmod.catnip.annotations.ClientOnly;
 import net.createmod.catnip.net.base.CatnipPacketRegistry;
 import net.createmod.catnip.net.packets.ClientboundSimpleActionPacket;
 import net.minecraft.core.Vec3i;
@@ -18,7 +17,7 @@ public interface NetworkHelper {
 	@ApiStatus.Internal
 	void registerPackets(CatnipPacketRegistry packetRegistry);
 
-	@Environment(EnvType.CLIENT)
+	@ClientOnly
 	void sendToServer(CustomPacketPayload payload);
 
 	void sendToClient(ServerPlayer player, CustomPacketPayload payload);

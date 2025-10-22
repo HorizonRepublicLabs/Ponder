@@ -1,7 +1,5 @@
 package net.createmod.ponder;
 
-import java.util.Optional;
-
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.config.ui.BaseConfigScreen;
 import net.createmod.catnip.data.Couple;
@@ -22,10 +20,8 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.LevelAccessor;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class FabricPonderClient implements ClientModInitializer {
 	public static final FabricClientResourceReloadListener FABRIC$RESOURCE_RELOAD_LISTENER = new FabricClientResourceReloadListener();

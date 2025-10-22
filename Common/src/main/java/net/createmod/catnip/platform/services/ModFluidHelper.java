@@ -1,8 +1,6 @@
 package net.createmod.catnip.platform.services;
 
-import net.createmod.catnip.annotations.Environment;
-
-import net.createmod.catnip.annotations.Environment.EnvType;
+import net.createmod.catnip.annotations.ClientOnly;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -15,16 +13,16 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.material.FluidState;
 
 public interface ModFluidHelper<R> {
-	@Environment(EnvType.CLIENT)
+	@ClientOnly
 	int getColor(R fluid, @Nullable BlockAndTintGetter level, @Nullable BlockPos pos);
 
 	int getLuminosity(R fluid);
 
-	@Environment(EnvType.CLIENT)
+	@ClientOnly
 	@Nullable
 	TextureAtlasSprite getStillTexture(R fluid);
 
-	@Environment(EnvType.CLIENT)
+	@ClientOnly
 	default TextureAtlasSprite getStillTextureOrMissing(R fluid) {
 		TextureAtlasSprite texture = this.getStillTexture(fluid);
 		if (texture != null)

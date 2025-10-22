@@ -8,7 +8,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 @Mixin(RenderSystem.class)
 public interface RenderSystemAccessor {
-	@Accessor("shaderLightDirections")
+	@Accessor(value = "shaderLightDirections", remap = false)
 	static Vector3f[] catnip$getShaderLightDirections() {
 		throw new AssertionError();
 	}
