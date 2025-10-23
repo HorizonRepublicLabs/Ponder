@@ -76,7 +76,9 @@ public class NeoForgeClientHooksHelper implements ModClientHooksHelper {
 
 	@Override
 	public boolean isKeyPressed(KeyMapping mapping) {
-		return InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), mapping.getKey().getValue());
+		int keyCode = mapping.getKey().getValue();
+		long window = Minecraft.getInstance().getWindow().getWindow();
+		return InputConstants.isKeyDown(window, keyCode) && mapping.isConflictContextAndModifierActive();
 	}
 
 	@Override
