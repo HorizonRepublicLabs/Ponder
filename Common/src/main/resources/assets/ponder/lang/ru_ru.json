@@ -20,7 +20,7 @@
   "ponder.ui.index_title": "Все размышления",
   "ponder.ponder.shared.sneak_and": "Shift +",
   "ponder.ponder.shared.ctrl_and": "Ctrl +",
-  "ponder.keyinfo.ponder": "Размышление",
+  "key.ponder.ponder": "Размышление",
 
   "catnip.ui.client_config_button_label": "Клиентские настройки",
   "catnip.ui.common_config_button_label": "Основные настройки",
