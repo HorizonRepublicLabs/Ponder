@@ -7,23 +7,20 @@ import java.util.function.Consumer;
 
 import com.google.common.base.Strings;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.data.Couple;
 import net.createmod.catnip.gui.NavigatableSimiScreen;
 import net.createmod.catnip.gui.ScreenOpener;
-import net.createmod.catnip.platform.CatnipClientServices;
-import net.createmod.catnip.data.Couple;
-import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.registry.RegisteredObjectsHelper;
-import net.createmod.catnip.platform.CatnipServices;
 import net.createmod.catnip.theme.Color;
 import net.createmod.ponder.Ponder;
 import net.createmod.ponder.enums.PonderKeybinds;
 import net.createmod.ponder.foundation.registration.PonderLocalization;
 import net.createmod.ponder.foundation.ui.PonderUI;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.Screen;
@@ -67,7 +64,7 @@ public class PonderTooltipHandler {
 
 		float value = holdKeyProgress.getValue();
 
-		if (!subject && PonderKeybinds.PONDER.isDown() && currentScreen != null) {
+		if (RenderSystem.isOnRenderThread() && !subject && PonderKeybinds.PONDER.isDown() && currentScreen != null) {
 			if (value >= 1) {
 				if (currentScreen instanceof NavigatableSimiScreen)
 					((NavigatableSimiScreen) currentScreen).centerScalingOnMouse();

@@ -31,7 +31,7 @@ public enum PonderKeybinds {
 	}
 
 	public boolean isDown() {
-		return CatnipClientServices.CLIENT_HOOKS.isKeyPressed(this.mapping);
+		return !this.mapping.isUnbound() && CatnipClientServices.CLIENT_HOOKS.isKeyPressed(this.mapping);
 	}
 
 	public Component message() {
