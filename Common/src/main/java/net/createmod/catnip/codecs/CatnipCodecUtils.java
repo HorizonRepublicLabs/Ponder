@@ -21,7 +21,7 @@ public interface CatnipCodecUtils {
 	}
 
 	static <T, S> Optional<T> decode(Codec<T> codec, DynamicOps<S> ops, S s) {
-		return Optional.ofNullable(codec.decode(ops, s).mapOrElse(Pair::getFirst, error -> null));
+		return codec.decode(ops, s).result().map(Pair::getFirst);
 	}
 
 	static <T> Optional<Tag> encode(Codec<T> codec, T t) {
@@ -33,6 +33,6 @@ public interface CatnipCodecUtils {
 	}
 
 	static <T, S> Optional<S> encode(Codec<T> codec, DynamicOps<S> ops, T t) {
-		return Optional.ofNullable(codec.encodeStart(ops, t).mapOrElse(tag -> tag, error -> null));
+		return codec.encodeStart(ops, t).result();
 	}
 }

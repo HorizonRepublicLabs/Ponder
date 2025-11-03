@@ -6,7 +6,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -27,7 +26,7 @@ public class NBTHelper {
 	public static void putMarker(CompoundTag nbt, String marker) {
 		nbt.putBoolean(marker, true);
 	}
-	
+
 	// Backwards compatible with 1.20
 	public static BlockPos readBlockPos(CompoundTag nbt, String key) {
 		Optional<BlockPos> pos = NbtUtils.readBlockPos(nbt, key);
@@ -122,7 +121,6 @@ public class NBTHelper {
 		return new Vec3i(tag.getInt(0), tag.getInt(1), tag.getInt(2));
 	}
 
-	@Nonnull
 	public static Tag getINBT(CompoundTag nbt, String id) {
 		Tag inbt = nbt.get(id);
 		if (inbt != null)

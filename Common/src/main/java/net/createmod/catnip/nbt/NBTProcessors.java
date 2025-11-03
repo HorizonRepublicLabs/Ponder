@@ -8,23 +8,21 @@ import java.util.function.UnaryOperator;
 
 import javax.annotation.Nullable;
 
+import net.createmod.catnip.codecs.CatnipCodecUtils;
 import net.createmod.catnip.components.ComponentProcessors;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.SignText;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public final class NBTProcessors {
-
 	private static final Map<BlockEntityType<?>, UnaryOperator<CompoundTag>> processors = new HashMap<>();
 	private static final Map<BlockEntityType<?>, UnaryOperator<CompoundTag>> survivalProcessors = new HashMap<>();
 
@@ -32,28 +30,28 @@ public final class NBTProcessors {
 		processors.put(type, processor);
 	}
 
-	public static synchronized void addSurvivalProcessor(BlockEntityType<?> type,
-		UnaryOperator<CompoundTag> processor) {
+	public static synchronized void addSurvivalProcessor(BlockEntityType<?> type, UnaryOperator<CompoundTag> processor) {
 		survivalProcessors.put(type, processor);
 	}
 
 	// Triggered by block tag, not BE type
 	private static final UnaryOperator<CompoundTag> signProcessor = data -> {
 		for (String key : List.of("front_text", "back_text")) {
-			CompoundTag textTag = data.getCompound(key);
-			if (!textTag.contains("messages", Tag.TAG_LIST))
-				continue;
-			for (Tag tag : textTag.getList("messages", Tag.TAG_STRING))
-				if (tag instanceof StringTag stringTag)
-					if (textComponentHasClickEvent(stringTag.getAsString()))
+			SignText text = CatnipCodecUtils.decode(SignText.DIRECT_CODEC, data.getCompound(key))
+				.orElse(null);
+
+			if (text != null) {
+				for (Component component : text.getMessages(false)) {
+					if (textComponentHasClickEvent(component))
 						return null;
+				}
+			}
 		}
 		if (data.contains("front_item") || data.contains("back_item"))
 			return null; // "Amendments" compat: sign data contains itemstacks
 		return data;
 	};
 
-	// TODO - Checkover and test
 	public static UnaryOperator<CompoundTag> itemProcessor(String tagKey) {
 		return data -> {
 			CompoundTag compound = data.getCompound(tagKey);
@@ -72,19 +70,17 @@ public final class NBTProcessors {
 		};
 	}
 
-	public static boolean textComponentHasClickEvent(String json) {
-		return textComponentHasClickEvent(Component.Serializer.fromJson(json.isEmpty() ? "\"\"" : json, RegistryAccess.EMPTY));
-	}
-
 	public static boolean textComponentHasClickEvent(Component component) {
-		for (Component sibling : component.getSiblings())
-			if (textComponentHasClickEvent(sibling))
+		for (Component sibling : component.getSiblings()) {
+			if (textComponentHasClickEvent(sibling)) {
 				return true;
-		return component != null && component.getStyle() != null && component.getStyle()
-			.getClickEvent() != null;
+			}
+		}
+		return component.getStyle().getClickEvent() != null;
 	}
 
-	private NBTProcessors() {}
+	private NBTProcessors() {
+	}
 
 	@Nullable
 	public static CompoundTag process(BlockState state, BlockEntity blockEntity, @Nullable CompoundTag compound, boolean survival) {
@@ -92,11 +88,9 @@ public final class NBTProcessors {
 			return null;
 		BlockEntityType<?> type = blockEntity.getType();
 		if (survival && survivalProcessors.containsKey(type))
-			compound = survivalProcessors.get(type)
-				.apply(compound);
+			compound = survivalProcessors.get(type).apply(compound);
 		if (compound != null && processors.containsKey(type))
-			return processors.get(type)
-				.apply(compound);
+			return processors.get(type).apply(compound);
 		if (blockEntity instanceof SpawnerBlockEntity)
 			return compound;
 		if (state.is(BlockTags.ALL_SIGNS))
@@ -105,5 +99,4 @@ public final class NBTProcessors {
 			return null;
 		return compound;
 	}
-
 }
