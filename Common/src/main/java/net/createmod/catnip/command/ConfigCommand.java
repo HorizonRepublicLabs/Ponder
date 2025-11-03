@@ -26,54 +26,54 @@ public class ConfigCommand {
 
 	public static ArgumentBuilder<CommandSourceStack, ?> register() {
 		return Commands.literal("config")
+			.executes(ctx -> {
+				ServerPlayer player = ctx.getSource().getPlayerOrException();
+				CatnipServices.NETWORK.sendToClient(player,
+					new ClientboundSimpleActionPacket("configScreen", ""));
+
+				return Command.SINGLE_SUCCESS;
+			})
+			.then(Commands.argument("path", ConfigPathArgument.path())
 				.executes(ctx -> {
 					ServerPlayer player = ctx.getSource().getPlayerOrException();
+
 					CatnipServices.NETWORK.sendToClient(player,
-							new ClientboundSimpleActionPacket("configScreen", ""));
+						new ClientboundSimpleActionPacket("configScreen", ConfigPathArgument.getPath(ctx, "path").toString()));
 
 					return Command.SINGLE_SUCCESS;
 				})
-				.then(Commands.argument("path", ConfigPathArgument.path())
+				.then(Commands.literal("set")
+					.requires(cs -> cs.hasPermission(2))
+					.then(Commands.argument("value", StringArgumentType.string())
 						.executes(ctx -> {
-							ServerPlayer player = ctx.getSource().getPlayerOrException();
+							ConfigHelper.ConfigPath path = ConfigPathArgument.getPath(ctx, "path");
+							String value = StringArgumentType.getString(ctx, "value");
 
-							CatnipServices.NETWORK.sendToClient(player,
-									new ClientboundSimpleActionPacket("configScreen", ConfigPathArgument.getPath(ctx, "path").toString()));
+							if (path.getType() == ModConfig.Type.CLIENT) {
+								ServerPlayer player = ctx.getSource().getPlayerOrException();
 
-							return Command.SINGLE_SUCCESS;
+								CatnipServices.NETWORK.sendToClient(player,
+									new ClientboundConfigPacket(path.toString(), value));
+
+								return Command.SINGLE_SUCCESS;
+							}
+
+							try {
+								ConfigHelper.setConfigValue(path, value);
+								ctx.getSource().sendSuccess(() -> Component.literal("Great Success!"), false);
+								return Command.SINGLE_SUCCESS;
+							} catch (ConfigHelper.InvalidValueException e) {
+								ctx.getSource().sendFailure(Component.literal("Config could not be set the the specified value!"));
+								return 0;
+							} catch (Exception e) {
+								ctx.getSource().sendFailure(Component.literal("Something went wrong while trying to set config value. Check the server logs for more information"));
+								Ponder.LOGGER.warn("Exception during server-side config value set:", e);
+								return 0;
+							}
 						})
-						.then(Commands.literal("set")
-								.requires(cs -> cs.hasPermission(2))
-								.then(Commands.argument("value", StringArgumentType.string())
-										.executes(ctx -> {
-											ConfigHelper.ConfigPath path = ConfigPathArgument.getPath(ctx, "path");
-											String value = StringArgumentType.getString(ctx, "value");
-
-											if (path.getType() == ModConfig.Type.CLIENT) {
-												ServerPlayer player = ctx.getSource().getPlayerOrException();
-
-												CatnipServices.NETWORK.sendToClient(player,
-														new ClientboundConfigPacket(path.toString(), value));
-
-												return Command.SINGLE_SUCCESS;
-											}
-
-											try {
-												ConfigHelper.setConfigValue(path, value);
-												ctx.getSource().sendSuccess(() -> Component.literal("Great Success!"), false);
-												return Command.SINGLE_SUCCESS;
-											} catch (ConfigHelper.InvalidValueException e) {
-												ctx.getSource().sendFailure(Component.literal("Config could not be set the the specified value!"));
-												return 0;
-											} catch (Exception e) {
-												ctx.getSource().sendFailure(Component.literal("Something went wrong while trying to set config value. Check the server logs for more information"));
-												Ponder.LOGGER.warn("Exception during server-side config value set:", e);
-												return 0;
-											}
-										})
-								)
-						)
-				);
+					)
+				)
+			);
 	}
 
 }

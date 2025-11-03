@@ -103,7 +103,7 @@ public class PonderSceneRegistry implements SceneRegistryAccess {
 			StructureTemplate activeTemplate = loadSchematic(storyBoard.getSchematicLocation());
 			PonderLevel level = new PonderLevel(BlockPos.ZERO, Minecraft.getInstance().level);
 			activeTemplate.placeInWorld(level, BlockPos.ZERO, BlockPos.ZERO, new StructurePlaceSettings(), level.random,
-										Block.UPDATE_CLIENTS);
+				Block.UPDATE_CLIENTS);
 			level.createBackup();
 			PonderScene scene = compileScene(localization, storyBoard, level);
 			scene.begin();
@@ -115,7 +115,7 @@ public class PonderSceneRegistry implements SceneRegistryAccess {
 
 	public static PonderScene compileScene(PonderLocalization localization, StoryBoardEntry sb, @Nullable PonderLevel level) {
 		PonderScene scene = new PonderScene(level, localization, sb.getNamespace(), sb.getComponent(), sb.getTags(),
-											sb.getOrderingEntries());
+			sb.getOrderingEntries());
 		SceneBuilder builder = scene.builder();
 		sb.getBoard().program(builder, scene.getSceneBuildingUtil());
 		return scene;

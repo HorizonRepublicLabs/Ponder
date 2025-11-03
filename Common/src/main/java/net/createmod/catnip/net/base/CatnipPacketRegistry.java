@@ -1,13 +1,13 @@
 package net.createmod.catnip.net.base;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 public class CatnipPacketRegistry {
 	public final String modId;
@@ -42,5 +42,7 @@ public class CatnipPacketRegistry {
 		packetsRegistered = true;
 	}
 
-	public record PacketType<T extends BasePacketPayload>(CustomPacketPayload.Type<T> type, Class<T> clazz, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {}
+	public record PacketType<T extends BasePacketPayload>(CustomPacketPayload.Type<T> type, Class<T> clazz,
+														  StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
+	}
 }

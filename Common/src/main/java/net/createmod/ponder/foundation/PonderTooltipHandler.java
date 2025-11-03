@@ -6,7 +6,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import com.google.common.base.Strings;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.createmod.catnip.animation.AnimationTickHolder;
@@ -167,8 +166,8 @@ public class PonderTooltipHandler {
 		MutableComponent holdW = Ponder.lang()
 			.translate(HOLD_TO_PONDER,
 				PonderKeybinds.PONDER.message().copy().withStyle(ChatFormatting.GRAY))
-				.style(ChatFormatting.DARK_GRAY)
-				.component();
+			.style(ChatFormatting.DARK_GRAY)
+			.component();
 
 		Font fontRenderer = Minecraft.getInstance().font;
 		float charWidth = fontRenderer.width("|");

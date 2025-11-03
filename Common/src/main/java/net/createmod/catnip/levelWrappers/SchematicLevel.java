@@ -77,7 +77,7 @@ public class SchematicLevel extends WrappedLevel implements ServerLevelAccessor,
 		if (entityIn instanceof ArmorStand armorStand)
 			for (EquipmentSlot equipmentSlot : EquipmentSlot.values())
 				armorStand.setItemSlot(equipmentSlot,
-						ComponentProcessors.withUnsafeComponentsDiscarded(armorStand.getItemBySlot(equipmentSlot)));
+					ComponentProcessors.withUnsafeComponentsDiscarded(armorStand.getItemBySlot(equipmentSlot)));
 
 		return entities.add(entityIn);
 	}
@@ -202,13 +202,13 @@ public class SchematicLevel extends WrappedLevel implements ServerLevelAccessor,
 	@Override
 	public boolean setBlock(BlockPos pos, BlockState arg1, int arg2) {
 		pos = pos.immutable()
-				.subtract(anchor);
+			.subtract(anchor);
 		bounds = BBHelper.encapsulate(bounds, pos);
 		blocks.put(pos, arg1);
 		if (blockEntities.containsKey(pos)) {
 			BlockEntity blockEntity = blockEntities.get(pos);
 			if (!blockEntity.getType()
-					.isValid(arg1)) {
+				.isValid(arg1)) {
 				blockEntities.remove(pos);
 				renderedBlockEntities.remove(blockEntity);
 			}
@@ -222,7 +222,8 @@ public class SchematicLevel extends WrappedLevel implements ServerLevelAccessor,
 	}
 
 	@Override
-	public void sendBlockUpdated(BlockPos pos, BlockState oldState, BlockState newState, int flags) {}
+	public void sendBlockUpdated(BlockPos pos, BlockState oldState, BlockState newState, int flags) {
+	}
 
 	@Override
 	public BoundingBox getBounds() {

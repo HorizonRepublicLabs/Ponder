@@ -17,7 +17,8 @@ public class PonderTagBuilder implements TagBuilder {
 	String title = "NO_TITLE";
 	String description = "NO_DESCRIPTION";
 	boolean addToIndex = false;
-	@Nullable ResourceLocation textureIconLocation;
+	@Nullable
+	ResourceLocation textureIconLocation;
 	ItemStack itemIcon = ItemStack.EMPTY;
 	ItemStack mainItem = ItemStack.EMPTY;
 

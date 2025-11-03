@@ -6,7 +6,8 @@ public abstract class AbstractRenderElement implements RenderElement {
 
 	public static RenderElement EMPTY = new AbstractRenderElement() {
 		@Override
-		public void render(GuiGraphics graphics) {}
+		public void render(GuiGraphics graphics) {
+		}
 	};
 
 	protected int width = 16, height = 16;

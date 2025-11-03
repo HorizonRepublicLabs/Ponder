@@ -25,8 +25,8 @@ public class PonderTagRegistry implements TagRegistryAccess {
 	private final List<PonderTag> listedTags;
 
 	private final PonderTag MISSING = new PonderTag(Ponder.asResource("not_registered"), null,
-													Items.BARRIER.getDefaultInstance(),
-													Items.BARRIER.getDefaultInstance());
+		Items.BARRIER.getDefaultInstance(),
+		Items.BARRIER.getDefaultInstance());
 
 	private boolean allowRegistration = true;
 
@@ -88,10 +88,10 @@ public class PonderTagRegistry implements TagRegistryAccess {
 	@Override
 	public Set<ResourceLocation> getItems(ResourceLocation tag) {
 		return componentTagMap.entries()
-				.stream()
-				.filter(e -> e.getValue().equals(tag))
-				.map(Map.Entry::getKey)
-				.collect(ImmutableSet.toImmutableSet());
+			.stream()
+			.filter(e -> e.getValue().equals(tag))
+			.map(Map.Entry::getKey)
+			.collect(ImmutableSet.toImmutableSet());
 	}
 
 	@Override

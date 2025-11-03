@@ -39,9 +39,12 @@ public class PonderButton extends BoxWidget {
 		new Color(0x20_909090, true)
 	).map(Color::setImmutable);
 
-	@Nullable protected ItemStack item;
-	@Nullable protected PonderTag tag;
-	@Nullable protected KeyMapping shortcut;
+	@Nullable
+	protected ItemStack item;
+	@Nullable
+	protected PonderTag tag;
+	@Nullable
+	protected KeyMapping shortcut;
 	protected LerpedFloat flash = LerpedFloat.linear().startWithValue(0).chase(0, 0.1f, LerpedFloat.Chaser.EXP);
 
 	public PonderButton(int x, int y) {
@@ -73,8 +76,8 @@ public class PonderButton extends BoxWidget {
 	public <T extends PonderButton> T showing(ItemStack item) {
 		this.item = item;
 		return super.showingElement(GuiGameElement.of(item)
-				.scale(1.5f)
-				.at(-4, -4));
+			.scale(1.5f)
+			.at(-4, -4));
 	}
 
 	public void flash() {
@@ -119,7 +122,7 @@ public class PonderButton extends BoxWidget {
 			poseStack.pushPose();
 			poseStack.translate(0, 0, z + 10);
 			graphics.drawCenteredString(Minecraft.getInstance().font, shortcut.getTranslatedKeyMessage().getString().toLowerCase(
-					Locale.ROOT), getX() + width / 2 + 8, getY() + height - 6, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().scaleAlpha(fade.getValue()).getRGB());
+				Locale.ROOT), getX() + width / 2 + 8, getY() + height - 6, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().scaleAlpha(fade.getValue()).getRGB());
 			poseStack.popPose();
 		}
 	}

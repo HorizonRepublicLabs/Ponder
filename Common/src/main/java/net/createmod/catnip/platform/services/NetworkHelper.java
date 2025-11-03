@@ -1,5 +1,7 @@
 package net.createmod.catnip.platform.services;
 
+import org.jetbrains.annotations.ApiStatus;
+
 import net.createmod.catnip.annotations.ClientOnly;
 import net.createmod.catnip.net.base.CatnipPacketRegistry;
 import net.createmod.catnip.net.packets.ClientboundSimpleActionPacket;
@@ -10,8 +12,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.phys.Vec3;
-
-import org.jetbrains.annotations.ApiStatus;
 
 public interface NetworkHelper {
 	@ApiStatus.Internal

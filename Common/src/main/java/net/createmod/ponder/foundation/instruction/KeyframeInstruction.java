@@ -4,25 +4,26 @@ import net.createmod.ponder.foundation.PonderScene;
 
 public class KeyframeInstruction extends PonderInstruction {
 
-    public static final KeyframeInstruction IMMEDIATE = new KeyframeInstruction(false);
-    public static final KeyframeInstruction DELAYED = new KeyframeInstruction(true);
-    
-	private boolean delayed;
+	public static final KeyframeInstruction IMMEDIATE = new KeyframeInstruction(false);
+	public static final KeyframeInstruction DELAYED = new KeyframeInstruction(true);
 
-    private KeyframeInstruction(boolean delayed) {
-		this.delayed = delayed; 
-    }
+	private final boolean delayed;
 
-    @Override
-    public boolean isComplete() {
-        return true;
-    }
+	private KeyframeInstruction(boolean delayed) {
+		this.delayed = delayed;
+	}
 
-    @Override
-    public void tick(PonderScene scene) { }
+	@Override
+	public boolean isComplete() {
+		return true;
+	}
 
-    @Override
-    public void onScheduled(PonderScene scene) {
-        scene.markKeyframe(delayed ? 6 : 0);
-    }
+	@Override
+	public void tick(PonderScene scene) {
+	}
+
+	@Override
+	public void onScheduled(PonderScene scene) {
+		scene.markKeyframe(delayed ? 6 : 0);
+	}
 }

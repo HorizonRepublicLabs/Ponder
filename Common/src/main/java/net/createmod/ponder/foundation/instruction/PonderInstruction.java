@@ -10,11 +10,13 @@ public abstract class PonderInstruction {
 		return false;
 	}
 
-	public void reset(PonderScene scene) {}
+	public void reset(PonderScene scene) {
+	}
 
 	public abstract boolean isComplete();
 
-	public void onScheduled(PonderScene scene) {}
+	public void onScheduled(PonderScene scene) {
+	}
 
 	public abstract void tick(PonderScene scene);
 
@@ -24,7 +26,7 @@ public abstract class PonderInstruction {
 
 	private static class Simple extends PonderInstruction {
 
-		private Consumer<PonderScene> callback;
+		private final Consumer<PonderScene> callback;
 
 		public Simple(Consumer<PonderScene> callback) {
 			this.callback = callback;

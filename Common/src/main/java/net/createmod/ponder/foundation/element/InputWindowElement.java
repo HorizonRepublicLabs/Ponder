@@ -26,8 +26,10 @@ public class InputWindowElement extends AnimatedOverlayElementBase {
 
 	private final Vec3 sceneSpace;
 	private final Pointing direction;
-	@Nullable ResourceLocation key;
-	@Nullable ScreenElement icon;
+	@Nullable
+	ResourceLocation key;
+	@Nullable
+	ScreenElement icon;
 	ItemStack item = ItemStack.EMPTY;
 
 	public InputWindowElement(Vec3 sceneSpace, Pointing direction) {
@@ -132,7 +134,7 @@ public class InputWindowElement extends AnimatedOverlayElementBase {
 
 		if (hasText)
 			graphics.drawString(font, text, 2, (int) ((height - font.lineHeight) / 2f + 2),
-								PonderPalette.WHITE.getColorObject().scaleAlpha(fade).getRGB(), false);
+				PonderPalette.WHITE.getColorObject().scaleAlpha(fade).getRGB(), false);
 
 		if (hasIcon) {
 			poseStack.pushPose();

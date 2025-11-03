@@ -5,7 +5,6 @@ import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 
-import net.createmod.ponder.Ponder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -40,8 +39,8 @@ public class FlySpeedCommand {
 		abilities.setFlyingSpeed(speed);
 		player.connection.send(new ClientboundPlayerAbilitiesPacket(abilities));
 		ctx.getSource().sendSuccess(() ->
-			Component.literal("[Catnip]: ").withStyle(ChatFormatting.YELLOW).append(Component.translatable("catnip.util.fly_speed_set.message", player.getName().copy(), speed).withStyle(ChatFormatting.WHITE)),
-				true
+				Component.literal("[Catnip]: ").withStyle(ChatFormatting.YELLOW).append(Component.translatable("catnip.util.fly_speed_set.message", player.getName().copy(), speed).withStyle(ChatFormatting.WHITE)),
+			true
 		);
 
 		return Command.SINGLE_SUCCESS;

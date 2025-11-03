@@ -26,12 +26,15 @@ public abstract class TrackedElementBase<T> extends PonderElementBase implements
 	}
 
 	@Override
-	public void renderFirst(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, float pt) {}
+	public void renderFirst(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, float pt) {
+	}
 
 	@Override
-	public void renderLayer(PonderLevel world, MultiBufferSource buffer, RenderType type, GuiGraphics graphics, float pt) {}
+	public void renderLayer(PonderLevel world, MultiBufferSource buffer, RenderType type, GuiGraphics graphics, float pt) {
+	}
 
 	@Override
-	public void renderLast(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, float pt) {}
+	public void renderLast(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, float pt) {
+	}
 
 }

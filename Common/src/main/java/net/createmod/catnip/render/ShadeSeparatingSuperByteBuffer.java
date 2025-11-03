@@ -2,9 +2,6 @@ package net.createmod.catnip.render;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.createmod.catnip.theme.Color;
-import net.createmod.ponder.mixin.client.accessor.RenderSystemAccessor;
-
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix3f;
 import org.joml.Matrix3fc;
@@ -61,7 +58,7 @@ public class ShadeSeparatingSuperByteBuffer implements SuperByteBuffer {
 	private BlockAndTintGetter levelWithLight;
 	@Nullable
 	private Matrix4f lightTransform;
-	private boolean invertFakeDiffuseNormal;
+	private final boolean invertFakeDiffuseNormal;
 
 	// Reused objects
 	private final Matrix4f modelMat = new Matrix4f();

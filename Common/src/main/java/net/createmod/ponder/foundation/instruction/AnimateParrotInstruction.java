@@ -20,7 +20,7 @@ public class AnimateParrotInstruction extends AnimateElementInstruction<ParrotEl
 	}
 
 	protected AnimateParrotInstruction(ElementLink<ParrotElement> link, Vec3 totalDelta, int ticks,
-		BiConsumer<ParrotElement, Vec3> setter, Function<ParrotElement, Vec3> getter) {
+									   BiConsumer<ParrotElement, Vec3> setter, Function<ParrotElement, Vec3> getter) {
 		super(link, totalDelta, ticks, setter, getter);
 	}
 

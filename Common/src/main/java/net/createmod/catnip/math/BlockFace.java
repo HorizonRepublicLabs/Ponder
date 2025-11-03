@@ -4,7 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import io.netty.buffer.ByteBuf;
-import net.createmod.catnip.nbt.NBTHelper;
 import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.core.BlockPos;
@@ -20,9 +19,9 @@ public class BlockFace extends Pair<BlockPos, Direction> {
 	).apply(instance, BlockFace::new));
 
 	public static StreamCodec<ByteBuf, BlockFace> STREAM_CODEC = StreamCodec.composite(
-	    BlockPos.STREAM_CODEC, BlockFace::getPos,
-	    Direction.STREAM_CODEC, BlockFace::getFace,
-	    BlockFace::new
+		BlockPos.STREAM_CODEC, BlockFace::getPos,
+		Direction.STREAM_CODEC, BlockFace::getFace,
+		BlockFace::new
 	);
 
 	public BlockFace(BlockPos first, Direction second) {

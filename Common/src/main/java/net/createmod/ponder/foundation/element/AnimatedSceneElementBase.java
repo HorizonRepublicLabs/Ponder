@@ -76,11 +76,14 @@ public abstract class AnimatedSceneElementBase extends PonderElementBase impleme
 	}
 
 	protected void renderLayer(PonderLevel world, MultiBufferSource buffer, RenderType type, GuiGraphics graphics, float fade,
-							   float pt) {}
+							   float pt) {
+	}
 
-	protected void renderFirst(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, float fade, float pt) {}
+	protected void renderFirst(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, float fade, float pt) {
+	}
 
-	protected void renderLast(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, float fade, float pt) {}
+	protected void renderLast(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, float fade, float pt) {
+	}
 
 	protected int lightCoordsFromFade(float fade) {
 		int light = LightTexture.FULL_BRIGHT;

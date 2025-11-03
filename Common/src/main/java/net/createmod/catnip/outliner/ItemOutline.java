@@ -29,8 +29,8 @@ public class ItemOutline extends Outline {
 		ms.scale(params.alpha, params.alpha, params.alpha);
 
 		mc.getItemRenderer().render(stack, ItemDisplayContext.FIXED, false, ms,
-									buffer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY,
-									mc.getItemRenderer().getModel(stack, null, null, 0));
+			buffer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY,
+			mc.getItemRenderer().getModel(stack, null, null, 0));
 
 		ms.popPose();
 	}

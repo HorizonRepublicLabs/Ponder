@@ -30,16 +30,16 @@ public class EnumEntry extends ValueEntry<Enum<?>> {
 
 		DelegatedStencilElement l = PonderGuiTextures.ICON_CONFIG_PREV.asStencil();
 		cycleLeft = new BoxWidget(0, 0, cycleWidth + 8, 16)
-				.withCustomBackground(BoxElement.COLOR_BACKGROUND_FLAT)
-				.showingElement(l)
-				.withCallback(() -> cycleValue(-1));
+			.withCustomBackground(BoxElement.COLOR_BACKGROUND_FLAT)
+			.showingElement(l)
+			.withCallback(() -> cycleValue(-1));
 		l.withElementRenderer(BoxWidget.gradientFactory.apply(cycleLeft));
 
 		DelegatedStencilElement r = PonderGuiTextures.ICON_CONFIG_NEXT.asStencil();
 		cycleRight = new BoxWidget(0, 0, cycleWidth + 8, 16)
-				.withCustomBackground(BoxElement.COLOR_BACKGROUND_FLAT)
-				.showingElement(r)
-				.withCallback(() -> cycleValue(1));
+			.withCustomBackground(BoxElement.COLOR_BACKGROUND_FLAT)
+			.showingElement(r)
+			.withCallback(() -> cycleValue(1));
 		r.at(cycleWidth - 8, 0);
 		r.withElementRenderer(BoxWidget.gradientFactory.apply(cycleRight));
 
@@ -84,19 +84,19 @@ public class EnumEntry extends ValueEntry<Enum<?>> {
 		cycleLeft.render(graphics, mouseX, mouseY, partialTicks);
 
 		valueText.at(cycleLeft.getX() + cycleWidth - 8, y + 10, 200)
-				.withBounds(width - getLabelWidth(width) - 2 * cycleWidth - resetWidth - 4, 16)
-				.render(graphics);
+			.withBounds(width - getLabelWidth(width) - 2 * cycleWidth - resetWidth - 4, 16)
+			.render(graphics);
 
 		cycleRight.setX(x + width - cycleWidth * 2 - resetWidth + 10);
 		cycleRight.setY(y + 10);
 		cycleRight.render(graphics, mouseX, mouseY, partialTicks);
 
 		new BoxElement()
-				.withBackground(BoxElement.COLOR_BACKGROUND_FLAT)
-				.flatBorder(0x01_000000)
-				.withBounds(48, 6)
-				.at(cycleLeft.getX() + 22, cycleLeft.getY() + 5)
-				.render(graphics);
+			.withBackground(BoxElement.COLOR_BACKGROUND_FLAT)
+			.flatBorder(0x01_000000)
+			.withBounds(48, 6)
+			.at(cycleLeft.getX() + 22, cycleLeft.getY() + 5)
+			.render(graphics);
 	}
 
 	@Override

@@ -87,17 +87,17 @@ public class DebugScenes {
 			.text("Blocks can be modified");
 		scene.idle(20);
 		scene.world().replaceBlocks(util.select().fromTo(1, 1, 3, 2, 2, 4),
-									Blocks.WHITE_CONCRETE.defaultBlockState(), true);
+			Blocks.WHITE_CONCRETE.defaultBlockState(), true);
 		scene.idle(10);
 		scene.addKeyframe();
 		scene.world().replaceBlocks(util.select().position(3, 1, 1), Blocks.REDSTONE_WIRE.defaultBlockState().setValue(RedStoneWireBlock.POWER, 15), true);
 		scene.rotateCameraY(180);
-		
+
 		for (int i = 0; i < 20; i++) {
 			scene.world().incrementBlockBreakingProgress(util.grid().at(3, 1, 1));
 			scene.idle(10);
 		}
-		
+
 		scene.markAsFinished();
 	}
 
@@ -126,7 +126,7 @@ public class DebugScenes {
 
 		for (int i = 0; i < 10; i++) {
 			scene.overlay().chaseBoundingBoxOutline(PonderPalette.RED, outlineSlot,
-													i % 2 == 0 ? boundingBox1 : boundingBox2, 15);
+				i % 2 == 0 ? boundingBox1 : boundingBox2, 15);
 			scene.idle(3);
 			scene.special().movePointOfInterest(i % 2 == 0 ? poi1 : poi2);
 			scene.idle(12);

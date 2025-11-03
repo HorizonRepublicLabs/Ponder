@@ -2,6 +2,8 @@ package net.createmod.catnip.codecs;
 
 import java.util.Optional;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DynamicOps;
@@ -10,8 +12,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.RegistryOps;
-
-import org.jetbrains.annotations.Nullable;
 
 public interface CatnipCodecUtils {
 	// Decode and return Optional<T>

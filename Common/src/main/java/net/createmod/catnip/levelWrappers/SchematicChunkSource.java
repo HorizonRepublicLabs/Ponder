@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.FullChunkStatus;
 import net.minecraft.sounds.SoundEvent;
@@ -34,7 +33,6 @@ import net.minecraft.world.level.chunk.ChunkSource;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LightChunk;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
-import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.entity.LevelEntityGetter;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -89,7 +87,8 @@ public class SchematicChunkSource extends ChunkSource {
 	}
 
 	@Override
-	public void tick(BooleanSupplier p_202162_, boolean p_202163_) {}
+	public void tick(BooleanSupplier p_202162_, boolean p_202163_) {
+	}
 
 	@Override
 	public int getLoadedChunksCount() {
@@ -104,7 +103,7 @@ public class SchematicChunkSource extends ChunkSource {
 							   Supplier<ProfilerFiller> pProfiler, boolean pIsClientSide, boolean pIsDebug, long pBiomeZoomSeed,
 							   int pMaxChainedNeighborUpdates) {
 				super(pLevelData, pDimension, pRegistryAccess, pDimensionTypeRegistration, pProfiler, pIsClientSide, pIsDebug,
-					  pBiomeZoomSeed, pMaxChainedNeighborUpdates);
+					pBiomeZoomSeed, pMaxChainedNeighborUpdates);
 				access = pRegistryAccess;
 			}
 
@@ -120,13 +119,16 @@ public class SchematicChunkSource extends ChunkSource {
 			}
 
 			@Override
-			public void levelEvent(Player pPlayer, int pType, BlockPos pPos, int pData) {}
+			public void levelEvent(Player pPlayer, int pType, BlockPos pPos, int pData) {
+			}
 
 			@Override
-			public void gameEvent(@Nullable Entity entity, Holder<GameEvent> gameEvent, Vec3 pos) {}
+			public void gameEvent(@Nullable Entity entity, Holder<GameEvent> gameEvent, Vec3 pos) {
+			}
 
 			@Override
-			public void gameEvent(Holder<GameEvent> holder, Vec3 vec3, GameEvent.Context context) {}
+			public void gameEvent(Holder<GameEvent> holder, Vec3 vec3, GameEvent.Context context) {
+			}
 
 			@Override
 			public RegistryAccess registryAccess() {
@@ -154,27 +156,33 @@ public class SchematicChunkSource extends ChunkSource {
 			}
 
 			@Override
-			public void sendBlockUpdated(BlockPos pPos, BlockState pOldState, BlockState pNewState, int pFlags) {}
+			public void sendBlockUpdated(BlockPos pPos, BlockState pOldState, BlockState pNewState, int pFlags) {
+			}
 
 			@Override
 			public void playSound(Player pPlayer, double pX, double pY, double pZ, SoundEvent pSound,
-				SoundSource pCategory, float pVolume, float pPitch) {}
+								  SoundSource pCategory, float pVolume, float pPitch) {
+			}
 
 			@Override
 			public void playSound(Player pPlayer, Entity pEntity, SoundEvent pEvent, SoundSource pCategory,
-				float pVolume, float pPitch) {}
+								  float pVolume, float pPitch) {
+			}
 
 			@Override
 			public void playSeededSound(Player pPlayer, double pX, double pY, double pZ, Holder<SoundEvent> pSound,
-										SoundSource pSource, float pVolume, float pPitch, long pSeed) {}
+										SoundSource pSource, float pVolume, float pPitch, long pSeed) {
+			}
 
 			@Override
 			public void playSeededSound(Player p_220363_, double p_220364_, double p_220365_, double p_220366_,
-										SoundEvent p_220367_, SoundSource p_220368_, float p_220369_, float p_220370_, long p_220371_) {}
+										SoundEvent p_220367_, SoundSource p_220368_, float p_220369_, float p_220370_, long p_220371_) {
+			}
 
 			@Override
 			public void playSeededSound(Player p_220372_, Entity p_220373_, Holder<SoundEvent> p_220374_, SoundSource p_220375_,
-										float p_220376_, float p_220377_, long p_220378_) {}
+										float p_220376_, float p_220377_, long p_220378_) {
+			}
 
 			@Override
 			public String gatherChunkSourceStats() {
@@ -193,7 +201,8 @@ public class SchematicChunkSource extends ChunkSource {
 			}
 
 			@Override
-			public void setMapData(MapId mapId, MapItemSavedData mapItemSavedData) {}
+			public void setMapData(MapId mapId, MapItemSavedData mapItemSavedData) {
+			}
 
 			@Override
 			public MapId getFreeMapId() {
@@ -201,7 +210,8 @@ public class SchematicChunkSource extends ChunkSource {
 			}
 
 			@Override
-			public void destroyBlockProgress(int pBreakerId, BlockPos pPos, int pProgress) {}
+			public void destroyBlockProgress(int pBreakerId, BlockPos pPos, int pProgress) {
+			}
 
 			@Override
 			public Scoreboard getScoreboard() {
@@ -239,13 +249,19 @@ public class SchematicChunkSource extends ChunkSource {
 			}
 
 			// Neo's patched methods
-			public void setDayTimeFraction(float var1) {}
+			public void setDayTimeFraction(float var1) {
+			}
 
-			public float getDayTimeFraction() { return 0; }
+			public float getDayTimeFraction() {
+				return 0;
+			}
 
-			public float getDayTimePerTick() { return 0; }
+			public float getDayTimePerTick() {
+				return 0;
+			}
 
-			public void setDayTimePerTick(float var1) {}
+			public void setDayTimePerTick(float var1) {
+			}
 		}
 
 		public EmptierChunk(Level level) {
@@ -274,13 +290,17 @@ public class SchematicChunkSource extends ChunkSource {
 			return null;
 		}
 
-		public void addAndRegisterBlockEntity(BlockEntity p_150813_1_) {}
+		public void addAndRegisterBlockEntity(BlockEntity p_150813_1_) {
+		}
 
-		public void setBlockEntity(BlockEntity p_177426_2_) {}
+		public void setBlockEntity(BlockEntity p_177426_2_) {
+		}
 
-		public void removeBlockEntity(BlockPos p_177425_1_) {}
+		public void removeBlockEntity(BlockPos p_177425_1_) {
+		}
 
-		public void markUnsaved() {}
+		public void markUnsaved() {
+		}
 
 		public boolean isEmpty() {
 			return true;

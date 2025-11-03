@@ -15,6 +15,7 @@ public interface TagRegistryAccess {
 	Set<PonderTag> getTags(ResourceLocation item);
 
 	Set<ResourceLocation> getItems(ResourceLocation tag);
+
 	Set<ResourceLocation> getItems(PonderTag tag);
 
 }

@@ -25,7 +25,6 @@ public class CachedBuffers {
 	 * Creates and caches a SuperByteBuffer that has the model of a BlockState baked into it
 	 *
 	 * @param toRender the BlockState to be rendered
-	 *
 	 * @return the cached SuperByteBuffer
 	 */
 	public static SuperByteBuffer block(BlockState toRender) {
@@ -37,8 +36,7 @@ public class CachedBuffers {
 	 * and caches it in the given Compartment
 	 *
 	 * @param compartment the Compartment the Buffer should be cached in
-	 * @param toRender the BlockState to be rendered
-	 *
+	 * @param toRender    the BlockState to be rendered
 	 * @return the cached SuperByteBuffer
 	 */
 	public static SuperByteBuffer block(Compartment<BlockState> compartment, BlockState toRender) {
@@ -47,13 +45,13 @@ public class CachedBuffers {
 
 	public static SuperByteBuffer partial(PartialModel partial, BlockState referenceState) {
 		return SuperByteBufferCache.getInstance().get(PARTIAL, partial,
-				() -> SuperBufferFactory.getInstance().createForBlock(partial.get(), referenceState));
+			() -> SuperBufferFactory.getInstance().createForBlock(partial.get(), referenceState));
 	}
 
 	public static SuperByteBuffer partial(PartialModel partial, BlockState referenceState,
 										  Supplier<PoseStack> modelTransform) {
 		return SuperByteBufferCache.getInstance().get(PARTIAL, partial,
-				() -> SuperBufferFactory.getInstance().createForBlock(partial.get(), referenceState, modelTransform.get()));
+			() -> SuperBufferFactory.getInstance().createForBlock(partial.get(), referenceState, modelTransform.get()));
 	}
 
 	public static SuperByteBuffer partialFacing(PartialModel partial, BlockState referenceState) {
@@ -74,7 +72,7 @@ public class CachedBuffers {
 	public static SuperByteBuffer partialDirectional(PartialModel partial, BlockState referenceState, Direction dir,
 													 Supplier<PoseStack> modelTransform) {
 		return SuperByteBufferCache.getInstance().get(DIRECTIONAL_PARTIAL, Pair.of(dir, partial),
-				() -> SuperBufferFactory.getInstance().createForBlock(partial.get(), referenceState, modelTransform.get()));
+			() -> SuperBufferFactory.getInstance().createForBlock(partial.get(), referenceState, modelTransform.get()));
 	}
 
 	public static Supplier<PoseStack> rotateToFace(Direction facing) {

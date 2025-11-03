@@ -1,13 +1,12 @@
 package net.createmod.catnip.render;
 
-import net.createmod.catnip.theme.Color;
-
 import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import dev.engine_room.flywheel.lib.transform.TransformStack;
+import net.createmod.catnip.theme.Color;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockAndTintGetter;
@@ -60,7 +59,8 @@ public interface SuperByteBuffer extends TransformStack<SuperByteBuffer> {
 
 	//
 
-	default void delete() {}
+	default void delete() {
+	}
 
 	default <Self extends SuperByteBuffer> Self rotate(Direction.Axis axis, float radians) {
 		return (Self) rotate(radians, axis);
@@ -68,10 +68,10 @@ public interface SuperByteBuffer extends TransformStack<SuperByteBuffer> {
 
 	default <Self extends SuperByteBuffer> Self color(Color color) {
 		return this.color(
-				color.getRed(),
-				color.getGreen(),
-				color.getBlue(),
-				color.getAlpha()
+			color.getRed(),
+			color.getGreen(),
+			color.getBlue(),
+			color.getAlpha()
 		);
 	}
 

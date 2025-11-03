@@ -98,9 +98,9 @@ public final class PaginationState {
 		if (obj == null || obj.getClass() != this.getClass()) return false;
 		var that = (PaginationState) obj;
 		return this.usesPagination == that.usesPagination &&
-				this.pageIndex == that.pageIndex &&
-				this.elementsPerPage == that.elementsPerPage &&
-				this.elementCount == that.elementCount;
+			this.pageIndex == that.pageIndex &&
+			this.elementsPerPage == that.elementsPerPage &&
+			this.elementCount == that.elementCount;
 	}
 
 	@Override
@@ -111,10 +111,10 @@ public final class PaginationState {
 	@Override
 	public String toString() {
 		return "PaginationState[" +
-				"usesPagination=" + usesPagination + ", " +
-				"pageIndex=" + pageIndex + ", " +
-				"elementsPerPage=" + elementsPerPage + ", " +
-				"elementCount=" + elementCount + ']';
+			"usesPagination=" + usesPagination + ", " +
+			"pageIndex=" + pageIndex + ", " +
+			"elementsPerPage=" + elementsPerPage + ", " +
+			"elementCount=" + elementCount + ']';
 	}
 
 

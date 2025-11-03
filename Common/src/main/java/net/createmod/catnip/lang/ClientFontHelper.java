@@ -7,7 +7,6 @@ import java.util.List;
 import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
 
 import net.createmod.catnip.platform.CatnipClientServices;
 import net.minecraft.client.gui.Font;
@@ -71,7 +70,7 @@ public class ClientFontHelper {
 		}
 	}
 
-	private static int draw(GuiGraphics graphics,  Font font, String p_228078_1_, float p_228078_2_, float p_228078_3_,
+	private static int draw(GuiGraphics graphics, Font font, String p_228078_1_, float p_228078_2_, float p_228078_3_,
 							int p_228078_4_, Matrix4f p_228078_5_, boolean p_228078_6_) {
 		if (p_228078_1_ == null) {
 			return 0;

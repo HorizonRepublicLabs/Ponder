@@ -10,7 +10,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class HideAllInstruction extends TickingInstruction {
 
-	private Direction fadeOutTo;
+	private final Direction fadeOutTo;
 
 	public HideAllInstruction(int fadeOutTicks, Direction fadeOutTo) {
 		super(false, fadeOutTicks);
@@ -22,13 +22,11 @@ public class HideAllInstruction extends TickingInstruction {
 		super.firstTick(scene);
 		scene.getElements()
 			.forEach(element -> {
-				if (element instanceof AnimatedSceneElementBase) {
-					AnimatedSceneElement animatedSceneElement = (AnimatedSceneElement) element;
+				if (element instanceof AnimatedSceneElementBase animatedSceneElement) {
 					animatedSceneElement.setFade(1);
 					animatedSceneElement
 						.setFadeVec(fadeOutTo == null ? null : Vec3.atLowerCornerOf(fadeOutTo.getNormal()).scale(.5f));
-				} else if (element instanceof AnimatedOverlayElementBase) {
-					AnimatedOverlayElement animatedSceneElement = (AnimatedOverlayElement) element;
+				} else if (element instanceof AnimatedOverlayElementBase animatedSceneElement) {
 					animatedSceneElement.setFade(1);
 				} else
 					element.setVisible(false);

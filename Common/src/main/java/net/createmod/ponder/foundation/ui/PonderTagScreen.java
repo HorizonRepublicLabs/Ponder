@@ -16,7 +16,6 @@ import net.createmod.catnip.gui.element.BoxElement;
 import net.createmod.catnip.gui.widget.BoxWidget;
 import net.createmod.catnip.lang.ClientFontHelper;
 import net.createmod.catnip.layout.LayoutHelper;
-import net.createmod.catnip.platform.CatnipServices;
 import net.createmod.catnip.registry.RegisteredObjectsHelper;
 import net.createmod.ponder.Ponder;
 import net.createmod.ponder.foundation.PonderChapter;
@@ -35,11 +34,13 @@ public class PonderTagScreen extends AbstractPonderScreen {
 	private final PonderTag tag;
 	protected final List<ItemEntry> items = new ArrayList<>();
 	private final double itemXmult = 0.5;
-	@Nullable protected Rect2i itemArea;
+	@Nullable
+	protected Rect2i itemArea;
 	protected final List<PonderChapter> chapters = new ArrayList<>();
 	private final double chapterXmult = 0.5;
 	private final double chapterYmult = 0.75;
-	@Nullable protected Rect2i chapterArea;
+	@Nullable
+	protected Rect2i chapterArea;
 	private final double mainYmult = 0.15;
 
 	private ItemStack hoveredItem = ItemStack.EMPTY;
@@ -59,11 +60,11 @@ public class PonderTagScreen extends AbstractPonderScreen {
 		// items
 		items.clear();
 		PonderIndex.getTagAccess()
-				.getItems(tag)
-				.stream()
-				.map(key -> new ItemEntry(RegisteredObjectsHelper.getItemOrBlock(key), key))
-				.filter(entry -> entry.item != null)
-				.forEach(items::add);
+			.getItems(tag)
+			.stream()
+			.map(key -> new ItemEntry(RegisteredObjectsHelper.getItemOrBlock(key), key))
+			.filter(entry -> entry.item != null)
+			.forEach(items::add);
 
 		if (!tag.getMainItem().isEmpty())
 			items.removeIf(entry -> entry.item == tag.getMainItem().getItem());
@@ -76,7 +77,7 @@ public class PonderTagScreen extends AbstractPonderScreen {
 
 		for (ItemEntry entry : items) {
 			PonderButton b = new PonderButton(itemCenterX + layout.getX() + 4, itemCenterY + layout.getY() + 4)
-					.showing(new ItemStack(entry.item));
+				.showing(new ItemStack(entry.item));
 
 			if (PonderIndex.getSceneAccess().doScenesExistForId(entry.key)) {
 				b.withCallback((mouseX, mouseY) -> {
@@ -86,8 +87,8 @@ public class PonderTagScreen extends AbstractPonderScreen {
 			} else {
 				b.withBorderColors(
 					entry.key.getNamespace().equals("minecraft") ?
-					PonderUI.MISSING_VANILLA_ENTRY :
-					PonderUI.MISSING_MODDED_ENTRY
+						PonderUI.MISSING_VANILLA_ENTRY :
+						PonderUI.MISSING_MODDED_ENTRY
 				).animateColors(false);
 			}
 
@@ -99,7 +100,7 @@ public class PonderTagScreen extends AbstractPonderScreen {
 			ResourceLocation registryName = RegisteredObjectsHelper.getKeyOrThrow(tag.getMainItem().getItem());
 
 			PonderButton b = new PonderButton(itemCenterX - layout.getTotalWidth() / 2 - 48, itemCenterY - 10)
-					.showing(tag.getMainItem());
+				.showing(tag.getMainItem());
 			//b.withCustomBackground(PonderTheme.Key.PONDER_BACKGROUND_IMPORTANT.c());
 
 			if (PonderIndex.getSceneAccess().doScenesExistForId(registryName)) {
@@ -166,11 +167,11 @@ public class PonderTagScreen extends AbstractPonderScreen {
 		UIRenderHelper.streak(graphics, 0, x - 4, y - 12 + streakHeight / 2, streakHeight, 240);
 		//PonderUI.renderBox(poseStack, 21, 21, 30, 30, false);
 		new BoxElement()
-				.withBackground(PonderUI.BACKGROUND_FLAT)
-				.gradientBorder(PonderUI.COLOR_IDLE)
-				.at(21, 21, 100)
-				.withBounds(30, 30)
-				.render(graphics);
+			.withBackground(PonderUI.BACKGROUND_FLAT)
+			.gradientBorder(PonderUI.COLOR_IDLE)
+			.at(21, 21, 100)
+			.withBounds(30, 30)
+			.render(graphics);
 
 		graphics.drawString(font, Ponder.lang().translate(AbstractPonderScreen.PONDERING_TAG).component(), x, y - 6, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().getRGB(), false);
 		y += 8;
@@ -198,11 +199,11 @@ public class PonderTagScreen extends AbstractPonderScreen {
 
 		//PonderUI.renderBox(poseStack, x - 3, y - 3, w + 6, h + 6, false);
 		new BoxElement()
-				.withBackground(PonderUI.BACKGROUND_FLAT)
-				.gradientBorder(PonderUI.COLOR_IDLE)
-				.at(x - 3, y - 3, 90)
-				.withBounds(w + 6, h + 6)
-				.render(graphics);
+			.withBackground(PonderUI.BACKGROUND_FLAT)
+			.gradientBorder(PonderUI.COLOR_IDLE)
+			.at(x - 3, y - 3, 90)
+			.withBounds(w + 6, h + 6)
+			.render(graphics);
 
 		poseStack.translate(0, 0, 100);
 		ClientFontHelper.drawSplitString(graphics, poseStack, font, desc, x, y, w, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
@@ -223,18 +224,18 @@ public class PonderTagScreen extends AbstractPonderScreen {
 		poseStack.pushPose();
 		poseStack.translate(x, y, 0);
 		new BoxElement()
-				.withBackground(PonderUI.BACKGROUND_FLAT)
-				.gradientBorder(PonderUI.COLOR_IDLE)
-				.at((windowWidth - stringWidth) / 2f - 5, itemArea.getY() - 21, 100)
-				.withBounds(stringWidth + 10, 10)
-				.render(graphics);
+			.withBackground(PonderUI.BACKGROUND_FLAT)
+			.gradientBorder(PonderUI.COLOR_IDLE)
+			.at((windowWidth - stringWidth) / 2f - 5, itemArea.getY() - 21, 100)
+			.withBounds(stringWidth + 10, 10)
+			.render(graphics);
 
 		poseStack.translate(0, 0, 200);
 
 //		UIRenderHelper.streak(0, itemArea.getX() - 10, itemArea.getY() - 20, 20, 180, 0x101010);
 		graphics.drawCenteredString(font, relatedTitle, windowWidth / 2, itemArea.getY() - 20, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
 
-		poseStack.translate(0,0, -200);
+		poseStack.translate(0, 0, -200);
 
 		UIRenderHelper.streak(graphics, 0, 0, 0, itemArea.getHeight() + 10, itemArea.getWidth() / 2 + 75);
 		UIRenderHelper.streak(graphics, 180, 0, 0, itemArea.getHeight() + 10, itemArea.getWidth() / 2 + 75);
@@ -309,6 +310,7 @@ public class PonderTagScreen extends AbstractPonderScreen {
 		hoveredItem = ItemStack.EMPTY;
 	}
 
-	public record ItemEntry(@Nullable ItemLike item, ResourceLocation key) {}
+	public record ItemEntry(@Nullable ItemLike item, ResourceLocation key) {
+	}
 
 }

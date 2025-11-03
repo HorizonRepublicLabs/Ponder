@@ -59,6 +59,7 @@ public class SuperByteBufferCache {
 		caches.forEach((compartment, cache) -> cache.invalidateAll());
 	}
 
-	public static class Compartment<T> {}
+	public static class Compartment<T> {
+	}
 
 }

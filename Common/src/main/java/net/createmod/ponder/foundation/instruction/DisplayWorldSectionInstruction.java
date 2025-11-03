@@ -15,16 +15,17 @@ import net.minecraft.core.Direction;
 public class DisplayWorldSectionInstruction extends FadeIntoSceneInstruction<WorldSectionElement> {
 
 	private final Selection initialSelection;
-	@Nullable private final Supplier<WorldSectionElement> mergeOnto;
-	private BlockPos glue;
+	@Nullable
+	private final Supplier<WorldSectionElement> mergeOnto;
+	private final BlockPos glue;
 
 	public DisplayWorldSectionInstruction(int fadeInTicks, Direction fadeInFrom, Selection selection,
-		@Nullable Supplier<WorldSectionElement> mergeOnto) {
+										  @Nullable Supplier<WorldSectionElement> mergeOnto) {
 		this(fadeInTicks, fadeInFrom, selection, mergeOnto, null);
 	}
 
 	public DisplayWorldSectionInstruction(int fadeInTicks, Direction fadeInFrom, Selection selection,
-		@Nullable Supplier<WorldSectionElement> mergeOnto, @Nullable BlockPos glue) {
+										  @Nullable Supplier<WorldSectionElement> mergeOnto, @Nullable BlockPos glue) {
 		super(fadeInTicks, fadeInFrom, new WorldSectionElementImpl(selection));
 		initialSelection = selection;
 		this.mergeOnto = mergeOnto;

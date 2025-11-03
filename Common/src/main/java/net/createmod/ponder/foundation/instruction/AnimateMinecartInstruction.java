@@ -20,7 +20,7 @@ public class AnimateMinecartInstruction extends AnimateElementInstruction<Mineca
 	}
 
 	protected AnimateMinecartInstruction(ElementLink<MinecartElement> link, Vec3 totalDelta, int ticks,
-		BiConsumer<MinecartElement, Vec3> setter, Function<MinecartElement, Vec3> getter) {
+										 BiConsumer<MinecartElement, Vec3> setter, Function<MinecartElement, Vec3> getter) {
 		super(link, totalDelta, ticks, setter, getter);
 	}
 

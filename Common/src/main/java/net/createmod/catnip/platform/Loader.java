@@ -4,11 +4,11 @@ public enum Loader {
 	FABRIC, NEOFORGE;
 
 	public boolean isFabric() {
-			return this == FABRIC;
+		return this == FABRIC;
 	}
 
 	public boolean isNeoForge() {
-			return this == NEOFORGE;
+		return this == NEOFORGE;
 	}
 
 	public boolean isCurrent() {

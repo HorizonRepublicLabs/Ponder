@@ -22,7 +22,8 @@ public class PonderTag implements ScreenElement {
 	}
 
 	private final ResourceLocation id;
-	@Nullable private final ResourceLocation textureIconLocation;
+	@Nullable
+	private final ResourceLocation textureIconLocation;
 	private final ItemStack itemIcon;
 	private final ItemStack mainItem;
 

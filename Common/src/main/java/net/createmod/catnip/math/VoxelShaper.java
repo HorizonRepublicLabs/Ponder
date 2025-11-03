@@ -66,7 +66,7 @@ public class VoxelShaper {
 	}
 
 	protected static VoxelShaper forDirectionsWithRotation(VoxelShape shape, Direction facing,
-		Iterable<Direction> directions, Function<Direction, Vec3> rotationValues) {
+														   Iterable<Direction> directions, Function<Direction, Vec3> rotationValues) {
 		VoxelShaper voxelShaper = new VoxelShaper();
 		for (Direction dir : directions) {
 			voxelShaper.shapes.put(dir, rotate(shape, facing, dir, rotationValues));
@@ -75,7 +75,7 @@ public class VoxelShaper {
 	}
 
 	protected static VoxelShape rotate(VoxelShape shape, Direction from, Direction to,
-		Function<Direction, Vec3> usingValues) {
+									   Function<Direction, Vec3> usingValues) {
 		if (from == to)
 			return shape;
 
@@ -116,12 +116,12 @@ public class VoxelShaper {
 
 	protected static VoxelShape blockBox(Vec3 v1, Vec3 v2) {
 		return Block.box(
-				Math.min(v1.x, v2.x),
-				Math.min(v1.y, v2.y),
-				Math.min(v1.z, v2.z),
-				Math.max(v1.x, v2.x),
-				Math.max(v1.y, v2.y),
-				Math.max(v1.z, v2.z)
+			Math.min(v1.x, v2.x),
+			Math.min(v1.y, v2.y),
+			Math.min(v1.z, v2.z),
+			Math.max(v1.x, v2.x),
+			Math.max(v1.y, v2.y),
+			Math.max(v1.z, v2.z)
 		);
 	}
 

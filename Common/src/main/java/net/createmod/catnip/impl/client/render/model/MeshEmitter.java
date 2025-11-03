@@ -1,10 +1,9 @@
 package net.createmod.catnip.impl.client.render.model;
 
-import com.mojang.blaze3d.vertex.ByteBufferBuilder;
-
 import org.jetbrains.annotations.UnknownNullability;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 

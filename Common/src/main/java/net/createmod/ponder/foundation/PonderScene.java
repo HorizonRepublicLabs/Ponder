@@ -73,7 +73,7 @@ public class PonderScene {
 	final PonderLocalization localization;
 
 	private boolean finished;
-//	private int sceneIndex;
+	//	private int sceneIndex;
 	private int textIndex;
 	ResourceLocation sceneId;
 
@@ -97,7 +97,8 @@ public class PonderScene {
 	private final WorldSectionElement baseWorldSection;
 	private final Entity renderViewEntity;
 	private Vec3 pointOfInterest;
-	@Nullable private Vec3 chasingPointOfInterest;
+	@Nullable
+	private Vec3 chasingPointOfInterest;
 
 	int basePlateOffsetX;
 	int basePlateOffsetZ;
@@ -115,8 +116,8 @@ public class PonderScene {
 					   ResourceLocation location, Collection<ResourceLocation> tags,
 					   Collection<SceneOrderingEntry> orderingEntries) {
 		if (world != null) {
-            world.scene = this;
-        }
+			world.scene = this;
+		}
 		this.world = world;
 
 		this.localization = localization;
@@ -205,11 +206,11 @@ public class PonderScene {
 		Vec3 location = selectedHit.getSecond().getLocation();
 
 		ItemStack pickBlock = CatnipServices.HOOKS.getCloneItemFromBlockstate(
-				blockState,
-				new BlockHitResult(location, direction, selectedPos, true),
-				world,
-				selectedPos,
-				Minecraft.getInstance().player
+			blockState,
+			new BlockHitResult(location, direction, selectedPos, true),
+			world,
+			selectedPos,
+			Minecraft.getInstance().player
 		);
 
 		return Pair.of(pickBlock, selectedPos);
@@ -307,7 +308,7 @@ public class PonderScene {
 		if (currentTime < totalTime)
 			currentTime++;
 
-		for (Iterator<PonderInstruction> iterator = activeSchedule.iterator(); iterator.hasNext();) {
+		for (Iterator<PonderInstruction> iterator = activeSchedule.iterator(); iterator.hasNext(); ) {
 			PonderInstruction instruction = iterator.next();
 			instruction.tick(this);
 			if (instruction.isComplete()) {
@@ -577,9 +578,9 @@ public class PonderScene {
 			float f = 30 * scaleFactor;
 			ms.scale(f, f, f);
 			ms.translate(
-					basePlateSize / -2f - basePlateOffsetX,
-					-1f + yOffset,
-					basePlateSize / -2f - basePlateOffsetZ
+				basePlateSize / -2f - basePlateOffsetX,
+				-1f + yOffset,
+				basePlateSize / -2f - basePlateOffsetZ
 			);
 
 			return ms;
@@ -608,9 +609,9 @@ public class PonderScene {
 
 			vec = vec.multiply(f, -f, f);
 			vec = vec.subtract(
-					basePlateSize / -2f - basePlateOffsetX,
-					-1f + yOffset,
-					basePlateSize / -2f - basePlateOffsetZ
+				basePlateSize / -2f - basePlateOffsetX,
+				-1f + yOffset,
+				basePlateSize / -2f - basePlateOffsetZ
 			);
 
 			return vec;

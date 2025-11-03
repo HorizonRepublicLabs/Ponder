@@ -6,9 +6,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.createmod.catnip.data.Couple;
-import net.createmod.catnip.theme.Color;
-
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL20;
@@ -28,7 +25,9 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexSorting;
 import com.mojang.math.Axis;
 
+import net.createmod.catnip.data.Couple;
 import net.createmod.catnip.platform.CatnipClientServices;
+import net.createmod.catnip.theme.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
@@ -92,11 +91,11 @@ public class UIRenderHelper {
 	}
 
 	/**
-	 * @param angle angle in degrees, 0 means fading to the right
-	 * @param x x-position of the starting edge middle point
-	 * @param y y-position of the starting edge middle point
+	 * @param angle   angle in degrees, 0 means fading to the right
+	 * @param x       x-position of the starting edge middle point
+	 * @param y       y-position of the starting edge middle point
 	 * @param breadth total width of the streak
-	 * @param length total length of the streak
+	 * @param length  total length of the streak
 	 */
 	public static void streak(GuiGraphics graphics, float angle, int x, int y, int breadth, int length) {
 		streak(graphics, angle, x, y, breadth, length, COLOR_STREAK);
@@ -154,10 +153,10 @@ public class UIRenderHelper {
 	/**
 	 * x and y specify the middle point of the starting edge
 	 *
-	 * @param angle   the angle of the gradient in degrees; 0° means from left to right
-	 * @param startColor  the color at the starting edge
-	 * @param endColor  the color at the ending edge
-	 * @param breadth the total width of the gradient
+	 * @param angle      the angle of the gradient in degrees; 0° means from left to right
+	 * @param startColor the color at the starting edge
+	 * @param endColor   the color at the ending edge
+	 * @param breadth    the total width of the gradient
 	 */
 	public static void angledGradient(GuiGraphics graphics, float angle, int x, int y, int z, float breadth, float length, Color startColor, Color endColor) {
 		PoseStack poseStack = graphics.pose();
@@ -181,17 +180,19 @@ public class UIRenderHelper {
 
 		Tesselator tesselator = Tesselator.getInstance();
 		BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-		buffer.addVertex(mat, right,    top, zLevel).setColor(startColor.getRed(), startColor.getGreen(), startColor.getBlue(), startColor.getAlpha());
-		buffer.addVertex(mat,  left,    top, zLevel).setColor(startColor.getRed(), startColor.getGreen(), startColor.getBlue(), startColor.getAlpha());
-		buffer.addVertex(mat,  left, bottom, zLevel).setColor(  endColor.getRed(),   endColor.getGreen(),   endColor.getBlue(),   endColor.getAlpha());
-		buffer.addVertex(mat, right, bottom, zLevel).setColor(  endColor.getRed(),   endColor.getGreen(),   endColor.getBlue(),   endColor.getAlpha());
+		buffer.addVertex(mat, right, top, zLevel).setColor(startColor.getRed(), startColor.getGreen(), startColor.getBlue(), startColor.getAlpha());
+		buffer.addVertex(mat, left, top, zLevel).setColor(startColor.getRed(), startColor.getGreen(), startColor.getBlue(), startColor.getAlpha());
+		buffer.addVertex(mat, left, bottom, zLevel).setColor(endColor.getRed(), endColor.getGreen(), endColor.getBlue(), endColor.getAlpha());
+		buffer.addVertex(mat, right, bottom, zLevel).setColor(endColor.getRed(), endColor.getGreen(), endColor.getBlue(), endColor.getAlpha());
 		BufferUploader.drawWithShader(buffer.buildOrThrow());
 
 		RenderSystem.disableBlend();
 		//RenderSystem.enableTexture();
 	}
 
-	public static void breadcrumbArrow(GuiGraphics graphics, int x, int y, int z, int width, int height, int indent, Couple<Color> colors) {breadcrumbArrow(graphics, x, y, z, width, height, indent, colors.getFirst(), colors.getSecond());}
+	public static void breadcrumbArrow(GuiGraphics graphics, int x, int y, int z, int width, int height, int indent, Couple<Color> colors) {
+		breadcrumbArrow(graphics, x, y, z, width, height, indent, colors.getFirst(), colors.getSecond());
+	}
 
 	// draws a wide chevron-style breadcrumb arrow pointing left
 	public static void breadcrumbArrow(GuiGraphics graphics, int x, int y, int z, int width, int height, int indent, Color startColor, Color endColor) {
@@ -318,8 +319,8 @@ public class UIRenderHelper {
 
 		for (int i = 0; i < segmentCount; i++) {
 			points.add(new Point2D.Float(
-					(float) (radius * Math.cos(t)),
-					(float) (radius * Math.sin(t))
+				(float) (radius * Math.cos(t)),
+				(float) (radius * Math.sin(t))
 			));
 
 			t += theta;
@@ -341,15 +342,15 @@ public class UIRenderHelper {
 	public static void drawStretched(GuiGraphics graphics, int left, int top, int w, int h, int z, TextureSheetSegment tex) {
 		tex.bind();
 		drawTexturedQuad(graphics.pose().last()
-						.pose(), Color.WHITE, left, left + w, top, top + h, z, tex.getStartX() / 256f, (tex.getStartX() + tex.getWidth()) / 256f,
-				tex.getStartY() / 256f, (tex.getStartY() + tex.getHeight()) / 256f);
+				.pose(), Color.WHITE, left, left + w, top, top + h, z, tex.getStartX() / 256f, (tex.getStartX() + tex.getWidth()) / 256f,
+			tex.getStartY() / 256f, (tex.getStartY() + tex.getHeight()) / 256f);
 	}
 
 	public static void drawCropped(GuiGraphics graphics, int left, int top, int w, int h, int z, TextureSheetSegment tex) {
 		tex.bind();
 		drawTexturedQuad(graphics.pose().last()
-						.pose(), Color.WHITE, left, left + w, top, top + h, z, tex.getStartX() / 256f, (tex.getStartX() + w) / 256f,
-				tex.getStartY() / 256f, (tex.getStartY() + h) / 256f);
+				.pose(), Color.WHITE, left, left + w, top, top + h, z, tex.getStartX() / 256f, (tex.getStartX() + w) / 256f,
+			tex.getStartY() / 256f, (tex.getStartY() + h) / 256f);
 	}
 
 	private static void drawColoredTexture(GuiGraphics graphics, Color c, int left, int right, int top, int bot, int z, int tex_width, int tex_height, float tex_left, float tex_top, int sheet_width, int sheet_height) {
@@ -362,10 +363,10 @@ public class UIRenderHelper {
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
-		bufferbuilder.addVertex(m, (float) left , (float) bot, (float) z).setColor(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha()).setUv(u1, v2);
+		bufferbuilder.addVertex(m, (float) left, (float) bot, (float) z).setColor(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha()).setUv(u1, v2);
 		bufferbuilder.addVertex(m, (float) right, (float) bot, (float) z).setColor(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha()).setUv(u2, v2);
 		bufferbuilder.addVertex(m, (float) right, (float) top, (float) z).setColor(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha()).setUv(u2, v1);
-		bufferbuilder.addVertex(m, (float) left , (float) top, (float) z).setColor(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha()).setUv(u1, v1);
+		bufferbuilder.addVertex(m, (float) left, (float) top, (float) z).setColor(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha()).setUv(u1, v1);
 		BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
 		RenderSystem.disableBlend();
 	}
@@ -423,10 +424,10 @@ public class UIRenderHelper {
 			Tesselator tesselator = RenderSystem.renderThreadTesselator();
 			BufferBuilder bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
-			bufferbuilder.addVertex(0 , vy, 0).setUv(0 , 0 ).setColor(1, 1, 1, alpha);
-			bufferbuilder.addVertex(vx, vy, 0).setUv(tx, 0 ).setColor(1, 1, 1, alpha);
-			bufferbuilder.addVertex(vx, 0 , 0).setUv(tx, ty).setColor(1, 1, 1, alpha);
-			bufferbuilder.addVertex(0 , 0 , 0).setUv(0 , ty).setColor(1, 1, 1, alpha);
+			bufferbuilder.addVertex(0, vy, 0).setUv(0, 0).setColor(1, 1, 1, alpha);
+			bufferbuilder.addVertex(vx, vy, 0).setUv(tx, 0).setColor(1, 1, 1, alpha);
+			bufferbuilder.addVertex(vx, 0, 0).setUv(tx, ty).setColor(1, 1, 1, alpha);
+			bufferbuilder.addVertex(0, 0, 0).setUv(0, ty).setColor(1, 1, 1, alpha);
 
 			BufferUploader.draw(bufferbuilder.buildOrThrow());
 

@@ -23,7 +23,8 @@ import net.minecraft.world.phys.Vec3;
 public class ParrotElementImpl extends AnimatedSceneElementBase implements ParrotElement {
 
 	protected Vec3 location;
-	@Nullable protected Parrot entity;
+	@Nullable
+	protected Parrot entity;
 	protected ParrotPose pose;
 	protected Supplier<? extends ParrotPose> initialPose;
 

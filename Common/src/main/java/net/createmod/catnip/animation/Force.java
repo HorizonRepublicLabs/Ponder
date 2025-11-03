@@ -2,101 +2,101 @@ package net.createmod.catnip.animation;
 
 public interface Force {
 
-    float get(float mass, float value, float speed);
+	float get(float mass, float value, float speed);
 
-    boolean finished();
+	boolean finished();
 
-    class Drag implements Force {
-        final float dragFactor;
+	class Drag implements Force {
+		final float dragFactor;
 
-        public Drag(float dragFactor) {
-            this.dragFactor = dragFactor;
-        }
+		public Drag(float dragFactor) {
+			this.dragFactor = dragFactor;
+		}
 
-        @Override
-        public float get(float mass, float value, float speed) {
-            return -speed * dragFactor;
-        }
+		@Override
+		public float get(float mass, float value, float speed) {
+			return -speed * dragFactor;
+		}
 
-        @Override
-        public boolean finished() {
-            return false;
-        }
-    }
+		@Override
+		public boolean finished() {
+			return false;
+		}
+	}
 
-    class Zeroing implements Force {
-        final float g;
+	class Zeroing implements Force {
+		final float g;
 
-        public Zeroing(float g) {
-            this.g = g / 20;
-        }
+		public Zeroing(float g) {
+			this.g = g / 20;
+		}
 
-        @Override
-        public float get(float mass, float value, float speed) {
-            return -Math.signum(value) * g * mass;
-        }
+		@Override
+		public float get(float mass, float value, float speed) {
+			return -Math.signum(value) * g * mass;
+		}
 
-        @Override
-        public boolean finished() {
-            return false;
-        }
-    }
+		@Override
+		public boolean finished() {
+			return false;
+		}
+	}
 
-    class Impulse implements Force {
+	class Impulse implements Force {
 
-        float force;
+		float force;
 
-        public Impulse(float force) {
-            this.force = force;
-        }
+		public Impulse(float force) {
+			this.force = force;
+		}
 
-        @Override
-        public float get(float mass, float value, float speed) {
-            return force;
-        }
+		@Override
+		public float get(float mass, float value, float speed) {
+			return force;
+		}
 
-        @Override
-        public boolean finished() {
-            return true;
-        }
-    }
+		@Override
+		public boolean finished() {
+			return true;
+		}
+	}
 
-    class OverTime implements Force {
-        int timeRemaining;
-        float f;
+	class OverTime implements Force {
+		int timeRemaining;
+		float f;
 
-        public OverTime(int time, float totalAcceleration) {
-            this.timeRemaining = time;
-            this.f = totalAcceleration / (float) time;
-        }
+		public OverTime(int time, float totalAcceleration) {
+			this.timeRemaining = time;
+			this.f = totalAcceleration / (float) time;
+		}
 
-        @Override
-        public float get(float mass, float value, float speed) {
-            timeRemaining--;
-            return f;
-        }
+		@Override
+		public float get(float mass, float value, float speed) {
+			timeRemaining--;
+			return f;
+		}
 
-        @Override
-        public boolean finished() {
-            return timeRemaining <= 0;
-        }
-    }
+		@Override
+		public boolean finished() {
+			return timeRemaining <= 0;
+		}
+	}
 
-    class Static implements Force {
-        float force;
+	class Static implements Force {
+		float force;
 
-        public Static(float force) {
-            this.force = force;
-        }
+		public Static(float force) {
+			this.force = force;
+		}
 
-        @Override
-        public float get(float mass, float value, float speed) {
-            return force;
-        }
+		@Override
+		public float get(float mass, float value, float speed) {
+			return force;
+		}
 
-        @Override
-        public boolean finished() {
-            return false;
-        }
-    }
+		@Override
+		public boolean finished() {
+			return false;
+		}
+	}
 }

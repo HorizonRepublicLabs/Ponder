@@ -2,19 +2,16 @@ package net.createmod.ponder.enums;
 
 import java.util.function.Consumer;
 
-import net.createmod.catnip.client.ConflictSafeKeyMapping;
-import net.createmod.catnip.platform.CatnipClientServices;
-import net.minecraft.network.chat.Component;
-
 import org.lwjgl.glfw.GLFW;
 
+import net.createmod.catnip.client.ConflictSafeKeyMapping;
+import net.createmod.catnip.platform.CatnipClientServices;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.network.chat.Component;
 
 public enum PonderKeybinds {
 
-	PONDER("ponder", GLFW.GLFW_KEY_W)
-
-	;
+	PONDER("ponder", GLFW.GLFW_KEY_W);
 
 	public static final String CATEGORY = "key.categories.ponder";
 

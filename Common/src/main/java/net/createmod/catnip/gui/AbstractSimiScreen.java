@@ -20,7 +20,7 @@ import net.minecraft.network.chat.Component;
 
 public abstract class AbstractSimiScreen extends Screen {
 
-    protected static final Color BACKGROUND_COLOR = new Color(0x50_101010, true);
+	protected static final Color BACKGROUND_COLOR = new Color(0x50_101010, true);
 
 	protected int windowWidth, windowHeight;
 	protected int windowXOffset, windowYOffset;
@@ -143,7 +143,8 @@ public abstract class AbstractSimiScreen extends Screen {
 		return consumed;
 	}
 
-	protected void prepareFrame() {}
+	protected void prepareFrame() {
+	}
 
 	protected void renderWindowBackground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
 		renderBackground(graphics, mouseX, mouseY, partialTicks);
@@ -154,7 +155,8 @@ public abstract class AbstractSimiScreen extends Screen {
 	protected void renderWindowForeground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
 	}
 
-	protected void endFrame() {}
+	protected void endFrame() {
+	}
 
 	@Deprecated
 	protected void debugWindowArea(GuiGraphics graphics) {

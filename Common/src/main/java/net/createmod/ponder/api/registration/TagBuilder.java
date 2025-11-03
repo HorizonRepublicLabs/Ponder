@@ -19,7 +19,7 @@ public interface TagBuilder {
 
 	TagBuilder item(ItemLike item, boolean useAsIcon, boolean useAsMainItem);
 
-	default TagBuilder item(ItemLike item){
+	default TagBuilder item(ItemLike item) {
 		return item(item, true, true);
 	}
 

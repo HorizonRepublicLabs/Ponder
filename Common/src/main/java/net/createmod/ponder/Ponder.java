@@ -2,12 +2,11 @@ package net.createmod.ponder;
 
 import java.util.Random;
 
-import net.createmod.catnip.net.CatnipPackets;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.createmod.catnip.lang.LangBuilder;
+import net.createmod.catnip.net.CatnipPackets;
 import net.minecraft.resources.ResourceLocation;
 
 public class Ponder {

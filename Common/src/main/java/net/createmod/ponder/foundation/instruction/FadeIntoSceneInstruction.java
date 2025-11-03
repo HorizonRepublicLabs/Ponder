@@ -27,7 +27,7 @@ public abstract class FadeIntoSceneInstruction<T extends AnimatedSceneElement> e
 		element.setFade(0);
 		element.setFadeVec(fadeInFrom == null ? Vec3.ZERO
 			: Vec3.atLowerCornerOf(fadeInFrom.getNormal())
-				.scale(.5f));
+			.scale(.5f));
 		if (elementLink != null)
 			scene.linkElement(element, elementLink);
 	}

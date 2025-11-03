@@ -12,7 +12,8 @@ public class LerpedFloat {
 	protected float previousValue;
 	protected float value;
 
-	@Nullable protected Chaser chaseFunction;
+	@Nullable
+	protected Chaser chaseFunction;
 	protected float chaseTarget;
 	protected float chaseSpeed;
 	protected boolean angularChase;

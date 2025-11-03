@@ -1,13 +1,10 @@
 package net.createmod.ponder.foundation;
 
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
-
-import net.minecraft.core.HolderLookup;
 
 import org.joml.Vector3f;
 
@@ -67,6 +64,7 @@ import net.createmod.ponder.foundation.instruction.TextInstruction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
@@ -234,8 +232,8 @@ public class PonderSceneBuilder implements SceneBuilder {
 		@Override
 		public <T extends ParticleOptions> ParticleEmitter particleEmitterWithinBlockSpace(T data, Vec3 motion) {
 			return (w, x, y, z) -> w.addParticle(data, Math.floor(x) + Ponder.RANDOM.nextFloat(),
-					Math.floor(y) + Ponder.RANDOM.nextFloat(), Math.floor(z) + Ponder.RANDOM.nextFloat(), motion.x,
-					motion.y, motion.z);
+				Math.floor(y) + Ponder.RANDOM.nextFloat(), Math.floor(z) + Ponder.RANDOM.nextFloat(), motion.x,
+				motion.y, motion.z);
 		}
 
 		@Override
@@ -252,7 +250,7 @@ public class PonderSceneBuilder implements SceneBuilder {
 		public void createRedstoneParticles(BlockPos pos, int color, int amount) {
 			Vector3f rgb = new Color(color).asVectorF();
 			addInstruction(new EmitParticlesInstruction(VecHelper.getCenterOf(pos),
-					effects().particleEmitterWithinBlockSpace(new DustParticleOptions(rgb, 1), Vec3.ZERO), amount, 2));
+				effects().particleEmitterWithinBlockSpace(new DustParticleOptions(rgb, 1), Vec3.ZERO), amount, 2));
 		}
 
 	}
@@ -354,7 +352,7 @@ public class PonderSceneBuilder implements SceneBuilder {
 		@Override
 		public void changeBirbPose(ElementLink<ParrotElement> birb, Supplier<? extends ParrotPose> pose) {
 			addInstruction(scene -> scene.resolveOptional(birb)
-					.ifPresent(safeBirb -> safeBirb.setPose(pose.get())));
+				.ifPresent(safeBirb -> safeBirb.setPose(pose.get())));
 		}
 
 		@Override
@@ -440,7 +438,7 @@ public class PonderSceneBuilder implements SceneBuilder {
 		@Override
 		public void glueBlockOnto(BlockPos position, Direction fadeInDirection, ElementLink<WorldSectionElement> link) {
 			addInstruction(new DisplayWorldSectionInstruction(15, fadeInDirection,
-															  scene.getSceneBuildingUtil().select().position(position), () -> scene.resolve(link), position));
+				scene.getSceneBuildingUtil().select().position(position), () -> scene.resolve(link), position));
 		}
 
 		@Override
@@ -515,13 +513,13 @@ public class PonderSceneBuilder implements SceneBuilder {
 		@Override
 		public void configureCenterOfRotation(ElementLink<WorldSectionElement> link, Vec3 anchor) {
 			addInstruction(scene -> scene.resolveOptional(link)
-					.ifPresent(safe -> safe.setCenterOfRotation(anchor)));
+				.ifPresent(safe -> safe.setCenterOfRotation(anchor)));
 		}
 
 		@Override
 		public void configureStabilization(ElementLink<WorldSectionElement> link, Vec3 anchor) {
 			addInstruction(scene -> scene.resolveOptional(link)
-					.ifPresent(safe -> safe.stabilizeRotation(anchor)));
+				.ifPresent(safe -> safe.stabilizeRotation(anchor)));
 		}
 
 		@Override
@@ -635,7 +633,7 @@ public class PonderSceneBuilder implements SceneBuilder {
 															  Consumer<T> consumer) {
 			addInstruction(scene -> {
 				BlockEntity blockEntity = scene.getWorld()
-						.getBlockEntity(position);
+					.getBlockEntity(position);
 				if (beType.isInstance(blockEntity))
 					consumer.accept(beType.cast(blockEntity));
 			});

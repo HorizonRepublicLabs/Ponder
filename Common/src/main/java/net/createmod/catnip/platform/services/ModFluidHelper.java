@@ -1,9 +1,8 @@
 package net.createmod.catnip.platform.services;
 
-import net.createmod.catnip.annotations.ClientOnly;
-
 import org.jetbrains.annotations.Nullable;
 
+import net.createmod.catnip.annotations.ClientOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

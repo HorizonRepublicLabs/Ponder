@@ -16,12 +16,14 @@ import net.minecraft.client.gui.GuiGraphics;
 
 public class BoxWidget extends ElementWidget {
 
-	public static final Function<BoxWidget, FadableScreenElement> gradientFactory = (box) -> (ms, w, h, alpha) -> UIRenderHelper.angledGradient(ms, 90, w/2, -2, w + 4, h + 4, box.gradientColor);
+	public static final Function<BoxWidget, FadableScreenElement> gradientFactory = (box) -> (ms, w, h, alpha) -> UIRenderHelper.angledGradient(ms, 90, w / 2, -2, w + 4, h + 4, box.gradientColor);
 
 	protected BoxElement box;
 
-	@Nullable protected Couple<Color> customBorder;
-	@Nullable protected Color customBackground;
+	@Nullable
+	protected Couple<Color> customBorder;
+	@Nullable
+	protected Color customBackground;
 	protected Couple<Color> colorIdle = AbstractSimiWidget.COLOR_IDLE;
 	protected Couple<Color> colorHover = AbstractSimiWidget.COLOR_HOVER;
 	protected Couple<Color> colorClick = AbstractSimiWidget.COLOR_CLICK;
@@ -44,8 +46,8 @@ public class BoxWidget extends ElementWidget {
 	public BoxWidget(int x, int y, int width, int height) {
 		super(x, y, width, height);
 		box = new BoxElement()
-				.at(x, y)
-				.withBounds(width, height);
+			.at(x, y)
+			.withBounds(width, height);
 		previousGradient = gradientColor = gradientTarget = getColorIdle();
 	}
 
@@ -143,10 +145,10 @@ public class BoxWidget extends ElementWidget {
 
 		box.withAlpha(fadeValue);
 		box.withBackground(customBackground != null ? customBackground : BoxElement.COLOR_BACKGROUND_TRANSPARENT)
-				.gradientBorder(gradientColor)
-				.at(getX(), getY(), z)
-				.withBounds(width, height)
-				.render(graphics);
+			.gradientBorder(gradientColor)
+			.at(getX(), getY(), z)
+			.withBounds(width, height)
+			.render(graphics);
 
 		super.doRender(graphics, mouseX, mouseY, partialTicks);
 

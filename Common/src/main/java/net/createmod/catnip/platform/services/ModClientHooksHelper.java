@@ -67,38 +67,53 @@ public interface ModClientHooksHelper {
 		return ShadedBlockSbbBuilder.create();
 	}
 
-	/** <b>BROKEN - DO NOT USE</b> */
+	/**
+	 * <b>BROKEN - DO NOT USE</b>
+	 */
 	@Deprecated(forRemoval = true)
 	Iterable<RenderType> getRenderTypesForBlockModel(BlockState state, RandomSource random,
 													 @Nullable BlockEntity beWithModelData);
 
-	/** <b>BROKEN - DO NOT USE</b> */
+	/**
+	 * <b>BROKEN - DO NOT USE</b>
+	 */
 	@Deprecated(forRemoval = true)
 	boolean doesBlockModelContainRenderType(RenderType layer, BlockState state, RandomSource random,
 											@Nullable BlockEntity beWithModelData);
 
-	/** <b>BROKEN - DO NOT USE</b> */
+	/**
+	 * <b>BROKEN - DO NOT USE</b>
+	 */
 	@Deprecated(forRemoval = true)
 	void tesselateBlockVirtual(BlockRenderDispatcher dispatcher, BakedModel model, BlockState state, BlockPos pos, PoseStack poseStack, VertexConsumer consumer, boolean checkSides, RandomSource randomSource, long seed, int packedOverlay, RenderType renderType);
-/** <b>BROKEN - DO NOT USE</b> */
+
+	/**
+	 * <b>BROKEN - DO NOT USE</b>
+	 */
 	@Deprecated(forRemoval = true)
 	default void tesselateBlockVirtual(Level level, BlockRenderDispatcher dispatcher, BakedModel model, BlockState state, BlockPos pos, PoseStack poseStack, VertexConsumer consumer, boolean checkSides, RandomSource randomSource, long seed, int packedOverlay, RenderType renderType) {
 		tesselateBlockVirtual(dispatcher, model, state, pos, poseStack, consumer, checkSides, randomSource, seed, packedOverlay, renderType);
 	}
 
-	/** <b>BROKEN - DO NOT USE</b> */
+	/**
+	 * <b>BROKEN - DO NOT USE</b>
+	 */
 	@Deprecated(forRemoval = true)
 	void renderGuiGameElementModel(BlockRenderDispatcher blockRenderer, MultiBufferSource.BufferSource buffer,
 								   PoseStack ms, BlockState state, BakedModel blockModel, int color, @Nullable BlockEntity beWithModelData);
 
-	/** <b>BROKEN - DO NOT USE</b> */
+	/**
+	 * <b>BROKEN - DO NOT USE</b>
+	 */
 	@Deprecated(forRemoval = true)
 	default void renderGuiGameElementModel(BlockRenderDispatcher blockRenderer, MultiBufferSource.BufferSource buffer,
-								   PoseStack ms, BlockState state, BakedModel blockModel, int color) {
+										   PoseStack ms, BlockState state, BakedModel blockModel, int color) {
 		renderGuiGameElementModel(blockRenderer, buffer, ms, state, blockModel, color, null);
 	}
 
-	/** <b>BROKEN - DO NOT USE</b> */
+	/**
+	 * <b>BROKEN - DO NOT USE</b>
+	 */
 	@Deprecated(forRemoval = true)
 	void renderVirtualBlockStateModel(BlockRenderDispatcher dispatcher, PoseStack ms, VertexConsumer consumer,
 									  BlockState state, BakedModel model, float red, float green, float blue,

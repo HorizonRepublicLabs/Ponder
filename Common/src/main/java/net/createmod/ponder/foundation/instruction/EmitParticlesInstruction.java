@@ -7,9 +7,9 @@ import net.minecraft.world.phys.Vec3;
 
 public class EmitParticlesInstruction extends TickingInstruction {
 
-	private Vec3 anchor;
-	private ParticleEmitter emitter;
-	private float runsPerTick;
+	private final Vec3 anchor;
+	private final ParticleEmitter emitter;
+	private final float runsPerTick;
 
 	public EmitParticlesInstruction(Vec3 anchor, ParticleEmitter emitter, float runsPerTick, int ticks) {
 		super(false, ticks);

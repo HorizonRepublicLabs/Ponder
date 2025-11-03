@@ -2,7 +2,8 @@ package net.createmod.catnip.impl.client.render;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-public record ColoringVertexConsumer(VertexConsumer delegate, float red, float green, float blue, float alpha) implements VertexConsumer {
+public record ColoringVertexConsumer(VertexConsumer delegate, float red, float green, float blue,
+									 float alpha) implements VertexConsumer {
 	@Override
 	public VertexConsumer addVertex(float x, float y, float z) {
 		delegate.addVertex(x, y, z);

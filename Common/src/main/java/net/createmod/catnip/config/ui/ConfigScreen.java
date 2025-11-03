@@ -32,13 +32,15 @@ public abstract class ConfigScreen extends AbstractSimiScreen {
 
 	public static final Map<String, TriConsumer<Screen, GuiGraphics, Float>> backgrounds = new HashMap<>();
 	public static final PhysicalFloat cogSpin = PhysicalFloat.create().withLimit(10f).withDrag(0.3).addForce(new Force.Static(.2f));
-	@Nullable public static String modID = null;
-	@Nullable protected final Screen parent;
+	@Nullable
+	public static String modID = null;
+	@Nullable
+	protected final Screen parent;
 
 	public static BlockState shadowState = Blocks.POTTED_CRIMSON_ROOTS.defaultBlockState();
 	public static DelegatedStencilElement shadowElement = new DelegatedStencilElement(
-			(graphics, x, y, alpha) -> renderCog(graphics),
-			(graphics, x, y, alpha) -> graphics.fill(-200, -200, 200, 200, 0x60_000000)
+		(graphics, x, y, alpha) -> renderCog(graphics),
+		(graphics, x, y, alpha) -> graphics.fill(-200, -200, 200, 200, 0x60_000000)
 	);
 
 	private static final PanoramaRenderer vanillaPanorama = new PanoramaRenderer(TitleScreen.CUBE_MAP);
@@ -54,7 +56,8 @@ public abstract class ConfigScreen extends AbstractSimiScreen {
 	}
 
 	@Override
-	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {}
+	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+	}
 
 	@Override
 	protected void renderWindowBackground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
@@ -67,8 +70,8 @@ public abstract class ConfigScreen extends AbstractSimiScreen {
 		}
 
 		shadowElement
-				.at(width * 0.5f, height * 0.5f, 0)
-				.render(graphics);
+			.at(width * 0.5f, height * 0.5f, 0)
+			.render(graphics);
 
 		super.renderWindowBackground(graphics, mouseX, mouseY, partialTicks);
 
@@ -86,7 +89,8 @@ public abstract class ConfigScreen extends AbstractSimiScreen {
 	}
 
 	@Override
-	protected void renderWindow(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {}
+	protected void renderWindow(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+	}
 
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {

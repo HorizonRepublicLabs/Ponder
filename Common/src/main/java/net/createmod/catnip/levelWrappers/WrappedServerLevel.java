@@ -35,10 +35,10 @@ public class WrappedServerLevel extends ServerLevel {
 
 	public WrappedServerLevel(ServerLevel level) {
 		super(level.getServer(), Util.backgroundExecutor(), ((MinecraftServerAccessor) level.getServer()).catnip$getStorageSource(),
-			  (ServerLevelData) level.getLevelData(), level.dimension(),
-			  new LevelStem(level.dimensionTypeRegistration(), level.getChunkSource().getGenerator()),
-			  new DummyStatusListener(), level.isDebug(), ((BiomeManagerAccessor) level.getBiomeManager()).catnip$getBiomeZoomSeed(),
-			  Collections.emptyList(), false, level.getRandomSequences());
+			(ServerLevelData) level.getLevelData(), level.dimension(),
+			new LevelStem(level.dimensionTypeRegistration(), level.getChunkSource().getGenerator()),
+			new DummyStatusListener(), level.isDebug(), ((BiomeManagerAccessor) level.getBiomeManager()).catnip$getBiomeZoomSeed(),
+			Collections.emptyList(), false, level.getRandomSequences());
 		this.level = level;
 	}
 
@@ -68,19 +68,24 @@ public class WrappedServerLevel extends ServerLevel {
 	}
 
 	@Override
-	public void scheduleTick(BlockPos pos, Block block, int delay) {}
+	public void scheduleTick(BlockPos pos, Block block, int delay) {
+	}
 
 	@Override
-	public void scheduleTick(BlockPos pos, Fluid fluid, int delay) {}
+	public void scheduleTick(BlockPos pos, Fluid fluid, int delay) {
+	}
 
 	@Override
-	public void scheduleTick(BlockPos pos, Block block, int delay, TickPriority priority) {}
+	public void scheduleTick(BlockPos pos, Block block, int delay, TickPriority priority) {
+	}
 
 	@Override
-	public void scheduleTick(BlockPos pos, Fluid fluid, int delay, TickPriority priority) {}
+	public void scheduleTick(BlockPos pos, Fluid fluid, int delay, TickPriority priority) {
+	}
 
 	@Override
-	public void levelEvent(@Nullable Player player, int type, BlockPos pos, int data) {}
+	public void levelEvent(@Nullable Player player, int type, BlockPos pos, int data) {
+	}
 
 	@Override
 	public List<ServerPlayer> players() {
@@ -89,11 +94,13 @@ public class WrappedServerLevel extends ServerLevel {
 
 	@Override
 	public void playSound(@Nullable Player player, double x, double y, double z, SoundEvent soundIn, SoundSource category,
-		float volume, float pitch) {}
+						  float volume, float pitch) {
+	}
 
 	@Override
 	public void playSound(@Nullable Player p_217384_1_, Entity p_217384_2_, SoundEvent p_217384_3_, SoundSource p_217384_4_,
-		float p_217384_5_, float p_217384_6_) {}
+						  float p_217384_5_, float p_217384_6_) {
+	}
 
 	@Override
 	public Entity getEntity(int id) {
@@ -112,7 +119,8 @@ public class WrappedServerLevel extends ServerLevel {
 	}
 
 	@Override
-	public void setMapData(MapId mapId, MapItemSavedData mapData) {}
+	public void setMapData(MapId mapId, MapItemSavedData mapData) {
+	}
 
 	@Override
 	public MapId getFreeMapId() {
@@ -120,7 +128,8 @@ public class WrappedServerLevel extends ServerLevel {
 	}
 
 	@Override
-	public void destroyBlockProgress(int breakerId, BlockPos pos, int progress) {}
+	public void destroyBlockProgress(int breakerId, BlockPos pos, int progress) {
+	}
 
 	@Override
 	public RecipeManager getRecipeManager() {
@@ -131,7 +140,6 @@ public class WrappedServerLevel extends ServerLevel {
 	public Holder<Biome> getUncachedNoiseBiome(int p_225604_1_, int p_225604_2_, int p_225604_3_) {
 		return level.getUncachedNoiseBiome(p_225604_1_, p_225604_2_, p_225604_3_);
 	}
-
 
 
 }

@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Queue;
 
+import org.joml.Matrix4fStack;
+
 import com.google.common.collect.EvictingQueue;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
@@ -23,9 +25,6 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-
-import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4fStack;
 
 public class PonderWorldParticles {
 

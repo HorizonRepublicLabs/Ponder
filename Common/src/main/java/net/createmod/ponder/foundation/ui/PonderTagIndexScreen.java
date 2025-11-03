@@ -39,13 +39,17 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 	protected List<Map.Entry<String, List<PonderTag>>> sortedModTags = List.of();
 	protected PaginationState paginationState = new PaginationState();
 
-	@Nullable protected PonderButton pageNext;
-	@Nullable protected PonderButton pagePrev;
+	@Nullable
+	protected PonderButton pageNext;
+	@Nullable
+	protected PonderButton pagePrev;
 
-	@Nullable private PonderTag hoveredItem = null;
+	@Nullable
+	private PonderTag hoveredItem = null;
 
 	// The main ponder entry point from menus.
-	public PonderTagIndexScreen() {}
+	public PonderTagIndexScreen() {
+	}
 
 	@Override
 	protected void init() {
@@ -67,23 +71,23 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 		int xOffset = (int) (width * 0.5);
 
 		addRenderableWidget(pagePrev = new PonderButton(xOffset - 120, height - 32)
-				.showing(PonderGuiTextures.ICON_PONDER_LEFT)
-				.withCallback(() -> {
-					paginationState.previousPage();
-					updateAfterPaginationChange();
-				})
-				.setActive(false)
+			.showing(PonderGuiTextures.ICON_PONDER_LEFT)
+			.withCallback(() -> {
+				paginationState.previousPage();
+				updateAfterPaginationChange();
+			})
+			.setActive(false)
 		);
 
 		pagePrev.updateGradientFromState();
 
 		addRenderableWidget(pageNext = new PonderButton(xOffset + 100, height - 32)
-				.showing(PonderGuiTextures.ICON_PONDER_RIGHT)
-				.withCallback(() -> {
-					paginationState.nextPage();
-					updateAfterPaginationChange();
-				})
-				.setActive(true)
+			.showing(PonderGuiTextures.ICON_PONDER_RIGHT)
+			.withCallback(() -> {
+				paginationState.nextPage();
+				updateAfterPaginationChange();
+			})
+			.setActive(true)
 		);
 
 	}
@@ -111,20 +115,20 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 
 			for (PonderTag tag : tags) {
 				PonderButton button = new PonderButton(xOffset + layout.getX() + 4, yOffset.get() + layout.getY() + 18)
-						.showingTag(tag)
-						.withCallback((mouseX, mouseY) -> {
-							centerScalingOn(mouseX, mouseY);
-							ScreenOpener.transitionTo(new PonderTagScreen(tag));
-						});
+					.showingTag(tag)
+					.withCallback((mouseX, mouseY) -> {
+						centerScalingOn(mouseX, mouseY);
+						ScreenOpener.transitionTo(new PonderTagScreen(tag));
+					});
 				addRenderableWidget(button);
 				layout.next();
 			}
 
 			currentModTagEntries.add(new ModTagsEntry(
-					modName,
-					tags.size(),
-					layoutArea,
-					yOffset.get()
+				modName,
+				tags.size(),
+				layoutArea,
+				yOffset.get()
 			));
 
 			yOffset.addAndGet(58 + 10);
@@ -217,10 +221,10 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 		poseStack.translate(-maxWidth / 2f, 0, 0);
 
 		new BoxElement().withBackground(PonderUI.BACKGROUND_FLAT)
-				.gradientBorder(PonderUI.COLOR_IDLE)
-				.at(-3, -3, 0)
-				.withBounds(maxWidth + 6, descHeight + 5)
-				.render(graphics);
+			.gradientBorder(PonderUI.COLOR_IDLE)
+			.at(-3, -3, 0)
+			.withBounds(maxWidth + 6, descHeight + 5)
+			.render(graphics);
 
 		ClientFontHelper.drawSplitString(graphics, poseStack, font, desc, 0, 0, maxWidth, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
 		poseStack.popPose();
@@ -228,7 +232,7 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 		poseStack.translate(0, -80, 0);
 		//at the middle of top edge now
 
-		for(ModTagsEntry entry : currentModTagEntries) {
+		for (ModTagsEntry entry : currentModTagEntries) {
 			poseStack.pushPose();
 			renderTagsEntry(graphics, entry);
 			poseStack.popPose();
@@ -252,10 +256,10 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 		poseStack.translate(-stringWidth / 2f, -20, 0);
 
 		new BoxElement().withBackground(PonderUI.BACKGROUND_FLAT)
-				.gradientBorder(PonderUI.COLOR_IDLE)
-				.at(-3, -1, 0)
-				.withBounds(stringWidth + 6, 10)
-				.render(graphics);
+			.gradientBorder(PonderUI.COLOR_IDLE)
+			.at(-3, -1, 0)
+			.withBounds(stringWidth + 6, 10)
+			.render(graphics);
 
 		graphics.drawString(font, categories, 0, 0, UIRenderHelper.COLOR_TEXT.getFirst().getRGB(), false);
 
@@ -263,7 +267,7 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 
 		int extraLength = Mth.clamp(entry.tagCount, 2, 8);
 
-		UIRenderHelper.streak(graphics,   0, 0, layoutHeight / 2, layoutHeight + 6, layoutWidth / 2 + extraLength * 15);
+		UIRenderHelper.streak(graphics, 0, 0, layoutHeight / 2, layoutHeight + 6, layoutWidth / 2 + extraLength * 15);
 		UIRenderHelper.streak(graphics, 180, 0, layoutHeight / 2, layoutHeight + 6, layoutWidth / 2 + extraLength * 15);
 
 	}
@@ -297,10 +301,11 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 	}
 
 	public record ModTagsEntry(
-			String modName,
-			int tagCount,
-			Rect2i layoutArea,
-			int yPos
-	) {}
+		String modName,
+		int tagCount,
+		Rect2i layoutArea,
+		int yPos
+	) {
+	}
 
 }

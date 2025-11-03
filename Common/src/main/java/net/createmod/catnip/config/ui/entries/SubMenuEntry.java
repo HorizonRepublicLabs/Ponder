@@ -19,8 +19,8 @@ public class SubMenuEntry extends ConfigScreenList.LabeledEntry {
 		super(label);
 
 		button = new BoxWidget(0, 0, 35, 16)
-				.showingElement(PonderGuiTextures.ICON_CONFIG_OPEN.asStencil().at(10, 0))
-				.withCallback(() -> ScreenOpener.open(new SubMenuConfigScreen(parent, label, parent.type, spec, config)));
+			.showingElement(PonderGuiTextures.ICON_CONFIG_OPEN.asStencil().at(10, 0))
+			.withCallback(() -> ScreenOpener.open(new SubMenuConfigScreen(parent, label, parent.type, spec, config)));
 		button.modifyElement(e -> ((DelegatedStencilElement) e).withElementRenderer(BoxWidget.gradientFactory.apply(button)));
 
 		listeners.add(button);

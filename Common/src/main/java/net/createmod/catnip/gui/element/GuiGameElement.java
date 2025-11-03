@@ -2,7 +2,6 @@ package net.createmod.catnip.gui.element;
 
 import javax.annotation.Nullable;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.platform.Lighting;
@@ -82,7 +81,8 @@ public class GuiGameElement {
 		protected double scale = 1;
 		protected int color = 0xFFFFFF;
 		protected Vec3 rotationOffset = Vec3.ZERO;
-		@Nullable protected ILightingSettings customLighting = null;
+		@Nullable
+		protected ILightingSettings customLighting = null;
 
 		public GuiRenderBuilder atLocal(double x, double y, double z) {
 			this.xLocal = x;
@@ -168,7 +168,8 @@ public class GuiGameElement {
 
 		protected BakedModel blockModel;
 		protected BlockState blockState;
-		@Nullable protected BlockEntity blockEntity;
+		@Nullable
+		protected BlockEntity blockEntity;
 
 		public GuiBlockModelRenderBuilder(BakedModel blockmodel, @Nullable BlockState blockState, @Nullable BlockEntity blockEntity) {
 			this.blockState = blockState == null ? Blocks.AIR.defaultBlockState() : blockState;
@@ -212,9 +213,9 @@ public class GuiGameElement {
 
 		public GuiBlockEntityRenderBuilder(BlockState blockState, BlockEntity blockEntity) {
 			super(
-					Minecraft.getInstance().getBlockRenderer().getBlockModel(blockState),
-					blockState,
-					blockEntity
+				Minecraft.getInstance().getBlockRenderer().getBlockModel(blockState),
+				blockState,
+				blockEntity
 			);
 		}
 
@@ -226,18 +227,18 @@ public class GuiGameElement {
 		}
 
 		private void renderBlockEntity(BlockRenderDispatcher blockRenderer, MultiBufferSource.BufferSource buffer, PoseStack ms) {
-            if (blockEntity == null)
+			if (blockEntity == null)
 				return;
 
-            BlockEntityRenderer<BlockEntity> renderer = Minecraft.getInstance().getBlockEntityRenderDispatcher().getRenderer(blockEntity);
-            if (renderer == null)
+			BlockEntityRenderer<BlockEntity> renderer = Minecraft.getInstance().getBlockEntityRenderDispatcher().getRenderer(blockEntity);
+			if (renderer == null)
 				return;
 
-            BlockState stateBefore = blockEntity.getBlockState();
-            blockEntity.setBlockState(blockState);
-            renderer.render(blockEntity, /*partials*/0, ms, buffer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
-            blockEntity.setBlockState(stateBefore);
-        }
+			BlockState stateBefore = blockEntity.getBlockState();
+			blockEntity.setBlockState(blockState);
+			renderer.render(blockEntity, /*partials*/0, ms, buffer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
+			blockEntity.setBlockState(stateBefore);
+		}
 	}
 
 	public static class GuiBlockStateRenderBuilder extends GuiBlockModelRenderBuilder {

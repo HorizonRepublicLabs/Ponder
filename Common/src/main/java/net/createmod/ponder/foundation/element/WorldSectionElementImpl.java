@@ -61,9 +61,12 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 
 	private static final ThreadLocal<ThreadLocalObjects> THREAD_LOCAL_OBJECTS = ThreadLocal.withInitial(ThreadLocalObjects::new);
 
-	@Nullable List<BlockEntity> renderedBlockEntities;
-	@Nullable List<Pair<BlockEntity, Consumer<Level>>> tickableBlockEntities;
-	@Nullable Selection section;
+	@Nullable
+	List<BlockEntity> renderedBlockEntities;
+	@Nullable
+	List<Pair<BlockEntity, Consumer<Level>>> tickableBlockEntities;
+	@Nullable
+	Selection section;
 	boolean redraw;
 
 	Vec3 prevAnimatedOffset = Vec3.ZERO;
@@ -71,11 +74,14 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 	Vec3 prevAnimatedRotation = Vec3.ZERO;
 	Vec3 animatedRotation = Vec3.ZERO;
 	Vec3 centerOfRotation = Vec3.ZERO;
-	@Nullable Vec3 stabilizationAnchor = null;
+	@Nullable
+	Vec3 stabilizationAnchor = null;
 
-	@Nullable BlockPos selectedBlock;
+	@Nullable
+	BlockPos selectedBlock;
 
-	public WorldSectionElementImpl() {}
+	public WorldSectionElementImpl() {
+	}
 
 	public WorldSectionElementImpl(Selection section) {
 		this.section = section.copy();
@@ -201,7 +207,7 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 			.subtract(transformedTarget)
 			.lengthSqr()
 			/ source.subtract(target)
-				.lengthSqr();
+			.lengthSqr();
 		Vec3 actualHit = VecHelper.lerp((float) t, target, source);
 		return Pair.of(actualHit, rayTraceBlocks);
 	}
@@ -210,7 +216,7 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 		float pt = AnimationTickHolder.getPartialTicks();
 		in = in.subtract(VecHelper.lerp(pt, prevAnimatedOffset, animatedOffset));
 		if (!animatedRotation.equals(Vec3.ZERO) || !prevAnimatedRotation.equals(Vec3.ZERO)) {
-            double rotX = Mth.lerp(pt, prevAnimatedRotation.x, animatedRotation.x);
+			double rotX = Mth.lerp(pt, prevAnimatedRotation.x, animatedRotation.x);
 			double rotZ = Mth.lerp(pt, prevAnimatedRotation.z, animatedRotation.z);
 			double rotY = Mth.lerp(pt, prevAnimatedRotation.y, animatedRotation.y);
 			in = in.subtract(centerOfRotation);
@@ -234,7 +240,7 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 		Vec3 vec = VecHelper.lerp(pt, prevAnimatedOffset, animatedOffset);
 		ms.translate(vec.x, vec.y, vec.z);
 		if (!animatedRotation.equals(Vec3.ZERO) || !prevAnimatedRotation.equals(Vec3.ZERO)) {
-            double rotX = Mth.lerp(pt, prevAnimatedRotation.x, animatedRotation.x);
+			double rotX = Mth.lerp(pt, prevAnimatedRotation.x, animatedRotation.x);
 			double rotZ = Mth.lerp(pt, prevAnimatedRotation.z, animatedRotation.z);
 			double rotY = Mth.lerp(pt, prevAnimatedRotation.y, animatedRotation.y);
 
@@ -425,8 +431,7 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 
 			} catch (Exception e) {
 				iterator.remove();
-				String message = "BlockEntity " + RegisteredObjectsHelper.getKeyOrThrow(tile.getType())
-						.toString() + " could not be rendered virtually.";
+				String message = "BlockEntity " + RegisteredObjectsHelper.getKeyOrThrow(tile.getType()) + " could not be rendered virtually.";
 				Ponder.LOGGER.error(message, e);
 			}
 

@@ -6,8 +6,6 @@ import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.network.chat.Component;
-
 import org.lwjgl.opengl.GL30;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -21,13 +19,15 @@ import net.createmod.catnip.platform.CatnipClientServices;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.Style;
 
 public class ConfirmationScreen extends AbstractSimiScreen {
 
 	private Screen source;
-	private Consumer<Response> action = _success -> {};
+	private Consumer<Response> action = _success -> {
+	};
 	private final List<FormattedText> text = new ArrayList<>();
 	private boolean centered = false;
 	private int x;
@@ -118,8 +118,8 @@ public class ConfirmationScreen extends AbstractSimiScreen {
 		textWidth = 300;
 
 		if (centered) {
-			x = width/2 - textWidth/2 - 2;
-			y = height/2 - textHeight/2 - 16;
+			x = width / 2 - textWidth / 2 - 2;
+			y = height / 2 - textHeight / 2 - 16;
 		} else {
 			x = Math.max(0, x - textWidth / 2);
 			y = Math.max(0, y -= textHeight);
@@ -136,7 +136,7 @@ public class ConfirmationScreen extends AbstractSimiScreen {
 		int buttonX = x + textWidth / 2 - 6 - (int) (70 * (tristate ? 1.5f : 1));
 
 		TextStencilElement confirmText =
-				new TextStencilElement(font, Component.translatable(tristate ? "catnip.ui.save_label" : "catnip.ui.confirm_label")).centered(true, true);
+			new TextStencilElement(font, Component.translatable(tristate ? "catnip.ui.save_label" : "catnip.ui.confirm_label")).centered(true, true);
 		confirm = new BoxWidget(buttonX, y + textHeight + 6, 70, 16).withCallback(() -> accept(Response.Confirm));
 		confirm.showingElement(confirmText.withElementRenderer(BoxWidget.gradientFactory.apply(confirm)));
 		addRenderableWidget(confirm);
@@ -145,26 +145,26 @@ public class ConfirmationScreen extends AbstractSimiScreen {
 
 		if (tristate) {
 			TextStencilElement confirmDontSaveText =
-					new TextStencilElement(font, Component.translatable("catnip.ui.dont_save_label")).centered(true, true);
+				new TextStencilElement(font, Component.translatable("catnip.ui.dont_save_label")).centered(true, true);
 			confirmDontSave =
-					new BoxWidget(buttonX, y + textHeight + 6, 70, 16).withCallback(() -> accept(Response.ConfirmDontSave));
+				new BoxWidget(buttonX, y + textHeight + 6, 70, 16).withCallback(() -> accept(Response.ConfirmDontSave));
 			confirmDontSave.showingElement(
-					confirmDontSaveText.withElementRenderer(BoxWidget.gradientFactory.apply(confirmDontSave)));
+				confirmDontSaveText.withElementRenderer(BoxWidget.gradientFactory.apply(confirmDontSave)));
 			addRenderableWidget(confirmDontSave);
 			buttonX += 12 + 70;
 		}
 
 		TextStencilElement cancelText = new TextStencilElement(font, Component.translatable("catnip.ui.cancel_label")).centered(true, true);
 		cancel = new BoxWidget(buttonX, y + textHeight + 6, 70, 16)
-				.withCallback(() -> accept(Response.Cancel));
+			.withCallback(() -> accept(Response.Cancel));
 		cancel.showingElement(cancelText.withElementRenderer(BoxWidget.gradientFactory.apply(cancel)));
 		addRenderableWidget(cancel);
 
 		textBackground = new BoxElement()
-				.withBackground(BoxElement.COLOR_BACKGROUND_FLAT)
-				.gradientBorder(AbstractSimiWidget.COLOR_DISABLED)
-				.withBounds(width + 10, textHeight + 35)
-				.at(-5, y - 5);
+			.withBackground(BoxElement.COLOR_BACKGROUND_FLAT)
+			.gradientBorder(AbstractSimiWidget.COLOR_DISABLED)
+			.withBounds(width + 10, textHeight + 35)
+			.at(-5, y - 5);
 
 		if (text.size() == 1)
 			x = (width - font.width(text.get(0))) / 2;

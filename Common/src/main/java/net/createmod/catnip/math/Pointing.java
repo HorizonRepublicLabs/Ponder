@@ -11,7 +11,7 @@ public enum Pointing implements StringRepresentable {
 
 	private final int xRotation;
 
-	private Pointing(int xRotation) {
+	Pointing(int xRotation) {
 		this.xRotation = xRotation;
 	}
 

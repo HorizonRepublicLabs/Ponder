@@ -8,8 +8,10 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 
 public class SpriteShiftEntry {
-	@Nullable protected StitchedSprite original;
-	@Nullable protected StitchedSprite target;
+	@Nullable
+	protected StitchedSprite original;
+	@Nullable
+	protected StitchedSprite target;
 
 	public void set(ResourceLocation originalLocation, ResourceLocation targetLocation) {
 		original = new StitchedSprite(originalLocation);

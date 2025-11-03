@@ -18,7 +18,6 @@ import net.createmod.catnip.gui.widget.BoxWidget;
 import net.createmod.catnip.layout.LayoutHelper;
 import net.createmod.catnip.layout.PaginationState;
 import net.createmod.catnip.registry.RegisteredObjectsHelper;
-import net.createmod.catnip.platform.CatnipServices;
 import net.createmod.ponder.enums.PonderGuiTextures;
 import net.createmod.ponder.foundation.PonderIndex;
 import net.createmod.ponder.foundation.registration.PonderIndexExclusionHelper;
@@ -41,8 +40,10 @@ public class PonderIndexScreen extends AbstractPonderScreen {
 	protected int maxItemsPerRow;
 	protected int maxItemsPerPage;
 
-	@Nullable protected PonderButton nextPage;
-	@Nullable protected PonderButton prevPage;
+	@Nullable
+	protected PonderButton nextPage;
+	@Nullable
+	protected PonderButton prevPage;
 
 	private ItemStack hoveredItem = ItemStack.EMPTY;
 
@@ -52,8 +53,8 @@ public class PonderIndexScreen extends AbstractPonderScreen {
 		items = new ArrayList<>();
 		// collect exclusions once at screen creation instead of every time they are needed
 		exclusions = PonderIndex.streamPlugins()
-				.flatMap(PonderIndexExclusionHelper::pluginToExclusions)
-				.toList();
+			.flatMap(PonderIndexExclusionHelper::pluginToExclusions)
+			.toList();
 	}
 
 	@Override
@@ -62,14 +63,14 @@ public class PonderIndexScreen extends AbstractPonderScreen {
 
 		items.clear();
 		PonderIndex.getSceneAccess()
-				.getRegisteredEntries()
-				.stream()
-				.map(Map.Entry::getKey)
-				.distinct()
-				.map(key -> new ItemEntry(RegisteredObjectsHelper.getItemOrBlock(key), key))
-				.filter(entry -> entry.item != null)
-				.filter(this::isItemIncluded)
-				.forEach(items::add);
+			.getRegisteredEntries()
+			.stream()
+			.map(Map.Entry::getKey)
+			.distinct()
+			.map(key -> new ItemEntry(RegisteredObjectsHelper.getItemOrBlock(key), key))
+			.filter(entry -> entry.item != null)
+			.filter(this::isItemIncluded)
+			.forEach(items::add);
 
 		items.sort(Comparator.comparing(ItemEntry::key));
 
@@ -93,21 +94,21 @@ public class PonderIndexScreen extends AbstractPonderScreen {
 			return;
 
 		addRenderableWidget(prevPage = new PonderButton(centerX - 100, maxScreenArea.getY() + maxScreenArea.getHeight() + 10)
-				.showing(PonderGuiTextures.ICON_PONDER_LEFT)
-				.withCallback(() -> {
-					paginationState.previousPage();
-					updateAfterPaginationChange();
-				})
-				.setActive(false)
+			.showing(PonderGuiTextures.ICON_PONDER_LEFT)
+			.withCallback(() -> {
+				paginationState.previousPage();
+				updateAfterPaginationChange();
+			})
+			.setActive(false)
 		);
 
 		addRenderableWidget(nextPage = new PonderButton(centerX + 80, maxScreenArea.getY() + maxScreenArea.getHeight() + 10)
-				.showing(PonderGuiTextures.ICON_PONDER_RIGHT)
-				.withCallback(() -> {
-					paginationState.nextPage();
-					updateAfterPaginationChange();
-				})
-				.setActive(true)
+			.showing(PonderGuiTextures.ICON_PONDER_RIGHT)
+			.withCallback(() -> {
+				paginationState.nextPage();
+				updateAfterPaginationChange();
+			})
+			.setActive(true)
 		);
 
 		prevPage.updateGradientFromState();
@@ -128,14 +129,14 @@ public class PonderIndexScreen extends AbstractPonderScreen {
 		paginationState.iterateForCurrentPage((iPage, iOverall) -> {
 			ItemEntry entry = items.get(iOverall);
 			PonderButton b = new PonderButton(centerX + layoutHelper.getX() + 4, centerY + layoutHelper.getY() + 4)
-					.showing(new ItemStack(entry.item))
-					.withCallback((x, y) -> {
-						if (!PonderIndex.getSceneAccess().doScenesExistForId(entry.key))
-							return;
+				.showing(new ItemStack(entry.item))
+				.withCallback((x, y) -> {
+					if (!PonderIndex.getSceneAccess().doScenesExistForId(entry.key))
+						return;
 
-						centerScalingOn(x, y);
-						ScreenOpener.transitionTo(PonderUI.of(new ItemStack(entry.item)));
-					});
+					centerScalingOn(x, y);
+					ScreenOpener.transitionTo(PonderUI.of(new ItemStack(entry.item)));
+				});
 			paginatedWidgets.add(b);
 			addRenderableWidget(b);
 			layoutHelper.next();
@@ -158,8 +159,8 @@ public class PonderIndexScreen extends AbstractPonderScreen {
 
 	private boolean isItemIncluded(ItemEntry entry) {
 		return exclusions
-				.stream()
-				.noneMatch(predicate -> predicate.test(entry.item));
+			.stream()
+			.noneMatch(predicate -> predicate.test(entry.item));
 	}
 
 	@Override
@@ -241,6 +242,7 @@ public class PonderIndexScreen extends AbstractPonderScreen {
 		return true;
 	}
 
-	public record ItemEntry(@Nullable ItemLike item, ResourceLocation key) {}
+	public record ItemEntry(@Nullable ItemLike item, ResourceLocation key) {
+	}
 
 }

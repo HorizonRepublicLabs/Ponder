@@ -4,10 +4,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
-import net.createmod.ponder.mixin.accessor.EntityAccessor;
-
 import org.jetbrains.annotations.Nullable;
 
+import net.createmod.ponder.mixin.accessor.EntityAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -47,7 +46,7 @@ public class WrappedLevel extends Level {
 
 	public WrappedLevel(Level level) {
 		super((WritableLevelData) level.getLevelData(), level.dimension(), level.registryAccess(), level.dimensionTypeRegistration(),
-			  level::getProfiler, level.isClientSide, level.isDebug(), 0, 0);
+			level::getProfiler, level.isClientSide, level.isDebug(), 0, 0);
 		this.level = level;
 	}
 
@@ -111,7 +110,8 @@ public class WrappedLevel extends Level {
 	}
 
 	@Override
-	public void levelEvent(@Nullable Player player, int type, BlockPos pos, int data) {}
+	public void levelEvent(@Nullable Player player, int type, BlockPos pos, int data) {
+	}
 
 	@Override
 	public List<? extends Player> players() {
@@ -120,19 +120,23 @@ public class WrappedLevel extends Level {
 
 	@Override
 	public void playSeededSound(Player pPlayer, double pX, double pY, double pZ, Holder<SoundEvent> pSound,
-								SoundSource pSource, float pVolume, float pPitch, long pSeed) {}
+								SoundSource pSource, float pVolume, float pPitch, long pSeed) {
+	}
 
 	@Override
 	public void playSeededSound(Player pPlayer, Entity pEntity, Holder<SoundEvent> pSound, SoundSource pCategory,
-								float pVolume, float pPitch, long pSeed) {}
+								float pVolume, float pPitch, long pSeed) {
+	}
 
 	@Override
 	public void playSound(@Nullable Player player, double x, double y, double z, SoundEvent soundIn,
-		SoundSource category, float volume, float pitch) {}
+						  SoundSource category, float volume, float pitch) {
+	}
 
 	@Override
 	public void playSound(@Nullable Player p_217384_1_, Entity p_217384_2_, SoundEvent p_217384_3_,
-		SoundSource p_217384_4_, float p_217384_5_, float p_217384_6_) {}
+						  SoundSource p_217384_4_, float p_217384_5_, float p_217384_6_) {
+	}
 
 	@Override
 	public Entity getEntity(int id) {
@@ -157,7 +161,8 @@ public class WrappedLevel extends Level {
 	}
 
 	@Override
-	public void setMapData(MapId mapId, MapItemSavedData mapItemSavedData) {}
+	public void setMapData(MapId mapId, MapItemSavedData mapItemSavedData) {
+	}
 
 	@Override
 	public MapId getFreeMapId() {
@@ -165,7 +170,8 @@ public class WrappedLevel extends Level {
 	}
 
 	@Override
-	public void destroyBlockProgress(int breakerId, BlockPos pos, int progress) {}
+	public void destroyBlockProgress(int breakerId, BlockPos pos, int progress) {
+	}
 
 	@Override
 	public Scoreboard getScoreboard() {
@@ -198,13 +204,16 @@ public class WrappedLevel extends Level {
 	}
 
 	@Override
-	public void updateNeighbourForOutputSignal(BlockPos p_175666_1_, Block p_175666_2_) {}
+	public void updateNeighbourForOutputSignal(BlockPos p_175666_1_, Block p_175666_2_) {
+	}
 
 	@Override
-	public void gameEvent(@Nullable Entity entity, Holder<GameEvent> gameEvent, Vec3 pos) {}
+	public void gameEvent(@Nullable Entity entity, Holder<GameEvent> gameEvent, Vec3 pos) {
+	}
 
 	@Override
-	public void gameEvent(Holder<GameEvent> holder, Vec3 vec3, GameEvent.Context context) {}
+	public void gameEvent(Holder<GameEvent> holder, Vec3 vec3, GameEvent.Context context) {
+	}
 
 	@Override
 	public String gatherChunkSourceStats() {
@@ -275,11 +284,17 @@ public class WrappedLevel extends Level {
 	}
 
 	// Neo's patched methods
-	public void setDayTimeFraction(float var1) {}
+	public void setDayTimeFraction(float var1) {
+	}
 
-	public float getDayTimeFraction() { return 0; }
+	public float getDayTimeFraction() {
+		return 0;
+	}
 
-	public float getDayTimePerTick() { return 0; }
+	public float getDayTimePerTick() {
+		return 0;
+	}
 
-	public void setDayTimePerTick(float var1) {}
+	public void setDayTimePerTick(float var1) {
+	}
 }

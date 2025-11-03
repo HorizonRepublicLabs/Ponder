@@ -9,7 +9,6 @@ import net.createmod.ponder.Ponder;
 import net.createmod.ponder.enums.PonderSpecialTextures;
 import net.createmod.ponder.mixin.client.accessor.RenderTypeAccessor;
 import net.minecraft.Util;
-import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 

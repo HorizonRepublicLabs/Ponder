@@ -7,20 +7,19 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
-import net.neoforged.fml.config.ModConfig;
-
-import net.neoforged.neoforge.common.ModConfigSpec;
-
 import org.apache.commons.lang3.tuple.Pair;
 
 import net.createmod.catnip.config.ConfigBase;
 import net.createmod.ponder.config.CClient;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class PonderConfig {
 
 	private static final Map<ModConfig.Type, ConfigBase> CONFIGS = new EnumMap<>(ModConfig.Type.class);
 
-	@Nullable private static CClient client;
+	@Nullable
+	private static CClient client;
 
 	private static <T extends ConfigBase> T register(Supplier<T> factory, ModConfig.Type side) {
 		Pair<T, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(builder -> {

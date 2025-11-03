@@ -35,7 +35,7 @@ public interface StoryBoardEntry {
 	 * inside the PonderUI, will order this scene somewhere <i>before</i> the other scene.
 	 * only has an effect if a scene with the given id can be found.
 	 *
-	 * @param namespace modId of the mod that added the other scene
+	 * @param namespace    modId of the mod that added the other scene
 	 * @param otherSceneId id of the scene that should appear after this one
 	 * @return this StoryBoardEntry
 	 */
@@ -58,7 +58,7 @@ public interface StoryBoardEntry {
 	 * inside the PonderUI, will order this scene somewhere <i>after</i> the other scene.
 	 * only has an effect if a scene with the given id can be found.
 	 *
-	 * @param namespace modId of the mod that added the other scene
+	 * @param namespace    modId of the mod that added the other scene
 	 * @param otherSceneId id of the scene that should appear before this one
 	 * @return this StoryBoardEntry
 	 */

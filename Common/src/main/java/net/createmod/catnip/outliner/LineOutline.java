@@ -50,7 +50,7 @@ public class LineOutline extends Outline {
 	public static class EndChasingLineOutline extends LineOutline {
 		private float progress = 0;
 		private float prevProgress = 0;
-		private boolean lockStart;
+		private final boolean lockStart;
 
 		private final Vector3d startTemp = new Vector3d(0, 0, 0);
 

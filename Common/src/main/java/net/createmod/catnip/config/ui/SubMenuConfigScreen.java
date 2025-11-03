@@ -13,14 +13,6 @@ import java.util.function.Consumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.createmod.catnip.config.ui.entries.StringEntry;
-import net.createmod.catnip.net.packets.ServerboundConfigPacket;
-import net.createmod.ponder.enums.PonderGuiTextures;
-
-import net.minecraft.network.chat.Component;
-import net.neoforged.fml.config.ModConfig;
-import net.neoforged.neoforge.common.ModConfigSpec;
-
 import org.lwjgl.glfw.GLFW;
 
 import com.electronwill.nightconfig.core.AbstractConfig;
@@ -31,6 +23,7 @@ import net.createmod.catnip.config.ui.ConfigScreenList.LabeledEntry;
 import net.createmod.catnip.config.ui.entries.BooleanEntry;
 import net.createmod.catnip.config.ui.entries.EnumEntry;
 import net.createmod.catnip.config.ui.entries.NumberEntry;
+import net.createmod.catnip.config.ui.entries.StringEntry;
 import net.createmod.catnip.config.ui.entries.SubMenuEntry;
 import net.createmod.catnip.config.ui.entries.ValueEntry;
 import net.createmod.catnip.data.Couple;
@@ -42,16 +35,21 @@ import net.createmod.catnip.gui.UIRenderHelper;
 import net.createmod.catnip.gui.element.DelegatedStencilElement;
 import net.createmod.catnip.gui.widget.AbstractSimiWidget;
 import net.createmod.catnip.gui.widget.BoxWidget;
-import net.createmod.catnip.platform.CatnipServices;
 import net.createmod.catnip.lang.FontHelper;
 import net.createmod.catnip.lang.FontHelper.Palette;
+import net.createmod.catnip.net.packets.ServerboundConfigPacket;
+import net.createmod.catnip.platform.CatnipServices;
 import net.createmod.catnip.theme.Color;
+import net.createmod.ponder.enums.PonderGuiTextures;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class SubMenuConfigScreen extends ConfigScreen {
 
@@ -60,12 +58,18 @@ public class SubMenuConfigScreen extends ConfigScreen {
 	protected UnmodifiableConfig configGroup;
 	protected ConfigScreenList list;
 
-	@Nullable protected BoxWidget resetAll;
-	@Nullable protected BoxWidget saveChanges;
-	@Nullable protected BoxWidget discardChanges;
-	@Nullable protected BoxWidget goBack;
-	@Nullable protected BoxWidget serverLocked;
-	@Nullable protected HintableTextFieldWidget search;
+	@Nullable
+	protected BoxWidget resetAll;
+	@Nullable
+	protected BoxWidget saveChanges;
+	@Nullable
+	protected BoxWidget discardChanges;
+	@Nullable
+	protected BoxWidget goBack;
+	@Nullable
+	protected BoxWidget serverLocked;
+	@Nullable
+	protected HintableTextFieldWidget search;
 	protected int listWidth;
 	protected String title;
 	protected Set<String> highlights = new HashSet<>();
@@ -77,7 +81,8 @@ public class SubMenuConfigScreen extends ConfigScreen {
 		SubMenuConfigScreen screen = new SubMenuConfigScreen(base, "root", path.getType(), spec, values);
 		List<String> remainingPath = Lists.newArrayList(path.getPath());
 
-		path: while (!remainingPath.isEmpty()) {
+		path:
+		while (!remainingPath.isEmpty()) {
 			String next = remainingPath.remove(0);
 			for (Map.Entry<String, Object> entry : values.valueMap().entrySet()) {
 				String key = entry.getKey();
@@ -185,64 +190,64 @@ public class SubMenuConfigScreen extends ConfigScreen {
 		int listR = this.width / 2 + listWidth / 2;
 
 		resetAll = new BoxWidget(listR + 10, yCenter - 25, 20, 20)
-				.withPadding(2, 2)
-				.withCallback((x, y) ->
-						new ConfirmationScreen()
-								.centered()
-								.withText(Component.translatable("catnip.ui.resetting_changes_message", type.toString()))
-								.withAction(success -> {
-									if (success)
-										resetConfig(spec.getValues());
-								})
-								.open(this)
-				);
+			.withPadding(2, 2)
+			.withCallback((x, y) ->
+				new ConfirmationScreen()
+					.centered()
+					.withText(Component.translatable("catnip.ui.resetting_changes_message", type.toString()))
+					.withAction(success -> {
+						if (success)
+							resetConfig(spec.getValues());
+					})
+					.open(this)
+			);
 
 		resetAll.showingElement(PonderGuiTextures.ICON_CONFIG_RESET.asStencil().withElementRenderer(BoxWidget.gradientFactory.apply(resetAll)));
 		resetAll.getToolTip().add(Component.translatable("catnip.ui.reset_all_button"));
 		resetAll.getToolTip().addAll(FontHelper.cutTextComponent(Component.translatable("catnip.ui.reset_all_button_tooltip"), Palette.ALL_GRAY));
 
 		saveChanges = new BoxWidget(listL - 30, yCenter - 25, 20, 20)
-				.withPadding(2, 2)
-				.withCallback((x, y) -> {
-					if (ConfigHelper.changes.isEmpty())
-						return;
+			.withPadding(2, 2)
+			.withCallback((x, y) -> {
+				if (ConfigHelper.changes.isEmpty())
+					return;
 
-					ConfirmationScreen confirm = new ConfirmationScreen()
-							.centered()
-							.withText(Component.translatable("catnip.ui.saving_changes_message", ConfigHelper.changes.size(), Component.translatable(ConfigHelper.changes.size() != 1 ? "catnip.ui.changed_values_plural" : "catnip.ui.changed_values_singular")))
-							.withAction(success -> {
-								if (success)
-									saveChanges();
-							});
+				ConfirmationScreen confirm = new ConfirmationScreen()
+					.centered()
+					.withText(Component.translatable("catnip.ui.saving_changes_message", ConfigHelper.changes.size(), Component.translatable(ConfigHelper.changes.size() != 1 ? "catnip.ui.changed_values_plural" : "catnip.ui.changed_values_singular")))
+					.withAction(success -> {
+						if (success)
+							saveChanges();
+					});
 
-					addAnnotationsToConfirm(confirm).open(this);
-				});
+				addAnnotationsToConfirm(confirm).open(this);
+			});
 		saveChanges.showingElement(PonderGuiTextures.ICON_CONFIG_SAVE.asStencil().withElementRenderer(BoxWidget.gradientFactory.apply(saveChanges)));
 		saveChanges.getToolTip().add(Component.translatable("catnip.ui.save_changes_button"));
 		saveChanges.getToolTip().addAll(FontHelper.cutTextComponent(Component.translatable("catnip.ui.save_changes_button_tooltip"), Palette.ALL_GRAY));
 
 		discardChanges = new BoxWidget(listL - 30, yCenter + 5, 20, 20)
-				.withPadding(2, 2)
-				.withCallback((x, y) -> {
-					if (ConfigHelper.changes.isEmpty())
-						return;
+			.withPadding(2, 2)
+			.withCallback((x, y) -> {
+				if (ConfigHelper.changes.isEmpty())
+					return;
 
-					new ConfirmationScreen()
-							.centered()
-						.withText(Component.translatable("catnip.ui.discarding_changes_message", ConfigHelper.changes.size(), Component.translatable(ConfigHelper.changes.size() != 1 ? "catnip.ui.value_changes_plural" : "catnip.ui.value_changes_singular")))
-							.withAction(success -> {
-								if (success)
-									clearChanges();
-							})
-							.open(this);
-				});
+				new ConfirmationScreen()
+					.centered()
+					.withText(Component.translatable("catnip.ui.discarding_changes_message", ConfigHelper.changes.size(), Component.translatable(ConfigHelper.changes.size() != 1 ? "catnip.ui.value_changes_plural" : "catnip.ui.value_changes_singular")))
+					.withAction(success -> {
+						if (success)
+							clearChanges();
+					})
+					.open(this);
+			});
 		discardChanges.showingElement(PonderGuiTextures.ICON_CONFIG_DISCARD.asStencil().withElementRenderer(BoxWidget.gradientFactory.apply(discardChanges)));
 		discardChanges.getToolTip().add(Component.translatable("catnip.ui.discard_changes_button"));
 		discardChanges.getToolTip().addAll(FontHelper.cutTextComponent(Component.translatable("catnip.ui.discard_changes_button_tooltip"), Palette.ALL_GRAY));
 
 		goBack = new BoxWidget(listL - 30, yCenter + 65, 20, 20)
-				.withPadding(2, 2)
-				.withCallback(this::attemptBackstep);
+			.withPadding(2, 2)
+			.withCallback(this::attemptBackstep);
 		goBack.showingElement(PonderGuiTextures.ICON_CONFIG_BACK.asStencil().withElementRenderer(BoxWidget.gradientFactory.apply(goBack)));
 		goBack.getToolTip().add(Component.translatable("catnip.ui.go_back_button"));
 
@@ -270,9 +275,9 @@ public class SubMenuConfigScreen extends ConfigScreen {
 				entry.path = key;
 				list.children().add(entry);
 				if (configGroup.valueMap()
-						.size() == 1)
+					.size() == 1)
 					ScreenOpener.open(
-							new SubMenuConfigScreen(parent, humanKey, type, spec, (UnmodifiableConfig) obj));
+						new SubMenuConfigScreen(parent, humanKey, type, spec, (UnmodifiableConfig) obj));
 
 			} else if (obj instanceof ModConfigSpec.ConfigValue<?> configValue) {
 				ModConfigSpec.ValueSpec valueSpec = spec.getSpec().getRaw(configValue.getPath());
@@ -303,8 +308,8 @@ public class SubMenuConfigScreen extends ConfigScreen {
 			int group = (e2 instanceof SubMenuEntry ? 1 : 0) - (e instanceof SubMenuEntry ? 1 : 0);
 			if (group == 0 && e instanceof LabeledEntry le && e2 instanceof LabeledEntry le2) {
 				return le.label.getComponent()
-						.getString()
-						.compareTo(le2.label.getComponent().getString());
+					.getString()
+					.compareTo(le2.label.getComponent().getString());
 			}
 			return group;
 		});
@@ -325,8 +330,8 @@ public class SubMenuConfigScreen extends ConfigScreen {
 		DelegatedStencilElement stencil = new DelegatedStencilElement();
 
 		serverLocked = new BoxWidget(listR + 10, yCenter + 5, 20, 20)
-				.withPadding(2, 2)
-				.showingElement(stencil);
+			.withPadding(2, 2)
+			.showingElement(stencil);
 
 		if (!canEdit) {
 			list.children().forEach(e -> e.setEditable(false));
@@ -437,9 +442,9 @@ public class SubMenuConfigScreen extends ConfigScreen {
 
 	public void showLeavingPrompt(Consumer<Response> action) {
 		ConfirmationScreen screen = new ConfirmationScreen()
-				.centered()
-				.withThreeActions(action)
-				.addText(Component.translatable("catnip.ui.leaving_with_changes_message", ConfigHelper.changes.size(), Component.translatable(ConfigHelper.changes.size() != 1 ? "catnip.ui.value_changes_plural" : "catnip.ui.value_changes_singular")));
+			.centered()
+			.withThreeActions(action)
+			.addText(Component.translatable("catnip.ui.leaving_with_changes_message", ConfigHelper.changes.size(), Component.translatable(ConfigHelper.changes.size() != 1 ? "catnip.ui.value_changes_plural" : "catnip.ui.value_changes_singular")));
 
 		addAnnotationsToConfirm(screen).open(this);
 	}

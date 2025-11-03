@@ -1,11 +1,11 @@
 package net.createmod.catnip.data;
 
+import java.util.Objects;
+
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.network.codec.StreamCodec;
-
-import java.util.Objects;
 
 public class Pair<F, S> {
 
@@ -45,8 +45,7 @@ public class Pair<F, S> {
 	public boolean equals(final Object obj) {
 		if (obj == this)
 			return true;
-		if (obj instanceof Pair) {
-			final Pair<?, ?> other = (Pair<?, ?>) obj;
+		if (obj instanceof Pair<?, ?> other) {
 			return Objects.equals(first, other.first) && Objects.equals(second, other.second);
 		}
 		return false;

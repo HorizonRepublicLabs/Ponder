@@ -43,7 +43,8 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 	protected final LerpedFloat arrowAnimation = LerpedFloat.linear()
 		.startWithValue(0)
 		.chase(0, 0.075f, LerpedFloat.Chaser.LINEAR);
-	@Nullable protected BoxWidget backTrack;
+	@Nullable
+	protected BoxWidget backTrack;
 
 	public NavigatableSimiScreen() {
 		Window window = Minecraft.getInstance().getWindow();
@@ -74,12 +75,12 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 			return;
 
 		addRenderableWidget(backTrack = new BoxWidget(31, height - 31 - 20)
-				.withBounds(20, 20)
-				.withCustomBackground(BoxElement.COLOR_BACKGROUND_FLAT)
-				.enableFade(0, 5)
-				.withPadding(2, 2)
-				.fade(1)
-				.withCallback(() -> ScreenOpener.openPreviousScreen(this, null)));
+			.withBounds(20, 20)
+			.withCustomBackground(BoxElement.COLOR_BACKGROUND_FLAT)
+			.enableFade(0, 5)
+			.withPadding(2, 2)
+			.fade(1)
+			.withCallback(() -> ScreenOpener.openPreviousScreen(this, null)));
 
 		Screen previousScreen = screenHistory.get(0);
 		if (previousScreen instanceof NavigatableSimiScreen screen) {
@@ -101,13 +102,13 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 	protected Component backTrackingComponent() {
 		if (ScreenOpener.getBackStepScreen() instanceof NavigatableSimiScreen) {
 			return Lang.builder("catnip")
-					.translate("gui.step_back")
-					.component();
+				.translate("gui.step_back")
+				.component();
 		}
 
 		return Lang.builder("catnip")
-				.translate("gui.exit")
-				.component();
+			.translate("gui.exit")
+			.component();
 	}
 
 	@Override
@@ -243,7 +244,8 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 		return false;
 	}
 
-	public void shareContextWith(NavigatableSimiScreen other) {}
+	public void shareContextWith(NavigatableSimiScreen other) {
+	}
 
 	protected void renderZeloBreadcrumbs(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
 		List<Screen> history = ScreenOpener.getScreenHistory();
@@ -275,7 +277,7 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 		names.forEach(s -> {
 			int sWidth = font.width(s);
 			UIRenderHelper.breadcrumbArrow(graphics, x.getValue(), y.getValue(), 0, sWidth + spacing, 14, spacing / 2,
-					new Color(0xdd101010), new Color(0x44101010));
+				new Color(0xdd101010), new Color(0x44101010));
 			graphics.drawString(font, s, x.getValue() + 5, y.getValue() + 3, first.getValue() ? 0xffeeffee : 0xffddeeff);
 			first.setFalse();
 

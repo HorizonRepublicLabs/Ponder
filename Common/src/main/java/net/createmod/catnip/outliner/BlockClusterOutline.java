@@ -58,7 +58,7 @@ public class BlockClusterOutline extends Outline {
 
 		ms.pushPose();
 		ms.translate(cluster.anchor.getX() - camera.x, cluster.anchor.getY() - camera.y,
-				cluster.anchor.getZ() - camera.z);
+			cluster.anchor.getZ() - camera.z);
 
 		PoseStack.Pose pose = ms.last();
 		RenderType renderType = PonderRenderTypes.outlineTranslucent(faceTexture.getLocation(), true);
@@ -84,7 +84,7 @@ public class BlockClusterOutline extends Outline {
 
 		ms.pushPose();
 		ms.translate(cluster.anchor.getX() - camera.x, cluster.anchor.getY() - camera.y,
-				cluster.anchor.getZ() - camera.z);
+			cluster.anchor.getZ() - camera.z);
 
 		PoseStack.Pose pose = ms.last();
 		VertexConsumer consumer = buffer.getBuffer(PonderRenderTypes.outlineSolid());
@@ -168,10 +168,10 @@ public class BlockClusterOutline extends Outline {
 		Vector3f normal = normalTemp;
 
 		loadFaceData(face, pos0, pos1, pos2, pos3, normal);
-		addPos(pos.getX() + face.getStepX() * 1 / 128f,
-				pos.getY() + face.getStepY() * 1 / 128f,
-				pos.getZ() + face.getStepZ() * 1 / 128f,
-				pos0, pos1, pos2, pos3);
+		addPos(pos.getX() + face.getStepX() / 128f,
+			pos.getY() + face.getStepY() / 128f,
+			pos.getZ() + face.getStepZ() / 128f,
+			pos0, pos1, pos2, pos3);
 
 		bufferQuad(pose, consumer, pos0, pos1, pos2, pos3, color, lightmap, normal);
 	}
@@ -179,8 +179,8 @@ public class BlockClusterOutline extends Outline {
 	private static class Cluster {
 
 		private BlockPos anchor;
-		private Map<MergeEntry, AxisDirection> visibleFaces;
-		private Set<MergeEntry> visibleEdges;
+		private final Map<MergeEntry, AxisDirection> visibleFaces;
+		private final Set<MergeEntry> visibleEdges;
 
 		public Cluster() {
 			visibleEdges = new HashSet<>();
@@ -242,8 +242,8 @@ public class BlockClusterOutline extends Outline {
 
 	private static class MergeEntry {
 
-		private Axis axis;
-		private BlockPos pos;
+		private final Axis axis;
+		private final BlockPos pos;
 
 		public MergeEntry(Axis axis, BlockPos pos) {
 			this.axis = axis;
@@ -254,10 +254,9 @@ public class BlockClusterOutline extends Outline {
 		public boolean equals(Object o) {
 			if (this == o)
 				return true;
-			if (!(o instanceof MergeEntry))
+			if (!(o instanceof MergeEntry other))
 				return false;
 
-			MergeEntry other = (MergeEntry) o;
 			return this.axis == other.axis && this.pos.equals(other.pos);
 		}
 

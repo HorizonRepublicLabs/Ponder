@@ -6,6 +6,6 @@ import net.minecraft.client.gui.GuiGraphics;
 
 public interface PonderOverlayElement extends PonderElement {
 
-    void render(PonderScene scene, PonderUI screen, GuiGraphics graphics, float partialTicks);
+	void render(PonderScene scene, PonderUI screen, GuiGraphics graphics, float partialTicks);
 
 }

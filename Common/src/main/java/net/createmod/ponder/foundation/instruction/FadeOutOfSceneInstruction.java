@@ -8,8 +8,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class FadeOutOfSceneInstruction<T extends AnimatedSceneElement> extends TickingInstruction {
 
-	private Direction fadeOutTo;
-	private ElementLink<T> link;
+	private final Direction fadeOutTo;
+	private final ElementLink<T> link;
 	private T element;
 
 	public FadeOutOfSceneInstruction(int fadeOutTicks, Direction fadeOutTo, ElementLink<T> link) {
@@ -28,7 +28,7 @@ public class FadeOutOfSceneInstruction<T extends AnimatedSceneElement> extends T
 		element.setFade(1);
 		element.setFadeVec(fadeOutTo == null ? Vec3.ZERO
 			: Vec3.atLowerCornerOf(fadeOutTo.getNormal())
-				.scale(.5f));
+			.scale(.5f));
 	}
 
 	@Override

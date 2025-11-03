@@ -32,17 +32,17 @@ public class Color {
 
 	public Color(int r, int g, int b, int a) {
 		value = ((a & 0xff) << 24) |
-				((r & 0xff) << 16) |
-				((g & 0xff) << 8)  |
-				((b & 0xff) << 0);
+			((r & 0xff) << 16) |
+			((g & 0xff) << 8) |
+			((b & 0xff) << 0);
 	}
 
 	public Color(float r, float g, float b, float a) {
 		this(
-				(int) (0.5 + 0xff * Mth.clamp(r, 0, 1)),
-				(int) (0.5 + 0xff * Mth.clamp(g, 0, 1)),
-				(int) (0.5 + 0xff * Mth.clamp(b, 0, 1)),
-				(int) (0.5 + 0xff * Mth.clamp(a, 0, 1))
+			(int) (0.5 + 0xff * Mth.clamp(r, 0, 1)),
+			(int) (0.5 + 0xff * Mth.clamp(g, 0, 1)),
+			(int) (0.5 + 0xff * Mth.clamp(b, 0, 1)),
+			(int) (0.5 + 0xff * Mth.clamp(a, 0, 1))
 		);
 	}
 
@@ -141,6 +141,7 @@ public class Color {
 	/**
 	 * Returns the RGB value representing this color
 	 * (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue).
+	 *
 	 * @return the RGB value of the color
 	 */
 	public int getRGB() {
@@ -205,10 +206,10 @@ public class Color {
 
 	public Color mixWith(Color other, float weight) {
 		return ensureMutable()
-				.setRedUnchecked((int) (getRed() + (other.getRed() - getRed()) * weight))
-				.setGreenUnchecked((int) (getGreen() + (other.getGreen() - getGreen()) * weight))
-				.setBlueUnchecked((int) (getBlue() + (other.getBlue() - getBlue()) * weight))
-				.setAlphaUnchecked((int) (getAlpha() + (other.getAlpha() - getAlpha()) * weight));
+			.setRedUnchecked((int) (getRed() + (other.getRed() - getRed()) * weight))
+			.setGreenUnchecked((int) (getGreen() + (other.getGreen() - getGreen()) * weight))
+			.setBlueUnchecked((int) (getBlue() + (other.getBlue() - getBlue()) * weight))
+			.setAlphaUnchecked((int) (getAlpha() + (other.getAlpha() - getAlpha()) * weight));
 	}
 
 	public Color darker() {
@@ -271,10 +272,10 @@ public class Color {
 
 	public static Color mixColors(@Nonnull Color c1, @Nonnull Color c2, float w) {
 		return new Color(
-				(int) (c1.getRed() + (c2.getRed() - c1.getRed()) * w),
-				(int) (c1.getGreen() + (c2.getGreen() - c1.getGreen()) * w),
-				(int) (c1.getBlue() + (c2.getBlue() - c1.getBlue()) * w),
-				(int) (c1.getAlpha() + (c2.getAlpha() - c1.getAlpha()) * w)
+			(int) (c1.getRed() + (c2.getRed() - c1.getRed()) * w),
+			(int) (c1.getGreen() + (c2.getGreen() - c1.getGreen()) * w),
+			(int) (c1.getBlue() + (c2.getBlue() - c1.getBlue()) * w),
+			(int) (c1.getAlpha() + (c2.getAlpha() - c1.getAlpha()) * w)
 		);
 	}
 
@@ -293,7 +294,7 @@ public class Color {
 		int b2 = color2 & 0xFF;
 
 		return
-				((int) (a1 + (a2 - a1) * w) << 24) +
+			((int) (a1 + (a2 - a1) * w) << 24) +
 				((int) (r1 + (r2 - r1) * w) << 16) +
 				((int) (g1 + (g2 - g1) * w) << 8) +
 				((int) (b1 + (b2 - b1) * w) << 0);
@@ -323,7 +324,7 @@ public class Color {
 
 	public static Color generateFromLong(long l) {
 		return rainbowColor(Hashing.crc32().hashLong(l).asInt())
-				.mixWith(WHITE, 0.5f);
+			.mixWith(WHITE, 0.5f);
 	}
 
 }

@@ -1,5 +1,8 @@
 package net.createmod.catnip.data;
 
+import java.util.Comparator;
+import java.util.function.Function;
+
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
@@ -7,9 +10,6 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-
-import java.util.Comparator;
-import java.util.function.Function;
 
 public class LongAttached<V> extends Pair<Long, V> {
 	protected LongAttached(Long first, V second) {

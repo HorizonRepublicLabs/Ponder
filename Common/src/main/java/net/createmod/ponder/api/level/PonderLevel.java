@@ -50,7 +50,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class PonderLevel extends SchematicLevel {
 
-	@Nullable public PonderScene scene;
+	@Nullable
+	public PonderScene scene;
 
 	protected Map<BlockPos, BlockState> originalBlocks;
 	protected Map<BlockPos, CompoundTag> originalBlockEntities;
@@ -61,7 +62,8 @@ public class PonderLevel extends SchematicLevel {
 	protected PonderWorldParticles particles;
 
 	int overrideLight;
-	@Nullable Selection mask;
+	@Nullable
+	Selection mask;
 	boolean currentlyTickingEntities;
 
 	public PonderLevel(BlockPos anchor, Level original) {
@@ -187,10 +189,10 @@ public class PonderLevel extends SchematicLevel {
 	}
 
 	private void renderEntity(Entity entity, double x, double y, double z, float pt, PoseStack ms,
-		MultiBufferSource buffer) {
-		double d0 = Mth.lerp((double) pt, entity.xOld, entity.getX());
-		double d1 = Mth.lerp((double) pt, entity.yOld, entity.getY());
-		double d2 = Mth.lerp((double) pt, entity.zOld, entity.getZ());
+							  MultiBufferSource buffer) {
+		double d0 = Mth.lerp(pt, entity.xOld, entity.getX());
+		double d1 = Mth.lerp(pt, entity.yOld, entity.getY());
+		double d2 = Mth.lerp(pt, entity.zOld, entity.getZ());
 		float f = Mth.lerp(pt, entity.yRotO, entity.getYRot());
 		EntityRenderDispatcher renderManager = Minecraft.getInstance()
 			.getEntityRenderDispatcher();
@@ -208,7 +210,7 @@ public class PonderLevel extends SchematicLevel {
 
 		particles.tick();
 
-		for (Iterator<Entity> iterator = entities.iterator(); iterator.hasNext();) {
+		for (Iterator<Entity> iterator = entities.iterator(); iterator.hasNext(); ) {
 			Entity entity = iterator.next();
 
 			entity.tickCount++;
@@ -239,7 +241,7 @@ public class PonderLevel extends SchematicLevel {
 
 	@Nullable
 	private <T extends ParticleOptions> Particle makeParticle(T data, double x, double y, double z, double mx, double my,
-		double mz) {
+															  double mz) {
 		return CatnipClientServices.CLIENT_HOOKS.createParticleFromData(data, asClientWorld.get(), x, y, z, mx, my, mz);
 	}
 

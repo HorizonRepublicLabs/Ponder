@@ -12,8 +12,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipPositioner;
-import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 
@@ -50,7 +48,8 @@ public abstract class AbstractSimiWidget extends AbstractWidget implements Ticka
 	protected float z;
 	protected boolean wasHovered = false;
 	protected List<Component> toolTip = new LinkedList<>();
-	protected BiConsumer<Integer, Integer> onClick = (_$, _$$) -> {};
+	protected BiConsumer<Integer, Integer> onClick = (_$, _$$) -> {
+	};
 
 	public int lockedTooltipX = -1;
 	public int lockedTooltipY = -1;
@@ -93,7 +92,8 @@ public abstract class AbstractSimiWidget extends AbstractWidget implements Ticka
 	}
 
 	@Override
-	public void tick() {}
+	public void tick() {
+	}
 
 	@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
@@ -129,7 +129,8 @@ public abstract class AbstractSimiWidget extends AbstractWidget implements Ticka
 		graphics.pose().pushPose();
 	}
 
-	protected void doRender(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {}
+	protected void doRender(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+	}
 
 	protected void afterRender(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
 		graphics.pose().popPose();

@@ -20,7 +20,8 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 
 public abstract class NumberEntry<T extends Number> extends ValueEntry<T> {
 
-	@Nullable protected TextStencilElement minText = null, maxText = null;
+	@Nullable
+	protected TextStencilElement minText = null, maxText = null;
 	protected int minOffset = 0, maxOffset = 0;
 	protected HintableTextFieldWidget textField;
 
@@ -68,13 +69,13 @@ public abstract class NumberEntry<T extends Number> extends ValueEntry<T> {
 			if (min.doubleValue() > getTypeMin().doubleValue()) {
 				MutableComponent t = Component.literal(formatBound(min) + " < ");
 				minText = new TextStencilElement(font, t).centered(true, false);
-				minText.withElementRenderer((ms, width, height, alpha) -> UIRenderHelper.angledGradient(ms, 0 ,0, height/2, height, width, UIRenderHelper.COLOR_TEXT_DARKER));
+				minText.withElementRenderer((ms, width, height, alpha) -> UIRenderHelper.angledGradient(ms, 0, 0, height / 2, height, width, UIRenderHelper.COLOR_TEXT_DARKER));
 				minOffset = font.width(t);
 			}
 			if (max.doubleValue() < getTypeMax().doubleValue()) {
 				MutableComponent t = Component.literal(" < " + formatBound(max));
 				maxText = new TextStencilElement(font, t).centered(true, false);
-				maxText.withElementRenderer((ms, width, height, alpha) -> UIRenderHelper.angledGradient(ms, 0 ,0, height/2, height, width, UIRenderHelper.COLOR_TEXT_DARKER));
+				maxText.withElementRenderer((ms, width, height, alpha) -> UIRenderHelper.angledGradient(ms, 0, 0, height / 2, height, width, UIRenderHelper.COLOR_TEXT_DARKER));
 				maxOffset = font.width(t);
 			}
 		} catch (NoSuchFieldException | IllegalAccessException | ClassCastException | NullPointerException ignored) {
@@ -127,7 +128,8 @@ public abstract class NumberEntry<T extends Number> extends ValueEntry<T> {
 			if (!current.equals(newValue)) {
 				textField.setValue(String.valueOf(newValue));
 			}
-		} catch (IllegalArgumentException ignored) {}
+		} catch (IllegalArgumentException ignored) {
+		}
 	}
 
 	@Override
@@ -147,15 +149,15 @@ public abstract class NumberEntry<T extends Number> extends ValueEntry<T> {
 
 		if (minText != null)
 			minText
-					.at(textField.getX() - minOffset, textField.getY(), 0)
-					.withBounds(minOffset, textField.getHeight())
-					.render(graphics);
+				.at(textField.getX() - minOffset, textField.getY(), 0)
+				.withBounds(minOffset, textField.getHeight())
+				.render(graphics);
 
 		if (maxText != null)
 			maxText
-					.at(textField.getX() + textField.getWidth(), textField.getY(), 0)
-					.withBounds(maxOffset, textField.getHeight())
-					.render(graphics);
+				.at(textField.getX() + textField.getWidth(), textField.getY(), 0)
+				.withBounds(maxOffset, textField.getHeight())
+				.render(graphics);
 	}
 
 	public static class IntegerEntry extends NumberEntry<Integer> {

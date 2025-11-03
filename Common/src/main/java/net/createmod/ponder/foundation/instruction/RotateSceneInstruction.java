@@ -6,9 +6,9 @@ import net.createmod.ponder.foundation.PonderScene.SceneTransform;
 
 public class RotateSceneInstruction extends PonderInstruction {
 
-	private float xRot;
-	private float yRot;
-	private boolean relative;
+	private final float xRot;
+	private final float yRot;
+	private final boolean relative;
 
 	public RotateSceneInstruction(float xRot, float yRot, boolean relative) {
 		this.xRot = xRot;

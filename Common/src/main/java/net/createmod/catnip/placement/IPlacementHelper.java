@@ -46,15 +46,14 @@ public interface IPlacementHelper {
 	/**
 	 *
 	 * @param player the player that activated the placement helper
-	 * @param world the world that the placement helper got activated in
-	 * @param state the Blockstate of the Block that the player is looking at or clicked on
-	 * @param pos the position of the Block the player is looking at or clicked on
-	 * @param ray the exact raytrace result
-	 *
+	 * @param world  the world that the placement helper got activated in
+	 * @param state  the Blockstate of the Block that the player is looking at or clicked on
+	 * @param pos    the position of the Block the player is looking at or clicked on
+	 * @param ray    the exact raytrace result
 	 * @return the PlacementOffset object describing where to place the new block.<br>
-	 *     Use {@link PlacementOffset#fail} when no new position could be found.<br>
-	 *     Use {@link PlacementOffset#success(Vec3i)} with the new BlockPos to indicate a success
-	 *     and call {@link PlacementOffset#withTransform(Function)} if the blocks default state has to be modified before it is placed
+	 * Use {@link PlacementOffset#fail} when no new position could be found.<br>
+	 * Use {@link PlacementOffset#success(Vec3i)} with the new BlockPos to indicate a success
+	 * and call {@link PlacementOffset#withTransform(Function)} if the blocks default state has to be modified before it is placed
 	 */
 	PlacementOffset getOffset(Player player, Level world, BlockState state, BlockPos pos, BlockHitResult ray);
 
@@ -70,9 +69,9 @@ public interface IPlacementHelper {
 	/**
 	 * overwrite this method if your placement helper needs a different rendering than the default ghost state
 	 *
-	 * @param pos the position of the Block the player is looking at or clicked on
-	 * @param state the Blockstate of the Block that the player is looking at or clicked on
-	 * @param ray the exact raytrace result
+	 * @param pos    the position of the Block the player is looking at or clicked on
+	 * @param state  the Blockstate of the Block that the player is looking at or clicked on
+	 * @param ray    the exact raytrace result
 	 * @param offset the PlacementOffset returned by {@link #getOffset(Player, Level, BlockState, BlockPos, BlockHitResult)}<br>
 	 *               the offset will always be successful if this method is called
 	 */
@@ -103,8 +102,8 @@ public interface IPlacementHelper {
 			return;
 
 		GhostBlocks.getInstance().showGhostState(this, offset.getTransform().apply(offset.getGhostState()))
-				.at(offset.getBlockPos())
-				.breathingAlpha();
+			.at(offset.getBlockPos())
+			.breathingAlpha();
 	}
 
 	static List<Direction> orderedByDistanceOnlyAxis(BlockPos pos, Vec3 hit, Direction.Axis axis) {

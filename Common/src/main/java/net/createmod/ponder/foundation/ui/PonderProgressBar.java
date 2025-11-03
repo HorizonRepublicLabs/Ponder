@@ -32,20 +32,20 @@ public class PonderProgressBar extends AbstractSimiWidget {
 
 		this.ponder = ponder;
 		progress = LerpedFloat.linear()
-				.startWithValue(0);
+			.startWithValue(0);
 	}
 
 	public void tick() {
 		progress.chase(ponder.getActiveScene()
-				.getSceneProgress(), .5f, LerpedFloat.Chaser.EXP);
+			.getSceneProgress(), .5f, LerpedFloat.Chaser.EXP);
 		progress.tickChaser();
 	}
 
 	@Override
 	protected boolean clicked(double mouseX, double mouseY) {
 		return this.active && this.visible && ponder.getActiveScene().getKeyframeCount() > 0
-				&& mouseX >= (double) this.getX() && mouseX < (double) (this.getX() + this.width + 4) && mouseY >= (double) this.getY() - 3
-				&& mouseY < (double) (this.getY() + this.height + 20);
+			&& mouseX >= (double) this.getX() && mouseX < (double) (this.getX() + this.width + 4) && mouseY >= (double) this.getY() - 3
+			&& mouseY < (double) (this.getY() + this.height + 20);
 	}
 
 	@Override
@@ -103,11 +103,11 @@ public class PonderProgressBar extends AbstractSimiWidget {
 		isHovered = clicked(mouseX, mouseY);
 
 		new BoxElement()
-				.withBackground(PonderUI.BACKGROUND_FLAT)
-				.gradientBorder(PonderUI.COLOR_IDLE)
-				.at(getX(), getY(), 400)
-				.withBounds(width, height)
-				.render(graphics);
+			.withBackground(PonderUI.BACKGROUND_FLAT)
+			.gradientBorder(PonderUI.COLOR_IDLE)
+			.at(getX(), getY(), 400)
+			.withBounds(width, height)
+			.render(graphics);
 
 		poseStack.pushPose();
 		poseStack.translate(getX() - 2, getY() - 2, 100);

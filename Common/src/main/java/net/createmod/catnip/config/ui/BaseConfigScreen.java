@@ -6,14 +6,6 @@ import java.util.function.UnaryOperator;
 
 import javax.annotation.Nullable;
 
-import net.createmod.ponder.Ponder;
-
-import net.createmod.ponder.enums.PonderGuiTextures;
-
-import net.minecraft.network.chat.Component;
-import net.neoforged.fml.config.ModConfig;
-import net.neoforged.neoforge.common.ModConfigSpec;
-
 import org.lwjgl.glfw.GLFW;
 
 import net.createmod.catnip.gui.ScreenOpener;
@@ -30,6 +22,9 @@ import net.createmod.ponder.Ponder;
 import net.createmod.ponder.enums.PonderGuiTextures;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class BaseConfigScreen extends ConfigScreen {
 
@@ -45,22 +40,31 @@ public class BaseConfigScreen extends ConfigScreen {
 	 * Make sure you call either {@link #withSpecs(ModConfigSpec, ModConfigSpec, ModConfigSpec)}
 	 * or {@link #searchForConfigSpecs()}
 	 *
-	 * @param modID     the modID of your addon/mod
+	 * @param modID the modID of your addon/mod
 	 */
 	public static void setDefaultActionFor(String modID, UnaryOperator<BaseConfigScreen> transform) {
 		DEFAULTS.put(modID, transform);
 	}
 
-	@Nullable BoxWidget clientConfigWidget;
-	@Nullable BoxWidget commonConfigWidget;
-	@Nullable BoxWidget serverConfigWidget;
-	@Nullable BoxWidget goBack;
-	@Nullable BoxWidget others;
-	@Nullable BoxWidget title;
+	@Nullable
+	BoxWidget clientConfigWidget;
+	@Nullable
+	BoxWidget commonConfigWidget;
+	@Nullable
+	BoxWidget serverConfigWidget;
+	@Nullable
+	BoxWidget goBack;
+	@Nullable
+	BoxWidget others;
+	@Nullable
+	BoxWidget title;
 
-	@Nullable ModConfigSpec clientSpec;
-	@Nullable ModConfigSpec commonSpec;
-	@Nullable ModConfigSpec serverSpec;
+	@Nullable
+	ModConfigSpec clientSpec;
+	@Nullable
+	ModConfigSpec commonSpec;
+	@Nullable
+	ModConfigSpec serverSpec;
 	String clientButtonLabel = "Client Config";
 	String commonButtonLabel = "Common Config";
 	String serverButtonLabel = "Server Config";
@@ -83,7 +87,7 @@ public class BaseConfigScreen extends ConfigScreen {
 	 * please use {@link #withSpecs(ModConfigSpec, ModConfigSpec, ModConfigSpec)} instead
 	 */
 	public BaseConfigScreen searchForConfigSpecs() {
-		if (!ConfigHelper.hasAnyForgeConfig(this.modID)){
+		if (!ConfigHelper.hasAnyForgeConfig(this.modID)) {
 			return this;
 		}
 
@@ -167,32 +171,32 @@ public class BaseConfigScreen extends ConfigScreen {
 		} else if (minecraft.level == null) {
 			serverText.withElementRenderer(DISABLED_RENDERER);
 			serverConfigWidget.getToolTip()
-					.add(Component.translatable("catnip.ui.server_config_unavailable"));
+				.add(Component.translatable("catnip.ui.server_config_unavailable"));
 			serverConfigWidget.getToolTip()
-					.addAll(FontHelper.cutTextComponent(
-						Component.translatable("catnip.ui.server_config_unavailable_tooltip"),
-							Palette.ALL_GRAY));
+				.addAll(FontHelper.cutTextComponent(
+					Component.translatable("catnip.ui.server_config_unavailable_tooltip"),
+					Palette.ALL_GRAY));
 		} else {
 			serverConfigWidget.withCallback(() -> linkTo(new SubMenuConfigScreen(this, ModConfig.Type.SERVER, serverSpec)));
 			serverText.withElementRenderer(BoxWidget.gradientFactory.apply(serverConfigWidget));
 		}
 
 		TextStencilElement titleText = new TextStencilElement(font, CatnipServices.PLATFORM.getModDisplayName(modID))
-				.centered(true, true)
-				.withElementRenderer((ms, w, h, alpha) -> {
-					UIRenderHelper.angledGradient(ms, 0, 0, h / 2, h, w / 2, COLOR_TITLE_A, COLOR_TITLE_B);
-					UIRenderHelper.angledGradient(ms, 0, w / 2, h / 2, h, w / 2, COLOR_TITLE_B, COLOR_TITLE_C);
-				});
+			.centered(true, true)
+			.withElementRenderer((ms, w, h, alpha) -> {
+				UIRenderHelper.angledGradient(ms, 0, 0, h / 2, h, w / 2, COLOR_TITLE_A, COLOR_TITLE_B);
+				UIRenderHelper.angledGradient(ms, 0, w / 2, h / 2, h, w / 2, COLOR_TITLE_B, COLOR_TITLE_C);
+			});
 		int boxWidth = width + 10;
 		int boxHeight = 39;
 		int boxPadding = 4;
 		title = new BoxWidget(-5, height / 2 - 110, boxWidth, boxHeight)
-				//.withCustomBackground(new Color(0x20_000000, true))
-				.<BoxWidget>setActive(false)
-				.withBorderColors(AbstractSimiWidget.COLOR_IDLE)
-				.withPadding(0, boxPadding)
-				.rescaleElement(boxWidth / 2f, (boxHeight - 2 * boxPadding) / 2f)//double the text size by telling it the element is only half as big as the available space
-				.showingElement(titleText.at(0, 7));
+			//.withCustomBackground(new Color(0x20_000000, true))
+			.<BoxWidget>setActive(false)
+			.withBorderColors(AbstractSimiWidget.COLOR_IDLE)
+			.withPadding(0, boxPadding)
+			.rescaleElement(boxWidth / 2f, (boxHeight - 2 * boxPadding) / 2f)//double the text size by telling it the element is only half as big as the available space
+			.showingElement(titleText.at(0, 7));
 
 		addRenderableWidget(title);
 
@@ -200,11 +204,11 @@ public class BaseConfigScreen extends ConfigScreen {
 		ConfigScreen.modID = this.modID;
 
 		goBack = new BoxWidget(width / 2 - 134, height / 2, 20, 20).withPadding(2, 2)
-				.withCallback(() -> linkTo(parent));
+			.withCallback(() -> linkTo(parent));
 		goBack.showingElement(PonderGuiTextures.ICON_CONFIG_BACK.asStencil()
-				.withElementRenderer(BoxWidget.gradientFactory.apply(goBack)));
+			.withElementRenderer(BoxWidget.gradientFactory.apply(goBack)));
 		goBack.getToolTip()
-				.add(Component.translatable("catnip.ui.go_back_button"));
+			.add(Component.translatable("catnip.ui.go_back_button"));
 		addRenderableWidget(goBack);
 
 		TextStencilElement othersText = new TextStencilElement(font, Component.translatable("catnip.ui.other_mods_config_button_label")).centered(true, true);

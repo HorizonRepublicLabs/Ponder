@@ -6,7 +6,6 @@ import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.event.ClientResourceReloadListener;
 import net.createmod.catnip.ghostblock.GhostBlocks;
 import net.createmod.catnip.gui.UIRenderHelper;
-import net.createmod.catnip.levelWrappers.WrappedClientLevel;
 import net.createmod.catnip.net.packets.ClientboundSimpleActionPacket;
 import net.createmod.catnip.outliner.Outliner;
 import net.createmod.catnip.placement.PlacementClient;
@@ -21,8 +20,6 @@ import net.createmod.ponder.foundation.content.BasePonderPlugin;
 import net.createmod.ponder.foundation.content.DebugPonderPlugin;
 import net.createmod.ponder.foundation.element.WorldSectionElementImpl;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
 
 public class PonderClient {

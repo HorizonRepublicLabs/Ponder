@@ -6,9 +6,9 @@ import net.createmod.ponder.foundation.PonderScene;
 
 public class OutlineSelectionInstruction extends TickingInstruction {
 
-	private PonderPalette color;
-	private Object slot;
-	private Selection selection;
+	private final PonderPalette color;
+	private final Object slot;
+	private final Selection selection;
 
 	public OutlineSelectionInstruction(PonderPalette color, Object slot, Selection selection, int ticks) {
 		super(false, ticks);

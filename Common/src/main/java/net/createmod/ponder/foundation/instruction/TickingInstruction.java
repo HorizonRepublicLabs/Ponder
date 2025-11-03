@@ -4,7 +4,7 @@ import net.createmod.ponder.foundation.PonderScene;
 
 public abstract class TickingInstruction extends PonderInstruction {
 
-	private boolean blocking;
+	private final boolean blocking;
 	protected int totalTicks;
 	protected int remainingTicks;
 
@@ -18,9 +18,10 @@ public abstract class TickingInstruction extends PonderInstruction {
 		super.reset(scene);
 		remainingTicks = totalTicks;
 	}
-	
-	protected void firstTick(PonderScene scene) {}
-	
+
+	protected void firstTick(PonderScene scene) {
+	}
+
 	@Override
 	public void onScheduled(PonderScene scene) {
 		super.onScheduled(scene);

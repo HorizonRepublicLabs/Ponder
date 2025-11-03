@@ -14,7 +14,8 @@ import net.minecraft.client.gui.screens.Screen;
 public class ScreenOpener {
 
 	private static final Deque<Screen> backStack = new ArrayDeque<>();
-	@Nullable private static Screen backSteppedFrom = null;
+	@Nullable
+	private static Screen backSteppedFrom = null;
 
 	public static void open(@Nullable Screen screen) {
 		open(Minecraft.getInstance().screen, screen);
@@ -43,10 +44,10 @@ public class ScreenOpener {
 				screenWithContext.shareContextWith(previousNavScreen);
 			}
 			previousNavScreen.transition
-					.startWithValue(-0.001)
-					//.chaseTimed(-1, 8);
-					//.chase(-1, .2f, LerpedFloat.Chaser.LINEAR);
-					.chase(-1, .3f, LerpedFloat.Chaser.EXP);
+				.startWithValue(-0.001)
+				//.chaseTimed(-1, 8);
+				//.chase(-1, .2f, LerpedFloat.Chaser.LINEAR);
+				.chase(-1, .3f, LerpedFloat.Chaser.EXP);
 		}
 		openScreen(previousScreen);
 	}
@@ -57,9 +58,9 @@ public class ScreenOpener {
 		if (tryBackTracking(screen))
 			return;
 		screen.transition.startWithValue(0.001)
-				//.chaseTimed(1, 8);
-				//.chase(1, .2f, LerpedFloat.Chaser.LINEAR);
-				.chase(1, .3f, LerpedFloat.Chaser.EXP);
+			//.chaseTimed(1, 8);
+			//.chase(1, .2f, LerpedFloat.Chaser.LINEAR);
+			.chase(1, .3f, LerpedFloat.Chaser.EXP);
 		open(screen);
 	}
 

@@ -2,9 +2,6 @@ package net.createmod.catnip.outliner;
 
 import javax.annotation.Nullable;
 
-import net.createmod.catnip.math.AngleHelper;
-import net.createmod.catnip.theme.Color;
-
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3d;
@@ -18,6 +15,7 @@ import dev.engine_room.flywheel.lib.transform.TransformStack;
 import net.createmod.catnip.math.AngleHelper;
 import net.createmod.catnip.render.BindableTexture;
 import net.createmod.catnip.render.SuperRenderTypeBuffer;
+import net.createmod.catnip.theme.Color;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
@@ -45,7 +43,8 @@ public abstract class Outline {
 
 	public abstract void render(PoseStack ms, SuperRenderTypeBuffer buffer, Vec3 camera, float pt);
 
-	public void tick() {}
+	public void tick() {
+	}
 
 	public void bufferCuboidLine(PoseStack poseStack, VertexConsumer consumer, Vec3 camera, Vector3d start, Vector3d end,
 								 float width, Vector4f color, int lightmap, boolean disableNormals) {
@@ -59,11 +58,11 @@ public abstract class Outline {
 
 		poseStack.pushPose();
 		TransformStack.of(poseStack)
-				.translate(start.x - camera.x, start.y - camera.y, start.z - camera.z)
-				.rotateYDegrees(hAngle)
-				.rotateXDegrees(vAngle);
+			.translate(start.x - camera.x, start.y - camera.y, start.z - camera.z)
+			.rotateYDegrees(hAngle)
+			.rotateXDegrees(vAngle);
 		bufferCuboidLine(poseStack.last(), consumer, new Vector3f(), Direction.SOUTH, length, width, color, lightmap,
-				disableNormals);
+			disableNormals);
 		poseStack.popPose();
 	}
 
@@ -182,36 +181,36 @@ public abstract class Outline {
 		float nz0 = normalTransformTemp.z();
 
 		consumer.addVertex(x0, y0, z0)
-				.setColor(r, g, b, a)
-				.setUv(0, 0)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx0, ny0, nz0)
-				;
+			.setColor(r, g, b, a)
+			.setUv(0, 0)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx0, ny0, nz0)
+		;
 
 		consumer.addVertex(x1, y1, z1)
-				.setColor(r, g, b, a)
-				.setUv(0, 1)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx0, ny0, nz0)
-				;
+			.setColor(r, g, b, a)
+			.setUv(0, 1)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx0, ny0, nz0)
+		;
 
 		consumer.addVertex(x2, y2, z2)
-				.setColor(r, g, b, a)
-				.setUv(1, 1)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx0, ny0, nz0)
-				;
+			.setColor(r, g, b, a)
+			.setUv(1, 1)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx0, ny0, nz0)
+		;
 
 		consumer.addVertex(x3, y3, z3)
-				.setColor(r, g, b, a)
-				.setUv(1, 0)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx0, ny0, nz0)
-				;
+			.setColor(r, g, b, a)
+			.setUv(1, 0)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx0, ny0, nz0)
+		;
 
 		// up
 
@@ -222,36 +221,36 @@ public abstract class Outline {
 		float nz1 = normalTransformTemp.z();
 
 		consumer.addVertex(x4, y4, z4)
-				.setColor(r, g, b, a)
-				.setUv(0, 0)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx1, ny1, nz1)
-				;
+			.setColor(r, g, b, a)
+			.setUv(0, 0)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx1, ny1, nz1)
+		;
 
 		consumer.addVertex(x5, y5, z5)
-				.setColor(r, g, b, a)
-				.setUv(0, 1)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx1, ny1, nz1)
-				;
+			.setColor(r, g, b, a)
+			.setUv(0, 1)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx1, ny1, nz1)
+		;
 
 		consumer.addVertex(x6, y6, z6)
-				.setColor(r, g, b, a)
-				.setUv(1, 1)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx1, ny1, nz1)
-				;
+			.setColor(r, g, b, a)
+			.setUv(1, 1)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx1, ny1, nz1)
+		;
 
 		consumer.addVertex(x7, y7, z7)
-				.setColor(r, g, b, a)
-				.setUv(1, 0)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx1, ny1, nz1)
-				;
+			.setColor(r, g, b, a)
+			.setUv(1, 0)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx1, ny1, nz1)
+		;
 
 		// north
 
@@ -266,36 +265,36 @@ public abstract class Outline {
 		float nz2 = normalTransformTemp.z();
 
 		consumer.addVertex(x7, y7, z7)
-				.setColor(r, g, b, a)
-				.setUv(0, 0)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx2, ny2, nz2)
-				;
+			.setColor(r, g, b, a)
+			.setUv(0, 0)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx2, ny2, nz2)
+		;
 
 		consumer.addVertex(x2, y2, z2)
-				.setColor(r, g, b, a)
-				.setUv(0, 1)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx2, ny2, nz2)
-				;
+			.setColor(r, g, b, a)
+			.setUv(0, 1)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx2, ny2, nz2)
+		;
 
 		consumer.addVertex(x1, y1, z1)
-				.setColor(r, g, b, a)
-				.setUv(1, 1)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx2, ny2, nz2)
-				;
+			.setColor(r, g, b, a)
+			.setUv(1, 1)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx2, ny2, nz2)
+		;
 
 		consumer.addVertex(x4, y4, z4)
-				.setColor(r, g, b, a)
-				.setUv(1, 0)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx2, ny2, nz2)
-				;
+			.setColor(r, g, b, a)
+			.setUv(1, 0)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx2, ny2, nz2)
+		;
 
 		// south
 
@@ -310,36 +309,36 @@ public abstract class Outline {
 		float nz3 = normalTransformTemp.z();
 
 		consumer.addVertex(x5, y5, z5)
-				.setColor(r, g, b, a)
-				.setUv(0, 0)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx3, ny3, nz3)
-				;
+			.setColor(r, g, b, a)
+			.setUv(0, 0)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx3, ny3, nz3)
+		;
 
 		consumer.addVertex(x0, y0, z0)
-				.setColor(r, g, b, a)
-				.setUv(0, 1)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx3, ny3, nz3)
-				;
+			.setColor(r, g, b, a)
+			.setUv(0, 1)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx3, ny3, nz3)
+		;
 
 		consumer.addVertex(x3, y3, z3)
-				.setColor(r, g, b, a)
-				.setUv(1, 1)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx3, ny3, nz3)
-				;
+			.setColor(r, g, b, a)
+			.setUv(1, 1)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx3, ny3, nz3)
+		;
 
 		consumer.addVertex(x6, y6, z6)
-				.setColor(r, g, b, a)
-				.setUv(1, 0)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx3, ny3, nz3)
-				;
+			.setColor(r, g, b, a)
+			.setUv(1, 0)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx3, ny3, nz3)
+		;
 
 		// west
 
@@ -354,36 +353,36 @@ public abstract class Outline {
 		float nz4 = normalTransformTemp.z();
 
 		consumer.addVertex(x4, y4, z4)
-				.setColor(r, g, b, a)
-				.setUv(0, 0)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx4, ny4, nz4)
-				;
+			.setColor(r, g, b, a)
+			.setUv(0, 0)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx4, ny4, nz4)
+		;
 
 		consumer.addVertex(x1, y1, z1)
-				.setColor(r, g, b, a)
-				.setUv(0, 1)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx4, ny4, nz4)
-				;
+			.setColor(r, g, b, a)
+			.setUv(0, 1)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx4, ny4, nz4)
+		;
 
 		consumer.addVertex(x0, y0, z0)
-				.setColor(r, g, b, a)
-				.setUv(1, 1)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx4, ny4, nz4)
-				;
+			.setColor(r, g, b, a)
+			.setUv(1, 1)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx4, ny4, nz4)
+		;
 
 		consumer.addVertex(x5, y5, z5)
-				.setColor(r, g, b, a)
-				.setUv(1, 0)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx4, ny4, nz4)
-				;
+			.setColor(r, g, b, a)
+			.setUv(1, 0)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx4, ny4, nz4)
+		;
 
 		// east
 
@@ -398,36 +397,36 @@ public abstract class Outline {
 		float nz5 = normalTransformTemp.z();
 
 		consumer.addVertex(x6, y6, z6)
-				.setColor(r, g, b, a)
-				.setUv(0, 0)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx5, ny5, nz5)
-				;
+			.setColor(r, g, b, a)
+			.setUv(0, 0)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx5, ny5, nz5)
+		;
 
 		consumer.addVertex(x3, y3, z3)
-				.setColor(r, g, b, a)
-				.setUv(0, 1)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx5, ny5, nz5)
-				;
+			.setColor(r, g, b, a)
+			.setUv(0, 1)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx5, ny5, nz5)
+		;
 
 		consumer.addVertex(x2, y2, z2)
-				.setColor(r, g, b, a)
-				.setUv(1, 1)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx5, ny5, nz5)
-				;
+			.setColor(r, g, b, a)
+			.setUv(1, 1)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx5, ny5, nz5)
+		;
 
 		consumer.addVertex(x7, y7, z7)
-				.setColor(r, g, b, a)
-				.setUv(1, 0)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx5, ny5, nz5)
-				;
+			.setColor(r, g, b, a)
+			.setUv(1, 0)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx5, ny5, nz5)
+		;
 	}
 
 	public void bufferQuad(PoseStack.Pose pose, VertexConsumer consumer, Vector3f pos0, Vector3f pos1, Vector3f pos2,
@@ -478,42 +477,45 @@ public abstract class Outline {
 		float nz = normalTransformTemp.z();
 
 		consumer.addVertex(x0, y0, z0)
-				.setColor(r, g, b, a)
-				.setUv(minU, minV)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx, ny, nz)
-				;
+			.setColor(r, g, b, a)
+			.setUv(minU, minV)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx, ny, nz)
+		;
 
 		consumer.addVertex(x1, y1, z1)
-				.setColor(r, g, b, a)
-				.setUv(minU, maxV)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx, ny, nz)
-				;
+			.setColor(r, g, b, a)
+			.setUv(minU, maxV)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx, ny, nz)
+		;
 
 		consumer.addVertex(x2, y2, z2)
-				.setColor(r, g, b, a)
-				.setUv(maxU, maxV)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx, ny, nz)
-				;
+			.setColor(r, g, b, a)
+			.setUv(maxU, maxV)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx, ny, nz)
+		;
 
 		consumer.addVertex(x3, y3, z3)
-				.setColor(r, g, b, a)
-				.setUv(maxU, minV)
-				.setOverlay(OverlayTexture.NO_OVERLAY)
-				.setLight(lightmap)
-				.setNormal(nx, ny, nz)
-				;
+			.setColor(r, g, b, a)
+			.setUv(maxU, minV)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(lightmap)
+			.setNormal(nx, ny, nz)
+		;
 	}
 
 	public static class OutlineParams {
-		@Nullable protected BindableTexture faceTexture;
-		@Nullable protected BindableTexture highlightedFaceTexture;
-		@Nullable Direction highlightedFace;
+		@Nullable
+		protected BindableTexture faceTexture;
+		@Nullable
+		protected BindableTexture highlightedFaceTexture;
+		@Nullable
+		Direction highlightedFace;
 		protected boolean fadeLineWidth;
 		protected boolean disableCull;
 		protected boolean disableLineNormals;
@@ -589,7 +591,8 @@ public abstract class Outline {
 			return fadeLineWidth ? alpha * lineWidth : lineWidth;
 		}
 
-		@Nullable public Direction getHighlightedFace() {
+		@Nullable
+		public Direction getHighlightedFace() {
 			return highlightedFace;
 		}
 

@@ -47,10 +47,10 @@ public class PonderChapterRegistry {
 
 	public List<PonderChapter> getAllChapters() {
 		return chapters
-				.values()
-				.stream()
-				.map(Pair::getFirst)
-				.collect(Collectors.toList());
+			.values()
+			.stream()
+			.map(Pair::getFirst)
+			.collect(Collectors.toList());
 	}
 
 	public List<StoryBoardEntry> getStories(PonderChapter chapter) {

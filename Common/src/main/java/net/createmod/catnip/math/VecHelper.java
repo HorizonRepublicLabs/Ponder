@@ -187,7 +187,7 @@ public class VecHelper {
 
 	public static Vec3 clamp(Vec3 vec, float maxLength) {
 		return vec.lengthSqr() > maxLength * maxLength ? vec.normalize()
-				.scale(maxLength) : vec;
+			.scale(maxLength) : vec;
 	}
 
 	public static Vec3 lerp(float p, Vec3 from, Vec3 to) {
@@ -251,7 +251,7 @@ public class VecHelper {
 		camera_rotation_conj.conjugate();
 
 		Vector3f result3f = new Vector3f((float) (camera_pos.x - target.x), (float) (camera_pos.y - target.y),
-										 (float) (camera_pos.z - target.z));
+			(float) (camera_pos.z - target.z));
 		result3f.rotate(camera_rotation_conj);
 
 		// ----- compensate for view bobbing (if active) -----
@@ -266,12 +266,12 @@ public class VecHelper {
 				float f1 = -(walkDist_modified + f * partialTicks);
 				float f2 = Mth.lerp(partialTicks, playerEntity.oBob, playerEntity.bob);
 				Quaternionf q2 =
-						com.mojang.math.Axis.XP.rotationDegrees(Math.abs(Mth.cos(f1 * (float) Math.PI - 0.2F) * f2) * 5.0F);
+					com.mojang.math.Axis.XP.rotationDegrees(Math.abs(Mth.cos(f1 * (float) Math.PI - 0.2F) * f2) * 5.0F);
 				q2.conjugate();
 				result3f.rotate(q2);
 
 				Quaternionf q1 =
-						com.mojang.math.Axis.ZP.rotationDegrees(Mth.sin(f1 * (float) Math.PI) * f2 * 3.0F);
+					com.mojang.math.Axis.ZP.rotationDegrees(Mth.sin(f1 * (float) Math.PI) * f2 * 3.0F);
 				q1.conjugate();
 				result3f.rotate(q1);
 
@@ -345,7 +345,7 @@ public class VecHelper {
 		Vec3 sdivrcs = s.scale(1 / rcs);
 		double t = qminusp.x * sdivrcs.z - qminusp.z * sdivrcs.x;
 		double u = qminusp.x * rdivrcs.z - qminusp.z * rdivrcs.x;
-		return new double[] { t, u };
+		return new double[]{t, u};
 	}
 
 	public static double alignedDistanceToFace(Vec3 pos, BlockPos blockPos, Direction face) {

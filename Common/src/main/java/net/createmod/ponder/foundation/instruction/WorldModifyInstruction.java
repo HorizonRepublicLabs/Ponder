@@ -6,7 +6,7 @@ import net.createmod.ponder.foundation.PonderScene;
 
 public abstract class WorldModifyInstruction extends PonderInstruction {
 
-	private Selection selection;
+	private final Selection selection;
 
 	public WorldModifyInstruction(Selection selection) {
 		this.selection = selection;

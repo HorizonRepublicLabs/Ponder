@@ -21,7 +21,8 @@ public class MinecartElementImpl extends AnimatedSceneElementBase implements Min
 
 	private final Vec3 location;
 	private final LerpedFloat rotation;
-	@Nullable private AbstractMinecart entity;
+	@Nullable
+	private AbstractMinecart entity;
 	private final MinecartConstructor constructor;
 	private final float initialRotation;
 

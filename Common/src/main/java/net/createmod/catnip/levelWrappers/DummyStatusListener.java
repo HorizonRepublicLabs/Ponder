@@ -9,15 +9,19 @@ import net.minecraft.world.level.chunk.status.ChunkStatus;
 public class DummyStatusListener implements ChunkProgressListener {
 
 	@Override
-	public void updateSpawnPos(ChunkPos pCenter) {}
+	public void updateSpawnPos(ChunkPos pCenter) {
+	}
 
 	@Override
-	public void onStatusChange(ChunkPos pChunkPosition, @Nullable ChunkStatus pNewStatus) {}
+	public void onStatusChange(ChunkPos pChunkPosition, @Nullable ChunkStatus pNewStatus) {
+	}
 
 	@Override
-	public void start() {}
+	public void start() {
+	}
 
 	@Override
-	public void stop() {}
+	public void stop() {
+	}
 
 }

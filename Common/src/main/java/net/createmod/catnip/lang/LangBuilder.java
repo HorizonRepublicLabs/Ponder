@@ -182,6 +182,7 @@ public class LangBuilder {
 	}
 
 	public static final float DEFAULT_SPACE_WIDTH = 4.0F; // space width in vanilla's default font
+
 	static int getIndents(Font font, int defaultIndents) {
 		int spaceWidth = font.width(" ");
 		if (DEFAULT_SPACE_WIDTH == spaceWidth) {

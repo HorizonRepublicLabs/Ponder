@@ -29,7 +29,8 @@ public class Outliner {
 
 	//
 
-	public Outliner() {}
+	public Outliner() {
+	}
 
 	private final Map<Object, OutlineEntry> outlines = Collections.synchronizedMap(new HashMap<>());
 	private final Map<Object, OutlineEntry> outlinesView = Collections.unmodifiableMap(outlines);
@@ -60,7 +61,7 @@ public class Outliner {
 		OutlineEntry entry = outlines.get(slot);
 		entry.ticksTillRemoval = 1;
 		((EndChasingLineOutline) entry.outline).setProgress(chasingProgress)
-				.set(start, end);
+			.set(start, end);
 		return entry.outline.getParams();
 	}
 
@@ -113,8 +114,8 @@ public class Outliner {
 		keep(slot);
 		if (outlines.containsKey(slot))
 			return Optional.of(outlines.get(slot)
-					.getOutline()
-					.getParams());
+				.getOutline()
+				.getParams());
 		return Optional.empty();
 	}
 
@@ -149,7 +150,7 @@ public class Outliner {
 
 	public void tickOutlines() {
 		Iterator<OutlineEntry> iterator = outlines.values()
-				.iterator();
+			.iterator();
 		while (iterator.hasNext()) {
 			OutlineEntry entry = iterator.next();
 			entry.tick();

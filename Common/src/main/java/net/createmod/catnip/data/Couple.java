@@ -11,7 +11,6 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import com.google.common.collect.ImmutableList;
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
@@ -74,7 +73,7 @@ public class Couple<T> extends Pair<T, T> implements Iterable<T> {
 
 	public <S, R> Couple<S> mapNotNullWithParam(BiFunction<T, R, S> function, R value) {
 		return Couple.create(first != null ? function.apply(first, value) : null,
-				second != null ? function.apply(second, value) : null);
+			second != null ? function.apply(second, value) : null);
 	}
 
 	public boolean both(Predicate<T> test) {

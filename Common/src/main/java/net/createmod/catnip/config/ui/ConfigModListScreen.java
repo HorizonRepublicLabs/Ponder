@@ -23,9 +23,12 @@ import net.minecraft.network.chat.Component;
 
 public class ConfigModListScreen extends ConfigScreen {
 
-	@Nullable ConfigScreenList list;
-	@Nullable HintableTextFieldWidget search;
-	@Nullable BoxWidget goBack;
+	@Nullable
+	ConfigScreenList list;
+	@Nullable
+	HintableTextFieldWidget search;
+	@Nullable
+	BoxWidget goBack;
 	List<ModEntry> allEntries = new ArrayList<>();
 
 	public ConfigModListScreen(@Nullable Screen parent) {
@@ -55,11 +58,11 @@ public class ConfigModListScreen extends ConfigScreen {
 		list.children().addAll(allEntries);
 
 		goBack = new BoxWidget(width / 2 - listWidth / 2 - 30, height / 2 + 65, 20, 20).withPadding(2, 2)
-				.withCallback(() -> ScreenOpener.open(parent));
+			.withCallback(() -> ScreenOpener.open(parent));
 		goBack.showingElement(PonderGuiTextures.ICON_CONFIG_BACK.asStencil()
-				.withElementRenderer(BoxWidget.gradientFactory.apply(goBack)));
+			.withElementRenderer(BoxWidget.gradientFactory.apply(goBack)));
 		goBack.getToolTip()
-				.add(Component.translatable("catnip.ui.go_back_button"));
+			.add(Component.translatable("catnip.ui.go_back_button"));
 		addRenderableWidget(goBack);
 
 		search = new HintableTextFieldWidget(font, width / 2 - listWidth / 2, height - 35, listWidth, 20);
@@ -124,7 +127,7 @@ public class ConfigModListScreen extends ConfigScreen {
 			this.id = id;
 
 			button = new BoxWidget(0, 0, 35, 16)
-					.showingElement(PonderGuiTextures.ICON_CONFIG_OPEN.asStencil().at(10, 0));
+				.showingElement(PonderGuiTextures.ICON_CONFIG_OPEN.asStencil().at(10, 0));
 			button.modifyElement(e -> ((DelegatedStencilElement) e).withElementRenderer(BoxWidget.gradientFactory.apply(button)));
 
 			if (ConfigHelper.hasAnyForgeConfig(id)) {

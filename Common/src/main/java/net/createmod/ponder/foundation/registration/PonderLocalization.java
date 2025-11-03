@@ -44,7 +44,7 @@ public class PonderLocalization implements LangRegistryAccess {
 
 	public void registerSpecific(ResourceLocation sceneId, String key, String enUS) {
 		specific.computeIfAbsent(sceneId, $ -> new HashMap<>())
-				.put(key, enUS);
+			.put(key, enUS);
 	}
 
 	//
@@ -85,7 +85,7 @@ public class PonderLocalization implements LangRegistryAccess {
 	public String getTagName(ResourceLocation key) {
 		if (PonderIndex.editingModeActive())
 			return tag.containsKey(key) ? tag.get(key)
-					.getFirst() : ("unregistered tag entry: " + key);
+				.getFirst() : ("unregistered tag entry: " + key);
 		return I18n.get(langKeyForTag(key));
 	}
 
@@ -93,7 +93,7 @@ public class PonderLocalization implements LangRegistryAccess {
 	public String getTagDescription(ResourceLocation key) {
 		if (PonderIndex.editingModeActive())
 			return tag.containsKey(key) ? tag.get(key)
-					.getSecond() : ("unregistered tag entry: " + key);
+				.getSecond() : ("unregistered tag entry: " + key);
 		return I18n.get(langKeyForTagDescription(key));
 	}
 
@@ -151,8 +151,8 @@ public class PonderLocalization implements LangRegistryAccess {
 
 	public void generateSceneLang() {
 		PonderIndex.getSceneAccess()
-				.getRegisteredEntries()
-				.forEach(entry -> PonderSceneRegistry.compileScene(this, entry.getValue(), null));
+			.getRegisteredEntries()
+			.forEach(entry -> PonderSceneRegistry.compileScene(this, entry.getValue(), null));
 	}
 
 	@Override
@@ -179,16 +179,16 @@ public class PonderLocalization implements LangRegistryAccess {
 		});
 
 		specific.entrySet()
-				.stream()
-				.filter(entry -> entry.getKey().getNamespace().equals(modId))
-				.sorted(Map.Entry.comparingByKey())
-				.forEach(entry -> {
-					entry.getValue()
-							.entrySet()
-							.stream()
-							.sorted(Map.Entry.comparingByKey())
-							.forEach(subEntry -> consumer.accept(
-									langKeyForSpecific(entry.getKey(), subEntry.getKey()), subEntry.getValue()));
-				});
+			.stream()
+			.filter(entry -> entry.getKey().getNamespace().equals(modId))
+			.sorted(Map.Entry.comparingByKey())
+			.forEach(entry -> {
+				entry.getValue()
+					.entrySet()
+					.stream()
+					.sorted(Map.Entry.comparingByKey())
+					.forEach(subEntry -> consumer.accept(
+						langKeyForSpecific(entry.getKey(), subEntry.getKey()), subEntry.getValue()));
+			});
 	}
 }

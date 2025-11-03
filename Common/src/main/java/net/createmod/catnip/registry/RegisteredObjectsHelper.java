@@ -1,5 +1,7 @@
 package net.createmod.catnip.registry;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -14,8 +16,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Fluid;
-
-import javax.annotation.Nullable;
 
 public class RegisteredObjectsHelper {
 	public static <V> ResourceLocation getKeyOrThrow(Registry<V> registry, V value) {

@@ -11,10 +11,10 @@ public class ComponentProcessors {
 			return stack;
 		ItemStack copy = stack.copy();
 		stack.getComponents()
-				.stream()
-				.filter(ComponentProcessors::isUnsafeItemComponent)
-				.map(TypedDataComponent::type)
-				.forEach(copy::remove);
+			.stream()
+			.filter(ComponentProcessors::isUnsafeItemComponent)
+			.map(TypedDataComponent::type)
+			.forEach(copy::remove);
 		return copy;
 	}
 
@@ -29,8 +29,6 @@ public class ComponentProcessors {
 			return false;
 		if (component.equals(DataComponents.DAMAGE))
 			return false;
-		if (component.equals(DataComponents.CUSTOM_NAME))
-			return false;
-		return true;
+		return !component.equals(DataComponents.CUSTOM_NAME);
 	}
 }

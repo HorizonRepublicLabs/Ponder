@@ -32,7 +32,7 @@ public class WorldAttached<T> {
 		var i = allMaps.iterator();
 		while (i.hasNext()) {
 			Map<LevelAccessor, ?> map = i.next()
-					.get();
+				.get();
 			if (map == null) {
 				// If the map has been GC'd, remove the weak reference
 				i.remove();
@@ -96,7 +96,7 @@ public class WorldAttached<T> {
 	 */
 	public void empty(Consumer<T> finalizer) {
 		attached.values()
-				.forEach(finalizer);
+			.forEach(finalizer);
 		attached.clear();
 	}
 }

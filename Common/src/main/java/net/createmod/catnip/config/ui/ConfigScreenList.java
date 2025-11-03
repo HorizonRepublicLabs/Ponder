@@ -30,7 +30,8 @@ import net.minecraft.network.chat.MutableComponent;
 
 public class ConfigScreenList extends ObjectSelectionList<ConfigScreenList.Entry> implements TickableGuiEventListener {
 
-	@Nullable public static EditBox currentText;
+	@Nullable
+	public static EditBox currentText;
 
 	public ConfigScreenList(Minecraft client, int width, int height, int top, int elementHeight) {
 		super(client, width, height, top, elementHeight);
@@ -126,7 +127,8 @@ public class ConfigScreenList extends ObjectSelectionList<ConfigScreenList.Entry
 	public static abstract class Entry extends ObjectSelectionList.Entry<Entry> implements TickableGuiEventListener {
 		protected List<GuiEventListener> listeners;
 		protected Map<String, String> annotations;
-		@Nullable protected String path;
+		@Nullable
+		protected String path;
 
 		protected Entry() {
 			listeners = new ArrayList<>();
@@ -155,13 +157,15 @@ public class ConfigScreenList extends ObjectSelectionList<ConfigScreenList.Entry
 		}
 
 		@Override
-		public void tick() {}
+		public void tick() {
+		}
 
 		public List<GuiEventListener> getGuiListeners() {
 			return listeners;
 		}
 
-		protected void setEditable(boolean b) {}
+		protected void setEditable(boolean b) {
+		}
 
 		protected boolean isCurrentValueChanged() {
 			if (path == null) {
@@ -177,7 +181,8 @@ public class ConfigScreenList extends ObjectSelectionList<ConfigScreenList.Entry
 
 		protected TextStencilElement label;
 		protected List<Component> labelTooltip;
-		@Nullable protected String unit = null;
+		@Nullable
+		protected String unit = null;
 		protected LerpedFloat differenceAnimation = LerpedFloat.linear().startWithValue(0);
 		protected LerpedFloat highlightAnimation = LerpedFloat.linear().startWithValue(0);
 
@@ -266,7 +271,6 @@ public class ConfigScreenList extends ObjectSelectionList<ConfigScreenList.Entry
 				GlStateManager._enableScissorTest();
 			}
 		}
-
 
 
 		public List<Component> getLabelTooltip() {

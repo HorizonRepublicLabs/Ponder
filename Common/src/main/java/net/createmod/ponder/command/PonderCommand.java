@@ -20,28 +20,28 @@ public class PonderCommand {
 
 	static ArgumentBuilder<CommandSourceStack, ?> register() {
 		return Commands.literal("ponder")
-				.requires(cs -> cs.hasPermission(0))
+			.requires(cs -> cs.hasPermission(0))
+			.executes(ctx -> openScene("ponder:tags", ctx.getSource().getPlayerOrException()))
+			.then(Commands.literal("reload")
+				.executes(ctx -> reloadPonderIndex(ctx.getSource().getPlayerOrException()))
+			)
+			.then(Commands.literal("index")
+				.executes(ctx -> openScene("ponder:index", ctx.getSource().getPlayerOrException()))
+			)
+			.then(Commands.literal("tags")
 				.executes(ctx -> openScene("ponder:tags", ctx.getSource().getPlayerOrException()))
-				.then(Commands.literal("reload")
-							  .executes(ctx -> reloadPonderIndex(ctx.getSource().getPlayerOrException()))
+			)
+			.then(Commands.argument("scene", ResourceLocationArgument.id())
+				//.suggests(ITEM_PONDERS)
+				.executes(ctx -> openScene(ResourceLocationArgument.getId(ctx, "scene").toString(),
+					ctx.getSource().getPlayerOrException()))
+				.then(Commands.argument("targets", EntityArgument.players())
+					.requires(cs -> cs.hasPermission(2))
+					.executes(ctx -> openScene(
+						ResourceLocationArgument.getId(ctx, "scene").toString(),
+						EntityArgument.getPlayers(ctx, "targets")))
 				)
-				.then(Commands.literal("index")
-							  .executes(ctx -> openScene("ponder:index", ctx.getSource().getPlayerOrException()))
-				)
-				.then(Commands.literal("tags")
-							  .executes(ctx -> openScene("ponder:tags", ctx.getSource().getPlayerOrException()))
-				)
-				.then(Commands.argument("scene", ResourceLocationArgument.id())
-							  //.suggests(ITEM_PONDERS)
-							  .executes(ctx -> openScene(ResourceLocationArgument.getId(ctx, "scene").toString(),
-														 ctx.getSource().getPlayerOrException()))
-							  .then(Commands.argument("targets", EntityArgument.players())
-											.requires(cs -> cs.hasPermission(2))
-											.executes(ctx -> openScene(
-													ResourceLocationArgument.getId(ctx, "scene").toString(),
-													EntityArgument.getPlayers(ctx, "targets")))
-							  )
-				);
+			);
 
 	}
 
@@ -55,8 +55,8 @@ public class PonderCommand {
 				continue;
 
 			CatnipServices.NETWORK.sendToClient(
-					player,
-					new ClientboundSimpleActionPacket("openPonder", sceneId)
+				player,
+				new ClientboundSimpleActionPacket("openPonder", sceneId)
 			);
 		}
 		return Command.SINGLE_SUCCESS;

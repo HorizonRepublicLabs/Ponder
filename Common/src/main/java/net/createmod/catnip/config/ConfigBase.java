@@ -1,5 +1,12 @@
 package net.createmod.catnip.config;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import javax.annotation.Nullable;
+
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.Builder;
@@ -7,13 +14,6 @@ import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
 import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
 import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
-import javax.annotation.Nullable;
 
 public abstract class ConfigBase {
 
@@ -93,7 +93,8 @@ public abstract class ConfigBase {
 	}
 
 	public class CValue<V, T extends ConfigValue<V>> {
-		@Nullable protected ConfigValue<V> value;
+		@Nullable
+		protected ConfigValue<V> value;
 		protected String name;
 		private final IValueProvider<V, T> provider;
 

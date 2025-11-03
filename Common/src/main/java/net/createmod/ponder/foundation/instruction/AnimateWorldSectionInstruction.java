@@ -10,7 +10,7 @@ import net.minecraft.world.phys.Vec3;
 public class AnimateWorldSectionInstruction extends AnimateElementInstruction<WorldSectionElement> {
 
 	public static AnimateWorldSectionInstruction rotate(ElementLink<WorldSectionElement> link, Vec3 rotation,
-		int ticks) {
+														int ticks) {
 		return new AnimateWorldSectionInstruction(link, rotation, ticks,
 			(wse, v) -> wse.setAnimatedRotation(v, ticks == 0), WorldSectionElement::getAnimatedRotation);
 	}
@@ -21,7 +21,7 @@ public class AnimateWorldSectionInstruction extends AnimateElementInstruction<Wo
 	}
 
 	protected AnimateWorldSectionInstruction(ElementLink<WorldSectionElement> link, Vec3 totalDelta, int ticks,
-		BiConsumer<WorldSectionElement, Vec3> setter, Function<WorldSectionElement, Vec3> getter) {
+											 BiConsumer<WorldSectionElement, Vec3> setter, Function<WorldSectionElement, Vec3> getter) {
 		super(link, totalDelta, ticks, setter, getter);
 	}
 

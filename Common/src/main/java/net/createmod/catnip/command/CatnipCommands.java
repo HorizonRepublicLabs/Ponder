@@ -17,10 +17,10 @@ public class CatnipCommands {
 		LiteralCommandNode<CommandSourceStack> util = buildUtilityCommands();
 
 		LiteralCommandNode<CommandSourceStack> catnipRoot = Commands.literal("catnip")
-				.requires(cs -> cs.hasPermission(0))
-				.then(ConfigCommand.register())
-				.then(util)
-				.build();
+			.requires(cs -> cs.hasPermission(0))
+			.then(ConfigCommand.register())
+			.then(util)
+			.build();
 
 		catnipRoot.addChild(buildRedirect("u", util));
 
@@ -33,8 +33,8 @@ public class CatnipCommands {
 	private static LiteralCommandNode<CommandSourceStack> buildUtilityCommands() {
 
 		return Commands.literal("util")
-				.then(FlySpeedCommand.register())
-				.build();
+			.then(FlySpeedCommand.register())
+			.build();
 
 	}
 
@@ -48,7 +48,6 @@ public class CatnipCommands {
 	 *
 	 * @param alias       the command alias
 	 * @param destination the destination node
-	 *
 	 * @return the built node
 	 */
 	public static LiteralCommandNode<CommandSourceStack> buildRedirect(final String alias, final LiteralCommandNode<CommandSourceStack> destination) {
@@ -56,10 +55,10 @@ public class CatnipCommands {
 		// Manually adding the root command after setting the redirect doesn't fix it.
 		// See https://github.com/Mojang/brigadier/issues/46). Manually clone the node instead.
 		LiteralArgumentBuilder<CommandSourceStack> builder = LiteralArgumentBuilder
-				.<CommandSourceStack>literal(alias)
-				.requires(destination.getRequirement())
-				.forward(destination.getRedirect(), destination.getRedirectModifier(), destination.isFork())
-				.executes(destination.getCommand());
+			.<CommandSourceStack>literal(alias)
+			.requires(destination.getRequirement())
+			.forward(destination.getRedirect(), destination.getRedirectModifier(), destination.isFork())
+			.executes(destination.getCommand());
 		for (CommandNode<CommandSourceStack> child : destination.getChildren()) {
 			builder.then(child);
 		}

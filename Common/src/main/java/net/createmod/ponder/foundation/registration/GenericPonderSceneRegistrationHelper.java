@@ -26,12 +26,12 @@ public class GenericPonderSceneRegistrationHelper<T> implements PonderSceneRegis
 	}
 
 	public StoryBoardEntry addStoryBoard(T component, ResourceLocation schematicLocation,
-                                         PonderStoryBoard storyBoard, ResourceLocation... tags) {
+										 PonderStoryBoard storyBoard, ResourceLocation... tags) {
 		return helperDelegate.addStoryBoard(keyGen.apply(component), schematicLocation, storyBoard, tags);
 	}
 
 	public StoryBoardEntry addStoryBoard(T component, String schematicPath, PonderStoryBoard storyBoard,
-                                         ResourceLocation... tags) {
+										 ResourceLocation... tags) {
 		return helperDelegate.addStoryBoard(keyGen.apply(component), schematicPath, storyBoard, tags);
 	}
 

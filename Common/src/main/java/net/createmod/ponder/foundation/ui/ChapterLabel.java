@@ -17,8 +17,8 @@ public class ChapterLabel extends AbstractSimiWidget {
 		super(x, y, 175, 38);
 
 		this.button = new PonderButton(x + 4, y + 4, 30, 30)
-				.showing(chapter)
-				.withCallback(onClick);
+			.showing(chapter)
+			.withCallback(onClick);
 
 		this.chapter = chapter;
 	}

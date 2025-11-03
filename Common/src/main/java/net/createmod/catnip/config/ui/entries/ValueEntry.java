@@ -7,12 +7,6 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import net.createmod.ponder.enums.PonderGuiTextures;
-
-import net.minecraft.network.chat.Component;
-import net.neoforged.fml.config.ModConfig;
-import net.neoforged.neoforge.common.ModConfigSpec;
-
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.ClipboardManager;
@@ -33,6 +27,9 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class ValueEntry<T> extends ConfigScreenList.LabeledEntry {
 
@@ -52,11 +49,11 @@ public class ValueEntry<T> extends ConfigScreenList.LabeledEntry {
 		this.path = String.join(".", value.getPath());
 
 		resetButton = new BoxWidget(0, 0, resetWidth - 12, 16)
-				.showingElement(PonderGuiTextures.ICON_CONFIG_RESET.asStencil())
-				.withCallback(() -> {
-					setValue((T) spec.getDefault());
-					this.onReset();
-				});
+			.showingElement(PonderGuiTextures.ICON_CONFIG_RESET.asStencil())
+			.withCallback(() -> {
+				setValue((T) spec.getDefault());
+				this.onReset();
+			});
 		resetButton.modifyElement(e -> ((DelegatedStencilElement) e).withElementRenderer(BoxWidget.gradientFactory.apply(resetButton)));
 
 		listeners.add(resetButton);
@@ -79,11 +76,11 @@ public class ValueEntry<T> extends ConfigScreenList.LabeledEntry {
 		}
 		// add comment to tooltip
 		labelTooltip.addAll(commentLines.stream()
-				.filter(s -> !s.startsWith("Range"))
-				.map(s -> s.equals(".") ? " " : s)
-				.map(str -> Component.literal(str))
-				.flatMap(stc -> FontHelper.cutTextComponent(stc, Palette.ALL_GRAY).stream())
-				.toList()
+			.filter(s -> !s.startsWith("Range"))
+			.map(s -> s.equals(".") ? " " : s)
+			.map(str -> Component.literal(str))
+			.flatMap(stc -> FontHelper.cutTextComponent(stc, Palette.ALL_GRAY).stream())
+			.toList()
 		);
 
 		if (annotations.containsKey(ConfigAnnotations.RequiresRelog.TRUE.getName()))
@@ -172,12 +169,16 @@ public class ValueEntry<T> extends ConfigScreenList.LabeledEntry {
 	public void onValueChange() {
 		onValueChange(getValue());
 	}
+
 	public void onValueChange(T newValue) {
 		resetButton.active = editable && !isCurrentValueDefault();
 		resetButton.animateGradientFromState();
 	}
 
-	protected void bumpCog() {bumpCog(10f);}
+	protected void bumpCog() {
+		bumpCog(10f);
+	}
+
 	protected void bumpCog(float force) {
 		ConfigScreen.cogSpin.bump(3, force);
 	}

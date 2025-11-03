@@ -19,26 +19,26 @@ public class DirectionHelper {
 
 	public static Direction rotateAround(Direction dir, Axis axis) {
 		switch (axis) {
-		case X:
-			if (dir != WEST && dir != EAST) {
-				return rotateX(dir);
-			}
+			case X:
+				if (dir != WEST && dir != EAST) {
+					return rotateX(dir);
+				}
 
-			return dir;
-		case Y:
-			if (dir != UP && dir != DOWN) {
-				return dir.getClockWise();
-			}
+				return dir;
+			case Y:
+				if (dir != UP && dir != DOWN) {
+					return dir.getClockWise();
+				}
 
-			return dir;
-		case Z:
-			if (dir != NORTH && dir != SOUTH) {
-				return rotateZ(dir);
-			}
+				return dir;
+			case Z:
+				if (dir != NORTH && dir != SOUTH) {
+					return rotateZ(dir);
+				}
 
-			return dir;
-		default:
-			throw new IllegalStateException("Unable to get CW facing for axis " + axis);
+				return dir;
+			default:
+				throw new IllegalStateException("Unable to get CW facing for axis " + axis);
 		}
 	}
 

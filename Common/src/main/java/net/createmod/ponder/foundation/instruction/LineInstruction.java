@@ -6,10 +6,10 @@ import net.minecraft.world.phys.Vec3;
 
 public class LineInstruction extends TickingInstruction {
 
-	private PonderPalette color;
-	private Vec3 start;
-	private Vec3 end;
-	private boolean big;
+	private final PonderPalette color;
+	private final Vec3 start;
+	private final Vec3 end;
+	private final boolean big;
 
 	public LineInstruction(PonderPalette color, Vec3 start, Vec3 end, int ticks, boolean big) {
 		super(false, ticks);

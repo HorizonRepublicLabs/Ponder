@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
@@ -58,8 +57,8 @@ public class ConfigHelper {
 
 	public static ModConfigSpec findModConfigSpecFor(ModConfig.Type type, String modID) throws NullPointerException, ClassCastException {
 		return (ModConfigSpec) configCache.getUnchecked(modID)
-				.get(type)
-				.getSpec();
+			.get(type)
+			.getSpec();
 	}
 
 	public static boolean hasAnyForgeConfig(String modID) {
@@ -90,7 +89,7 @@ public class ConfigHelper {
 
 	// Add a value to the current UI's changes list
 	public static <T> void setValue(String path, ModConfigSpec.ConfigValue<T> configValue, T value,
-		@Nullable Map<String, String> annotations) {
+									@Nullable Map<String, String> annotations) {
 		if (value.equals(configValue.get())) {
 			changes.remove(path);
 		} else {
@@ -214,6 +213,7 @@ public class ConfigHelper {
 	}
 
 	public static class InvalidValueException extends Exception {
-		@Serial private static final long serialVersionUID = 1L;
+		@Serial
+		private static final long serialVersionUID = 1L;
 	}
 }

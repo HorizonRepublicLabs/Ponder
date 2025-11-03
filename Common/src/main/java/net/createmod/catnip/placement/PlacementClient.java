@@ -5,16 +5,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.createmod.catnip.animation.LerpedFloat;
-import net.createmod.catnip.math.AngleHelper;
-import net.createmod.catnip.math.VecHelper;
-import net.createmod.ponder.config.CClient;
-import net.createmod.ponder.enums.PonderConfig;
-import net.createmod.ponder.enums.PonderGuiTextures;
-
 import org.joml.Matrix4f;
 
-import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
@@ -24,6 +16,12 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
 
+import net.createmod.catnip.animation.LerpedFloat;
+import net.createmod.catnip.math.AngleHelper;
+import net.createmod.catnip.math.VecHelper;
+import net.createmod.ponder.config.CClient;
+import net.createmod.ponder.enums.PonderConfig;
+import net.createmod.ponder.enums.PonderGuiTextures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -40,8 +38,10 @@ public class PlacementClient {
 
 	static final LerpedFloat angle = LerpedFloat.angular()
 		.chase(0, 0.25f, LerpedFloat.Chaser.EXP);
-	@Nullable static BlockPos target = null;
-	@Nullable static BlockPos lastTarget = null;
+	@Nullable
+	static BlockPos target = null;
+	@Nullable
+	static BlockPos lastTarget = null;
 	static int animationTick = 0;
 
 	public static void tick() {
@@ -74,7 +74,7 @@ public class PlacementClient {
 			return;
 
 		if (mc.player.isShiftKeyDown())// for now, disable all helpers when sneaking TODO add helpers that respect
-										// sneaking but still show position
+			// sneaking but still show position
 			return;
 
 		for (InteractionHand hand : InteractionHand.values()) {
@@ -156,7 +156,7 @@ public class PlacementClient {
 	}
 
 	private static void drawDirectionIndicator(GuiGraphics graphics, float partialTicks, float centerX, float centerY,
-		float progress) {
+											   float progress) {
 		float r = .8f;
 		float g = .8f;
 		float b = .8f;
@@ -195,7 +195,7 @@ public class PlacementClient {
 	}
 
 	private static void fadedArrow(PoseStack ms, float centerX, float centerY, float r, float g, float b, float a,
-		float length, float snappedAngle) {
+								   float length, float snappedAngle) {
 		//RenderSystem.disableTexture();
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
@@ -257,9 +257,9 @@ public class PlacementClient {
 
 		Matrix4f mat = ms.last().pose();
 		buffer.addVertex(mat, -1, -1, 0).setColor(1f, 1f, 1f, alpha).setUv(tx, ty);
-		buffer.addVertex(mat, -1,  1, 0).setColor(1f, 1f, 1f, alpha).setUv(tx, ty + th);
-		buffer.addVertex(mat,  1,  1, 0).setColor(1f, 1f, 1f, alpha).setUv(tx + tw, ty + th);
-		buffer.addVertex(mat,  1, -1, 0).setColor(1f, 1f, 1f, alpha).setUv(tx + tw, ty);
+		buffer.addVertex(mat, -1, 1, 0).setColor(1f, 1f, 1f, alpha).setUv(tx, ty + th);
+		buffer.addVertex(mat, 1, 1, 0).setColor(1f, 1f, 1f, alpha).setUv(tx + tw, ty + th);
+		buffer.addVertex(mat, 1, -1, 0).setColor(1f, 1f, 1f, alpha).setUv(tx + tw, ty);
 
 		BufferUploader.drawWithShader(buffer.buildOrThrow());
 

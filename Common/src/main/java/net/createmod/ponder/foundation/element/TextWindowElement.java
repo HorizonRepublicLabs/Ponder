@@ -32,12 +32,14 @@ public class TextWindowElement extends AnimatedOverlayElementBase {
 	).map(Color::setImmutable);
 
 	Supplier<String> textGetter = () -> "(?) No text was provided";
-	@Nullable String bakedText;
+	@Nullable
+	String bakedText;
 
 	// from 0 to 200
 	int y;
 
-	@Nullable Vec3 vec;
+	@Nullable
+	Vec3 vec;
 
 	boolean nearScene = false;
 	PonderPalette palette = PonderPalette.WHITE;
@@ -125,11 +127,11 @@ public class TextWindowElement extends AnimatedOverlayElementBase {
 		if (bakedText == null)
 			bakedText = textGetter.get();
 
-        if (fade < 1 / 16f)
+		if (fade < 1 / 16f)
 			return;
 		SceneTransform transform = scene.getTransform();
 		Vec2 sceneToScreen = vec != null ? transform.sceneToScreen(vec, partialTicks)
-				: new Vec2(screen.width / 2f, (screen.height - 200) / 2f + y - 8);
+			: new Vec2(screen.width / 2f, (screen.height - 200) / 2f + y - 8);
 
 		boolean settled = transform.xRotation.settled() && transform.yRotation.settled();
 		float pY = settled ? (int) sceneToScreen.y : sceneToScreen.y;
@@ -146,27 +148,27 @@ public class TextWindowElement extends AnimatedOverlayElementBase {
 		int textWidth = (int) Math.min(screen.width - targetX, 180);
 
 		List<FormattedText> lines = screen.getFontRenderer()
-				.getSplitter()
-				.splitLines(bakedText, textWidth, Style.EMPTY);
+			.getSplitter()
+			.splitLines(bakedText, textWidth, Style.EMPTY);
 
 		int boxWidth = 0;
 		for (FormattedText line : lines)
 			boxWidth = Math.max(boxWidth, screen.getFontRenderer()
-					.width(line));
+				.width(line));
 
 		int boxHeight = screen.getFontRenderer()
-				.wordWrapHeight(bakedText, boxWidth);
+			.wordWrapHeight(bakedText, boxWidth);
 
 		PoseStack poseStack = graphics.pose();
 		poseStack.pushPose();
 		poseStack.translate(0, pY, 400);
 
 		new BoxElement()
-				.withBackground(PonderUI.BACKGROUND_FLAT)
-				.gradientBorder(COLOR_WINDOW_BORDER)
-				.at(targetX - 10, 3, -101)
-				.withBounds(boxWidth, boxHeight - 1)
-				.render(graphics);
+			.withBackground(PonderUI.BACKGROUND_FLAT)
+			.gradientBorder(COLOR_WINDOW_BORDER)
+			.at(targetX - 10, 3, -101)
+			.withBounds(boxWidth, boxHeight - 1)
+			.render(graphics);
 
 		Color brighter = palette.getColorObject().mixWith(new Color(0xff_ffffdd), 0.5f).setImmutable();
 		Color c1 = new Color(0xff_494949);

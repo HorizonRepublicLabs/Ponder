@@ -10,10 +10,10 @@ import net.minecraft.core.Direction.Axis;
 
 public class Iterate {
 
-	public static final boolean[] trueAndFalse = { true, false };
-	public static final boolean[] falseAndTrue = { false, true };
-	public static final int[] zeroAndOne = { 0, 1 };
-	public static final int[] positiveAndNegative = { 1, -1 };
+	public static final boolean[] trueAndFalse = {true, false};
+	public static final boolean[] falseAndTrue = {false, true};
+	public static final int[] zeroAndOne = {0, 1};
+	public static final int[] positiveAndNegative = {1, -1};
 	public static final Direction[] directions = Direction.values();
 	public static final Direction[] horizontalDirections = getHorizontals();
 	public static final Axis[] axes = Axis.values();
@@ -28,13 +28,13 @@ public class Iterate {
 
 	public static Direction[] directionsInAxis(Axis axis) {
 		switch (axis) {
-		case X:
-			return new Direction[] { Direction.EAST, Direction.WEST };
-		case Y:
-			return new Direction[] { Direction.UP, Direction.DOWN };
-		default:
-		case Z:
-			return new Direction[] { Direction.SOUTH, Direction.NORTH };
+			case X:
+				return new Direction[]{Direction.EAST, Direction.WEST};
+			case Y:
+				return new Direction[]{Direction.UP, Direction.DOWN};
+			default:
+			case Z:
+				return new Direction[]{Direction.SOUTH, Direction.NORTH};
 		}
 	}
 

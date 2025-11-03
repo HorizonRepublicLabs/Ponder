@@ -42,7 +42,8 @@ public class DefaultSuperByteBuffer implements SuperByteBuffer {
 	protected boolean disableDiffuse;
 
 	// Vertex Texture Coordinates
-	@Nullable protected SpriteShiftFunc spriteShiftFunc;
+	@Nullable
+	protected SpriteShiftFunc spriteShiftFunc;
 
 	// Vertex Overlay Color
 	protected boolean hasOverlay;
@@ -50,7 +51,8 @@ public class DefaultSuperByteBuffer implements SuperByteBuffer {
 
 	// Vertex Lighting
 	protected boolean useWorldLight;
-	@Nullable protected Matrix4f lightTransform;
+	@Nullable
+	protected Matrix4f lightTransform;
 	protected boolean hasCustomLight;
 	protected int packedLightCoordinates;
 	protected boolean hybridLight;
@@ -263,11 +265,11 @@ public class DefaultSuperByteBuffer implements SuperByteBuffer {
 	@Override
 	public DefaultSuperByteBuffer transform(PoseStack ms) {
 		transforms.last()
-				.pose()
-				.mul(ms.last().pose());
+			.pose()
+			.mul(ms.last().pose());
 		transforms.last()
-				.normal()
-				.mul(ms.last().normal());
+			.normal()
+			.mul(ms.last().normal());
 		return this;
 	}
 

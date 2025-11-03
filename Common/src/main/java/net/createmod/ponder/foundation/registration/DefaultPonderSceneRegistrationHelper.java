@@ -56,7 +56,7 @@ public class DefaultPonderSceneRegistrationHelper implements PonderSceneRegistra
 	}
 
 	private PonderStoryBoardEntry createStoryBoardEntry(PonderStoryBoard storyBoard, ResourceLocation schematicLocation,
-												  ResourceLocation component) {
+														ResourceLocation component) {
 		return new PonderStoryBoardEntry(storyBoard, namespace, schematicLocation, component);
 	}
 

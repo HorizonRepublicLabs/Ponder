@@ -1,8 +1,9 @@
 package net.createmod.catnip.net.base;
 
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public sealed interface BasePacketPayload extends CustomPacketPayload permits ClientboundPacketPayload, ServerboundPacketPayload {
 	PacketTypeProvider getTypeProvider();

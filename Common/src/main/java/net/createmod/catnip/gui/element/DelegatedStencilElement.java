@@ -6,8 +6,9 @@ import net.minecraft.client.gui.GuiGraphics;
 
 public class DelegatedStencilElement extends AbstractRenderElement implements StencilElement {
 
-	protected static final FadableScreenElement EMPTY_RENDERER = (graphics, width, height, alpha) -> {};
-	protected static final FadableScreenElement DEFAULT_ELEMENT = (graphics, width, height, alpha) -> UIRenderHelper.angledGradient(graphics, 0, -3, 5, height+4, width+6, new Color(0xff_10dd10).scaleAlpha(alpha), new Color(0xff_1010dd).scaleAlpha(alpha));
+	protected static final FadableScreenElement EMPTY_RENDERER = (graphics, width, height, alpha) -> {
+	};
+	protected static final FadableScreenElement DEFAULT_ELEMENT = (graphics, width, height, alpha) -> UIRenderHelper.angledGradient(graphics, 0, -3, 5, height + 4, width + 6, new Color(0xff_10dd10).scaleAlpha(alpha), new Color(0xff_1010dd).scaleAlpha(alpha));
 
 	protected FadableScreenElement stencil;
 	protected FadableScreenElement element;
