@@ -52,17 +52,4 @@ public interface CatnipCodecUtils {
 	static <T, S> Optional<S> encode(Codec<T> codec, DynamicOps<S> ops, T t) {
 		return codec.encodeStart(ops, t).result();
 	}
-
-	// Encode and return @Nullable Tag
-	static <T> Tag encodeOrNull(Codec<T> codec, T t) {
-		return encodeOrNull(codec, NbtOps.INSTANCE, t);
-	}
-
-	static <T> Tag encodeOrNull(Codec<T> codec, HolderLookup.Provider registries, T t) {
-		return encodeOrNull(codec, RegistryOps.create(NbtOps.INSTANCE, registries), t);
-	}
-
-	static <T, S> S encodeOrNull(Codec<T> codec, DynamicOps<S> ops, T t) {
-		return codec.encodeStart(ops, t).mapOrElse(s -> s, e -> null);
-	}
 }
