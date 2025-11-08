@@ -23,11 +23,11 @@ allprojects {
 }
 
 subprojects {
-    apply(from = "../gradle/property_loader.gradle.kts")
-    apply(from = "../gradle/signing.gradle.kts")
-
     apply(plugin = "maven-publish")
     apply(plugin = "net.createmod.ponder.gradle")
+
+    apply(from = "../gradle/property_loader.gradle.kts")
+    apply(from = "../gradle/signing.gradle.kts")
 
     val capitalizedName = project.name.capitalized()
 
