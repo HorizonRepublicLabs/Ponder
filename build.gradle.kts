@@ -118,6 +118,7 @@ subprojects {
 
     publishing {
         publications.create<MavenPublication>("maven${capitalizedName}") {
+            artifactId = base.archivesName.get()
             from(components["java"])
         }
 
