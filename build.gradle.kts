@@ -1,6 +1,7 @@
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import org.gradle.internal.extensions.stdlib.capitalized
+import java.net.URI
 
 plugins {
     java
@@ -120,22 +121,17 @@ subprojects {
             from(components["java"])
         }
 
-        val mavenUrl = providers.gradleProperty("mavenURL").orNull
-        val mavenUsername = providers.gradleProperty("mavenUsername").orNull
-        val mavenPassword = providers.gradleProperty("mavenPassword").orNull
+        repositories {
+            if (project.hasProperty("mavenUsername") && project.hasProperty("mavenPassword") && project.hasProperty("mavenURL")) {
+                project.logger.lifecycle("Adding maven from secrets")
 
-        println("Publishing to " + mavenUrl)
-
-        mavenUrl?.let {
-            repositories.maven {
-                if (mavenUsername != null && mavenPassword != null) {
+                maven {
                     credentials {
-                        username = mavenUsername
-                        password = mavenPassword
+                        username = project.property("mavenUsername") as String
+                        password = project.property("mavenPassword") as String
                     }
+                    url = project.property("mavenURL") as URI
                 }
-
-                url = uri(it)
             }
         }
     }
