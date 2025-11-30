@@ -124,6 +124,8 @@ subprojects {
         val mavenUsername = providers.gradleProperty("mavenUsername").orNull
         val mavenPassword = providers.gradleProperty("mavenPassword").orNull
 
+        println("Publishing to " + mavenUrl)
+
         mavenUrl?.let {
             repositories.maven {
                 if (mavenUsername != null && mavenPassword != null) {
