@@ -127,10 +127,10 @@ subprojects {
 
                 maven {
                     credentials {
-                        username = project.property("mavenUsername") as String
-                        password = project.property("mavenPassword") as String
+                        username = project.property("mavenUsername").toString()
+                        password = project.property("mavenPassword").toString()
                     }
-                    url = project.property("mavenURL") as URI
+                    url = URI.create(project.property("mavenURL").toString())
                 }
             }
         }
