@@ -102,7 +102,7 @@ subprojects {
             "mod_license" to "mod_license"()
         )
 
-        filesMatching(setOf("pack.mcmeta", "fabric.mod.json", "META-INF/mods.toml", "*.mixins.json")) {
+        filesMatching(setOf("pack.mcmeta", "fabric.mod.json", "META-INF/neoforge.mods.toml", "*.mixins.json")) {
             expand(expandProps)
         }
         inputs.properties(expandProps)
