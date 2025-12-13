@@ -57,7 +57,7 @@ public class GuiGameElement {
 		return new GuiBlockStateRenderBuilder(state);
 	}
 
-	public static GuiRenderBuilder of(BlockState state, BlockEntity blockEntity) {
+	public static GuiRenderBuilder of(BlockState state, @Nullable BlockEntity blockEntity) {
 		return new GuiBlockEntityRenderBuilder(state, blockEntity);
 	}
 
@@ -211,7 +211,7 @@ public class GuiGameElement {
 
 	public static class GuiBlockEntityRenderBuilder extends GuiBlockModelRenderBuilder {
 
-		public GuiBlockEntityRenderBuilder(BlockState blockState, BlockEntity blockEntity) {
+		public GuiBlockEntityRenderBuilder(BlockState blockState, @Nullable BlockEntity blockEntity) {
 			super(
 				Minecraft.getInstance().getBlockRenderer().getBlockModel(blockState),
 				blockState,
