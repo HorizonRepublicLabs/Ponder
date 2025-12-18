@@ -91,7 +91,7 @@ public class AABBOutline extends Outline {
 		if (faceTexture == null)
 			return;
 
-		RenderType renderType = PonderRenderTypes.outlineTranslucent(faceTexture.getLocation(), cull);
+		RenderType renderType = PonderRenderTypes.outlineTranslucent(faceTexture.getId(), cull);
 		VertexConsumer consumer = buffer.getLateBuffer(renderType);
 
 		float alphaMult = highlighted ? 1 : 0.5f;

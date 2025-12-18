@@ -25,7 +25,7 @@ public enum CatnipPackets implements BasePacketPayload.PacketTypeProvider {
 	<T extends BasePacketPayload> CatnipPackets(Class<T> clazz, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
 		String name = this.name().toLowerCase(Locale.ROOT);
 		this.type = new CatnipPacketRegistry.PacketType<>(
-			new CustomPacketPayload.Type<>(Ponder.asResource(name)),
+			new CustomPacketPayload.Type<>(Ponder.id(name)),
 			clazz, codec
 		);
 	}

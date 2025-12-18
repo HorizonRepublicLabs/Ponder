@@ -1,7 +1,7 @@
 package net.createmod.ponder.api.element;
 
 import net.createmod.ponder.api.PonderPalette;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.Vec3;
 
 public interface TextElementBuilder {
@@ -20,9 +20,9 @@ public interface TextElementBuilder {
 
 	TextElementBuilder text(String defaultText, Object... params);
 
-	TextElementBuilder sharedText(ResourceLocation key);
+	TextElementBuilder sharedText(Identifier key);
 
-	TextElementBuilder sharedText(ResourceLocation key, Object... params);
+	TextElementBuilder sharedText(Identifier key, Object... params);
 
 	TextElementBuilder sharedText(String key);
 

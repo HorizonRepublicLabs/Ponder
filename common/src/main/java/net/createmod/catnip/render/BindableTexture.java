@@ -2,14 +2,12 @@ package net.createmod.catnip.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public interface BindableTexture {
-
 	default void bind() {
-		RenderSystem.setShaderTexture(0, getLocation());
+		RenderSystem.setShaderTexture(0, getId());
 	}
 
-	ResourceLocation getLocation();
-
+	Identifier getId();
 }

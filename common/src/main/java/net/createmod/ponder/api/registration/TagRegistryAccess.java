@@ -4,18 +4,18 @@ import java.util.List;
 import java.util.Set;
 
 import net.createmod.ponder.foundation.PonderTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public interface TagRegistryAccess {
 
-	PonderTag getRegisteredTag(ResourceLocation tagLocation);
+	PonderTag getRegisteredTag(Identifier tagIdentifier);
 
 	List<PonderTag> getListedTags();
 
-	Set<PonderTag> getTags(ResourceLocation item);
+	Set<PonderTag> getTags(Identifier item);
 
-	Set<ResourceLocation> getItems(ResourceLocation tag);
+	Set<Identifier> getItems(Identifier tag);
 
-	Set<ResourceLocation> getItems(PonderTag tag);
+	Set<Identifier> getItems(PonderTag tag);
 
 }

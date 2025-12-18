@@ -5,7 +5,7 @@ import java.util.Objects;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class SpriteShiftEntry {
 	@Nullable
@@ -13,19 +13,19 @@ public class SpriteShiftEntry {
 	@Nullable
 	protected StitchedSprite target;
 
-	public void set(ResourceLocation originalLocation, ResourceLocation targetLocation) {
-		original = new StitchedSprite(originalLocation);
-		target = new StitchedSprite(targetLocation);
+	public void set(Identifier originalIdentifier, Identifier targetIdentifier) {
+		original = new StitchedSprite(originalIdentifier);
+		target = new StitchedSprite(targetIdentifier);
 	}
 
-	public ResourceLocation getOriginalResourceLocation() {
+	public Identifier getOriginalIdentifier() {
 		Objects.requireNonNull(original);
-		return original.getLocation();
+		return original.getId();
 	}
 
-	public ResourceLocation getTargetResourceLocation() {
+	public Identifier getTargetIdentifier() {
 		Objects.requireNonNull(target);
-		return target.getLocation();
+		return target.getId();
 	}
 
 	public TextureAtlasSprite getOriginal() {

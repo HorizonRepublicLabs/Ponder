@@ -42,19 +42,19 @@ public class GenericMultiSceneBuilder<T> implements MultiSceneBuilder {
 
 	@Override
 	public MultiSceneBuilder addStoryBoard(String schematicPath, PonderStoryBoard storyBoard) {
-		return addStoryBoard(helper.asLocation(schematicPath), storyBoard);
+		return addStoryBoard(helper.asIdentifier(schematicPath), storyBoard);
 	}
 
 	@Override
 	public MultiSceneBuilder addStoryBoard(String schematicPath, PonderStoryBoard storyBoard,
 										   ResourceLocation... tags) {
-		return addStoryBoard(helper.asLocation(schematicPath), storyBoard, tags);
+		return addStoryBoard(helper.asIdentifier(schematicPath), storyBoard, tags);
 	}
 
 	@Override
 	public MultiSceneBuilder addStoryBoard(String schematicPath, PonderStoryBoard storyBoard,
 										   Consumer<StoryBoardEntry> extras) {
-		return addStoryBoard(helper.asLocation(schematicPath), storyBoard, extras);
+		return addStoryBoard(helper.asIdentifier(schematicPath), storyBoard, extras);
 	}
 
 }

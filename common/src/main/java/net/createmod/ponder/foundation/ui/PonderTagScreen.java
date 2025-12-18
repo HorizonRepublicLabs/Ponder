@@ -24,13 +24,12 @@ import net.createmod.ponder.foundation.PonderTag;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 
 public class PonderTagScreen extends AbstractPonderScreen {
-
 	private final PonderTag tag;
 	protected final List<ItemEntry> items = new ArrayList<>();
 	private final double itemXmult = 0.5;
@@ -45,7 +44,7 @@ public class PonderTagScreen extends AbstractPonderScreen {
 
 	private ItemStack hoveredItem = ItemStack.EMPTY;
 
-	public PonderTagScreen(ResourceLocation tag) {
+	public PonderTagScreen(Identifier tag) {
 		this.tag = PonderIndex.getTagAccess().getRegisteredTag(tag);
 	}
 
@@ -97,7 +96,7 @@ public class PonderTagScreen extends AbstractPonderScreen {
 		}
 
 		if (!tag.getMainItem().isEmpty()) {
-			ResourceLocation registryName = RegisteredObjectsHelper.getKeyOrThrow(tag.getMainItem().getItem());
+			Identifier registryName = RegisteredObjectsHelper.getKeyOrThrow(tag.getMainItem().getItem());
 
 			PonderButton b = new PonderButton(itemCenterX - layout.getTotalWidth() / 2 - 48, itemCenterY - 10)
 				.showing(tag.getMainItem());
@@ -310,7 +309,6 @@ public class PonderTagScreen extends AbstractPonderScreen {
 		hoveredItem = ItemStack.EMPTY;
 	}
 
-	public record ItemEntry(@Nullable ItemLike item, ResourceLocation key) {
+	public record ItemEntry(@Nullable ItemLike item, Identifier key) {
 	}
-
 }

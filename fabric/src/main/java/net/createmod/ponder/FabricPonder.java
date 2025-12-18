@@ -30,7 +30,7 @@ public class FabricPonder implements ModInitializer {
 
 		registerConfigs();
 
-		ArgumentTypeRegistry.registerArgumentType(Ponder.asResource("config_path"), ConfigPathArgument.class,
+		ArgumentTypeRegistry.registerArgumentType(Ponder.id("config_path"), ConfigPathArgument.class,
 			SingletonArgumentInfo.contextFree(ConfigPathArgument::new));
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {

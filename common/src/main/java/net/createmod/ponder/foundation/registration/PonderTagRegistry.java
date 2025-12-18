@@ -24,7 +24,7 @@ public class PonderTagRegistry implements TagRegistryAccess {
 	private final Map<ResourceLocation, PonderTag> registeredTags;
 	private final List<PonderTag> listedTags;
 
-	private final PonderTag MISSING = new PonderTag(Ponder.asResource("not_registered"), null,
+	private final PonderTag MISSING = new PonderTag(Ponder.id("not_registered"), null,
 		Items.BARRIER.getDefaultInstance(),
 		Items.BARRIER.getDefaultInstance());
 

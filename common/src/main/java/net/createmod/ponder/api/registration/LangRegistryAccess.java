@@ -1,11 +1,10 @@
 package net.createmod.ponder.api.registration;
 
+import net.minecraft.resources.Identifier;
+
 import java.util.function.BiConsumer;
 
-import net.minecraft.resources.ResourceLocation;
-
 public interface LangRegistryAccess {
-
 	/**
 	 * Generate all Lang-entries with their enUS defaults that were declared in code and have them consumed by the passed BiConsumer
 	 *
@@ -13,16 +12,15 @@ public interface LangRegistryAccess {
 	 */
 	void provideLang(String modId, BiConsumer<String, String> consumer);
 
-	String getShared(ResourceLocation key);
+	String getShared(Identifier key);
 
-	String getShared(ResourceLocation key, Object... params);
+	String getShared(Identifier key, Object... params);
 
-	String getTagName(ResourceLocation key);
+	String getTagName(Identifier key);
 
-	String getTagDescription(ResourceLocation key);
+	String getTagDescription(Identifier key);
 
-	String getSpecific(ResourceLocation sceneId, String k);
+	String getSpecific(Identifier sceneId, String k);
 
-	String getSpecific(ResourceLocation sceneId, String k, Object... params);
-
+	String getSpecific(Identifier sceneId, String k, Object... params);
 }

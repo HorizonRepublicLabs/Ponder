@@ -47,7 +47,7 @@ public class GenericPonderSceneRegistrationHelper<T> implements PonderSceneRegis
 	}
 
 	@Override
-	public ResourceLocation asLocation(String path) {
-		return helperDelegate.asLocation(path);
+	public ResourceLocation asIdentifier(String path) {
+		return helperDelegate.asIdentifier(path);
 	}
 }

@@ -6,28 +6,27 @@ import java.util.List;
 
 import net.createmod.ponder.api.registration.StoryBoardEntry;
 import net.createmod.ponder.api.scene.PonderStoryBoard;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class PonderStoryBoardEntry implements StoryBoardEntry {
-
 	private final PonderStoryBoard board;
 	private final String namespace;
-	private final ResourceLocation schematicLocation;
-	private final ResourceLocation component;
-	private final List<ResourceLocation> tags;
+	private final Identifier schematicIdentifier;
+	private final Identifier component;
+	private final List<Identifier> tags;
 	private final List<SceneOrderingEntry> orderingEntries;
 
-	public PonderStoryBoardEntry(PonderStoryBoard board, String namespace, ResourceLocation schematicLocation, ResourceLocation component) {
+	public PonderStoryBoardEntry(PonderStoryBoard board, String namespace, Identifier schematicIdentifier, Identifier component) {
 		this.board = board;
 		this.namespace = namespace;
-		this.schematicLocation = schematicLocation;
+		this.schematicIdentifier = schematicIdentifier;
 		this.component = component;
 		this.tags = new ArrayList<>();
 		this.orderingEntries = new ArrayList<>();
 	}
 
-	public PonderStoryBoardEntry(PonderStoryBoard board, String namespace, String schematicPath, ResourceLocation component) {
-		this(board, namespace, ResourceLocation.fromNamespaceAndPath(namespace, schematicPath), component);
+	public PonderStoryBoardEntry(PonderStoryBoard board, String namespace, String schematicPath, Identifier component) {
+		this(board, namespace, Identifier.fromNamespaceAndPath(namespace, schematicPath), component);
 	}
 
 	@Override
@@ -41,17 +40,17 @@ public class PonderStoryBoardEntry implements StoryBoardEntry {
 	}
 
 	@Override
-	public ResourceLocation getSchematicLocation() {
-		return schematicLocation;
+	public Identifier getSchematicIdentifier() {
+		return schematicIdentifier;
 	}
 
 	@Override
-	public ResourceLocation getComponent() {
+	public Identifier getComponent() {
 		return component;
 	}
 
 	@Override
-	public List<ResourceLocation> getTags() {
+	public List<Identifier> getTags() {
 		return tags;
 	}
 
@@ -75,13 +74,13 @@ public class PonderStoryBoardEntry implements StoryBoardEntry {
 	}
 
 	@Override
-	public StoryBoardEntry highlightTag(ResourceLocation tag) {
+	public StoryBoardEntry highlightTag(Identifier tag) {
 		tags.add(tag);
 		return this;
 	}
 
 	@Override
-	public StoryBoardEntry highlightTags(ResourceLocation... tags) {
+	public StoryBoardEntry highlightTags(Identifier... tags) {
 		Collections.addAll(this.tags, tags);
 		return this;
 	}
@@ -91,5 +90,4 @@ public class PonderStoryBoardEntry implements StoryBoardEntry {
 		tags.add(PonderTag.Highlight.ALL);
 		return this;
 	}
-
 }

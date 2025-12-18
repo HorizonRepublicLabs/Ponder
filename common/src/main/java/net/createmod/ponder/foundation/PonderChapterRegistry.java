@@ -12,11 +12,10 @@ import javax.annotation.Nullable;
 
 import net.createmod.catnip.data.Pair;
 import net.createmod.ponder.api.registration.StoryBoardEntry;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class PonderChapterRegistry {
-
-	private final Map<ResourceLocation, Pair<PonderChapter, List<StoryBoardEntry>>> chapters;
+	private final Map<Identifier, Pair<PonderChapter, List<StoryBoardEntry>>> chapters;
 
 	public PonderChapterRegistry() {
 		chapters = new HashMap<>();
@@ -30,7 +29,7 @@ public class PonderChapterRegistry {
 	}
 
 	@Nullable
-	PonderChapter getChapter(ResourceLocation id) {
+	PonderChapter getChapter(Identifier id) {
 		Pair<PonderChapter, List<StoryBoardEntry>> pair = chapters.get(id);
 		if (pair == null)
 			return null;
@@ -59,5 +58,4 @@ public class PonderChapterRegistry {
 			return List.of();
 		return chapterPair.getSecond();
 	}
-
 }

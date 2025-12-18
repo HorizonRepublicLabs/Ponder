@@ -61,7 +61,7 @@ public class BlockClusterOutline extends Outline {
 			cluster.anchor.getZ() - camera.z);
 
 		PoseStack.Pose pose = ms.last();
-		RenderType renderType = PonderRenderTypes.outlineTranslucent(faceTexture.getLocation(), true);
+		RenderType renderType = PonderRenderTypes.outlineTranslucent(faceTexture.getId(), true);
 		VertexConsumer consumer = buffer.getLateBuffer(renderType);
 
 		cluster.visibleFaces.forEach((face, axisDirection) -> {

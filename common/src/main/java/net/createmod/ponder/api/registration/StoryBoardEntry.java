@@ -3,18 +3,18 @@ package net.createmod.ponder.api.registration;
 import java.util.List;
 
 import net.createmod.ponder.api.scene.PonderStoryBoard;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public interface StoryBoardEntry {
 	PonderStoryBoard getBoard();
 
 	String getNamespace();
 
-	ResourceLocation getSchematicLocation();
+	Identifier getSchematicIdentifier();
 
-	ResourceLocation getComponent();
+	Identifier getComponent();
 
-	List<ResourceLocation> getTags();
+	List<Identifier> getTags();
 
 	List<SceneOrderingEntry> getOrderingEntries();
 
@@ -69,14 +69,14 @@ public interface StoryBoardEntry {
 	 *
 	 * @return this StoryBoardEntry
 	 */
-	StoryBoardEntry highlightTag(ResourceLocation tag);
+	StoryBoardEntry highlightTag(Identifier tag);
 
 	/**
 	 * causes the supplied PonderTags to flash when viewing this scene in the PonderUI
 	 *
 	 * @return this StoryBoardEntry
 	 */
-	StoryBoardEntry highlightTags(ResourceLocation... tags);
+	StoryBoardEntry highlightTags(Identifier... tags);
 
 	/**
 	 * causes all assigned PonderTags to flash when viewing this scene in the PonderUI
@@ -89,14 +89,14 @@ public interface StoryBoardEntry {
 		BEFORE, AFTER
 	}
 
-	record SceneOrderingEntry(SceneOrderingType type, ResourceLocation sceneId) {
+	record SceneOrderingEntry(SceneOrderingType type, Identifier sceneId) {
 
 		public static SceneOrderingEntry after(String namespace, String sceneId) {
-			return new SceneOrderingEntry(SceneOrderingType.AFTER, ResourceLocation.fromNamespaceAndPath(namespace, sceneId));
+			return new SceneOrderingEntry(SceneOrderingType.AFTER, Identifier.fromNamespaceAndPath(namespace, sceneId));
 		}
 
 		public static SceneOrderingEntry before(String namespace, String sceneId) {
-			return new SceneOrderingEntry(SceneOrderingType.BEFORE, ResourceLocation.fromNamespaceAndPath(namespace, sceneId));
+			return new SceneOrderingEntry(SceneOrderingType.BEFORE, Identifier.fromNamespaceAndPath(namespace, sceneId));
 		}
 	}
 }

@@ -8,7 +8,7 @@ import net.createmod.catnip.render.ColoredRenderable;
 import net.createmod.catnip.theme.Color;
 import net.createmod.ponder.Ponder;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public enum PonderGuiTextures implements TextureSheetSegment, ScreenElement, ColoredRenderable {
 
@@ -49,7 +49,7 @@ public enum PonderGuiTextures implements TextureSheetSegment, ScreenElement, Col
 
 	;
 
-	public final ResourceLocation location;
+	public final Identifier id;
 	private final int width;
 	private final int height;
 	private final int startX;
@@ -57,20 +57,20 @@ public enum PonderGuiTextures implements TextureSheetSegment, ScreenElement, Col
 	private final int sheetWidth;
 	private final int sheetHeight;
 
-	PonderGuiTextures(String location, int iconColumn, int iconRow) {
-		this(location, iconColumn * 16, iconRow * 16, 16, 16);
+	PonderGuiTextures(String id, int iconColumn, int iconRow) {
+		this(id, iconColumn * 16, iconRow * 16, 16, 16);
 	}
 
-	PonderGuiTextures(String location, int startX, int startY, int width, int height) {
-		this(Ponder.MOD_ID, location, startX, startY, width, height, 256, 256);
+	PonderGuiTextures(String id, int startX, int startY, int width, int height) {
+		this(Ponder.MOD_ID, id, startX, startY, width, height, 256, 256);
 	}
 
-	PonderGuiTextures(String location, int startX, int startY, int width, int height, int sheetWidth, int sheetHeight) {
-		this(Ponder.MOD_ID, location, startX, startY, width, height, sheetWidth, sheetHeight);
+	PonderGuiTextures(String id, int startX, int startY, int width, int height, int sheetWidth, int sheetHeight) {
+		this(Ponder.MOD_ID, id, startX, startY, width, height, sheetWidth, sheetHeight);
 	}
 
-	PonderGuiTextures(String namespace, String location, int startX, int startY, int width, int height, int sheetWidth, int sheetHeight) {
-		this.location = ResourceLocation.fromNamespaceAndPath(namespace, "textures/gui/" + location + ".png");
+	PonderGuiTextures(String namespace, String id, int startX, int startY, int width, int height, int sheetWidth, int sheetHeight) {
+		this.id = Identifier.fromNamespaceAndPath(namespace, "textures/gui/" + id + ".png");
 		this.width = width;
 		this.height = height;
 		this.startX = startX;
@@ -81,7 +81,7 @@ public enum PonderGuiTextures implements TextureSheetSegment, ScreenElement, Col
 
 	@Override
 	public void render(GuiGraphics graphics, int x, int y) {
-		graphics.blit(getLocation(), x, y, 0, startX, startY, width, height, sheetWidth, sheetHeight);
+		graphics.blit(getId(), x, y, 0, startX, startY, width, height, sheetWidth, sheetHeight);
 	}
 
 	@Override
@@ -91,8 +91,8 @@ public enum PonderGuiTextures implements TextureSheetSegment, ScreenElement, Col
 	}
 
 	@Override
-	public ResourceLocation getLocation() {
-		return location;
+	public Identifier getId() {
+		return id;
 	}
 
 	@Override

@@ -11,7 +11,7 @@ import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
-import net.minecraft.commands.arguments.ResourceLocationArgument;
+import net.minecraft.commands.arguments.IdentifierArgument;
 import net.minecraft.server.level.ServerPlayer;
 
 public class PonderCommand {
@@ -31,14 +31,14 @@ public class PonderCommand {
 			.then(Commands.literal("tags")
 				.executes(ctx -> openScene("ponder:tags", ctx.getSource().getPlayerOrException()))
 			)
-			.then(Commands.argument("scene", ResourceLocationArgument.id())
+			.then(Commands.argument("scene", IdentifierArgument.id())
 				//.suggests(ITEM_PONDERS)
-				.executes(ctx -> openScene(ResourceLocationArgument.getId(ctx, "scene").toString(),
+				.executes(ctx -> openScene(IdentifierArgument.getId(ctx, "scene").toString(),
 					ctx.getSource().getPlayerOrException()))
 				.then(Commands.argument("targets", EntityArgument.players())
 					.requires(cs -> cs.hasPermission(2))
 					.executes(ctx -> openScene(
-						ResourceLocationArgument.getId(ctx, "scene").toString(),
+						IdentifierArgument.getId(ctx, "scene").toString(),
 						EntityArgument.getPlayers(ctx, "targets")))
 				)
 			);

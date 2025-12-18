@@ -37,7 +37,7 @@ public class DefaultPonderSceneRegistrationHelper implements PonderSceneRegistra
 	@Override
 	public StoryBoardEntry addStoryBoard(ResourceLocation component, String schematicPath,
 										 PonderStoryBoard storyBoard, ResourceLocation... tags) {
-		return addStoryBoard(component, asLocation(schematicPath), storyBoard, tags);
+		return addStoryBoard(component, asIdentifier(schematicPath), storyBoard, tags);
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class DefaultPonderSceneRegistrationHelper implements PonderSceneRegistra
 	}
 
 	@Override
-	public ResourceLocation asLocation(String path) {
+	public ResourceLocation asIdentifier(String path) {
 		return ResourceLocation.fromNamespaceAndPath(namespace, path);
 	}
 

@@ -5,24 +5,24 @@ import java.util.function.Consumer;
 import javax.annotation.Nullable;
 
 import net.createmod.ponder.api.registration.TagBuilder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 
 public class PonderTagBuilder implements TagBuilder {
 
-	final ResourceLocation id;
+	final Identifier id;
 	private final Consumer<PonderTagBuilder> onFinish;
 
 	String title = "NO_TITLE";
 	String description = "NO_DESCRIPTION";
 	boolean addToIndex = false;
 	@Nullable
-	ResourceLocation textureIconLocation;
+	Identifier textureIconIdentifier;
 	ItemStack itemIcon = ItemStack.EMPTY;
 	ItemStack mainItem = ItemStack.EMPTY;
 
-	public PonderTagBuilder(ResourceLocation id, Consumer<PonderTagBuilder> onFinish) {
+	public PonderTagBuilder(Identifier id, Consumer<PonderTagBuilder> onFinish) {
 		this.id = id;
 		this.onFinish = onFinish;
 	}
@@ -46,14 +46,14 @@ public class PonderTagBuilder implements TagBuilder {
 	}
 
 	@Override
-	public TagBuilder icon(ResourceLocation location) {
-		this.textureIconLocation = ResourceLocation.fromNamespaceAndPath(location.getNamespace(), "textures/ponder/tag/" + location.getPath() + ".png");
+	public TagBuilder icon(Identifier location) {
+		this.textureIconIdentifier = Identifier.fromNamespaceAndPath(location.getNamespace(), "textures/ponder/tag/" + location.getPath() + ".png");
 		return this;
 	}
 
 	@Override
 	public TagBuilder icon(String path) {
-		this.textureIconLocation = ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "textures/ponder/tag/" + path + ".png");
+		this.textureIconIdentifier = Identifier.fromNamespaceAndPath(id.getNamespace(), "textures/ponder/tag/" + path + ".png");
 		return this;
 	}
 

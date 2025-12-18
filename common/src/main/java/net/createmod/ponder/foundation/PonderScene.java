@@ -18,6 +18,8 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.resources.Identifier;
+
 import org.apache.commons.lang3.mutable.MutableDouble;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.joml.Matrix4f;
@@ -56,7 +58,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Vec3i;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.ItemStack;
@@ -75,7 +76,7 @@ public class PonderScene {
 	private boolean finished;
 	//	private int sceneIndex;
 	private int textIndex;
-	ResourceLocation sceneId;
+	Identifier sceneId;
 
 	private final IntList keyframeTimes;
 
@@ -88,7 +89,7 @@ public class PonderScene {
 
 	private final PonderLevel world;
 	private final String namespace;
-	private final ResourceLocation location;
+	private final Identifier identifier;
 	private final SceneCamera camera;
 	private final Outliner outliner;
 	private SceneTransform transform;
@@ -113,7 +114,7 @@ public class PonderScene {
 	private boolean nextUpEnabled = true;
 
 	public PonderScene(@Nullable PonderLevel world, PonderLocalization localization, String namespace,
-					   ResourceLocation location, Collection<ResourceLocation> tags,
+					   Identifier identifier, Collection<Identifier> tags,
 					   Collection<SceneOrderingEntry> orderingEntries) {
 		if (world != null) {
 			world.scene = this;
@@ -127,8 +128,8 @@ public class PonderScene {
 		hidePlatformShadow = false;
 
 		this.namespace = namespace;
-		this.location = location;
-		this.sceneId = ResourceLocation.fromNamespaceAndPath(namespace, "missing_title");
+		this.identifier = identifier;
+		this.sceneId = Identifier.fromNamespaceAndPath(namespace, "missing_title");
 
 		outliner = new Outliner();
 		elements = new HashSet<>();
@@ -457,8 +458,8 @@ public class PonderScene {
 		return orderingEntries;
 	}
 
-	public ResourceLocation getLocation() {
-		return location;
+	public Identifier getIdentifier() {
+		return identifier;
 	}
 
 	public Set<PonderElement> getElements() {
@@ -469,7 +470,7 @@ public class PonderScene {
 		return world == null ? new BoundingBox(BlockPos.ZERO) : world.getBounds();
 	}
 
-	public ResourceLocation getId() {
+	public Identifier getSceneId() {
 		return sceneId;
 	}
 

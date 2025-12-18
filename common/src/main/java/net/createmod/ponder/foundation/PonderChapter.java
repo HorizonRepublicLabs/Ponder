@@ -5,19 +5,18 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.createmod.catnip.gui.element.ScreenElement;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class PonderChapter implements ScreenElement {
+	private final Identifier id;
+	private final Identifier icon;
 
-	private final ResourceLocation id;
-	private final ResourceLocation icon;
-
-	private PonderChapter(ResourceLocation id) {
+	private PonderChapter(Identifier id) {
 		this.id = id;
-		icon = ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "textures/ponder/chapter/" + id.getPath() + ".png");
+		icon = Identifier.fromNamespaceAndPath(id.getNamespace(), "textures/ponder/chapter/" + id.getPath() + ".png");
 	}
 
-	public ResourceLocation getId() {
+	public Identifier getId() {
 		return id;
 	}
 
@@ -37,7 +36,7 @@ public class PonderChapter implements ScreenElement {
 	}
 
 	@Deprecated
-	public static PonderChapter of(ResourceLocation id) {
+	public static PonderChapter of(Identifier id) {
 		/*PonderChapter chapter = PonderRegistry.CHAPTERS.getChapter(id);
 		if (chapter == null) {
 			 chapter = PonderRegistry.CHAPTERS.addChapter(new PonderChapter(id));

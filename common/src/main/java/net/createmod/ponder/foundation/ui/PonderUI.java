@@ -159,17 +159,17 @@ public class PonderUI extends AbstractPonderScreen {
 	}
 
 	protected PonderUI(List<PonderScene> scenes) {
-		ResourceLocation location = scenes.get(0).getLocation();
+		ResourceLocation location = scenes.get(0).getIdentifier();
 		stack = new ItemStack(RegisteredObjectsHelper.getItemOrBlock(location));
 
 		tags = new ArrayList<>(PonderIndex.getTagAccess().getTags(location));
 
-		Ponder.LOGGER.debug("Ponder Scenes before ordering: {}", Arrays.toString(scenes.stream().map(PonderScene::getId).toArray()));
+		Ponder.LOGGER.debug("Ponder Scenes before ordering: {}", Arrays.toString(scenes.stream().map(PonderScene::getSceneId).toArray()));
 
 		List<PonderScene> orderedScenes;
 		try {
 			orderedScenes = orderScenes(scenes);
-			Ponder.LOGGER.debug("Ponder Scenes after ordering: {}", Arrays.toString(orderedScenes.stream().map(PonderScene::getId).toArray()));
+			Ponder.LOGGER.debug("Ponder Scenes after ordering: {}", Arrays.toString(orderedScenes.stream().map(PonderScene::getSceneId).toArray()));
 		} catch (Exception e) {
 			Ponder.LOGGER.warn("Unable to sort PonderScenes, using unordered List", e);
 			orderedScenes = scenes;
@@ -211,7 +211,7 @@ public class PonderUI extends AbstractPonderScreen {
 		Collections.reverse(sceneList);
 
 		Map<ResourceLocation, PonderScene> sceneLookup = scenes.stream()
-			.collect(Collectors.toMap(PonderScene::getId, scene -> scene));
+			.collect(Collectors.toMap(PonderScene::getSceneId, scene -> scene));
 
 		MutableGraph<PonderScene> graph = GraphBuilder.directed().nodeOrder(ElementOrder.insertion()).build();
 		sceneList.forEach(graph::addNode);
@@ -222,7 +222,7 @@ public class PonderUI extends AbstractPonderScreen {
 		scenesWithOrdering.forEach(scene -> {
 			List<SceneOrderingEntry> relevantOrderings = scene.getOrderingEntries()
 				.stream()
-				.filter(entry -> scenes.stream().anyMatch(sc -> sc.getId().equals(entry.sceneId())))
+				.filter(entry -> scenes.stream().anyMatch(sc -> sc.getSceneId().equals(entry.sceneId())))
 				.toList();
 
 			if (relevantOrderings.isEmpty())
@@ -550,7 +550,7 @@ public class PonderUI extends AbstractPonderScreen {
 		if (hasShiftDown()) {
 			PonderIndex.reload();
 			this.scenes.clear();
-			this.scenes.addAll(PonderIndex.getSceneAccess().compile(scene.getLocation()));
+			this.scenes.addAll(PonderIndex.getSceneAccess().compile(scene.getIdentifier()));
 
 
 			/*PonderScene finalScene = scene;

@@ -39,7 +39,7 @@ public class DefaultPonderTagRegistrationHelper implements PonderTagRegistration
 	private void finishTagRegister(PonderTagBuilder builder) {
 		localization.registerTag(builder.id, builder.title, builder.description);
 
-		PonderTag tag = new PonderTag(builder.id, builder.textureIconLocation, builder.itemIcon, builder.mainItem);
+		PonderTag tag = new PonderTag(builder.id, builder.textureIconIdentifier, builder.itemIcon, builder.mainItem);
 		tagRegistry.registerTag(tag);
 
 		if (builder.addToIndex)

@@ -8,6 +8,6 @@ import net.minecraft.resources.ResourceLocation;
 public class FabricClientResourceReloadListener extends ClientResourceReloadListener implements IdentifiableResourceReloadListener {
 	@Override
 	public ResourceLocation getFabricId() {
-		return Ponder.asResource("client_resource_reloader");
+		return Ponder.id("client_resource_reloader");
 	}
 }

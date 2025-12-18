@@ -16,7 +16,7 @@ public enum PonderSpecialTextures implements BindableTexture {
 	private final ResourceLocation location;
 
 	PonderSpecialTextures(String filename) {
-		location = Ponder.asResource(ASSET_PATH + filename);
+		location = Ponder.id(ASSET_PATH + filename);
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public enum PonderSpecialTextures implements BindableTexture {
 	}
 
 	@Override
-	public ResourceLocation getLocation() {
+	public ResourceLocation getId() {
 		return location;
 	}
 

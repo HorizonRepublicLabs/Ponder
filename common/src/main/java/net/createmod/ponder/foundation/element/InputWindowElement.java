@@ -75,13 +75,13 @@ public class InputWindowElement extends AnimatedOverlayElementBase {
 
 		@Override
 		public InputElementBuilder whileSneaking() {
-			key = Ponder.asResource("sneak_and");
+			key = Ponder.id("sneak_and");
 			return this;
 		}
 
 		@Override
 		public InputElementBuilder whileCTRL() {
-			key = Ponder.asResource("ctrl_and");
+			key = Ponder.id("ctrl_and");
 			return this;
 		}
 

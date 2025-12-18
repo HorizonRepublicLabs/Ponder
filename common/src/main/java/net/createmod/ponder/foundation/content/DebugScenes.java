@@ -14,7 +14,7 @@ import net.createmod.ponder.api.scene.Selection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
@@ -26,7 +26,7 @@ public class DebugScenes {
 
 	private static int index;
 
-	public static void registerAll(PonderSceneRegistrationHelper<ResourceLocation> helper) {
+	public static void registerAll(PonderSceneRegistrationHelper<Identifier> helper) {
 		index = 1;
 		add(helper, DebugScenes::coordinateScene);
 		add(helper, DebugScenes::blocksScene);
@@ -39,9 +39,9 @@ public class DebugScenes {
 		//add(DebugScenes::itemScene);
 	}
 
-	private static void add(PonderSceneRegistrationHelper<ResourceLocation> helper, PonderStoryBoard sb) {
+	private static void add(PonderSceneRegistrationHelper<Identifier> helper, PonderStoryBoard sb) {
 		String schematicPath = "debug/scene_" + index;
-		helper.addStoryBoard(ResourceLocation.withDefaultNamespace("spyglass"), schematicPath, sb).highlightAllTags();
+		helper.addStoryBoard(Identifier.withDefaultNamespace("spyglass"), schematicPath, sb).highlightAllTags();
 		index++;
 	}
 

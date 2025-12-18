@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 import net.createmod.ponder.foundation.PonderScene;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public interface SceneRegistryAccess {
 
-	boolean doScenesExistForId(ResourceLocation id);
+	boolean doScenesExistForId(Identifier id);
 
-	Collection<Map.Entry<ResourceLocation, StoryBoardEntry>> getRegisteredEntries();
+	Collection<Map.Entry<Identifier, StoryBoardEntry>> getRegisteredEntries();
 
-	List<PonderScene> compile(ResourceLocation id);
+	List<PonderScene> compile(Identifier id);
 
 	List<PonderScene> compile(Collection<StoryBoardEntry> entries);
 

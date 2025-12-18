@@ -8,27 +8,26 @@ import net.createmod.catnip.gui.element.GuiGameElement;
 import net.createmod.catnip.gui.element.ScreenElement;
 import net.createmod.ponder.Ponder;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
 public class PonderTag implements ScreenElement {
-
 	/**
 	 * Highlight.ALL is a special PonderTag, used to indicate that all Tags
 	 * for a certain Scene should be highlighted instead of selected single ones
 	 */
 	public static final class Highlight {
-		public static final ResourceLocation ALL = Ponder.asResource("_all");
+		public static final Identifier ALL = Ponder.id("_all");
 	}
 
-	private final ResourceLocation id;
+	private final Identifier id;
 	@Nullable
-	private final ResourceLocation textureIconLocation;
+	private final Identifier textureIconLocation;
 	private final ItemStack itemIcon;
 	private final ItemStack mainItem;
 
 
-	public PonderTag(ResourceLocation id, @Nullable ResourceLocation textureIconLocation, ItemStack itemIcon,
+	public PonderTag(Identifier id, @Nullable Identifier textureIconLocation, ItemStack itemIcon,
 					 ItemStack mainItem) {
 		this.id = id;
 		this.textureIconLocation = textureIconLocation;
@@ -36,7 +35,7 @@ public class PonderTag implements ScreenElement {
 		this.mainItem = mainItem;
 	}
 
-	public ResourceLocation getId() {
+	public Identifier getId() {
 		return id;
 	}
 
