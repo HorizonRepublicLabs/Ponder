@@ -7,9 +7,11 @@ neoForge {
 
     accessTransformers.from(project(":common").file("src/main/resources/META-INF/accesstransformer.cfg"))
 
-    parchment {
-        minecraftVersion = "minecraft_version"()
-        mappingsVersion = "parchment_version"()
+    if ("parchment_version"() != "none") {
+        parchment {
+            minecraftVersion = "minecraft_version"()
+            mappingsVersion = "parchment_version"()
+        }
     }
 
     runs {
@@ -40,8 +42,8 @@ neoForge {
 }
 
 dependencies {
-    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${"minecraft_version"()}:${"flywheel_version"()}")
-    runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${"minecraft_version"()}:${"flywheel_version"()}")
+    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${"flywheel_minecraft_version"()}:${"flywheel_version"()}")
+    runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${"flywheel_minecraft_version"()}:${"flywheel_version"()}")
 }
 
 operator fun String.invoke(): String {
