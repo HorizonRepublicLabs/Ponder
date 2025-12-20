@@ -9,6 +9,7 @@ import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
+import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.SheetedDecalTextureGenerator;
@@ -36,6 +37,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -359,18 +361,18 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 	}
 
 	@Override
-	protected void renderLayer(PonderLevel world, MultiBufferSource buffer, RenderType type, GuiGraphics graphics, float fade, float pt) {
+	protected void renderLayer(PonderLevel world, MultiBufferSource buffer, ChunkSectionLayer layer, GuiGraphics graphics, float fade, float pt) {
 		PoseStack poseStack = graphics.pose();
 		SuperByteBufferCache bufferCache = SuperByteBufferCache.getInstance();
 
 		int code = hashCode() ^ world.hashCode();
 		Pair<Integer, Integer> key = Pair.of(code, RenderType.chunkBufferLayers()
-			.indexOf(type));
+			.indexOf(layer));
 
 		if (redraw)
 			bufferCache.invalidate(PONDER_WORLD_SECTION, key);
 
-		SuperByteBuffer structureBuffer = bufferCache.get(PONDER_WORLD_SECTION, key, () -> buildStructureBuffer(world, type));
+		SuperByteBuffer structureBuffer = bufferCache.get(PONDER_WORLD_SECTION, key, () -> buildStructureBuffer(world, layer));
 		if (structureBuffer.isEmpty())
 			return;
 
@@ -379,7 +381,7 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 		int light = lightCoordsFromFade(fade);
 		structureBuffer
 			.light(light)
-			.renderInto(poseStack, buffer.getBuffer(type));
+			.renderInto(poseStack, buffer.getBuffer(layer.pipeline()));
 	}
 
 	@Override
@@ -456,16 +458,16 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 	}
 
 	private static class SbbBuilder extends SuperByteBufferBuilder implements ShadeSeparatedResultConsumer {
-		private RenderType renderType;
+		private RenderPipeline pipeline;
 
-		public void prepare(RenderType renderType) {
+		public void prepare(RenderPipeline pipeline) {
 			prepare();
-			this.renderType = renderType;
+			this.pipeline = pipeline;
 		}
 
 		@Override
-		public void accept(RenderType renderType, boolean shaded, MeshData data) {
-			if (renderType != this.renderType) {
+		public void accept(RenderPipeline pipeline, boolean shaded, MeshData data) {
+			if (pipeline != this.pipeline) {
 				return;
 			}
 

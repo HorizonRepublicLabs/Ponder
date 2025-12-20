@@ -204,7 +204,7 @@ public class PonderLevel extends SchematicLevel {
 			.getEntityRenderDispatcher();
 		int light = renderManager.getRenderer(entity)
 			.getPackedLightCoords(entity, pt);
-		renderManager.render(entity, d0 - x, d1 - y, d2 - z, f, pt, ms, buffer, light);
+		renderManager.submit().render(entity, d0 - x, d1 - y, d2 - z, f, pt, ms, buffer, light);
 	}
 
 	public void renderParticles(PoseStack ms, MultiBufferSource buffer, Camera ari, float pt) {

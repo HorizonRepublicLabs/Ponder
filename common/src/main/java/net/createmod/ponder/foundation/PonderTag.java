@@ -2,12 +2,14 @@ package net.createmod.ponder.foundation;
 
 import javax.annotation.Nullable;
 
+import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.createmod.catnip.gui.element.GuiGameElement;
 import net.createmod.catnip.gui.element.ScreenElement;
 import net.createmod.ponder.Ponder;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
@@ -56,9 +58,10 @@ public class PonderTag implements ScreenElement {
 		poseStack.pushPose();
 		poseStack.translate(x, y, 0);
 		if (textureIconLocation != null) {
-			//RenderSystem.setShaderTexture(0, icon);
-			poseStack.scale(0.25f, 0.25f, 1);
-			graphics.blit(textureIconLocation, 0, 0, 0, 0, 0, 64, 64, 64, 64);
+			graphics.pose().pushMatrix();
+			graphics.pose().scale(0.25f, 0.25f);
+			graphics.blit(RenderPipelines.GUI_TEXTURED, textureIconLocation, 0, 0, 0, 0, 0, 64, 64, 64, 64);
+			graphics.pose().popMatrix();
 		} else if (!itemIcon.isEmpty()) {
 			poseStack.translate(-2, -2, 0);
 			poseStack.scale(1.25f, 1.25f, 1.25f);

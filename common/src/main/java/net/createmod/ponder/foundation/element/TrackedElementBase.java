@@ -7,7 +7,7 @@ import net.createmod.ponder.api.element.TrackedElement;
 import net.createmod.ponder.api.level.PonderLevel;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 
 public abstract class TrackedElementBase<T> extends PonderElementBase implements TrackedElement<T> {
 
@@ -30,7 +30,7 @@ public abstract class TrackedElementBase<T> extends PonderElementBase implements
 	}
 
 	@Override
-	public void renderLayer(PonderLevel world, MultiBufferSource buffer, RenderType type, GuiGraphics graphics, float pt) {
+	public void renderLayer(PonderLevel world, MultiBufferSource buffer, ChunkSectionLayer layer, GuiGraphics graphics, float pt) {
 	}
 
 	@Override

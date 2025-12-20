@@ -18,6 +18,7 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.resources.Identifier;
 
 import org.apache.commons.lang3.mutable.MutableDouble;
@@ -270,8 +271,8 @@ public class PonderScene {
 		forEachVisible(PonderSceneElement.class, e -> e.renderFirst(world, buffer, graphics, pt));
 		mc.setCameraEntity(prevRVE);
 
-		for (RenderType type : RenderTypes.chunkBufferLayers())
-			forEachVisible(PonderSceneElement.class, e -> e.renderLayer(world, buffer, type, graphics, pt));
+		for (ChunkSectionLayer layer : ChunkSectionLayer.values())
+			forEachVisible(PonderSceneElement.class, e -> e.renderLayer(world, buffer, layer, graphics, pt));
 
 		forEachVisible(PonderSceneElement.class, e -> e.renderLast(world, buffer, graphics, pt));
 		camera.set(transform.xRotation.getValue(pt) + 90, transform.yRotation.getValue(pt) + 180);

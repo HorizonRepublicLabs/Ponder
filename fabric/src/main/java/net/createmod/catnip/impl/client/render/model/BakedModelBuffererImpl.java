@@ -2,6 +2,13 @@ package net.createmod.catnip.impl.client.render.model;
 
 import java.util.Iterator;
 
+import net.fabricmc.fabric.api.renderer.v1.Renderer;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -11,13 +18,10 @@ import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
 import net.createmod.catnip.impl.client.render.TransformingVertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,17 +34,40 @@ public final class BakedModelBuffererImpl {
 	private BakedModelBuffererImpl() {
 	}
 
-	public static void bufferModel(BakedModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedBufferSource bufferSource) {
+	public static void submitModel(BlockStateModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, MultiBufferSource.BufferSource buffers, ShadeSeparatedBufferSource bufferSource, OrderedSubmitNodeCollector submitNodeCollector) {
 		ThreadLocalObjects objects = THREAD_LOCAL_OBJECTS.get();
 		if (poseStack == null) {
 			poseStack = objects.identityPoseStack;
 		}
-		RandomSource random = objects.random;
 		UniversalMeshEmitter universalEmitter = objects.universalEmitter;
 
 		long seed = state.getSeed(pos);
 
-		RenderType defaultLayer = ItemBlockRenderTypes.getChunkRenderType(state);
+		ChunkSectionLayer defaultLayer = ItemBlockRenderTypes.getChunkRenderType(state);
+		universalEmitter.prepare(bufferSource, defaultLayer);
+		model = universalEmitter.wrapModel(model);
+
+		poseStack.pushPose();
+		submitNodeCollector.submitBlockStateModel(poseStack, layer -> bufferSource.getBuffer(layer, false), model, 1, 1, 1, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
+		Minecraft.getInstance()
+			.getBlockRenderer()
+			.getModelRenderer()
+			.render(level, model, state, pos, poseStack, universalEmitter, false, seed, OverlayTexture.NO_OVERLAY);
+		poseStack.popPose();
+
+		universalEmitter.clear();
+	}
+
+	public static void bufferModel(BlockStateModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedBufferSource bufferSource) {
+		ThreadLocalObjects objects = THREAD_LOCAL_OBJECTS.get();
+		if (poseStack == null) {
+			poseStack = objects.identityPoseStack;
+		}
+		UniversalMeshEmitter universalEmitter = objects.universalEmitter;
+
+		long seed = state.getSeed(pos);
+
+		ChunkSectionLayer defaultLayer = ItemBlockRenderTypes.getChunkRenderType(state);
 		universalEmitter.prepare(bufferSource, defaultLayer);
 		model = universalEmitter.wrapModel(model);
 
@@ -48,13 +75,13 @@ public final class BakedModelBuffererImpl {
 		Minecraft.getInstance()
 			.getBlockRenderer()
 			.getModelRenderer()
-			.tesselateBlock(level, model, state, pos, poseStack, universalEmitter, false, random, seed, OverlayTexture.NO_OVERLAY);
+			.render(level, model, state, pos, poseStack, universalEmitter, false, seed, OverlayTexture.NO_OVERLAY);
 		poseStack.popPose();
 
 		universalEmitter.clear();
 	}
 
-	public static void bufferModel(BakedModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedResultConsumer resultConsumer) {
+	public static void bufferModel(BlockStateModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedResultConsumer resultConsumer) {
 		ThreadLocalObjects objects = THREAD_LOCAL_OBJECTS.get();
 		DefaultShadeSeparatedBufferSource bufferSource = objects.defaultBufferSource;
 		bufferSource.prepare(resultConsumer);
@@ -67,7 +94,6 @@ public final class BakedModelBuffererImpl {
 		if (poseStack == null) {
 			poseStack = objects.identityPoseStack;
 		}
-		RandomSource random = objects.random;
 		UniversalMeshEmitter universalEmitter = objects.universalEmitter;
 		TransformingVertexConsumer transformingWrapper = objects.transformingWrapper;
 
@@ -85,9 +111,9 @@ public final class BakedModelBuffererImpl {
 				FluidState fluidState = state.getFluidState();
 
 				if (!fluidState.isEmpty()) {
-					RenderType renderType = ItemBlockRenderTypes.getRenderLayer(fluidState);
+					ChunkSectionLayer layer = ItemBlockRenderTypes.getRenderLayer(fluidState);
 
-					transformingWrapper.prepare(bufferSource.getBuffer(renderType, true), poseStack);
+					transformingWrapper.prepare(bufferSource.getBuffer(layer, true), poseStack);
 
 					poseStack.pushPose();
 					poseStack.translate(pos.getX() - (pos.getX() & 0xF), pos.getY() - (pos.getY() & 0xF), pos.getZ() - (pos.getZ() & 0xF));
@@ -98,15 +124,15 @@ public final class BakedModelBuffererImpl {
 
 			if (state.getRenderShape() == RenderShape.MODEL) {
 				long seed = state.getSeed(pos);
-				BakedModel model = renderDispatcher.getBlockModel(state);
+				BlockStateModel model = renderDispatcher.getBlockModel(state);
 
-				RenderType defaultLayer = ItemBlockRenderTypes.getChunkRenderType(state);
+				ChunkSectionLayer defaultLayer = ItemBlockRenderTypes.getChunkRenderType(state);
 				universalEmitter.prepare(bufferSource, defaultLayer);
 				model = universalEmitter.wrapModel(model);
 
 				poseStack.pushPose();
 				poseStack.translate(pos.getX(), pos.getY(), pos.getZ());
-				blockRenderer.tesselateBlock(level, model, state, pos, poseStack, universalEmitter, true, random, seed, OverlayTexture.NO_OVERLAY);
+				blockRenderer.render(level, model, state, pos, poseStack, universalEmitter, true, seed, OverlayTexture.NO_OVERLAY);
 				poseStack.popPose();
 			}
 		}
@@ -126,7 +152,6 @@ public final class BakedModelBuffererImpl {
 
 	private static class ThreadLocalObjects {
 		public final PoseStack identityPoseStack = new PoseStack();
-		public final RandomSource random = RandomSource.createNewThreadLocalInstance();
 
 		public final DefaultShadeSeparatedBufferSource defaultBufferSource = new DefaultShadeSeparatedBufferSource();
 		public final UniversalMeshEmitter universalEmitter = new UniversalMeshEmitter();

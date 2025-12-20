@@ -10,7 +10,7 @@ public interface RenderElement extends FadableScreenElement {
 
 	<T extends RenderElement> T at(float x, float y);
 
-	<T extends RenderElement> T at(float x, float y, float z);
+	<T extends RenderElement> T at(float x, float y, float z);// GuiGraphics automatically sorts render order (PIP rendering should be used if z is stilled needed)
 
 	<T extends RenderElement> T withBounds(int width, int height);
 

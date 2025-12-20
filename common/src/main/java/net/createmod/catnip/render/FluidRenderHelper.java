@@ -8,6 +8,7 @@ import net.createmod.catnip.data.Iterate;
 import net.createmod.catnip.platform.CatnipServices;
 import net.createmod.catnip.platform.services.ModFluidHelper;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -16,6 +17,30 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 
 public final class FluidRenderHelper<T> {
+	public void submitFluidBox(FluidState fluid, float xMin, float yMin, float zMin, float xMax, float yMax, float zMax,
+							   OrderedSubmitNodeCollector submitNode, PoseStack ms, int light, boolean renderBottom, boolean invertGasses) {
+		this.submitFluidBox(submitNode, this.helper().toStack(fluid), xMin, yMin, zMin, xMax, yMax, zMax, ms, light, renderBottom, invertGasses);
+	}
+
+	public void submitFluidBox(OrderedSubmitNodeCollector submitNode, T fluid, float xMin, float yMin, float zMin, float xMax, float yMax, float zMax,
+							   PoseStack ms, int light, boolean renderBottom, boolean invertGasses) {
+		ModFluidHelper<T> helper = this.helper();
+
+		Vec3 center = new Vec3(xMin + (xMax - xMin) / 2, yMin + (yMax - yMin) / 2, zMin + (zMax - zMin) / 2);
+		ms.pushPose();
+		if (invertGasses && helper.isLighterThanAir(fluid)) {
+			ms.translate(center.x, center.y, center.z);
+			ms.mulPose(Axis.XP.rotationDegrees(180));
+			ms.translate(-center.x, -center.y, -center.z);
+		}
+
+		submitNode.submitCustomGeometry(ms, PonderRenderTypes.fluid(), (pose, vertexConsumer) -> {
+			renderFluidBox(fluid, xMin, yMin, zMin, xMax, yMax, zMax, vertexConsumer, pose, light, renderBottom);
+		});
+
+		ms.popPose();
+	}
+
 	public void renderFluidBox(FluidState fluid, float xMin, float yMin, float zMin, float xMax, float yMax, float zMax,
 							   MultiBufferSource buffer, PoseStack ms, int light, boolean renderBottom, boolean invertGasses) {
 		this.renderFluidBox(fluid, xMin, yMin, zMin, xMax, yMax, zMax, getFluidBuilder(buffer), ms, light, renderBottom, invertGasses);
@@ -35,13 +60,6 @@ public final class FluidRenderHelper<T> {
 							   VertexConsumer builder, PoseStack ms, int light, boolean renderBottom, boolean invertGasses) {
 		ModFluidHelper<T> helper = this.helper();
 
-		TextureAtlasSprite fluidTexture = helper.getStillTextureOrMissing(fluid);
-		int color = helper.getColor(fluid, null, null);
-
-		int blockLightIn = (light >> 4) & 0xF;
-		int luminosity = Math.max(blockLightIn, helper.getLuminosity(fluid));
-		light = (light & 0xF00000) | luminosity << 4;
-
 		Vec3 center = new Vec3(xMin + (xMax - xMin) / 2, yMin + (yMax - yMin) / 2, zMin + (zMax - zMin) / 2);
 		ms.pushPose();
 		if (invertGasses && helper.isLighterThanAir(fluid)) {
@@ -49,6 +67,22 @@ public final class FluidRenderHelper<T> {
 			ms.mulPose(Axis.XP.rotationDegrees(180));
 			ms.translate(-center.x, -center.y, -center.z);
 		}
+
+		renderFluidBox(fluid, xMin, yMin, zMin, xMax, yMax, zMax, builder, ms.last(), light, renderBottom);
+
+		ms.popPose();
+	}
+
+	private void renderFluidBox(T fluid, float xMin, float yMin, float zMin, float xMax, float yMax, float zMax,
+							   VertexConsumer builder, PoseStack.Pose peek, int light, boolean renderBottom) {
+		ModFluidHelper<T> helper = this.helper();
+
+		TextureAtlasSprite fluidTexture = helper.getStillTextureOrMissing(fluid);
+		int color = helper.getColor(fluid, null, null);
+
+		int blockLightIn = (light >> 4) & 0xF;
+		int luminosity = Math.max(blockLightIn, helper.getLuminosity(fluid));
+		light = (light & 0xF00000) | luminosity << 4;
 
 		for (Direction side : Iterate.directions) {
 			if (side == Direction.DOWN && !renderBottom)
@@ -59,18 +93,16 @@ public final class FluidRenderHelper<T> {
 				.isHorizontal()) {
 				if (side.getAxis() == Direction.Axis.X) {
 					renderStillTiledFace(side, zMin, yMin, zMax, yMax, positive ? xMax : xMin,
-						builder, ms, light, color, fluidTexture);
+						builder, peek, light, color, fluidTexture);
 				} else {
 					renderStillTiledFace(side, xMin, yMin, xMax, yMax, positive ? zMax : zMin,
-						builder, ms, light, color, fluidTexture);
+						builder, peek, light, color, fluidTexture);
 				}
 			} else {
 				renderStillTiledFace(side, xMin, zMin, xMax, zMax, positive ? yMax : yMin,
-					builder, ms, light, color, fluidTexture);
+					builder, peek, light, color, fluidTexture);
 			}
 		}
-
-		ms.popPose();
 	}
 
 	public static VertexConsumer getFluidBuilder(MultiBufferSource buffer) {
@@ -78,12 +110,12 @@ public final class FluidRenderHelper<T> {
 	}
 
 	public static void renderStillTiledFace(Direction dir, float left, float down, float right, float up,
-											float depth, VertexConsumer builder, PoseStack ms, int light, int color, TextureAtlasSprite texture) {
-		renderTiledFace(dir, left, down, right, up, depth, builder, ms, light, color, texture, 1);
+											float depth, VertexConsumer builder, PoseStack.Pose peek, int light, int color, TextureAtlasSprite texture) {
+		renderTiledFace(dir, left, down, right, up, depth, builder, peek, light, color, texture, 1);
 	}
 
 	public static void renderTiledFace(Direction dir, float left, float down, float right, float up,
-									   float depth, VertexConsumer builder, PoseStack ms, int light, int color, TextureAtlasSprite texture,
+									   float depth, VertexConsumer builder, PoseStack.Pose peek, int light, int color, TextureAtlasSprite texture,
 									   float textureScale) {
 		boolean positive = dir.getAxisDirection() == Direction.AxisDirection.POSITIVE;
 		boolean horizontal = dir.getAxis().isHorizontal();
@@ -127,31 +159,30 @@ public final class FluidRenderHelper<T> {
 
 				if (horizontal) {
 					if (x) {
-						putVertex(builder, ms, depth, y2, positive ? x2 : x1, color, u1, v1, dir, light);
-						putVertex(builder, ms, depth, y1, positive ? x2 : x1, color, u1, v2, dir, light);
-						putVertex(builder, ms, depth, y1, positive ? x1 : x2, color, u2, v2, dir, light);
-						putVertex(builder, ms, depth, y2, positive ? x1 : x2, color, u2, v1, dir, light);
+						putVertex(builder, peek, depth, y2, positive ? x2 : x1, color, u1, v1, dir, light);
+						putVertex(builder, peek, depth, y1, positive ? x2 : x1, color, u1, v2, dir, light);
+						putVertex(builder, peek, depth, y1, positive ? x1 : x2, color, u2, v2, dir, light);
+						putVertex(builder, peek, depth, y2, positive ? x1 : x2, color, u2, v1, dir, light);
 					} else {
-						putVertex(builder, ms, positive ? x1 : x2, y2, depth, color, u1, v1, dir, light);
-						putVertex(builder, ms, positive ? x1 : x2, y1, depth, color, u1, v2, dir, light);
-						putVertex(builder, ms, positive ? x2 : x1, y1, depth, color, u2, v2, dir, light);
-						putVertex(builder, ms, positive ? x2 : x1, y2, depth, color, u2, v1, dir, light);
+						putVertex(builder, peek, positive ? x1 : x2, y2, depth, color, u1, v1, dir, light);
+						putVertex(builder, peek, positive ? x1 : x2, y1, depth, color, u1, v2, dir, light);
+						putVertex(builder, peek, positive ? x2 : x1, y1, depth, color, u2, v2, dir, light);
+						putVertex(builder, peek, positive ? x2 : x1, y2, depth, color, u2, v1, dir, light);
 					}
 				} else {
-					putVertex(builder, ms, x1, depth, positive ? y1 : y2, color, u1, v1, dir, light);
-					putVertex(builder, ms, x1, depth, positive ? y2 : y1, color, u1, v2, dir, light);
-					putVertex(builder, ms, x2, depth, positive ? y2 : y1, color, u2, v2, dir, light);
-					putVertex(builder, ms, x2, depth, positive ? y1 : y2, color, u2, v1, dir, light);
+					putVertex(builder, peek, x1, depth, positive ? y1 : y2, color, u1, v1, dir, light);
+					putVertex(builder, peek, x1, depth, positive ? y2 : y1, color, u1, v2, dir, light);
+					putVertex(builder, peek, x2, depth, positive ? y2 : y1, color, u2, v2, dir, light);
+					putVertex(builder, peek, x2, depth, positive ? y1 : y2, color, u2, v1, dir, light);
 				}
 			}
 		}
 	}
 
-	private static void putVertex(VertexConsumer builder, PoseStack ms, float x, float y, float z, int color, float u,
+	private static void putVertex(VertexConsumer builder, PoseStack.Pose peek, float x, float y, float z, int color, float u,
 								  float v, Direction face, int light) {
 
-		Vec3i normal = face.getNormal();
-		PoseStack.Pose peek = ms.last();
+		Vec3i normal = face.getUnitVec3i();
 		int a = color >> 24 & 0xff;
 		int r = color >> 16 & 0xff;
 		int g = color >> 8 & 0xff;

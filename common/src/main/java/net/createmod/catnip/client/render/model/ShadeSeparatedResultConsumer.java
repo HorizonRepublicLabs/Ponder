@@ -1,9 +1,8 @@
 package net.createmod.catnip.client.render.model;
 
+import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.MeshData;
 
-import net.minecraft.client.renderer.rendertype.RenderType;
-
 public interface ShadeSeparatedResultConsumer {
-	void accept(RenderType renderType, boolean shaded, MeshData data);
+	void accept(RenderPipeline pipeline, boolean shaded, MeshData data);
 }

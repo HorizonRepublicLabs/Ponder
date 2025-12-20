@@ -26,7 +26,7 @@ public interface StencilElement extends RenderElement {
 	void renderElement(GuiGraphics graphics);
 
 	default void transform(GuiGraphics graphics) {
-		graphics.pose().translate(getX(), getY(), getZ());
+		graphics.pose().translate(getX(), getY());
 	}
 
 	default void prepareStencil(GuiGraphics graphics) {

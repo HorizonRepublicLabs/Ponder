@@ -3,8 +3,11 @@ package net.createmod.catnip.platform;
 import java.util.Iterator;
 import java.util.Locale;
 
+import net.createmod.catnip.render.PonderRenderTypes;
 import net.createmod.catnip.render.RenderTargetExtensions;
 import net.createmod.ponder.mixin.client.ParticleEngineAccessor;
+import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.resources.language.LanguageManager;
 
 import org.jetbrains.annotations.Nullable;
@@ -75,17 +78,27 @@ public class FabricClientHooksHelper implements ModClientHooksHelper {
 	}
 
 	@Override
+	public void submitFullFluidState(PoseStack ms, OrderedSubmitNodeCollector submitNode, FluidState fluid) {
+		CatnipServices.FLUID_RENDERER.submitFluidBox(fluid, 0, 0, 0, 1, 1, 1, submitNode, ms, LightTexture.FULL_BRIGHT, false, true);
+	}
+
+	@Override
 	public void renderFullFluidState(PoseStack ms, MultiBufferSource.BufferSource buffer, FluidState fluid) {
 		CatnipServices.FLUID_RENDERER.renderFluidBox(fluid, 0, 0, 0, 1, 1, 1, buffer, ms, LightTexture.FULL_BRIGHT, false, true);
 	}
 
 	@Override
-	public void bufferModel(BakedModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedBufferSource bufferSource) {
+	public void submitModel(BlockStateModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedBufferSource bufferSource) {
 		BakedModelBuffererImpl.bufferModel(model, pos, level, state, poseStack, bufferSource);
 	}
 
 	@Override
-	public void bufferModel(BakedModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedResultConsumer resultConsumer) {
+	public void bufferModel(BlockStateModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedBufferSource bufferSource) {
+		BakedModelBuffererImpl.bufferModel(model, pos, level, state, poseStack, bufferSource);
+	}
+
+	@Override
+	public void bufferModel(BlockStateModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedResultConsumer resultConsumer) {
 		BakedModelBuffererImpl.bufferModel(model, pos, level, state, poseStack, resultConsumer);
 	}
 

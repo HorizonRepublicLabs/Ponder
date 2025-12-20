@@ -12,6 +12,10 @@ import java.util.stream.IntStream;
 
 import javax.annotation.Nullable;
 
+import com.mojang.blaze3d.framegraph.FrameGraphBuilder;
+
+import com.mojang.blaze3d.framegraph.FramePass;
+
 import net.createmod.ponder.foundation.PonderTag.Highlight;
 import net.minecraft.resources.Identifier;
 
@@ -612,6 +616,11 @@ public class PonderUI extends AbstractPonderScreen {
 		double value = lazyIndex.getValue(AnimationTickHolder.getPartialTicksUI()); // TODO - Checkover
 		double diff = i - value;
 		double slide = Mth.lerp(diff * diff, 200, 600) * diff;
+		FrameGraphBuilder frameGraph = new FrameGraphBuilder();
+
+		FramePass scenePass = frameGraph.addPass("scence");
+		scenePass.executes(() -> {});
+
 
 		RenderSystem.enableBlend();
 		RenderSystem.enableDepthTest();

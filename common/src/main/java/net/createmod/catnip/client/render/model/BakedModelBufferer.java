@@ -16,6 +16,10 @@ public final class BakedModelBufferer {
 	private BakedModelBufferer() {
 	}
 
+	public static void submitModel(BlockStateModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedBufferSource bufferSource) {
+		CatnipClientServices.CLIENT_HOOKS.submitModel(model, pos, level, state, poseStack, bufferSource);
+	}
+
 	public static void bufferModel(BlockStateModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedBufferSource bufferSource) {
 		CatnipClientServices.CLIENT_HOOKS.bufferModel(model, pos, level, state, poseStack, bufferSource);
 	}

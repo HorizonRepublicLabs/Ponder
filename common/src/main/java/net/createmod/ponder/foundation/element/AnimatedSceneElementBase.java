@@ -8,6 +8,7 @@ import net.createmod.ponder.api.level.PonderLevel;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
@@ -47,12 +48,12 @@ public abstract class AnimatedSceneElementBase extends PonderElementBase impleme
 	}
 
 	@Override
-	public final void renderLayer(PonderLevel world, MultiBufferSource buffer, RenderType type, GuiGraphics graphics,
+	public final void renderLayer(PonderLevel world, MultiBufferSource buffer, ChunkSectionLayer layer, GuiGraphics graphics,
 								  float pt) {
 		PoseStack poseStack = graphics.pose();
 		poseStack.pushPose();
 		float currentFade = applyFade(poseStack, pt);
-		renderLayer(world, buffer, type, graphics, currentFade, pt);
+		renderLayer(world, buffer, layer, graphics, currentFade, pt);
 		poseStack.popPose();
 	}
 
@@ -75,7 +76,7 @@ public abstract class AnimatedSceneElementBase extends PonderElementBase impleme
 		return currentFade;
 	}
 
-	protected void renderLayer(PonderLevel world, MultiBufferSource buffer, RenderType type, GuiGraphics graphics, float fade,
+	protected void renderLayer(PonderLevel world, MultiBufferSource buffer, ChunkSectionLayer layer, GuiGraphics graphics, float fade,
 							   float pt) {
 	}
 

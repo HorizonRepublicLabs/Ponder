@@ -1,5 +1,9 @@
 package net.createmod.catnip.impl.client.render.model;
 
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+
 import org.jetbrains.annotations.UnknownNullability;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -8,11 +12,10 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 
 import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
-import net.minecraft.client.renderer.rendertype.RenderType;
 
 // Modified from https://github.com/Engine-Room/Flywheel/blob/2f67f54c8898d91a48126c3c753eefa6cd224f84/fabric/src/lib/java/dev/engine_room/flywheel/lib/model/baked/MeshEmitter.java
 class MeshEmitter {
-	private final RenderType renderType;
+	private final RenderPipeline pipeline;
 	private final ByteBufferBuilder byteBufferBuilder;
 	@UnknownNullability
 	private BufferBuilder bufferBuilder;
@@ -21,9 +24,9 @@ class MeshEmitter {
 	private ShadeSeparatedResultConsumer resultConsumer;
 	private boolean currentShade;
 
-	MeshEmitter(RenderType renderType) {
-		this.renderType = renderType;
-		this.byteBufferBuilder = new ByteBufferBuilder(renderType.bufferSize());
+	MeshEmitter(ChunkSectionLayer layer) {
+		this.pipeline = layer.pipeline();
+		this.byteBufferBuilder = new ByteBufferBuilder(layer.bufferSize());
 	}
 
 	public void prepare(ShadeSeparatedResultConsumer resultConsumer) {
@@ -58,7 +61,7 @@ class MeshEmitter {
 		bufferBuilder = null;
 
 		if (data != null) {
-			resultConsumer.accept(renderType, currentShade, data);
+			resultConsumer.accept(pipeline, currentShade, data);
 			data.close();
 		}
 	}

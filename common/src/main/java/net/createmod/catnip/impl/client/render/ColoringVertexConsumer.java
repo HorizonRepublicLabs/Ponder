@@ -2,6 +2,8 @@ package net.createmod.catnip.impl.client.render;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
+import net.minecraft.util.ARGB;
+
 public record ColoringVertexConsumer(VertexConsumer delegate, float red, float green, float blue,
 									 float alpha) implements VertexConsumer {
 	@Override
@@ -13,6 +15,16 @@ public record ColoringVertexConsumer(VertexConsumer delegate, float red, float g
 	@Override
 	public VertexConsumer setColor(int r, int g, int b, int a) {
 		delegate.setColor((int) (r * red), (int) (g * green), (int) (b * blue), (int) (a * alpha));
+		return this;
+	}
+
+	@Override
+	public VertexConsumer setColor(int packedColor) {
+		int r = ARGB.red(packedColor);
+		int g = ARGB.green(packedColor);
+		int b = ARGB.blue(packedColor);
+		int a = ARGB.alpha(packedColor);
+		delegate.setColor(ARGB.color((int) (r * red), (int) (g * green), (int) (b * blue), (int) (a * alpha)));
 		return this;
 	}
 
@@ -37,6 +49,12 @@ public record ColoringVertexConsumer(VertexConsumer delegate, float red, float g
 	@Override
 	public VertexConsumer setNormal(float x, float y, float z) {
 		delegate.setNormal(x, y, z);
+		return this;
+	}
+
+	@Override
+	public VertexConsumer setLineWidth(float width) {
+		delegate.setLineWidth(width);
 		return this;
 	}
 }

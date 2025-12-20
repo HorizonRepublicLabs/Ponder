@@ -2,6 +2,7 @@ package net.createmod.catnip.render;
 
 import javax.annotation.Nullable;
 
+import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -10,7 +11,6 @@ import net.createmod.catnip.client.render.model.BakedModelBufferer;
 import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
-import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -50,7 +50,7 @@ public class SuperBufferFactory {
 
 	private static class SbbBuilder extends SuperByteBufferBuilder implements ShadeSeparatedResultConsumer {
 		@Override
-		public void accept(RenderType renderType, boolean shaded, MeshData data) {
+		public void accept(RenderPipeline pipeline, boolean shaded, MeshData data) {
 			add(data, shaded);
 		}
 	}

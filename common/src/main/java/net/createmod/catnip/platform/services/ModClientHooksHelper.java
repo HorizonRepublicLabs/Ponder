@@ -3,6 +3,8 @@ package net.createmod.catnip.platform.services;
 import java.util.Iterator;
 import java.util.Locale;
 
+import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
+
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,7 +50,12 @@ public interface ModClientHooksHelper {
 
 	void enableStencilBuffer(RenderTarget renderTarget);
 
+	void submitFullFluidState(PoseStack ms, OrderedSubmitNodeCollector buffer, FluidState fluid);
+
 	void renderFullFluidState(PoseStack ms, MultiBufferSource.BufferSource buffer, FluidState fluid);
+
+	@ApiStatus.Internal
+	void submitModel(BlockStateModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedBufferSource bufferSource);
 
 	@ApiStatus.Internal
 	void bufferModel(BlockStateModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedBufferSource bufferSource);

@@ -3,6 +3,10 @@ package net.createmod.ponder;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.config.ui.BaseConfigScreen;
 import net.createmod.catnip.data.Couple;
+import net.createmod.catnip.gui.element.GuiGameElement.GuiBlockEntityPictureInPictureRenderer;
+import net.createmod.catnip.gui.element.GuiGameElement.GuiBlockModelPictureInPictureRenderer;
+import net.createmod.catnip.gui.element.GuiGameElement.GuiBlockStatePictureInPictureRenderer;
+import net.createmod.catnip.gui.element.GuiGameElement.GuiGameElementPictureInPictureRenderer;
 import net.createmod.catnip.placement.PlacementClient;
 import net.createmod.catnip.theme.Color;
 import net.createmod.ponder.enums.PonderConfig;
@@ -16,6 +20,7 @@ import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.InvalidateRenderStateCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.SpecialGuiElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.Minecraft;
@@ -52,6 +57,10 @@ public class FabricPonderClient implements ClientModInitializer {
 		ClientLifecycleEvents.CLIENT_STARTED.register(FabricPonderClient::onClientStarted);
 
 		ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(FABRIC$RESOURCE_RELOAD_LISTENER);
+
+//		SpecialGuiElementRegistry.register(ctx -> new GuiBlockModelPictureInPictureRenderer(ctx.vertexConsumers()));
+		SpecialGuiElementRegistry.register(ctx -> new GuiBlockEntityPictureInPictureRenderer(ctx.vertexConsumers(), ctx.orderedRenderCommandQueue(), ctx.client().getBlockRenderer()));
+		SpecialGuiElementRegistry.register(ctx -> new GuiBlockStatePictureInPictureRenderer(ctx.vertexConsumers(), ctx.orderedRenderCommandQueue(), ctx.client().getBlockRenderer()));
 
 		prepareConfigUI();
 	}
