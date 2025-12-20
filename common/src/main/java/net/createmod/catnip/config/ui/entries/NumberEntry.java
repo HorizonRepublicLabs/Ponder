@@ -27,15 +27,13 @@ public abstract class NumberEntry<T extends Number> extends ValueEntry<T> {
 
 	@Nullable
 	public static NumberEntry<? extends Number> create(Object type, String label, ModConfigSpec.ConfigValue<?> value, ModConfigSpec.ValueSpec spec) {
-		if (type instanceof Integer) {
-			return new IntegerEntry(label, (ModConfigSpec.ConfigValue<Integer>) value, spec);
-		} else if (type instanceof Float) {
-			return new FloatEntry(label, (ModConfigSpec.ConfigValue<Float>) value, spec);
-		} else if (type instanceof Double) {
-			return new DoubleEntry(label, (ModConfigSpec.ConfigValue<Double>) value, spec);
-		}
+		return switch (type) {
+			case Integer i -> new IntegerEntry(label, (ModConfigSpec.ConfigValue<Integer>) value, spec);
+			case Float v -> new FloatEntry(label, (ModConfigSpec.ConfigValue<Float>) value, spec);
+			case Double v -> new DoubleEntry(label, (ModConfigSpec.ConfigValue<Double>) value, spec);
+			default -> null;
+		};
 
-		return null;
 	}
 
 	public NumberEntry(String label, ModConfigSpec.ConfigValue<T> value, ModConfigSpec.ValueSpec spec) {
@@ -161,7 +159,6 @@ public abstract class NumberEntry<T extends Number> extends ValueEntry<T> {
 	}
 
 	public static class IntegerEntry extends NumberEntry<Integer> {
-
 		public IntegerEntry(String label, ModConfigSpec.ConfigValue<Integer> value, ModConfigSpec.ValueSpec spec) {
 			super(label, value, spec);
 		}

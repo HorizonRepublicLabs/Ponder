@@ -18,7 +18,8 @@
   "mixins": [
     "accessor.BiomeManagerAccessor",
     "accessor.EntityAccessor",
-    "accessor.MinecraftServerAccessor"
+    "accessor.MinecraftServerAccessor",
+    "accessor.ParrotAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

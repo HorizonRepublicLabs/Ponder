@@ -25,16 +25,6 @@ public class MutableTemplateMesh extends TemplateMesh {
 		copyFrom(0, data);
 	}
 
-	@Deprecated(forRemoval = true)
-	public MutableTemplateMesh(int[] data) {
-		super(data);
-	}
-
-	@Deprecated(forRemoval = true)
-	public static void transferFromVertexData(int srcIndex, int dstIndex, int vertexCount, MutableTemplateMesh mutableMesh, ByteBuffer vertexBuffer, int stride) {
-		mutableMesh.copyFrom(srcIndex, dstIndex, vertexCount, vertexBuffer, stride);
-	}
-
 	public void ensureCapacity(int vertexCount) {
 		if (vertexCount > data.length / INT_STRIDE) {
 			int[] newData = new int[vertexCount * INT_STRIDE];

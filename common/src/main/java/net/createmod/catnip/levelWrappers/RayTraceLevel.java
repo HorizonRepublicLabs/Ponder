@@ -9,8 +9,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 
-public class RayTraceLevel implements BlockGetter {
+import org.jspecify.annotations.Nullable;
 
+public class RayTraceLevel implements BlockGetter {
 	private final LevelAccessor template;
 	private final BiFunction<BlockPos, BlockState, BlockState> stateGetter;
 
@@ -20,7 +21,7 @@ public class RayTraceLevel implements BlockGetter {
 	}
 
 	@Override
-	public BlockEntity getBlockEntity(BlockPos pos) {
+	public @Nullable BlockEntity getBlockEntity(BlockPos pos) {
 		return template.getBlockEntity(pos);
 	}
 
@@ -40,8 +41,7 @@ public class RayTraceLevel implements BlockGetter {
 	}
 
 	@Override
-	public int getMinBuildHeight() {
-		return template.getMinBuildHeight();
+	public int getMinY() {
+		return template.getMinY();
 	}
-
 }

@@ -16,6 +16,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.decoration.ArmorStand;
@@ -257,5 +258,10 @@ public class SchematicLevel extends WrappedLevel implements ServerLevelAccessor,
 			return (ServerLevel) this.level;
 		}
 		throw new IllegalStateException("Cannot use IServerWorld#getWorld in a client environment");
+	}
+
+	@Override
+	public DifficultyInstance getCurrentDifficultyAt(BlockPos pos) {
+		return getLevel().getCurrentDifficultyAt(pos);
 	}
 }

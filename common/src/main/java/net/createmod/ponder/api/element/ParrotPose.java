@@ -7,6 +7,7 @@ import net.createmod.ponder.Ponder;
 import net.createmod.ponder.api.level.PonderLevel;
 import net.createmod.ponder.foundation.PonderScene;
 import net.createmod.ponder.foundation.ui.PonderUI;
+import net.createmod.ponder.mixin.accessor.ParrotAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -28,7 +29,7 @@ public abstract class ParrotPose {
 	public Parrot create(PonderLevel world) {
 		Parrot entity = new Parrot(EntityType.PARROT, world);
 		int nextInt = Ponder.RANDOM.nextInt(VARIANTS.length);
-		entity.setVariant(VARIANTS[nextInt]);
+		((ParrotAccessor) entity).ponder$setVariant(VARIANTS[nextInt]);
 		return entity;
 	}
 

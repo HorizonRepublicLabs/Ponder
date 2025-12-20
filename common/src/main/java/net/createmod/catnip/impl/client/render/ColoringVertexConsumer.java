@@ -17,6 +17,12 @@ public record ColoringVertexConsumer(VertexConsumer delegate, float red, float g
 	}
 
 	@Override
+	public VertexConsumer setColor(int c) {
+		delegate.setColor(c);
+		return this;
+	}
+
+	@Override
 	public VertexConsumer setUv(float u, float v) {
 		delegate.setUv(u, v);
 		return this;
@@ -38,5 +44,11 @@ public record ColoringVertexConsumer(VertexConsumer delegate, float red, float g
 	public VertexConsumer setNormal(float x, float y, float z) {
 		delegate.setNormal(x, y, z);
 		return this;
+	}
+
+	@Override
+	public VertexConsumer setLineWidth(float width) {
+		delegate.setLineWidth(width);
+		return null;
 	}
 }

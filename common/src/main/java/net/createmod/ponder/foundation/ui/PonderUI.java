@@ -12,7 +12,10 @@ import java.util.stream.IntStream;
 
 import javax.annotation.Nullable;
 
+import com.mojang.blaze3d.platform.InputConstants;
+
 import net.createmod.ponder.foundation.PonderTag.Highlight;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.resources.Identifier;
 
 import org.joml.Matrix3x2fStack;
@@ -1032,19 +1035,18 @@ public class PonderUI extends AbstractPonderScreen {
 	private void renderOverlay(GuiGraphics graphics, int i, float partialTicks) {
 		if (identifyMode)
 			return;
-		graphics.pose().pushPose();
+		graphics.pose().pushMatrix();
 		PonderScene story = scenes.get(i);
 		story.renderOverlay(this, graphics, skipCooling > 0 ? 0 : identifyMode ? ponderPartialTicksPaused : partialTicks);
-		graphics.pose().popPose();
+		graphics.pose().popMatrix();
 	}
 
 	@Override
-	public boolean mouseClicked(double x, double y, int button) {
+	public boolean mouseClicked(MouseButtonEvent buttonEvent, boolean doubleClick) {
 		if (identifyMode && hoveredBlockPos != null && PonderIndex.editingModeActive()) {
-			long handle = minecraft.getWindow()
-				.getWindow();
-			if (copiedBlockPos != null && button == 1) {
-				clipboardHelper.setClipboard(handle,
+			Window window = minecraft.getWindow();
+			if (copiedBlockPos != null && buttonEvent.button() == InputConstants.MOUSE_BUTTON_RIGHT) {
+				clipboardHelper.setClipboard(window,
 					"util.select().fromTo(" + copiedBlockPos.getX() + ", " + copiedBlockPos.getY() + ", "
 						+ copiedBlockPos.getZ() + ", " + hoveredBlockPos.getX() + ", " + hoveredBlockPos.getY() + ", "
 						+ hoveredBlockPos.getZ() + ")");
@@ -1052,17 +1054,17 @@ public class PonderUI extends AbstractPonderScreen {
 				return true;
 			}
 
-			if (hasShiftDown())
-				clipboardHelper.setClipboard(handle, "util.select().position(" + hoveredBlockPos.getX() + ", "
+			if (minecraft.hasShiftDown())
+				clipboardHelper.setClipboard(window, "util.select().position(" + hoveredBlockPos.getX() + ", "
 					+ hoveredBlockPos.getY() + ", " + hoveredBlockPos.getZ() + ")");
 			else
-				clipboardHelper.setClipboard(handle, "util.grid().at(" + hoveredBlockPos.getX() + ", "
+				clipboardHelper.setClipboard(window, "util.grid().at(" + hoveredBlockPos.getX() + ", "
 					+ hoveredBlockPos.getY() + ", " + hoveredBlockPos.getZ() + ")");
 			copiedBlockPos = hoveredBlockPos;
 			return true;
 		}
 
-		return super.mouseClicked(x, y, button);
+		return super.mouseClicked(buttonEvent, doubleClick);
 	}
 
 	@Override
@@ -1104,7 +1106,6 @@ public class PonderUI extends AbstractPonderScreen {
 		Color c;
 
 		switch (pointing) {
-			default:
 			case DOWN:
 				divotRotation = 0;
 				boxX -= w / 2;
@@ -1137,6 +1138,7 @@ public class PonderUI extends AbstractPonderScreen {
 				divotY += distance;
 				c = borderColors.getFirst();
 				break;
+			default:
 		}
 
 		new BoxElement().withBackground(PonderUI.BACKGROUND_FLAT)
