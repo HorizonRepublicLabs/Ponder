@@ -1,6 +1,7 @@
 package net.createmod.catnip.platform;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;

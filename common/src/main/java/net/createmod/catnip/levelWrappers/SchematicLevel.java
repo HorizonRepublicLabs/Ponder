@@ -41,6 +41,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.ticks.BlackholeTickAccess;
 import net.minecraft.world.ticks.LevelTickAccess;
 
+import org.jspecify.annotations.Nullable;
+
 public class SchematicLevel extends WrappedLevel implements ServerLevelAccessor, SchematicLevelAccessor {
 	protected Map<BlockPos, BlockState> blocks;
 	protected Map<BlockPos, BlockEntity> blockEntities;
@@ -89,7 +91,7 @@ public class SchematicLevel extends WrappedLevel implements ServerLevelAccessor,
 	}
 
 	@Override
-	public BlockEntity getBlockEntity(BlockPos pos) {
+	public @Nullable BlockEntity getBlockEntity(BlockPos pos) {
 		if (isOutsideBuildHeight(pos))
 			return null;
 		if (blockEntities.containsKey(pos))
@@ -108,7 +110,7 @@ public class SchematicLevel extends WrappedLevel implements ServerLevelAccessor,
 				}
 				return blockEntity;
 			} catch (Exception e) {
-				Ponder.LOGGER.debug("Could not create BlockEntity of block " + blockState, e);
+				Ponder.LOGGER.debug("Could not create BlockEntity of block {}", blockState, e);
 			}
 		}
 		return null;
@@ -142,7 +144,6 @@ public class SchematicLevel extends WrappedLevel implements ServerLevelAccessor,
 	@Override
 	public Holder<Biome> getBiome(BlockPos pos) {
 		return level.registryAccess().lookupOrThrow(Registries.BIOME).getOrThrow(Biomes.PLAINS);
-		//return ForgeRegistries.BIOMES.getHolder(Biomes.PLAINS.location()).orElse(null);
 	}
 
 	@Override
@@ -166,7 +167,7 @@ public class SchematicLevel extends WrappedLevel implements ServerLevelAccessor,
 	}
 
 	@Override
-	public List<Entity> getEntities(Entity arg0, AABB arg1, Predicate<? super Entity> arg2) {
+	public List<Entity> getEntities(Entity entity, AABB bb, Predicate<? super Entity> predicate) {
 		return Collections.emptyList();
 	}
 
@@ -191,13 +192,13 @@ public class SchematicLevel extends WrappedLevel implements ServerLevelAccessor,
 	}
 
 	@Override
-	public boolean destroyBlock(BlockPos arg0, boolean arg1) {
-		return setBlock(arg0, Blocks.AIR.defaultBlockState(), 3);
+	public boolean destroyBlock(BlockPos pos, boolean dropResources) {
+		return setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_NEIGHBORS | Block.UPDATE_CLIENTS);
 	}
 
 	@Override
-	public boolean removeBlock(BlockPos arg0, boolean arg1) {
-		return setBlock(arg0, Blocks.AIR.defaultBlockState(), 3);
+	public boolean removeBlock(BlockPos pos, boolean dropResources) {
+		return setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_NEIGHBORS | Block.UPDATE_CLIENTS);
 	}
 
 	@Override

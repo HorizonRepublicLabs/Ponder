@@ -17,7 +17,6 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 
 public abstract class AbstractSimiWidget extends AbstractWidget implements TickableGuiEventListener {
-
 	public static final Color HEADER_RGB = new Color(0x5391e1, false);
 	public static final Color HINT_RGB = new Color(0x96b7e0, false);
 
@@ -123,7 +122,7 @@ public abstract class AbstractSimiWidget extends AbstractWidget implements Ticka
 			int tty = this.lockedTooltipY == -1 ? mouseY : this.lockedTooltipY + this.getY();
 
 			Font font = Minecraft.getInstance().font;
-			graphics.renderComponentTooltip(font, tooltip, ttx, tty);
+			graphics.setComponentTooltipForNextFrame(font, tooltip, ttx, tty);
 		}
 	}
 

@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
 
 public abstract class PonderRenderTypes extends RenderType {
-
 	private static final RenderType OUTLINE_SOLID =
 		RenderTypeAccessor.catnip$create(createLayerName("outline_solid"), DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, false, CompositeState.builder()
 			.setShaderState(RENDERTYPE_ENTITY_SOLID_SHADER)

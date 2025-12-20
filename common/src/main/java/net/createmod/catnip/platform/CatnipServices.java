@@ -10,7 +10,6 @@ import net.createmod.catnip.render.FluidRenderHelper;
 import net.createmod.ponder.Ponder;
 
 public class CatnipServices {
-
 	public static final PlatformHelper PLATFORM = load(PlatformHelper.class);
 	public static final ModFluidHelper<?> FLUID_HELPER = load(ModFluidHelper.class);
 	public static final FluidRenderHelper<?> FLUID_RENDERER = new FluidRenderHelper<>();
@@ -24,5 +23,4 @@ public class CatnipServices {
 		Ponder.LOGGER.debug("Loaded {} for service {}", loadedService, clazz);
 		return loadedService;
 	}
-
 }

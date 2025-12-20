@@ -1,8 +1,8 @@
 package net.createmod.catnip.platform;
 
 import net.createmod.catnip.platform.services.ModHooksHelper;
-import net.fabricmc.fabric.api.block.BlockPickInteractionAware;
 import net.fabricmc.fabric.api.entity.FakePlayer;
+import net.fabricmc.fabric.api.event.player.PlayerPickItemEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;

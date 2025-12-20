@@ -264,8 +264,8 @@ public class ConfigScreenList extends ObjectSelectionList<ConfigScreenList.Entry
 
 				RenderSystem.disableScissor();
 				graphics.pose().pushPose();
-				graphics.renderComponentTooltip(font, tooltip, mouseX, mouseY);
-				graphics.flush();
+				graphics.setComponentTooltipForNextFrame(font, tooltip, mouseX, mouseY);
+				//graphics.flush(); TODO - Is there an replacement?
 				//RemovedGuiUtils.drawHoveringText(ms, tooltip, mouseX, mouseY, screen.width, screen.height, 300, font);
 				graphics.pose().popPose();
 				GlStateManager._enableScissorTest();

@@ -13,7 +13,6 @@ import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.joml.Matrix3x2fStack;
 import org.joml.Matrix4f;
-import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -33,7 +32,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
 public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
-
 	public static final Couple<Color> COLOR_NAV_ARROW = Couple.create(
 		new Color(0x80_aa9999, true),
 		new Color(0x30_aa9999)
@@ -129,7 +127,7 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 		Couple<Color> colors = COLOR_NAV_ARROW;
 
 		ms.pushMatrix();
-		ms.translate(0, 0, -300);
+		ms.translate(0, 0);
 		if (x + 30 < backTrack.getX())
 			UIRenderHelper.breadcrumbArrow(graphics, x + 30, height - 51, 0, maxX - (x + 30), 20, 5, colors);
 
@@ -138,7 +136,7 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 		ms.popMatrix();
 
 		ms.pushMatrix();
-		ms.translate(0, 0, 500);
+		ms.translate(0, 0);
 		if (backTrack.isHoveredOrFocused()) {
 			Component component = backTrackingComponent();
 			graphics.drawString(font, component, 41 - font.width(component) / 2, height - 16, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().getRGB(), false);
@@ -219,9 +217,9 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 		//dpx = depthPointX;
 		int dpy = (int) (guiScaledHeight / 2);
 		//dpy = depthPointY;
-		ms.translate(dpx, dpy, 0);
-		ms.scale(scale, scale, 1);
-		ms.translate(-dpx, -dpy, 0);
+		ms.translate(dpx, dpy);
+		ms.scale(scale, scale);
+		ms.translate(-dpx, -dpy);
 	}
 
 	@Override
@@ -273,7 +271,7 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 		MutableInt y = new MutableInt(height - 18);
 		MutableBoolean first = new MutableBoolean(true);
 
-		if (x.getValue() < 25)
+		if (x.intValue() < 25)
 			x.setValue(25);
 
 		Matrix3x2fStack ms = graphics.pose();
@@ -281,9 +279,9 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 		ms.translate(0, 0, 600);
 		names.forEach(s -> {
 			int sWidth = font.width(s);
-			UIRenderHelper.breadcrumbArrow(graphics, x.getValue(), y.getValue(), 0, sWidth + spacing, 14, spacing / 2,
+			UIRenderHelper.breadcrumbArrow(graphics, x.intValue(), y.intValue(), 0, sWidth + spacing, 14, spacing / 2,
 				new Color(0xdd101010), new Color(0x44101010));
-			graphics.drawString(font, s, x.getValue() + 5, y.getValue() + 3, first.getValue() ? 0xffeeffee : 0xffddeeff);
+			graphics.drawString(font, s, x.intValue() + 5, y.intValue() + 3, first.get() ? 0xffeeffee : 0xffddeeff);
 			first.setFalse();
 
 			x.add(sWidth + spacing);

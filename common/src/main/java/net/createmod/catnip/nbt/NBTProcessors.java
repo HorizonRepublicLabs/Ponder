@@ -95,7 +95,7 @@ public final class NBTProcessors {
 			return compound;
 		if (state.is(BlockTags.ALL_SIGNS))
 			return signProcessor.apply(compound);
-		if (blockEntity.onlyOpCanSetNbt())
+		if (blockEntity.getType().onlyOpCanSetNbt())
 			return null;
 		return compound;
 	}

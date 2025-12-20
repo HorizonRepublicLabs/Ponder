@@ -10,12 +10,12 @@ import net.createmod.catnip.client.render.model.BakedModelBufferer;
 import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SuperBufferFactory {
-
 	private static final ThreadLocal<ThreadLocalObjects> THREAD_LOCAL_OBJECTS = ThreadLocal.withInitial(ThreadLocalObjects::new);
 
 	private static SuperBufferFactory instance = new SuperBufferFactory();
@@ -50,7 +50,7 @@ public class SuperBufferFactory {
 
 	private static class SbbBuilder extends SuperByteBufferBuilder implements ShadeSeparatedResultConsumer {
 		@Override
-		public void accept(RenderType renderType, boolean shaded, MeshData data) {
+		public void accept(ChunkSectionLayer layer, boolean shaded, MeshData data) {
 			add(data, shaded);
 		}
 	}

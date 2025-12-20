@@ -22,7 +22,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 
 public class NBTHelper {
-
 	public static void putMarker(CompoundTag nbt, String marker) {
 		nbt.putBoolean(marker, true);
 	}
@@ -118,7 +117,11 @@ public class NBTHelper {
 	}
 
 	public static Vec3i readVec3i(ListTag tag) {
-		return new Vec3i(tag.getInt(0), tag.getInt(1), tag.getInt(2));
+		return new Vec3i(
+			tag.getInt(0).orElseThrow(),
+			tag.getInt(1).orElseThrow(),
+			tag.getInt(2).orElseThrow()
+		);
 	}
 
 	public static Tag getINBT(CompoundTag nbt, String id) {
@@ -145,5 +148,4 @@ public class NBTHelper {
 	public static Identifier readIdentifier(CompoundTag nbt, String key) {
 		return Identifier.parse(nbt.getString(key));
 	}
-
 }

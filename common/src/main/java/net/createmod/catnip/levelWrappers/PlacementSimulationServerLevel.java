@@ -57,5 +57,4 @@ public class PlacementSimulationServerLevel extends WrappedServerLevel {
 	public FluidState getFluidState(BlockPos pos) {
 		return getBlockState(pos).getFluidState();
 	}
-
 }

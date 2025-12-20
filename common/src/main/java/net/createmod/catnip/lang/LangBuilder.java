@@ -18,7 +18,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 
 public class LangBuilder {
-
 	String namespace;
 	@Nullable
 	MutableComponent component;
@@ -208,5 +207,4 @@ public class LangBuilder {
 				args[i] = cb.component();
 		return args;
 	}
-
 }

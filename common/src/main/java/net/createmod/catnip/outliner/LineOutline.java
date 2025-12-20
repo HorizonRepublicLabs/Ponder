@@ -12,7 +12,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
 public class LineOutline extends Outline {
-
 	protected final Vector3d start = new Vector3d(0, 0, 0);
 	protected final Vector3d end = new Vector3d(0, 0, 0);
 
@@ -36,10 +35,9 @@ public class LineOutline extends Outline {
 
 		VertexConsumer consumer = buffer.getBuffer(PonderRenderTypes.outlineSolid());
 		params.loadColor(colorTemp);
-		Vector4f color = colorTemp;
 		int lightmap = params.lightmap;
 		boolean disableLineNormals = params.disableLineNormals;
-		renderInner(ms, consumer, camera, pt, width, color, lightmap, disableLineNormals);
+		renderInner(ms, consumer, camera, pt, width, colorTemp, lightmap, disableLineNormals);
 	}
 
 	protected void renderInner(PoseStack ms, VertexConsumer consumer, Vec3 camera, float pt, float width,
@@ -85,5 +83,4 @@ public class LineOutline extends Outline {
 			bufferCuboidLine(ms, consumer, camera, start, end, width, color, lightmap, disableNormals);
 		}
 	}
-
 }

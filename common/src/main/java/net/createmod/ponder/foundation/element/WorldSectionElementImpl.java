@@ -36,8 +36,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.core.BlockPos;
@@ -315,8 +317,7 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 	}
 
 	@Override
-	public void renderFirst(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, float fade, float pt) {
-		PoseStack poseStack = graphics.pose();
+	public void renderFirst(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, PoseStack poseStack, float fade, float pt) {
 		int light = -1;
 		if (fade != 1)
 			light = (int) (Mth.lerp(fade, 5, 15));
@@ -328,7 +329,7 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 		poseStack.pushPose();
 		transformMS(poseStack, pt);
 		world.pushFakeLight(light);
-		renderBlockEntities(world, poseStack, buffer, pt);
+		renderBlockEntities(world, poseStack, buffer, poseStack, pt);
 		world.popLight();
 
 		Map<BlockPos, Integer> blockBreakingProgressions = world.getBlockBreakingProgressions();
@@ -359,31 +360,36 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 	}
 
 	@Override
-	protected void renderLayer(PonderLevel world, MultiBufferSource buffer, RenderType type, GuiGraphics graphics, float fade, float pt) {
+	protected void renderLayer(PonderLevel world, MultiBufferSource buffer, ChunkSectionLayer layer, GuiGraphics graphics, PoseStack poseStack, float fade, float pt) {
 		PoseStack poseStack = graphics.pose();
 		SuperByteBufferCache bufferCache = SuperByteBufferCache.getInstance();
 
 		int code = hashCode() ^ world.hashCode();
-		Pair<Integer, Integer> key = Pair.of(code, RenderType.chunkBufferLayers()
-			.indexOf(type));
+		Pair<Integer, Integer> key = Pair.of(code, layer.ordinal());
 
 		if (redraw)
 			bufferCache.invalidate(PONDER_WORLD_SECTION, key);
 
-		SuperByteBuffer structureBuffer = bufferCache.get(PONDER_WORLD_SECTION, key, () -> buildStructureBuffer(world, type));
+		SuperByteBuffer structureBuffer = bufferCache.get(PONDER_WORLD_SECTION, key, () -> buildStructureBuffer(world, layer));
 		if (structureBuffer.isEmpty())
 			return;
 
 		transformMS(structureBuffer.getTransforms(), pt);
 
 		int light = lightCoordsFromFade(fade);
+		RenderType type = switch (layer) {
+			case SOLID -> RenderTypes.solidMovingBlock();
+			case CUTOUT -> RenderTypes.cutoutMovingBlock();
+			case TRANSLUCENT -> RenderTypes.translucentMovingBlock();
+			case TRIPWIRE -> RenderTypes.tripwireMovingBlock();
+		};
 		structureBuffer
 			.light(light)
 			.renderInto(poseStack, buffer.getBuffer(type));
 	}
 
 	@Override
-	protected void renderLast(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, float fade, float pt) {
+	protected void renderLast(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, PoseStack poseStack, float fade, float pt) {
 		PoseStack poseStack = graphics.pose();
 		redraw = false;
 		if (selectedBlock == null)
@@ -410,7 +416,7 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 		poseStack.popPose();
 	}
 
-	private void renderBlockEntities(PonderLevel world, PoseStack ms, MultiBufferSource buffer, float pt) {
+	private void renderBlockEntities(PonderLevel world, PoseStack ms, MultiBufferSource buffer, PoseStack poseStack, float pt) {
 		loadBEsIfMissing(world);
 
 		Iterator<BlockEntity> iterator = renderedBlockEntities.iterator();
@@ -439,7 +445,7 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 		}
 	}
 
-	private SuperByteBuffer buildStructureBuffer(PonderLevel world, RenderType layer) {
+	private SuperByteBuffer buildStructureBuffer(PonderLevel world, ChunkSectionLayer layer) {
 		ThreadLocalObjects objects = THREAD_LOCAL_OBJECTS.get();
 		SbbBuilder sbbBuilder = objects.sbbBuilder;
 		sbbBuilder.prepare(layer);
@@ -456,16 +462,16 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 	}
 
 	private static class SbbBuilder extends SuperByteBufferBuilder implements ShadeSeparatedResultConsumer {
-		private RenderType renderType;
+		private ChunkSectionLayer layer;
 
-		public void prepare(RenderType renderType) {
+		public void prepare(ChunkSectionLayer layer) {
 			prepare();
-			this.renderType = renderType;
+			this.layer = layer;
 		}
 
 		@Override
-		public void accept(RenderType renderType, boolean shaded, MeshData data) {
-			if (renderType != this.renderType) {
+		public void accept(ChunkSectionLayer layer, boolean shaded, MeshData data) {
+			if (layer != this.layer) {
 				return;
 			}
 
@@ -476,5 +482,4 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 	private static class ThreadLocalObjects {
 		public final SbbBuilder sbbBuilder = new SbbBuilder();
 	}
-
 }

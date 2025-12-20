@@ -12,7 +12,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 
 public class ScreenOpener {
-
 	private static final Deque<Screen> backStack = new ArrayDeque<>();
 	@Nullable
 	private static Screen backSteppedFrom = null;
@@ -97,14 +96,12 @@ public class ScreenOpener {
 	}
 
 	private static void openScreen(@Nullable Screen screen) {
-		Minecraft.getInstance()
-			.tell(() -> {
-				Minecraft.getInstance()
-					.setScreen(screen);
-				Screen previouslyRenderedScreen = getPreviouslyRenderedScreen();
-				if (previouslyRenderedScreen != null && screen instanceof NavigatableSimiScreen)
-					previouslyRenderedScreen.init(Minecraft.getInstance(), screen.width, screen.height);
-			});
+		Minecraft.getInstance().schedule(() -> {
+			Minecraft.getInstance()
+				.setScreen(screen);
+			Screen previouslyRenderedScreen = getPreviouslyRenderedScreen();
+			if (previouslyRenderedScreen != null && screen instanceof NavigatableSimiScreen)
+				previouslyRenderedScreen.init(screen.width, screen.height);
+		});
 	}
-
 }

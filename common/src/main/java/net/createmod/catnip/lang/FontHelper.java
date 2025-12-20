@@ -17,11 +17,9 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 
 public final class FontHelper {
-
 	public static final int MAX_WIDTH_PER_LINE = 200;
 
-	private FontHelper() {
-	}
+	private FontHelper() {}
 
 	public static Style styleFromColor(ChatFormatting color) {
 		return Style.EMPTY.applyFormat(color);
@@ -135,5 +133,4 @@ public final class FontHelper {
 			return new Palette(styleFromColor(primary), styleFromColor(highlight));
 		}
 	}
-
 }

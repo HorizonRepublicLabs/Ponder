@@ -25,7 +25,6 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.phys.Vec3;
 
 public class VecHelper {
-
 	public static final Vec3 CENTER_OF_ORIGIN = new Vec3(.5, .5, .5);
 
 	public static Vec3 rotate(Vec3 vec, Vec3 rotationVec) {
@@ -104,8 +103,8 @@ public class VecHelper {
 	}
 
 	public static boolean isVecPointingTowards(Vec3 vec, Direction direction) {
-		return Vec3.atLowerCornerOf(direction.getNormal())
-			.dot(vec.normalize()) > 0.125; // slight tolerance to activate perpendicular movement actors
+		// slight tolerance to activate perpendicular movement actors
+		return direction.getUnitVec3().dot(vec.normalize()) > 0.125;
 	}
 
 	public static Vec3 getCenterOf(Vec3i pos) {
@@ -126,7 +125,7 @@ public class VecHelper {
 	}
 
 	public static Vec3 axisAlingedPlaneOf(Direction face) {
-		return axisAlingedPlaneOf(Vec3.atLowerCornerOf(face.getNormal()));
+		return axisAlingedPlaneOf(face.getUnitVec3());
 	}
 
 	public static ListTag writeNBT(Vec3 vec) {
@@ -144,13 +143,15 @@ public class VecHelper {
 	}
 
 	public static Vec3 readNBT(ListTag list) {
-		if (list.isEmpty())
-			return Vec3.ZERO;
-		return new Vec3(list.getDouble(0), list.getDouble(1), list.getDouble(2));
+		return new Vec3(
+			list.getDoubleOr(0, 0),
+			list.getDoubleOr(1, 0),
+			list.getDoubleOr(2, 0)
+		);
 	}
 
 	public static Vec3 readNBTCompound(CompoundTag nbt) {
-		return readNBT(nbt.getList("V", Tag.TAG_DOUBLE));
+		return readNBT(nbt.getList("V").orElseThrow());
 	}
 
 	public static void write(Vec3 vec, FriendlyByteBuf buffer) {
@@ -246,13 +247,13 @@ public class VecHelper {
 		 * then in front of view plane)
 		 */
 		Camera ari = Minecraft.getInstance().gameRenderer.getMainCamera();
-		Vec3 camera_pos = ari.getPosition();
-		Quaternionf camera_rotation_conj = new Quaternionf(ari.rotation());
-		camera_rotation_conj.conjugate();
+		Vec3 cameraPos = ari.position();
+		Quaternionf cameraRotationConj = new Quaternionf(ari.rotation());
+		cameraRotationConj.conjugate();
 
-		Vector3f result3f = new Vector3f((float) (camera_pos.x - target.x), (float) (camera_pos.y - target.y),
-			(float) (camera_pos.z - target.z));
-		result3f.rotate(camera_rotation_conj);
+		Vector3f result3f = new Vector3f((float) (cameraPos.x - target.x), (float) (cameraPos.y - target.y),
+			(float) (cameraPos.z - target.z));
+		result3f.rotate(cameraRotationConj);
 
 		// ----- compensate for view bobbing (if active) -----
 		// the following code adapted from GameRenderer::applyBobbing (to invert it)
@@ -277,7 +278,7 @@ public class VecHelper {
 
 				Vector3f bob_translation = new Vector3f((Mth.sin(f1 * (float) Math.PI) * f2 * 0.5F),
 					(-Math.abs(Mth.cos(f1 * (float) Math.PI) * f2)), 0.0f);
-				bob_translation.set(bob_translation.x(), -bob_translation.y(), bob_translation.z());// this is weird but hey, if it works
+				bob_translation.set(bob_translation.x(), -bob_translation.y(), bob_translation.z()); // this is weird but hey, if it works
 				result3f.add(bob_translation);
 			}
 		}

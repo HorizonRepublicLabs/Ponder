@@ -11,14 +11,13 @@ import net.minecraft.world.level.entity.LevelEntityGetter;
 import net.minecraft.world.phys.AABB;
 
 public class DummyLevelEntityGetter<T extends EntityAccess> implements LevelEntityGetter<T> {
-
 	@Override
-	public T get(int p_156931_) {
+	public T get(int id) {
 		return null;
 	}
 
 	@Override
-	public T get(UUID pUuid) {
+	public T get(UUID id) {
 		return null;
 	}
 
@@ -28,15 +27,11 @@ public class DummyLevelEntityGetter<T extends EntityAccess> implements LevelEnti
 	}
 
 	@Override
-	public <U extends T> void get(EntityTypeTest<T, U> p_156935_, AbortableIterationConsumer<U> p_156936_) {
-	}
+	public <U extends T> void get(EntityTypeTest<T, U> type, AbortableIterationConsumer<U> consumer) {}
 
 	@Override
-	public void get(AABB p_156937_, Consumer<T> p_156938_) {
-	}
+	public void get(AABB bb, Consumer<T> output) {}
 
 	@Override
-	public <U extends T> void get(EntityTypeTest<T, U> p_156932_, AABB p_156933_, AbortableIterationConsumer<U> p_156934_) {
-	}
-
+	public <U extends T> void get(EntityTypeTest<T, U> type, AABB bb, AbortableIterationConsumer<U> consumer) {}
 }

@@ -1,12 +1,17 @@
 package net.createmod.catnip.gui;
 
-import com.mojang.blaze3d.platform.Lighting;
+import com.mojang.blaze3d.platform.Lighting.Entry;
 
+import net.minecraft.client.Minecraft;
+
+@FunctionalInterface
 public interface ILightingSettings {
+	ILightingSettings DEFAULT_3D = setupFor(Entry.ITEMS_3D);
+	ILightingSettings DEFAULT_FLAT = setupFor(Entry.ITEMS_FLAT);
 
 	void applyLighting();
 
-	ILightingSettings DEFAULT_3D = Lighting::setupFor3DItems;
-	ILightingSettings DEFAULT_FLAT = Lighting::setupForFlatItems;
-
+	private static ILightingSettings setupFor(Entry entry) {
+		return () -> Minecraft.getInstance().gameRenderer.getLighting().setupFor(entry);
+	}
 }

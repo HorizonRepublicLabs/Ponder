@@ -12,7 +12,6 @@ import net.createmod.catnip.gui.element.ScreenElement;
 import net.minecraft.client.gui.GuiGraphics;
 
 public class ElementWidget extends AbstractSimiWidget {
-
 	protected RenderElement element = AbstractRenderElement.EMPTY;
 
 	protected boolean usesFade = false;

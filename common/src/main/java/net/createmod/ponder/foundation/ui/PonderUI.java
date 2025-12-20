@@ -760,7 +760,7 @@ public class PonderUI extends AbstractPonderScreen {
 						.style(ChatFormatting.GRAY)
 						.component();
 
-					graphics.renderComponentTooltip(
+					graphics.setComponentTooltipForNextFrame(
 						font,
 						font.getSplitter()
 							.splitLines(text, width / 3, Style.EMPTY)

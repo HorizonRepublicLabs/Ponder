@@ -15,7 +15,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class AABBOutline extends Outline {
-
 	protected AABB bb;
 
 	protected final Vector3f minPosTemp1 = new Vector3f();
@@ -223,5 +222,4 @@ public class AABBOutline extends Outline {
 		origin.set(maxPos.x(), maxPos.y(), minPos.z());
 		bufferCuboidLine(pose, consumer, origin, Direction.SOUTH, lineLengthZ, lineWidth, color, lightmap, disableNormals);
 	}
-
 }

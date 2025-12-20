@@ -16,7 +16,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Util;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
@@ -30,15 +29,15 @@ import net.minecraft.world.ticks.LevelTicks;
 import net.minecraft.world.ticks.TickPriority;
 
 public class WrappedServerLevel extends ServerLevel {
-
 	protected ServerLevel level;
 
 	public WrappedServerLevel(ServerLevel level) {
-		super(level.getServer(), Util.backgroundExecutor(), ((MinecraftServerAccessor) level.getServer()).catnip$getStorageSource(),
-			(ServerLevelData) level.getLevelData(), level.dimension(),
-			new LevelStem(level.dimensionTypeRegistration(), level.getChunkSource().getGenerator()),
-			 level.isDebug(), ((BiomeManagerAccessor) level.getBiomeManager()).catnip$getBiomeZoomSeed(),
-			Collections.emptyList(), false, level.getRandomSequences());
+		super(level.getServer(), Util.backgroundExecutor(),
+			((MinecraftServerAccessor) level.getServer()).catnip$getStorageSource(),
+			(ServerLevelData) level.getLevelData(), level.dimension(), new LevelStem(level.dimensionTypeRegistration(),
+				level.getChunkSource().getGenerator()), level.isDebug(),
+			((BiomeManagerAccessor) level.getBiomeManager()).catnip$getBiomeZoomSeed(), Collections.emptyList(),
+			false, level.getRandomSequences());
 		this.level = level;
 	}
 
@@ -98,7 +97,7 @@ public class WrappedServerLevel extends ServerLevel {
 	}
 
 	@Override
-	public Entity getEntity(int id) {
+	public @Nullable Entity getEntity(int id) {
 		return null;
 	}
 
@@ -132,8 +131,7 @@ public class WrappedServerLevel extends ServerLevel {
 	}
 
 	@Override
-	public Holder<Biome> getUncachedNoiseBiome(int p_225604_1_, int p_225604_2_, int p_225604_3_) {
-		return level.getUncachedNoiseBiome(p_225604_1_, p_225604_2_, p_225604_3_);
+	public Holder<Biome> getUncachedNoiseBiome(int quartX, int quartY, int quartZ) {
+		return level.getUncachedNoiseBiome(quartX, quartY, quartZ);
 	}
-
 }

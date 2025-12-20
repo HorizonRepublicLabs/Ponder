@@ -7,7 +7,6 @@ import net.createmod.catnip.platform.CatnipClientServices;
 import net.minecraft.util.Mth;
 
 public class LangNumberFormat {
-
 	private NumberFormat format = NumberFormat.getNumberInstance(Locale.ROOT);
 	public static LangNumberFormat numberFormat = new LangNumberFormat();
 
@@ -29,5 +28,4 @@ public class LangNumberFormat {
 			.format(d)
 			.replace("\u00A0", " ");
 	}
-
 }

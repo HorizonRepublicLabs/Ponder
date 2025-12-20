@@ -282,7 +282,7 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 		if (hoveredItem != null) {
 			List<Component> list = FontHelper.cutStringTextComponent(hoveredItem.getDescription(), Palette.ALL_GRAY);
 			list.add(0, Component.literal(hoveredItem.getTitle()));
-			graphics.renderComponentTooltip(font, list, mouseX, mouseY);
+			graphics.setComponentTooltipForNextFrame(font, list, mouseX, mouseY);
 		}
 
 		poseStack.popPose();

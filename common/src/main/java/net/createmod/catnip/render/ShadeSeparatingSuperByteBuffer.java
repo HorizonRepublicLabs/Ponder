@@ -198,7 +198,7 @@ public class ShadeSeparatingSuperByteBuffer implements SuperByteBuffer {
 	}
 
 	public SuperByteBuffer reset() {
-		while (!transforms.clear())
+		while (!transforms.isEmpty())
 			transforms.popPose();
 		transforms.pushPose();
 

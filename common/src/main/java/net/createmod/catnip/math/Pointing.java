@@ -32,5 +32,4 @@ public enum Pointing implements StringRepresentable {
 			top = top.getClockWise(axis);
 		return top;
 	}
-
 }

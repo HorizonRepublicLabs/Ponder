@@ -9,7 +9,6 @@ import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.codec.StreamCodec;
 
 public class BlockFace extends Pair<BlockPos, Direction> {
@@ -66,5 +65,4 @@ public class BlockFace extends Pair<BlockPos, Direction> {
 		return new BlockFace(compound.read("Pos", BlockPos.CODEC).orElseThrow(),
 			NBTHelper.readEnum(compound, "Face", Direction.class));
 	}
-
 }

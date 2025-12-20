@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import javax.annotation.Nonnull;
+import com.mojang.blaze3d.opengl.GlStateManager;
 
 import org.lwjgl.opengl.GL30;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.createmod.catnip.gui.element.BoxElement;
@@ -24,7 +23,6 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.Style;
 
 public class ConfirmationScreen extends AbstractSimiScreen {
-
 	private Screen source;
 	private Consumer<Response> action = _success -> {
 	};
@@ -93,10 +91,10 @@ public class ConfirmationScreen extends AbstractSimiScreen {
 		return this;
 	}
 
-	public void open(@Nonnull Screen source) {
+	public void open(Screen source) {
 		this.source = source;
 		Minecraft client = CatnipClientServices.CLIENT_HOOKS.getMinecraftFromScreen(source);
-		this.init(client, client.getWindow().getGuiScaledWidth(), client.getWindow().getGuiScaledHeight());
+		this.init(client.getWindow().getGuiScaledWidth(), client.getWindow().getGuiScaledHeight());
 		this.minecraft.screen = this;
 	}
 
@@ -215,7 +213,7 @@ public class ConfirmationScreen extends AbstractSimiScreen {
 	@Override
 	protected void prepareFrame() {
 		UIRenderHelper.swapAndBlitColor(minecraft.getMainRenderTarget(), UIRenderHelper.framebuffer);
-		RenderSystem.clear(GL30.GL_STENCIL_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT, Minecraft.ON_OSX);
+		GlStateManager._clear(GL30.GL_STENCIL_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT);
 	}
 
 	@Override
@@ -224,9 +222,9 @@ public class ConfirmationScreen extends AbstractSimiScreen {
 	}
 
 	@Override
-	public void resize(@Nonnull Minecraft client, int width, int height) {
-		super.resize(client, width, height);
-		source.resize(client, width, height);
+	public void resize(int width, int height) {
+		super.resize(width, height);
+		source.resize(width, height);
 	}
 
 	@Override

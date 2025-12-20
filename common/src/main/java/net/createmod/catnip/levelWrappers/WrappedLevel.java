@@ -79,8 +79,8 @@ public class WrappedLevel extends Level {
 	}
 
 	@Override
-	public boolean isStateAtPosition(BlockPos p_217375_1_, Predicate<BlockState> p_217375_2_) {
-		return level.isStateAtPosition(p_217375_1_, p_217375_2_);
+	public boolean isStateAtPosition(BlockPos pos, Predicate<BlockState> predicate) {
+		return level.isStateAtPosition(pos, predicate);
 	}
 
 	@Override
@@ -213,8 +213,8 @@ public class WrappedLevel extends Level {
 	}
 
 	@Override
-	public Holder<Biome> getUncachedNoiseBiome(int p_225604_1_, int p_225604_2_, int p_225604_3_) {
-		return level.getUncachedNoiseBiome(p_225604_1_, p_225604_2_, p_225604_3_);
+	public Holder<Biome> getUncachedNoiseBiome(int quartX, int quartY, int quartZ) {
+		return level.getUncachedNoiseBiome(quartX, quartY, quartZ);
 	}
 
 	@Override
@@ -248,7 +248,7 @@ public class WrappedLevel extends Level {
 	}
 
 	@Override
-	public void updateNeighbourForOutputSignal(BlockPos p_175666_1_, Block p_175666_2_) {
+	public void updateNeighbourForOutputSignal(BlockPos pos, Block block) {
 	}
 
 	@Override
@@ -328,17 +328,17 @@ public class WrappedLevel extends Level {
 	}
 
 	// Neo's patched methods
-	public void setDayTimeFraction(float var1) {
+	public void setDayTimeFraction(float f) {
 	}
 
 	public float getDayTimeFraction() {
 		return 0;
 	}
 
-	public float getDayTimePerTick() {
-		return 0;
+	public void setDayTimePerTick(float f) {
 	}
 
-	public void setDayTimePerTick(float var1) {
+	public float getDayTimePerTick() {
+		return 0;
 	}
 }
