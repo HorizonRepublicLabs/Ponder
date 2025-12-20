@@ -12,6 +12,8 @@ import java.util.stream.IntStream;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.resources.Identifier;
+
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
@@ -68,14 +70,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.Vec3;
 
 public class PonderUI extends AbstractPonderScreen {
-
 	public static int ponderTicks;
 	public static float ponderPartialTicksPaused;
 
@@ -142,7 +142,7 @@ public class PonderUI extends AbstractPonderScreen {
 	private int extendedTickLength = 0;
 	private int extendedTickTimer = 0;
 
-	public static PonderUI of(ResourceLocation id) {
+	public static PonderUI of(Identifier id) {
 		return new PonderUI(PonderIndex.getSceneAccess().compile(id));
 	}
 
@@ -159,7 +159,7 @@ public class PonderUI extends AbstractPonderScreen {
 	}
 
 	protected PonderUI(List<PonderScene> scenes) {
-		ResourceLocation location = scenes.get(0).getIdentifier();
+		Identifier location = scenes.get(0).getIdentifier();
 		stack = new ItemStack(RegisteredObjectsHelper.getItemOrBlock(location));
 
 		tags = new ArrayList<>(PonderIndex.getTagAccess().getTags(location));
@@ -179,7 +179,7 @@ public class PonderUI extends AbstractPonderScreen {
 		if (this.scenes.isEmpty()) {
 			List<StoryBoardEntry> list = Collections.singletonList(
 				new PonderStoryBoardEntry(DebugScenes::empty, Ponder.MOD_ID, "debug/scene_1",
-					ResourceLocation.withDefaultNamespace("stick")));
+					Identifier.withDefaultNamespace("stick")));
 			this.scenes.addAll(PonderIndex.getSceneAccess().compile(list));
 		}
 		lazyIndex = LerpedFloat.linear()
@@ -210,7 +210,7 @@ public class PonderUI extends AbstractPonderScreen {
 		List<PonderScene> sceneList = new ArrayList<>(scenes);
 		Collections.reverse(sceneList);
 
-		Map<ResourceLocation, PonderScene> sceneLookup = scenes.stream()
+		Map<Identifier, PonderScene> sceneLookup = scenes.stream()
 			.collect(Collectors.toMap(PonderScene::getSceneId, scene -> scene));
 
 		MutableGraph<PonderScene> graph = GraphBuilder.directed().nodeOrder(ElementOrder.insertion()).build();
@@ -557,7 +557,7 @@ public class PonderUI extends AbstractPonderScreen {
 			List<PonderStoryBoardEntry> list = PonderIndex.getSceneAccess().getRegisteredEntries().stream().filter(
 					entry -> entry.getKey() == finalScene.getLocation()).map(Map.Entry::getValue).toList();
 			PonderStoryBoardEntry sb = list.get(index);
-			StructureTemplate activeTemplate = PonderSceneRegistry.loadSchematic(sb.getSchematicLocation());
+			StructureTemplate activeTemplate = PonderSceneRegistry.loadSchematic(sb.getschematicIdentifier());
 			PonderLevel world = new PonderLevel(BlockPos.ZERO, Minecraft.getInstance().level);
 			activeTemplate.placeInWorld(world, BlockPos.ZERO, BlockPos.ZERO, new StructurePlaceSettings(),
 										RandomSource.create(), Block.UPDATE_CLIENTS);
@@ -1217,5 +1217,4 @@ public class PonderUI extends AbstractPonderScreen {
 	public void setComfyReadingEnabled(boolean slowTextMode) {
 		PonderConfig.client().comfyReading.set(slowTextMode);
 	}
-
 }

@@ -18,7 +18,7 @@ import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class ConfigPathArgument implements ArgumentType<ConfigHelper.ConfigPath> {
 
@@ -72,7 +72,7 @@ public class ConfigPathArgument implements ArgumentType<ConfigHelper.ConfigPath>
 	public ConfigHelper.ConfigPath parse(StringReader reader) throws CommandSyntaxException {
 		int i = reader.getCursor();
 
-		while (reader.canRead() && ResourceLocation.isAllowedInResourceLocation(Character.toLowerCase(reader.peek()))) {
+		while (reader.canRead() && Identifier.isAllowedInIdentifier(Character.toLowerCase(reader.peek()))) {
 			reader.skip();
 		}
 

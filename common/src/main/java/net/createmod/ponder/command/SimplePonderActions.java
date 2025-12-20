@@ -6,7 +6,7 @@ import net.createmod.ponder.foundation.PonderIndex;
 import net.createmod.ponder.foundation.ui.PonderIndexScreen;
 import net.createmod.ponder.foundation.ui.PonderTagIndexScreen;
 import net.createmod.ponder.foundation.ui.PonderUI;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class SimplePonderActions {
 
@@ -21,7 +21,7 @@ public class SimplePonderActions {
 			return;
 		}
 
-		ResourceLocation id = ResourceLocation.parse(value);
+		Identifier id = Identifier.parse(value);
 		if (!PonderIndex.getSceneAccess().doScenesExistForId(id)) {
 			Ponder.LOGGER.error("Could not find ponder scenes for item: " + id);
 			return;

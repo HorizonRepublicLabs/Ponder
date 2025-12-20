@@ -15,7 +15,7 @@ import net.minecraft.commands.arguments.IdentifierArgument;
 import net.minecraft.server.level.ServerPlayer;
 
 public class PonderCommand {
-	//public static final SuggestionProvider<CommandSourceStack> ITEM_PONDERS = SuggestionProviders.register(new ResourceLocation("all_ponders"), (iSuggestionProviderCommandContext, builder) -> SharedSuggestionProvider.suggestResource(PonderRegistry.ALL.keySet().stream(), builder));
+	//public static final SuggestionProvider<CommandSourceStack> ITEM_PONDERS = SuggestionProviders.register(new Identifier("all_ponders"), (iSuggestionProviderCommandContext, builder) -> SharedSuggestionProvider.suggestResource(PonderRegistry.ALL.keySet().stream(), builder));
 	//TODO PonderRegistry can't be loaded on Server Dist
 
 	static ArgumentBuilder<CommandSourceStack, ?> register() {

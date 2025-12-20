@@ -24,7 +24,6 @@ import net.createmod.ponder.foundation.registration.PonderIndexExclusionHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
@@ -242,7 +241,7 @@ public class PonderIndexScreen extends AbstractPonderScreen {
 		return true;
 	}
 
-	public record ItemEntry(@Nullable ItemLike item, ResourceLocation key) {
+	public record ItemEntry(@Nullable ItemLike item, Identifier key) {
 	}
 
 }

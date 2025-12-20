@@ -6,10 +6,9 @@ import net.createmod.ponder.api.registration.MultiSceneBuilder;
 import net.createmod.ponder.api.registration.PonderSceneRegistrationHelper;
 import net.createmod.ponder.api.registration.StoryBoardEntry;
 import net.createmod.ponder.api.scene.PonderStoryBoard;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class GenericMultiSceneBuilder<T> implements MultiSceneBuilder {
-
 	protected Iterable<? extends T> components;
 	protected PonderSceneRegistrationHelper<T> helper;
 
@@ -19,24 +18,24 @@ public class GenericMultiSceneBuilder<T> implements MultiSceneBuilder {
 	}
 
 	@Override
-	public MultiSceneBuilder addStoryBoard(ResourceLocation schematicLocation,
+	public MultiSceneBuilder addStoryBoard(Identifier schematicIdentifier,
 										   PonderStoryBoard storyBoard) {
-		return addStoryBoard(schematicLocation, storyBoard, $ -> {
+		return addStoryBoard(schematicIdentifier, storyBoard, $ -> {
 		});
 	}
 
 	@Override
-	public MultiSceneBuilder addStoryBoard(ResourceLocation schematicLocation,
+	public MultiSceneBuilder addStoryBoard(Identifier schematicIdentifier,
 										   PonderStoryBoard storyBoard,
-										   ResourceLocation... tags) {
-		return addStoryBoard(schematicLocation, storyBoard, sb -> sb.highlightTags(tags));
+										   Identifier... tags) {
+		return addStoryBoard(schematicIdentifier, storyBoard, sb -> sb.highlightTags(tags));
 	}
 
 	@Override
-	public MultiSceneBuilder addStoryBoard(ResourceLocation schematicLocation,
+	public MultiSceneBuilder addStoryBoard(Identifier schematicIdentifier,
 										   PonderStoryBoard storyBoard,
 										   Consumer<StoryBoardEntry> extras) {
-		components.forEach(c -> extras.accept(helper.addStoryBoard(c, schematicLocation, storyBoard)));
+		components.forEach(c -> extras.accept(helper.addStoryBoard(c, schematicIdentifier, storyBoard)));
 		return this;
 	}
 
@@ -47,7 +46,7 @@ public class GenericMultiSceneBuilder<T> implements MultiSceneBuilder {
 
 	@Override
 	public MultiSceneBuilder addStoryBoard(String schematicPath, PonderStoryBoard storyBoard,
-										   ResourceLocation... tags) {
+										   Identifier... tags) {
 		return addStoryBoard(helper.asIdentifier(schematicPath), storyBoard, tags);
 	}
 
@@ -56,5 +55,4 @@ public class GenericMultiSceneBuilder<T> implements MultiSceneBuilder {
 										   Consumer<StoryBoardEntry> extras) {
 		return addStoryBoard(helper.asIdentifier(schematicPath), storyBoard, extras);
 	}
-
 }

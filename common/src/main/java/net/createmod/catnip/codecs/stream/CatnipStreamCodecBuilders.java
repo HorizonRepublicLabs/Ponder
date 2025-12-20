@@ -4,6 +4,8 @@ import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Optional;
 
+import net.minecraft.resources.Identifier;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,7 +19,6 @@ import net.minecraft.network.VarInt;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 
 public interface CatnipStreamCodecBuilders {
@@ -125,6 +126,6 @@ public interface CatnipStreamCodecBuilders {
 	}
 
 	static <T> StreamCodec<ByteBuf, TagKey<T>> tagKey(ResourceKey<? extends Registry<T>> registry) {
-		return ResourceLocation.STREAM_CODEC.map(id -> TagKey.create(registry, id), TagKey::location);
+		return Identifier.STREAM_CODEC.map(id -> TagKey.create(registry, id), TagKey::location);
 	}
 }

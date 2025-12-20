@@ -14,14 +14,13 @@ import com.google.common.collect.Multimap;
 import net.createmod.ponder.Ponder;
 import net.createmod.ponder.api.registration.TagRegistryAccess;
 import net.createmod.ponder.foundation.PonderTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Items;
 
 public class PonderTagRegistry implements TagRegistryAccess {
-
 	private final PonderLocalization localization;
-	private final Multimap<ResourceLocation, ResourceLocation> componentTagMap;
-	private final Map<ResourceLocation, PonderTag> registeredTags;
+	private final Multimap<Identifier, Identifier> componentTagMap;
+	private final Map<Identifier, PonderTag> registeredTags;
 	private final List<PonderTag> listedTags;
 
 	private final PonderTag MISSING = new PonderTag(Ponder.id("not_registered"), null,
@@ -59,7 +58,7 @@ public class PonderTagRegistry implements TagRegistryAccess {
 		listedTags.add(tag);
 	}
 
-	public void addTagToComponent(ResourceLocation tag, ResourceLocation item) {
+	public void addTagToComponent(Identifier tag, Identifier item) {
 		if (!allowRegistration)
 			throw new IllegalStateException("Registration Phase has already ended!");
 
@@ -71,8 +70,8 @@ public class PonderTagRegistry implements TagRegistryAccess {
 	//
 
 	@Override
-	public PonderTag getRegisteredTag(ResourceLocation tagLocation) {
-		return registeredTags.getOrDefault(tagLocation, MISSING);
+	public PonderTag getRegisteredTag(Identifier tagIdentifier) {
+		return registeredTags.getOrDefault(tagIdentifier, MISSING);
 	}
 
 	@Override
@@ -81,12 +80,12 @@ public class PonderTagRegistry implements TagRegistryAccess {
 	}
 
 	@Override
-	public Set<PonderTag> getTags(ResourceLocation item) {
+	public Set<PonderTag> getTags(Identifier item) {
 		return componentTagMap.get(item).stream().map(this::getRegisteredTag).collect(Collectors.toUnmodifiableSet());
 	}
 
 	@Override
-	public Set<ResourceLocation> getItems(ResourceLocation tag) {
+	public Set<Identifier> getItems(Identifier tag) {
 		return componentTagMap.entries()
 			.stream()
 			.filter(e -> e.getValue().equals(tag))
@@ -95,8 +94,7 @@ public class PonderTagRegistry implements TagRegistryAccess {
 	}
 
 	@Override
-	public Set<ResourceLocation> getItems(PonderTag tag) {
+	public Set<Identifier> getItems(PonderTag tag) {
 		return getItems(tag.getId());
 	}
-
 }

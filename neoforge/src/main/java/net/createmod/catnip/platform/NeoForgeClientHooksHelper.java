@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
+import net.minecraft.resources.Identifier;
+
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
@@ -40,7 +42,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
@@ -52,7 +53,7 @@ import net.neoforged.neoforge.client.RenderTypeHelper;
 import net.neoforged.neoforge.client.model.data.ModelData;
 
 public class NeoForgeClientHooksHelper implements ModClientHooksHelper {
-	private final Map<ResourceLocation, ParticleProvider<?>> particleProviders = ((ParticleEngineAccessor) Minecraft.getInstance().particleEngine).ponder$getProviders();
+	private final Map<Identifier, ParticleProvider<?>> particleProviders = ((ParticleEngineAccessor) Minecraft.getInstance().particleEngine).ponder$getProviders();
 
 	@Override
 	public Locale getCurrentLocale() {
@@ -64,7 +65,7 @@ public class NeoForgeClientHooksHelper implements ModClientHooksHelper {
 	@SuppressWarnings("unchecked")
 	public <T extends ParticleOptions> Particle createParticleFromData(T data, ClientLevel level, double x, double y,
 																	   double z, double mx, double my, double mz) {
-		ResourceLocation key = RegisteredObjectsHelper.getKeyOrThrow(data.getType());
+		Identifier key = RegisteredObjectsHelper.getKeyOrThrow(data.getType());
 		ParticleProvider<T> particleProvider = (ParticleProvider<T>) particleProviders.get(key);
 		return particleProvider == null ? null : particleProvider.createParticle(data, level, x, y, z, mx, my, mz);
 	}

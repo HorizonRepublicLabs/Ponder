@@ -10,7 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 
 public class PonderTagBuilder implements TagBuilder {
-
 	final Identifier id;
 	private final Consumer<PonderTagBuilder> onFinish;
 

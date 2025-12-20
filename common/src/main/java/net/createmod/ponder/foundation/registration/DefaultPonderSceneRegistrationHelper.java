@@ -8,10 +8,9 @@ import net.createmod.ponder.api.registration.PonderSceneRegistrationHelper;
 import net.createmod.ponder.api.registration.StoryBoardEntry;
 import net.createmod.ponder.api.scene.PonderStoryBoard;
 import net.createmod.ponder.foundation.PonderStoryBoardEntry;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
-public class DefaultPonderSceneRegistrationHelper implements PonderSceneRegistrationHelper<ResourceLocation> {
-
+public class DefaultPonderSceneRegistrationHelper implements PonderSceneRegistrationHelper<Identifier> {
 	protected String namespace;
 	protected PonderSceneRegistry sceneRegistry;
 
@@ -21,43 +20,42 @@ public class DefaultPonderSceneRegistrationHelper implements PonderSceneRegistra
 	}
 
 	@Override
-	public <T> GenericPonderSceneRegistrationHelper<T> withKeyFunction(Function<T, ResourceLocation> keyGen) {
+	public <T> GenericPonderSceneRegistrationHelper<T> withKeyFunction(Function<T, Identifier> keyGen) {
 		return new GenericPonderSceneRegistrationHelper<>(this, keyGen);
 	}
 
 	@Override
-	public StoryBoardEntry addStoryBoard(ResourceLocation component, ResourceLocation schematicLocation,
-										 PonderStoryBoard storyBoard, ResourceLocation... tags) {
-		StoryBoardEntry entry = this.createStoryBoardEntry(storyBoard, schematicLocation, component);
+	public StoryBoardEntry addStoryBoard(Identifier component, Identifier schematicIdentifier,
+										 PonderStoryBoard storyBoard, Identifier... tags) {
+		StoryBoardEntry entry = this.createStoryBoardEntry(storyBoard, schematicIdentifier, component);
 		entry.highlightTags(tags);
 		sceneRegistry.addStoryBoard(entry);
 		return entry;
 	}
 
 	@Override
-	public StoryBoardEntry addStoryBoard(ResourceLocation component, String schematicPath,
-										 PonderStoryBoard storyBoard, ResourceLocation... tags) {
+	public StoryBoardEntry addStoryBoard(Identifier component, String schematicPath,
+										 PonderStoryBoard storyBoard, Identifier... tags) {
 		return addStoryBoard(component, asIdentifier(schematicPath), storyBoard, tags);
 	}
 
 	@Override
-	public MultiSceneBuilder forComponents(ResourceLocation... components) {
+	public MultiSceneBuilder forComponents(Identifier... components) {
 		return new GenericMultiSceneBuilder<>(this, Arrays.asList(components));
 	}
 
 	@Override
-	public MultiSceneBuilder forComponents(Iterable<? extends ResourceLocation> components) {
+	public MultiSceneBuilder forComponents(Iterable<? extends Identifier> components) {
 		return new GenericMultiSceneBuilder<>(this, components);
 	}
 
 	@Override
-	public ResourceLocation asIdentifier(String path) {
-		return ResourceLocation.fromNamespaceAndPath(namespace, path);
+	public Identifier asIdentifier(String path) {
+		return Identifier.fromNamespaceAndPath(namespace, path);
 	}
 
-	private PonderStoryBoardEntry createStoryBoardEntry(PonderStoryBoard storyBoard, ResourceLocation schematicLocation,
-														ResourceLocation component) {
-		return new PonderStoryBoardEntry(storyBoard, namespace, schematicLocation, component);
+	private PonderStoryBoardEntry createStoryBoardEntry(PonderStoryBoard storyBoard, Identifier schematicIdentifier,
+														Identifier component) {
+		return new PonderStoryBoardEntry(storyBoard, namespace, schematicIdentifier, component);
 	}
-
 }

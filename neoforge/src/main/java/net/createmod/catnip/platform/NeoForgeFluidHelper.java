@@ -3,6 +3,7 @@ package net.createmod.catnip.platform;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.material.FluidState;
@@ -13,7 +14,6 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 import net.createmod.catnip.platform.services.ModFluidHelper;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
 
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
@@ -39,7 +39,7 @@ public class NeoForgeFluidHelper implements ModFluidHelper<FluidStack> {
 	@Override
 	@Nullable
 	public TextureAtlasSprite getStillTexture(FluidStack fluid) {
-		ResourceLocation id = IClientFluidTypeExtensions.of(fluid.getFluid()).getStillTexture(fluid);
+		Identifier id = IClientFluidTypeExtensions.of(fluid.getFluid()).getStillTexture(fluid);
 		return id == null ? null : Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(id);
 	}
 
