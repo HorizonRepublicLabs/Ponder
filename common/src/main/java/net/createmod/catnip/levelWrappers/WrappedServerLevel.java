@@ -8,13 +8,13 @@ import javax.annotation.Nullable;
 import net.createmod.ponder.mixin.accessor.BiomeManagerAccessor;
 import net.createmod.ponder.mixin.accessor.EntityAccessor;
 import net.createmod.ponder.mixin.accessor.MinecraftServerAccessor;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -37,14 +37,9 @@ public class WrappedServerLevel extends ServerLevel {
 		super(level.getServer(), Util.backgroundExecutor(), ((MinecraftServerAccessor) level.getServer()).catnip$getStorageSource(),
 			(ServerLevelData) level.getLevelData(), level.dimension(),
 			new LevelStem(level.dimensionTypeRegistration(), level.getChunkSource().getGenerator()),
-			new DummyStatusListener(), level.isDebug(), ((BiomeManagerAccessor) level.getBiomeManager()).catnip$getBiomeZoomSeed(),
+			 level.isDebug(), ((BiomeManagerAccessor) level.getBiomeManager()).catnip$getBiomeZoomSeed(),
 			Collections.emptyList(), false, level.getRandomSequences());
 		this.level = level;
-	}
-
-	@Override
-	public float getSunAngle(float p_72826_1_) {
-		return 0;
 	}
 
 	@Override
@@ -84,7 +79,7 @@ public class WrappedServerLevel extends ServerLevel {
 	}
 
 	@Override
-	public void levelEvent(@Nullable Player player, int type, BlockPos pos, int data) {
+	public void levelEvent(@Nullable Entity entity, int type, BlockPos pos, int data) {
 	}
 
 	@Override
@@ -93,12 +88,12 @@ public class WrappedServerLevel extends ServerLevel {
 	}
 
 	@Override
-	public void playSound(@Nullable Player player, double x, double y, double z, SoundEvent soundIn, SoundSource category,
+	public void playSound(@Nullable Entity entity, double x, double y, double z, SoundEvent soundIn, SoundSource category,
 						  float volume, float pitch) {
 	}
 
 	@Override
-	public void playSound(@Nullable Player p_217384_1_, Entity p_217384_2_, SoundEvent p_217384_3_, SoundSource p_217384_4_,
+	public void playSound(@Nullable Entity p_217384_1_, Entity p_217384_2_, SoundEvent p_217384_3_, SoundSource p_217384_4_,
 						  float p_217384_5_, float p_217384_6_) {
 	}
 
@@ -132,14 +127,13 @@ public class WrappedServerLevel extends ServerLevel {
 	}
 
 	@Override
-	public RecipeManager getRecipeManager() {
-		return level.getRecipeManager();
+	public RecipeManager recipeAccess() {
+		return level.recipeAccess();
 	}
 
 	@Override
 	public Holder<Biome> getUncachedNoiseBiome(int p_225604_1_, int p_225604_2_, int p_225604_3_) {
 		return level.getUncachedNoiseBiome(p_225604_1_, p_225604_2_, p_225604_3_);
 	}
-
 
 }

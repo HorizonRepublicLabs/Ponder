@@ -5,12 +5,14 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import joptsimple.internal.Strings;
+import net.createmod.catnip.codecs.CatnipCodecUtils;
 import net.createmod.catnip.theme.Color;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -145,7 +147,7 @@ public class LangBuilder {
 
 	//
 
-	public MutableComponent component() {
+	public @Nullable MutableComponent component() {
 		assertComponent();
 		return component;
 	}
@@ -155,7 +157,7 @@ public class LangBuilder {
 	}
 
 	public String json() {
-		return Component.Serializer.toJson(component(), RegistryAccess.EMPTY);
+		return CatnipCodecUtils.encode(ComponentSerialization.CODEC, component()).map(Tag::toString).orElse("");
 	}
 
 	public void sendStatus(Player player) {

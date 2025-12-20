@@ -53,7 +53,8 @@ import net.createmod.ponder.foundation.ui.PonderUI;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -263,13 +264,13 @@ public class PonderScene {
 		PoseStack ms = graphics.pose();
 		ms.pushPose();
 		Minecraft mc = Minecraft.getInstance();
-		Entity prevRVE = mc.cameraEntity;
+		Entity prevRVE = mc.getCameraEntity();
 
-		mc.cameraEntity = this.renderViewEntity;
+		mc.setCameraEntity(this.renderViewEntity);
 		forEachVisible(PonderSceneElement.class, e -> e.renderFirst(world, buffer, graphics, pt));
-		mc.cameraEntity = prevRVE;
+		mc.setCameraEntity(prevRVE);
 
-		for (RenderType type : RenderType.chunkBufferLayers())
+		for (RenderType type : RenderTypes.chunkBufferLayers())
 			forEachVisible(PonderSceneElement.class, e -> e.renderLayer(world, buffer, type, graphics, pt));
 
 		forEachVisible(PonderSceneElement.class, e -> e.renderLast(world, buffer, graphics, pt));

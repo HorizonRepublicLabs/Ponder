@@ -9,8 +9,8 @@ import dev.engine_room.flywheel.lib.model.baked.EmptyVirtualBlockGetter;
 import net.createmod.catnip.client.render.model.BakedModelBufferer;
 import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -36,11 +36,11 @@ public class SuperBufferFactory {
 		return createForBlock(Minecraft.getInstance().getBlockRenderer().getBlockModel(renderedState), renderedState);
 	}
 
-	public SuperByteBuffer createForBlock(BakedModel model, BlockState referenceState) {
+	public SuperByteBuffer createForBlock(BlockStateModel model, BlockState referenceState) {
 		return createForBlock(model, referenceState, new PoseStack());
 	}
 
-	public SuperByteBuffer createForBlock(BakedModel model, BlockState state, @Nullable PoseStack poseStack) {
+	public SuperByteBuffer createForBlock(BlockStateModel model, BlockState state, @Nullable PoseStack poseStack) {
 		ThreadLocalObjects objects = THREAD_LOCAL_OBJECTS.get();
 		SbbBuilder sbbBuilder = objects.sbbBuilder;
 		sbbBuilder.prepare();

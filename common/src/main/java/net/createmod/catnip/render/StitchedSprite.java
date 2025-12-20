@@ -24,7 +24,7 @@ public class StitchedSprite {
 	}
 
 	public StitchedSprite(Identifier id) {
-		this(InventoryMenu.BLOCK_ATLAS, id);
+		this(TextureAtlas.LOCATION_BLOCKS, id);
 	}
 
 	public static void onTextureStitchPost(TextureAtlas atlas) {

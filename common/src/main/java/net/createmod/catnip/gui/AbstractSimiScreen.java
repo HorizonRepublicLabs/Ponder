@@ -3,8 +3,6 @@ package net.createmod.catnip.gui;
 import java.util.Collection;
 import java.util.List;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.gui.widget.AbstractSimiWidget;
 import net.createmod.catnip.theme.Color;
@@ -15,8 +13,12 @@ import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+
+import org.joml.Matrix3x2fStack;
+import org.jspecify.annotations.Nullable;
 
 public abstract class AbstractSimiScreen extends Screen {
 
@@ -100,9 +102,9 @@ public abstract class AbstractSimiScreen extends Screen {
 	@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
 		partialTicks = NavigatableSimiScreen.currentlyRenderingPreviousScreen ? 0 : AnimationTickHolder.getPartialTicksUI();
-		PoseStack poseStack = graphics.pose();
+		Matrix3x2fStack ms = graphics.pose();
 
-		poseStack.pushPose();
+		ms.pushMatrix();
 
 		prepareFrame();
 
@@ -117,16 +119,16 @@ public abstract class AbstractSimiScreen extends Screen {
 
 		endFrame();
 
-		poseStack.popPose();
+		ms.popMatrix();
 	}
 
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		boolean keyPressed = super.keyPressed(keyCode, scanCode, modifiers);
+	public boolean keyPressed(KeyEvent keyEvent) {
+		boolean keyPressed = super.keyPressed(keyEvent);
 		if (keyPressed || getFocused() != null)
 			return keyPressed;
 
-		if (this.minecraft.options.keyInventory.matches(keyCode, scanCode)) {
+		if (this.minecraft.options.keyInventory.matches(keyEvent)) {
 			this.onClose();
 			return true;
 		}
@@ -135,7 +137,7 @@ public abstract class AbstractSimiScreen extends Screen {
 
 		for (GuiEventListener widget : children()) {
 			if (widget instanceof AbstractSimiWidget simiWidget) {
-				if (simiWidget.keyPressed(keyCode, scanCode, modifiers))
+				if (simiWidget.keyPressed(keyEvent))
 					consumed = true;
 			}
 		}
@@ -168,12 +170,11 @@ public abstract class AbstractSimiScreen extends Screen {
 	}
 
 	@Override
-	public GuiEventListener getFocused() {
+	public @Nullable GuiEventListener getFocused() {
 		GuiEventListener focused = super.getFocused();
 		if (focused instanceof AbstractWidget && !focused.isFocused())
 			focused = null;
 		setFocused(focused);
 		return focused;
 	}
-
 }

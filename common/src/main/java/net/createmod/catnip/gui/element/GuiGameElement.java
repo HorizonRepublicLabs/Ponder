@@ -2,9 +2,9 @@ package net.createmod.catnip.gui.element;
 
 import javax.annotation.Nullable;
 
-import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
-import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
+import com.mojang.blaze3d.platform.DestFactor;
 import com.mojang.blaze3d.platform.Lighting;
+import com.mojang.blaze3d.platform.SourceFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -22,16 +22,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.FastColor;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
@@ -166,12 +165,12 @@ public class GuiGameElement {
 
 	protected static class GuiBlockModelRenderBuilder extends GuiRenderBuilder {
 
-		protected BakedModel blockModel;
+		protected BlockStateModel blockModel;
 		protected BlockState blockState;
 		@Nullable
 		protected BlockEntity blockEntity;
 
-		public GuiBlockModelRenderBuilder(BakedModel blockmodel, @Nullable BlockState blockState, @Nullable BlockEntity blockEntity) {
+		public GuiBlockModelRenderBuilder(BlockStateModel blockmodel, @Nullable BlockState blockState, @Nullable BlockEntity blockEntity) {
 			this.blockState = blockState == null ? Blocks.AIR.defaultBlockState() : blockState;
 			this.blockModel = blockmodel;
 			this.blockEntity = blockEntity;
@@ -188,7 +187,7 @@ public class GuiGameElement {
 
 			transformMatrix(poseStack);
 
-			RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
+			RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_BLOCKS);
 			renderModel(blockRenderer, buffer, poseStack);
 
 			cleanUpMatrix(poseStack);
@@ -294,8 +293,8 @@ public class GuiGameElement {
 			ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
 			BakedModel bakedModel = renderer.getModel(stack, null, null, 0);
 
-			((ItemRendererAccessor) renderer).catnip$getTextureManager().getTexture(InventoryMenu.BLOCK_ATLAS).setFilter(false, false);
-			RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
+			((ItemRendererAccessor) renderer).catnip$getTextureManager().getTexture(TextureAtlas.LOCATION_BLOCKS).setFilter(false, false);
+			RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_BLOCKS);
 			RenderSystem.enableBlend();
 			RenderSystem.enableCull();
 			RenderSystem.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);

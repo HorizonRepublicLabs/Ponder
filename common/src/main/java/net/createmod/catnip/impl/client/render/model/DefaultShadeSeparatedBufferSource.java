@@ -6,7 +6,7 @@ import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import net.createmod.catnip.client.render.model.ShadeSeparatedBufferSource;
 import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 
 class DefaultShadeSeparatedBufferSource implements ShadeSeparatedBufferSource {
 	private static final RenderType[] CHUNK_LAYERS = RenderType.chunkBufferLayers().toArray(RenderType[]::new);

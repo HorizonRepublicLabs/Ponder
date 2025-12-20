@@ -1,20 +1,19 @@
 package net.createmod.ponder;
 
-import java.util.Random;
-
-import net.minecraft.resources.Identifier;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import net.createmod.catnip.lang.LangBuilder;
 import net.createmod.catnip.net.CatnipPackets;
+import net.minecraft.resources.Identifier;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Random;
 
 public class Ponder {
 
 	public static final String MOD_ID = "ponder";
 	public static final String MOD_NAME = "Ponder";
-	public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
+	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
 	public static final Random RANDOM = new Random();
 
 	public static LangBuilder lang() {

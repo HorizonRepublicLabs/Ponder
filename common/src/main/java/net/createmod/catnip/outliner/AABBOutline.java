@@ -9,7 +9,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.createmod.catnip.render.BindableTexture;
 import net.createmod.catnip.render.PonderRenderTypes;
 import net.createmod.catnip.render.SuperRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;

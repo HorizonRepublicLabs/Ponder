@@ -126,14 +126,14 @@ public abstract class AbstractSimiWidget extends AbstractWidget implements Ticka
 	}
 
 	protected void beforeRender(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		graphics.pose().pushPose();
+		graphics.pose().pushMatrix();
 	}
 
 	protected void doRender(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
 	}
 
 	protected void afterRender(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		graphics.pose().popPose();
+		graphics.pose().popMatrix();
 	}
 
 	public void runCallback(double mouseX, double mouseY) {

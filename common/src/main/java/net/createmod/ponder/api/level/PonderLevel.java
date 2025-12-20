@@ -16,6 +16,7 @@ import net.createmod.catnip.levelWrappers.SchematicLevel;
 import net.createmod.catnip.levelWrappers.WrappedClientLevel;
 import net.createmod.catnip.platform.CatnipClientServices;
 import net.createmod.catnip.render.SuperRenderTypeBuffer;
+import net.createmod.ponder.Ponder;
 import net.createmod.ponder.api.VirtualBlockEntity;
 import net.createmod.ponder.api.element.WorldSectionElement;
 import net.createmod.ponder.api.scene.Selection;
@@ -27,23 +28,28 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
+import net.minecraft.util.ProblemReporter;
+import net.minecraft.util.ProblemReporter.PathElement;
+import net.minecraft.util.ProblemReporter.ScopedCollector;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.TagValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -168,7 +174,7 @@ public class PonderLevel extends SchematicLevel {
 	}
 
 	public void renderEntities(PoseStack ms, SuperRenderTypeBuffer buffer, Camera ari, float pt) {
-		Vec3 Vector3d = ari.getPosition();
+		Vec3 Vector3d = ari.position();
 		double d0 = Vector3d.x();
 		double d1 = Vector3d.y();
 		double d2 = Vector3d.z();
@@ -182,10 +188,10 @@ public class PonderLevel extends SchematicLevel {
 			renderEntity(entity, d0, d1, d2, pt, ms, buffer);
 		}
 
-		buffer.draw(RenderType.entitySolid(InventoryMenu.BLOCK_ATLAS));
-		buffer.draw(RenderType.entityCutout(InventoryMenu.BLOCK_ATLAS));
-		buffer.draw(RenderType.entityCutoutNoCull(InventoryMenu.BLOCK_ATLAS));
-		buffer.draw(RenderType.entitySmoothCutout(InventoryMenu.BLOCK_ATLAS));
+		buffer.draw(RenderTypes.entitySolid(TextureAtlas.LOCATION_BLOCKS));
+		buffer.draw(RenderTypes.entityCutout(TextureAtlas.LOCATION_BLOCKS));
+		buffer.draw(RenderTypes.entityCutoutNoCull(TextureAtlas.LOCATION_BLOCKS));
+		buffer.draw(RenderTypes.entitySmoothCutout(TextureAtlas.LOCATION_BLOCKS));
 	}
 
 	private void renderEntity(Entity entity, double x, double y, double z, float pt, PoseStack ms,

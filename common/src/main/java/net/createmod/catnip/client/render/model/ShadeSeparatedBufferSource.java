@@ -2,7 +2,7 @@ package net.createmod.catnip.client.render.model;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 
 public interface ShadeSeparatedBufferSource {
 	VertexConsumer getBuffer(RenderType chunkRenderType, boolean shade);

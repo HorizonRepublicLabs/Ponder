@@ -8,8 +8,8 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import net.createmod.ponder.Ponder;
 import net.createmod.ponder.enums.PonderSpecialTextures;
 import net.createmod.ponder.mixin.client.accessor.RenderTypeAccessor;
-import net.minecraft.Util;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.util.Util;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
 
 public abstract class PonderRenderTypes extends RenderType {

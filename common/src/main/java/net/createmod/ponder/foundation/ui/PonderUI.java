@@ -12,8 +12,10 @@ import java.util.stream.IntStream;
 
 import javax.annotation.Nullable;
 
+import net.createmod.ponder.foundation.PonderTag.Highlight;
 import net.minecraft.resources.Identifier;
 
+import org.joml.Matrix3x2fStack;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
@@ -740,11 +742,11 @@ public class PonderUI extends AbstractPonderScreen {
 		int tooltipColor = UIRenderHelper.COLOR_TEXT_DARKER.getFirst().getRGB();
 		renderSceneInformation(graphics, fade, indexDiff, activeScene, tooltipColor);
 
-		PoseStack ms = graphics.pose();
+		Matrix3x2fStack ms = graphics.pose();
 
 		if (identifyMode) {
 			if (noWidgetsHovered && mouseY < height - 80) {
-				ms.pushPose();
+				ms.pushMatrix();
 				ms.translate(mouseX, mouseY, 100);
 				if (hoveredTooltipItem.isEmpty()) {
 
@@ -774,7 +776,7 @@ public class PonderUI extends AbstractPonderScreen {
 						.withStyle(copied ? ChatFormatting.GREEN : ChatFormatting.GOLD);
 					graphics.renderTooltip(font, coords, 0, 0);
 				}
-				ms.popPose();
+				ms.popMatrix();
 			}
 			scan.flash();
 		} else {
@@ -830,13 +832,13 @@ public class PonderUI extends AbstractPonderScreen {
 
 		// Tags
 		List<PonderTag> sceneTags = activeScene.getTags();
-		boolean highlightAll = sceneTags.stream().anyMatch(tag -> tag.getId() == PonderTag.Highlight.ALL);
+		boolean highlightAll = sceneTags.stream().anyMatch(tag -> tag.getId() == Highlight.ALL);
 		double s = Minecraft.getInstance()
 			.getWindow()
 			.getGuiScale();
 		IntStream.range(0, tagButtons.size())
 			.forEach(i -> {
-				ms.pushPose();
+				ms.pushMatrix();
 				PonderTag tag = this.tags.get(i);
 				LerpedFloat chase = tagFades.get(i);
 				PonderButton button = tagButtons.get(i);
@@ -867,7 +869,7 @@ public class PonderUI extends AbstractPonderScreen {
 
 				RenderSystem.disableScissor();
 
-				ms.popPose();
+				ms.popMatrix();
 			});
 
 		renderHoverTooltips(graphics, tooltipColor);

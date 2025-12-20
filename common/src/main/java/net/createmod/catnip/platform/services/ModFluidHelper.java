@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import net.createmod.catnip.annotations.ClientOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -27,7 +28,7 @@ public interface ModFluidHelper<R> {
 		if (texture != null)
 			return texture;
 
-		return Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(MissingTextureAtlasSprite.getLocation());
+		return Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(MissingTextureAtlasSprite.getLocation());
 	}
 
 	boolean isLighterThanAir(R fluid);
