@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ReplaceBlocksInstruction extends WorldModifyInstruction {
-
 	private final UnaryOperator<BlockState> stateToUse;
 	private final boolean replaceAir;
 	private final boolean spawnParticles;
@@ -42,5 +41,4 @@ public class ReplaceBlocksInstruction extends WorldModifyInstruction {
 	protected boolean needsRedraw() {
 		return true;
 	}
-
 }

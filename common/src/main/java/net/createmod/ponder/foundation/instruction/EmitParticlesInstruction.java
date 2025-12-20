@@ -6,7 +6,6 @@ import net.createmod.ponder.foundation.PonderScene;
 import net.minecraft.world.phys.Vec3;
 
 public class EmitParticlesInstruction extends TickingInstruction {
-
 	private final Vec3 anchor;
 	private final ParticleEmitter emitter;
 	private final float runsPerTick;
@@ -27,5 +26,4 @@ public class EmitParticlesInstruction extends TickingInstruction {
 		for (int i = 0; i < runs; i++)
 			emitter.create(scene.getWorld(), anchor.x, anchor.y, anchor.z);
 	}
-
 }

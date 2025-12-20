@@ -3,8 +3,6 @@ package net.createmod.ponder;
 import java.util.Map;
 import java.util.Set;
 
-import fuzs.forgeconfigapiport.fabric.api.neoforge.v4.NeoForgeConfigRegistry;
-import fuzs.forgeconfigapiport.fabric.api.neoforge.v4.NeoForgeModConfigEvents;
 import net.createmod.catnip.command.CatnipCommands;
 import net.createmod.catnip.config.ConfigBase;
 import net.createmod.catnip.net.ConfigPathArgument;

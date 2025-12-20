@@ -49,6 +49,7 @@ public abstract class AbstractSimiWidget extends AbstractWidget implements Ticka
 	protected float z;
 	protected boolean wasHovered = false;
 	protected List<Component> toolTip = new LinkedList<>();
+	// Look into changing this to MouseButtonEvent
 	protected BiConsumer<Integer, Integer> onClick = (_$, _$$) -> {
 	};
 

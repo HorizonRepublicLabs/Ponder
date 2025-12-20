@@ -3,7 +3,6 @@ package net.createmod.ponder.foundation.instruction;
 import net.createmod.ponder.foundation.PonderScene;
 
 public abstract class TickingInstruction extends PonderInstruction {
-
 	private final boolean blocking;
 	protected int totalTicks;
 	protected int remainingTicks;
@@ -46,5 +45,4 @@ public abstract class TickingInstruction extends PonderInstruction {
 	public boolean isBlocking() {
 		return blocking;
 	}
-
 }

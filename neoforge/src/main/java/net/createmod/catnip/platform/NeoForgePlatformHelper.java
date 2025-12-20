@@ -8,11 +8,10 @@ import net.createmod.catnip.config.ui.ConfigScreen;
 import net.createmod.catnip.platform.services.PlatformHelper;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModList;
-import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforgespi.language.IModInfo;
 
 public class NeoForgePlatformHelper implements PlatformHelper {
-
 	@Override
 	public Loader getLoader() {
 		return Loader.NEOFORGE;
@@ -20,7 +19,7 @@ public class NeoForgePlatformHelper implements PlatformHelper {
 
 	@Override
 	public Env getEnv() {
-		return FMLLoader.getDist() == Dist.CLIENT ? Env.CLIENT : Env.SERVER;
+		return FMLEnvironment.getDist() == Dist.CLIENT ? Env.CLIENT : Env.SERVER;
 	}
 
 	@Override
@@ -30,7 +29,7 @@ public class NeoForgePlatformHelper implements PlatformHelper {
 
 	@Override
 	public boolean isDevelopmentEnvironment() {
-		return !FMLLoader.isProduction();
+		return !FMLEnvironment.isProduction();
 	}
 
 	@Override

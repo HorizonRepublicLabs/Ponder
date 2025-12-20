@@ -3,7 +3,6 @@ package net.createmod.ponder.foundation.instruction;
 import net.createmod.ponder.foundation.PonderScene;
 
 public class KeyframeInstruction extends PonderInstruction {
-
 	public static final KeyframeInstruction IMMEDIATE = new KeyframeInstruction(false);
 	public static final KeyframeInstruction DELAYED = new KeyframeInstruction(true);
 

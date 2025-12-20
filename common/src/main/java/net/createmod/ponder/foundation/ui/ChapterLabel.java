@@ -7,13 +7,13 @@ import net.createmod.catnip.gui.widget.AbstractSimiWidget;
 import net.createmod.ponder.foundation.PonderChapter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.input.MouseButtonEvent;
 
 public class ChapterLabel extends AbstractSimiWidget {
-
 	private final PonderChapter chapter;
 	private final PonderButton button;
 
-	public ChapterLabel(PonderChapter chapter, int x, int y, BiConsumer<Integer, Integer> onClick) {
+	public ChapterLabel(PonderChapter chapter, int x, int y, BiConsumer<MouseButtonEvent, Boolean> onClick) {
 		super(x, y, 175, 38);
 
 		this.button = new PonderButton(x + 4, y + 4, 30, 30)
@@ -34,10 +34,10 @@ public class ChapterLabel extends AbstractSimiWidget {
 	}
 
 	@Override
-	public void onClick(double x, double y) {
-		if (!button.isMouseOver(x, y))
+	public void onClick(MouseButtonEvent buttonEvent, boolean doubleClick) {
+		if (!button.isMouseOver(buttonEvent.x(), buttonEvent.y()))
 			return;
 
-		button.runCallback(x, y);
+		button.runCallback(buttonEvent.x(), buttonEvent.y());
 	}
 }

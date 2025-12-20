@@ -35,15 +35,15 @@ subprojects {
     val capitalizedName = project.name.capitalized()
 
     repositories {
-        exclusiveMaven("https://repo.spongepowered.org/repository/maven-public/", "org.spongepowered:mixin")
+        exclusiveMaven("https://repo.spongepowered.org/repository/maven-public", "org.spongepowered:mixin")
         exclusiveMaven("https://maven.createmod.net", "dev.engine-room.flywheel")
         exclusiveMaven(
-            "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/",
+            "https://raw.githubusercontent.com/Fuzss/modresources/main/maven",
             "net.minecraftforge:forgeconfigapiport-fabric",
             "fuzs.forgeconfigapiport:forgeconfigapiport-fabric",
             "fuzs.forgeconfigapiport:forgeconfigapiport-common-neoforgeapi"
         )
-        exclusiveMaven("https://mvn.devos.one/releases/", "io.github.fabricators_of_create.Porting-Lib")
+        exclusiveMaven("https://mvn.devos.one/releases", "io.github.fabricators_of_create.Porting-Lib")
         exclusiveMaven(
             "https://maven.jamieswhiteshirt.com/libs-release",
             "com.jamieswhiteshirt:reach-entity-attributes"

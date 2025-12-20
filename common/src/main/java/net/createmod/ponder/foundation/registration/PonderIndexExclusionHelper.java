@@ -11,7 +11,6 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 
 public class PonderIndexExclusionHelper implements IndexExclusionHelper {
-
 	private final Stream.Builder<Predicate<ItemLike>> exclusions = Stream.builder();
 
 	public static Stream<Predicate<ItemLike>> pluginToExclusions(PonderPlugin plugin) {

@@ -8,7 +8,6 @@ import net.createmod.ponder.Ponder;
 import net.minecraft.network.chat.Component;
 
 public abstract class AbstractPonderScreen extends NavigatableSimiScreen {
-
 	public static final String INDEX_TITLE = UI_PREFIX + "index_title";
 	public static final String WELCOME = UI_PREFIX + "welcome";
 	public static final String CATEGORIES = UI_PREFIX + "categories";

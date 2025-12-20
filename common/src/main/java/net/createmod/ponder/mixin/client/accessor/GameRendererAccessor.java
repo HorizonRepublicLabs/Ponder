@@ -9,5 +9,5 @@ import net.minecraft.client.renderer.GameRenderer;
 @Mixin(GameRenderer.class)
 public interface GameRendererAccessor {
 	@Invoker("getFov")
-	double catnip$callGetFov(Camera camera, float partialTicks, boolean useFOVSetting);
+	float catnip$callGetFov(Camera camera, float partialTick, boolean useFovSetting);
 }

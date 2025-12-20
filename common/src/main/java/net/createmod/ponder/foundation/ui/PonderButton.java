@@ -17,6 +17,8 @@ import net.createmod.ponder.foundation.PonderTag;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonInfo;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 
@@ -133,8 +135,8 @@ public class PonderButton extends BoxWidget {
 	}
 
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (shortcut != null && shortcut.matches(keyCode, scanCode)) {
+	public boolean keyPressed(KeyEvent event) {
+		if (shortcut != null && shortcut.matches(event)) {
 			gradientColor = getColorClick();
 			startGradientAnimation(getColorForState(), 0.15);
 
@@ -142,11 +144,11 @@ public class PonderButton extends BoxWidget {
 			return true;
 		}
 
-		return super.keyPressed(keyCode, scanCode, modifiers);
+		return super.keyPressed(event);
 	}
 
 	@Override
-	protected boolean isValidClickButton(int i) {
+	protected boolean isValidClickButton(MouseButtonInfo buttonInfo) {
 		return isVisible();
 	}
 

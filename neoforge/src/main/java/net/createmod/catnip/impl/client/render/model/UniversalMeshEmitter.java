@@ -29,13 +29,13 @@ class UniversalMeshEmitter implements VertexConsumer {
 
 	@Override
 	public void putBulkData(Pose pose, BakedQuad quad, float red, float green, float blue, float alpha, int light, int overlay) {
-		VertexConsumer buffer = bufferSource.getBuffer(layer, quad.isShade());
+		VertexConsumer buffer = bufferSource.getBuffer(layer, quad.shade());
 		buffer.putBulkData(pose, quad, red, green, blue, alpha, light, overlay);
 	}
 
 	@Override
 	public void putBulkData(PoseStack.Pose pose, BakedQuad quad, float red, float green, float blue, float alpha, int light, int overlay, boolean readExistingColor) {
-		VertexConsumer buffer = bufferSource.getBuffer(layer, quad.isShade());
+		VertexConsumer buffer = bufferSource.getBuffer(layer, quad.shade());
 		buffer.putBulkData(pose, quad, red, green, blue, alpha, light, overlay, readExistingColor);
 	}
 

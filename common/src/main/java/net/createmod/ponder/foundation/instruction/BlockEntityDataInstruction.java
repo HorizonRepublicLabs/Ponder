@@ -2,14 +2,19 @@ package net.createmod.ponder.foundation.instruction;
 
 import java.util.function.UnaryOperator;
 
+import net.createmod.ponder.Ponder;
 import net.createmod.ponder.api.level.PonderLevel;
 import net.createmod.ponder.api.scene.Selection;
 import net.createmod.ponder.foundation.PonderScene;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.ProblemReporter;
+import net.minecraft.util.ProblemReporter.Collector;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.TagValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
 
 public class BlockEntityDataInstruction extends WorldModifyInstruction {
-
 	private final boolean redraw;
 	private final UnaryOperator<CompoundTag> data;
 	private final Class<? extends BlockEntity> type;
@@ -35,7 +40,10 @@ public class BlockEntityDataInstruction extends WorldModifyInstruction {
 			CompoundTag apply = data.apply(blockEntity.saveWithFullMetadata(level.registryAccess()));
 			//if (blockEntity instanceof SyncedBlockEntity) //TODO
 			//	((SyncedBlockEntity) blockEntity).readClient(apply);
-			blockEntity.loadWithComponents(apply, level.registryAccess());
+			try (ProblemReporter.ScopedCollector problems = new ProblemReporter.ScopedCollector(this::toString, Ponder.LOGGER)) {
+				ValueInput in = TagValueInput.create(problems, level.registryAccess(), apply);
+				blockEntity.loadWithComponents(in);
+			}
 		});
 	}
 
@@ -43,5 +51,4 @@ public class BlockEntityDataInstruction extends WorldModifyInstruction {
 	protected boolean needsRedraw() {
 		return redraw;
 	}
-
 }

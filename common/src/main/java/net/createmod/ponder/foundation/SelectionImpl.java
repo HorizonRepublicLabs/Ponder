@@ -15,7 +15,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class SelectionImpl {
-
 	public static Selection of(BoundingBox bb) {
 		return new Simple(bb);
 	}
@@ -130,5 +129,4 @@ public class SelectionImpl {
 			return iterable.iterator();
 		}
 	}
-
 }

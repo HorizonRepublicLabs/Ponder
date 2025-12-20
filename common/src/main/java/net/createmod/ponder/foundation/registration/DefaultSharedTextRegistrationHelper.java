@@ -4,7 +4,6 @@ import net.createmod.ponder.api.registration.SharedTextRegistrationHelper;
 import net.minecraft.resources.Identifier;
 
 public class DefaultSharedTextRegistrationHelper implements SharedTextRegistrationHelper {
-
 	private final String namespace;
 	private final PonderLocalization localization;
 

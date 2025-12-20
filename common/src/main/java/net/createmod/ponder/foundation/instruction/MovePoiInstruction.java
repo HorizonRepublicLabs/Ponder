@@ -4,7 +4,6 @@ import net.createmod.ponder.foundation.PonderScene;
 import net.minecraft.world.phys.Vec3;
 
 public class MovePoiInstruction extends PonderInstruction {
-
 	private final Vec3 poi;
 
 	public MovePoiInstruction(Vec3 poi) {
@@ -20,5 +19,4 @@ public class MovePoiInstruction extends PonderInstruction {
 	public void tick(PonderScene scene) {
 		scene.setPointOfInterest(poi);
 	}
-
 }

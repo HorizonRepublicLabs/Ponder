@@ -13,6 +13,7 @@ import net.createmod.catnip.gui.element.BoxElement;
 import net.createmod.catnip.gui.element.FadableScreenElement;
 import net.createmod.catnip.theme.Color;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.input.MouseButtonEvent;
 
 public class BoxWidget extends ElementWidget {
 
@@ -111,8 +112,8 @@ public class BoxWidget extends ElementWidget {
 	}
 
 	@Override
-	public void onClick(double x, double y) {
-		super.onClick(x, y);
+	public void onClick(MouseButtonEvent buttonEvent, boolean doubleClick) {
+		super.onClick(buttonEvent, doubleClick);
 
 		gradientColor = getColorClick();
 		startGradientAnimation(getColorForState(), 0.15);
@@ -167,10 +168,10 @@ public class BoxWidget extends ElementWidget {
 	}
 
 	@Override
-	protected boolean clicked(double pMouseX, double pMouseY) {
+	public boolean mouseClicked(MouseButtonEvent buttonEvent, boolean doubleClick) {
 		if (!active || !visible)
 			return false;
-		return isMouseOver(pMouseX, pMouseY);
+		return isMouseOver(buttonEvent.x(), buttonEvent.y());
 	}
 
 	public BoxElement getBox() {

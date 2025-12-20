@@ -35,7 +35,7 @@ public class NeoForgeHooksHelper implements ModHooksHelper {
 
 	@Override
 	public ItemStack getCloneItemFromBlockstate(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-		return state.getCloneItemStack(target, level, pos, player);
+		return state.getCloneItemStack(pos, level, true, player);
 	}
 
 	@Override

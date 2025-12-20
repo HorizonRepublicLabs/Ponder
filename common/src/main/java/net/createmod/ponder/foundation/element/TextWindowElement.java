@@ -33,7 +33,7 @@ public class TextWindowElement extends AnimatedOverlayElementBase {
 
 	Supplier<String> textGetter = () -> "(?) No text was provided";
 	@Nullable
-	String bakedText;
+	FormattedText bakedText;
 
 	// from 0 to 200
 	int y;
@@ -125,7 +125,7 @@ public class TextWindowElement extends AnimatedOverlayElementBase {
 	@Override
 	public void render(PonderScene scene, PonderUI screen, GuiGraphics graphics, float partialTicks, float fade) {
 		if (bakedText == null)
-			bakedText = textGetter.get();
+			bakedText = FormattedText.of(textGetter.get());
 
 		if (fade < 1 / 16f)
 			return;

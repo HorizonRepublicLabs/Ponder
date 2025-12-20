@@ -13,6 +13,8 @@ import java.util.function.Consumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.commands.Commands;
+
 import org.lwjgl.glfw.GLFW;
 
 import com.electronwill.nightconfig.core.AbstractConfig;
@@ -322,7 +324,7 @@ public class SubMenuConfigScreen extends ConfigScreen {
 		if (minecraft.hasSingleplayerServer())
 			return;
 
-		boolean canEdit = minecraft != null && minecraft.player != null && minecraft.player.hasPermissions(2);
+		boolean canEdit = minecraft != null && minecraft.player != null && Commands.LEVEL_GAMEMASTERS.check(minecraft.player.permissions());
 
 		Couple<Color> red = AbstractSimiWidget.COLOR_FAIL;
 		Couple<Color> green = AbstractSimiWidget.COLOR_SUCCESS;

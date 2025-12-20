@@ -20,7 +20,7 @@ public class PonderCommand {
 
 	static ArgumentBuilder<CommandSourceStack, ?> register() {
 		return Commands.literal("ponder")
-			.requires(cs -> cs.hasPermission(0))
+			.requires(Commands.hasPermission(Commands.LEVEL_ALL))
 			.executes(ctx -> openScene("ponder:tags", ctx.getSource().getPlayerOrException()))
 			.then(Commands.literal("reload")
 				.executes(ctx -> reloadPonderIndex(ctx.getSource().getPlayerOrException()))
@@ -36,7 +36,7 @@ public class PonderCommand {
 				.executes(ctx -> openScene(IdentifierArgument.getId(ctx, "scene").toString(),
 					ctx.getSource().getPlayerOrException()))
 				.then(Commands.argument("targets", EntityArgument.players())
-					.requires(cs -> cs.hasPermission(2))
+					.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 					.executes(ctx -> openScene(
 						IdentifierArgument.getId(ctx, "scene").toString(),
 						EntityArgument.getPlayers(ctx, "targets")))

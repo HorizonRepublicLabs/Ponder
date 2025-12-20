@@ -15,6 +15,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
@@ -56,7 +57,7 @@ public class NeoForgeNetworkHelper implements NetworkHelper {
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void sendToServer(CustomPacketPayload payload) {
-		PacketDistributor.sendToServer(payload);
+		ClientPacketDistributor.sendToServer(payload);
 	}
 
 	@Override

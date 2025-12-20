@@ -6,7 +6,6 @@ import net.createmod.ponder.foundation.element.OutlinerElement;
 import net.createmod.ponder.foundation.element.TextWindowElement;
 
 public class TextInstruction extends FadeInOutInstruction {
-
 	private final TextWindowElement element;
 	private OutlinerElement outline;
 
@@ -52,5 +51,4 @@ public class TextInstruction extends FadeInOutInstruction {
 	protected void applyFade(PonderScene scene, float fade) {
 		element.setFade(fade);
 	}
-
 }

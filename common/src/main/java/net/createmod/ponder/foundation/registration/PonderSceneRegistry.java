@@ -38,7 +38,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
 public class PonderSceneRegistry implements SceneRegistryAccess {
-
 	private final PonderLocalization localization;
 	private final Multimap<Identifier, StoryBoardEntry> scenes;
 
@@ -151,8 +150,7 @@ public class PonderSceneRegistry implements SceneRegistryAccess {
 		StructureTemplate t = new StructureTemplate();
 		DataInputStream stream = new DataInputStream(new BufferedInputStream(new GZIPInputStream(resourceStream)));
 		CompoundTag nbt = NbtIo.read(stream, NbtAccounter.create(0x20000000L));
-		//t.load(Minecraft.getInstance().level.holderLookup(Registries.BLOCK), nbt);
-		t.load(BuiltInRegistries.BLOCK.asLookup(), nbt);
+		t.load(BuiltInRegistries.BLOCK, nbt);
 		return t;
 	}
 }

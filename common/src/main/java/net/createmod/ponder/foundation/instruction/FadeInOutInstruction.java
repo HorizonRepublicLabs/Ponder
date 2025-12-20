@@ -3,7 +3,6 @@ package net.createmod.ponder.foundation.instruction;
 import net.createmod.ponder.foundation.PonderScene;
 
 public abstract class FadeInOutInstruction extends TickingInstruction {
-
 	protected static final int fadeTime = 5;
 
 	public FadeInOutInstruction(int duration) {
@@ -45,5 +44,4 @@ public abstract class FadeInOutInstruction extends TickingInstruction {
 		}
 
 	}
-
 }

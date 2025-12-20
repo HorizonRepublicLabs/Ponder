@@ -5,7 +5,6 @@ import net.createmod.ponder.api.scene.Selection;
 import net.createmod.ponder.foundation.PonderScene;
 
 public abstract class WorldModifyInstruction extends PonderInstruction {
-
 	private final Selection selection;
 
 	public WorldModifyInstruction(Selection selection) {
@@ -27,5 +26,4 @@ public abstract class WorldModifyInstruction extends PonderInstruction {
 	protected abstract void runModification(Selection selection, PonderScene scene);
 
 	protected abstract boolean needsRedraw();
-
 }

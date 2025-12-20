@@ -14,6 +14,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+
 import net.neoforged.fml.config.ModConfig;
 
 /**
@@ -23,7 +24,6 @@ import net.neoforged.fml.config.ModConfig;
  * /catnip config "create:client.client.rainbowDebug" set false - to disable Create's rainbow debug for the sender
  */
 public class ConfigCommand {
-
 	public static ArgumentBuilder<CommandSourceStack, ?> register() {
 		return Commands.literal("config")
 			.executes(ctx -> {
@@ -43,7 +43,7 @@ public class ConfigCommand {
 					return Command.SINGLE_SUCCESS;
 				})
 				.then(Commands.literal("set")
-					.requires(cs -> cs.hasPermission(2))
+					.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 					.then(Commands.argument("value", StringArgumentType.string())
 						.executes(ctx -> {
 							ConfigHelper.ConfigPath path = ConfigPathArgument.getPath(ctx, "path");

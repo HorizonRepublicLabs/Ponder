@@ -31,11 +31,10 @@ loom {
 
 dependencies {
     minecraft("com.mojang:minecraft:${"minecraft_version"()}")
-    mappings(loom.officialMojangMappings())
     mappings(loom.layered {
         officialMojangMappings { nameSyntheticMembers = false }
         if ("parchment_version"() != "none") {
-            parchment("org.parchmentmc.data:parchment-${"minecraft_version"()}:${"parchment_version"()}@zip")
+            parchment("org.parchmentmc.data:parchment-${"parchment_minecraft_version"()}:${"parchment_version"()}@zip")
         }
     })
 

@@ -4,7 +4,6 @@ import net.createmod.ponder.api.element.ParrotElement;
 import net.minecraft.core.Direction;
 
 public class CreateParrotInstruction extends FadeIntoSceneInstruction<ParrotElement> {
-
 	public CreateParrotInstruction(int fadeInTicks, Direction fadeInFrom, ParrotElement element) {
 		super(fadeInTicks, fadeInFrom, element);
 	}
@@ -13,5 +12,4 @@ public class CreateParrotInstruction extends FadeIntoSceneInstruction<ParrotElem
 	protected Class<ParrotElement> getElementClass() {
 		return ParrotElement.class;
 	}
-
 }

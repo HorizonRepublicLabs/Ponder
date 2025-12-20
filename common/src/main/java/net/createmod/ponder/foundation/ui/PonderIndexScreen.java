@@ -30,7 +30,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 
 public class PonderIndexScreen extends AbstractPonderScreen {
-
 	protected final List<ItemEntry> items;
 	protected List<PonderButton> paginatedWidgets = new ArrayList<>();
 	protected PaginationState paginationState = new PaginationState();
@@ -244,5 +243,4 @@ public class PonderIndexScreen extends AbstractPonderScreen {
 
 	public record ItemEntry(@Nullable ItemLike item, Identifier key) {
 	}
-
 }

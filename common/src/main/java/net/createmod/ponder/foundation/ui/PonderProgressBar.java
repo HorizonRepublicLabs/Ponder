@@ -17,7 +17,6 @@ import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
 
 public class PonderProgressBar extends AbstractSimiWidget {
-
 	public static final Couple<Color> BAR_COLORS = Couple.create(
 		new Color(0x80_aaaadd, true),
 		new Color(0x50_aaaadd, true)

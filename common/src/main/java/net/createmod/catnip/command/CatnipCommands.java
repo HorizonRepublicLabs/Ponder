@@ -11,13 +11,11 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 
 public class CatnipCommands {
-
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-
 		LiteralCommandNode<CommandSourceStack> util = buildUtilityCommands();
 
 		LiteralCommandNode<CommandSourceStack> catnipRoot = Commands.literal("catnip")
-			.requires(cs -> cs.hasPermission(0))
+			.requires(Commands.hasPermission(Commands.LEVEL_ALL))
 			.then(ConfigCommand.register())
 			.then(util)
 			.build();

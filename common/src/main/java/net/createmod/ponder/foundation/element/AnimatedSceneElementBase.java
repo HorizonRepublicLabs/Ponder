@@ -12,9 +12,12 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
+import org.joml.Matrix3x2fStack;
+import org.jspecify.annotations.Nullable;
+
 public abstract class AnimatedSceneElementBase extends PonderElementBase implements AnimatedSceneElement {
 
-	protected Vec3 fadeVec;
+	protected @Nullable Vec3 fadeVec;
 	protected LerpedFloat fade;
 
 	public AnimatedSceneElementBase() {
@@ -33,13 +36,13 @@ public abstract class AnimatedSceneElementBase extends PonderElementBase impleme
 	}
 
 	@Override
-	public void setFadeVec(Vec3 fadeVec) {
+	public void setFadeVec(@Nullable Vec3 fadeVec) {
 		this.fadeVec = fadeVec;
 	}
 
 	@Override
 	public final void renderFirst(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, float pt) {
-		PoseStack poseStack = graphics.pose();
+		Matrix3x2fStack poseStack = graphics.pose();
 		poseStack.pushPose();
 		float currentFade = applyFade(poseStack, pt);
 		renderFirst(world, buffer, graphics, currentFade, pt);
@@ -49,7 +52,7 @@ public abstract class AnimatedSceneElementBase extends PonderElementBase impleme
 	@Override
 	public final void renderLayer(PonderLevel world, MultiBufferSource buffer, RenderType type, GuiGraphics graphics,
 								  float pt) {
-		PoseStack poseStack = graphics.pose();
+		Matrix3x2fStack poseStack = graphics.pose();
 		poseStack.pushPose();
 		float currentFade = applyFade(poseStack, pt);
 		renderLayer(world, buffer, type, graphics, currentFade, pt);

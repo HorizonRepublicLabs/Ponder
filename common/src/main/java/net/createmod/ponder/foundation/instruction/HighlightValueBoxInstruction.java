@@ -6,7 +6,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class HighlightValueBoxInstruction extends TickingInstruction {
-
 	private final Vec3 vec;
 	private final Vec3 expands;
 
@@ -26,5 +25,4 @@ public class HighlightValueBoxInstruction extends TickingInstruction {
 			.lineWidth(1 / 15f)
 			.colored(PonderPalette.WHITE.getColor());
 	}
-
 }
