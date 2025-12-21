@@ -17,6 +17,8 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 
+import org.jetbrains.annotations.NotNull;
+
 public class LangBuilder {
 	String namespace;
 	@Nullable
@@ -146,7 +148,7 @@ public class LangBuilder {
 
 	//
 
-	public @Nullable MutableComponent component() {
+	public MutableComponent component() {
 		assertComponent();
 		return component;
 	}

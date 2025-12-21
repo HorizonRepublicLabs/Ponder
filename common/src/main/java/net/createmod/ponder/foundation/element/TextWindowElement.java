@@ -24,6 +24,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
+import org.joml.Matrix3x2fStack;
+
 public class TextWindowElement extends AnimatedOverlayElementBase {
 
 	public static final Couple<Color> COLOR_WINDOW_BORDER = Couple.create(
@@ -159,9 +161,9 @@ public class TextWindowElement extends AnimatedOverlayElementBase {
 		int boxHeight = screen.getFontRenderer()
 			.wordWrapHeight(bakedText, boxWidth);
 
-		PoseStack poseStack = graphics.pose();
-		poseStack.pushPose();
-		poseStack.translate(0, pY, 400);
+		Matrix3x2fStack poseStack = graphics.pose();
+		poseStack.pushMatrix();
+		poseStack.translate(0, pY);
 
 		new BoxElement()
 			.withBackground(PonderUI.BACKGROUND_FLAT)
@@ -174,20 +176,20 @@ public class TextWindowElement extends AnimatedOverlayElementBase {
 		Color c1 = new Color(0xff_494949);
 		Color c2 = new Color(0xff_393939);
 		if (vec != null) {
-			poseStack.pushPose();
-			poseStack.translate(sceneToScreen.x, 0, 0);
+			poseStack.pushMatrix();
+			poseStack.translate(sceneToScreen.x, 0);
 			double lineTarget = (targetX - sceneToScreen.x) * fade;
-			poseStack.scale((float) lineTarget, 1, 1);
-			graphics.fillGradient(0, 0, 1, 1, -100, brighter.getRGB(), brighter.getRGB());
-			graphics.fillGradient(0, 1, 1, 2, -100, c1.getRGB(), c2.getRGB());
-			poseStack.popPose();
+			poseStack.scale((float) lineTarget, 1);
+			graphics.fillGradient(0, 0, 1, 1, brighter.getRGB(), brighter.getRGB());
+			graphics.fillGradient(0, 1, 1, 2, c1.getRGB(), c2.getRGB());
+			poseStack.popMatrix();
 		}
 
-		poseStack.translate(0, 0, 400);
+		poseStack.translate(0, 0);
 		for (int i = 0; i < lines.size(); i++) {
 			graphics.drawString(screen.getFontRenderer(), lines.get(i).getString(), (int) (targetX - 10), 3 + 9 * i, brighter.scaleAlphaForText(fade).getRGB(), false);
 		}
-		poseStack.popPose();
+		poseStack.popMatrix();
 	}
 
 	public PonderPalette getPalette() {

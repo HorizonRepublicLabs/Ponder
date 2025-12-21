@@ -26,7 +26,6 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 
 public class PonderWorldParticles {
-
 	private final Map<ParticleRenderType, Queue<Particle>> byType = Maps.newIdentityHashMap();
 	private final Queue<Particle> queue = Queues.newArrayDeque();
 
@@ -41,21 +40,21 @@ public class PonderWorldParticles {
 	}
 
 	public void tick() {
-		this.byType.forEach((p_228347_1_, p_228347_2_) -> this.tickParticleList(p_228347_2_));
+		this.byType.forEach((renderType, queue) -> this.tickParticleList(queue));
 
 		Particle particle;
 		if (queue.isEmpty())
 			return;
 		while ((particle = this.queue.poll()) != null)
-			this.byType.computeIfAbsent(particle.getRenderType(), $ -> EvictingQueue.create(16384))
+			this.byType.computeIfAbsent(particle.getGroup(), $ -> EvictingQueue.create(16384))
 				.add(particle);
 	}
 
-	private void tickParticleList(Collection<Particle> p_187240_1_) {
-		if (p_187240_1_.isEmpty())
+	private void tickParticleList(Collection<Particle> particles) {
+		if (particles.isEmpty())
 			return;
 
-		Iterator<Particle> iterator = p_187240_1_.iterator();
+		Iterator<Particle> iterator = particles.iterator();
 		while (iterator.hasNext()) {
 			Particle particle = iterator.next();
 			particle.tick();

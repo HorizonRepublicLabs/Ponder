@@ -29,6 +29,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 
+import org.joml.Matrix3x2fStack;
+
 public class PonderIndexScreen extends AbstractPonderScreen {
 	protected final List<ItemEntry> items;
 	protected List<PonderButton> paginatedWidgets = new ArrayList<>();
@@ -186,22 +188,22 @@ public class PonderIndexScreen extends AbstractPonderScreen {
 		int centerX = width / 2;
 		int centerY = height / 2;
 
-		PoseStack poseStack = graphics.pose();
+		Matrix3x2fStack poseStack = graphics.pose();
 
-		poseStack.pushPose();
-		poseStack.translate(centerX, centerY, 0);
+		poseStack.pushMatrix();
+		poseStack.translate(centerX, centerY);
 
 		UIRenderHelper.streak(graphics, 0, usedArea.getX() - 10, usedArea.getY() - 20, 20, 220);
 		graphics.drawString(font, "Items to inspect", usedArea.getX() - 5, usedArea.getY() - 25, UIRenderHelper.COLOR_TEXT.getFirst().getRGB(), false);
 
-		poseStack.popPose();
+		poseStack.popMatrix();
 
 		if (!paginationState.usesPagination())
 			return;
 
-		poseStack.pushPose();
-		poseStack.translate(centerX, maxScreenArea.getY() + maxScreenArea.getHeight() + 14, 0);
-		poseStack.scale(1.5f, 1.5f, 1);
+		poseStack.pushMatrix();
+		poseStack.translate(centerX, maxScreenArea.getY() + maxScreenArea.getHeight() + 14);
+		poseStack.scale(1.5f, 1.5f);
 
 		String pageString = "Page " + (paginationState.getPageIndex() + 1) + "/" + paginationState.getMaxPages();
 		int stringWidth = font.width(pageString);
@@ -210,7 +212,7 @@ public class PonderIndexScreen extends AbstractPonderScreen {
 		UIRenderHelper.streak(graphics, 180, 0, 4, 14, 85);
 		graphics.drawString(font, pageString, (int) (-stringWidth / 2f), 0, UIRenderHelper.COLOR_TEXT.getFirst().getRGB(), false);
 
-		poseStack.popPose();
+		poseStack.popMatrix();
 	}
 
 	@Override
@@ -218,13 +220,13 @@ public class PonderIndexScreen extends AbstractPonderScreen {
 		if (hoveredItem.isEmpty())
 			return;
 
-		PoseStack poseStack = graphics.pose();
-		poseStack.pushPose();
-		poseStack.translate(0, 0, 200);
+		Matrix3x2fStack poseStack = graphics.pose();
+		poseStack.pushMatrix();
+		poseStack.translate(0, 0);
 
 		graphics.renderTooltip(font, hoveredItem, mouseX, mouseY);
 
-		poseStack.popPose();
+		poseStack.popMatrix();
 	}
 
 	@Override

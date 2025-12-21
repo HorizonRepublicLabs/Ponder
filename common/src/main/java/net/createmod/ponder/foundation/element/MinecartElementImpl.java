@@ -96,8 +96,7 @@ public class MinecartElementImpl extends AnimatedSceneElementBase implements Min
 	}
 
 	@Override
-	public void renderLast(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, float fade, float pt) {
-		PoseStack poseStack = graphics.pose();
+	public void renderLast(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, PoseStack poseStack, float fade, float pt) {
 		EntityRenderDispatcher entityrenderermanager = Minecraft.getInstance()
 			.getEntityRenderDispatcher();
 		if (entity == null)

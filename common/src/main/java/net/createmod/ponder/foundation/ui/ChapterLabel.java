@@ -13,7 +13,7 @@ public class ChapterLabel extends AbstractSimiWidget {
 	private final PonderChapter chapter;
 	private final PonderButton button;
 
-	public ChapterLabel(PonderChapter chapter, int x, int y, BiConsumer<MouseButtonEvent, Boolean> onClick) {
+	public ChapterLabel(PonderChapter chapter, int x, int y, BiConsumer<Integer, Integer> onClick) {
 		super(x, y, 175, 38);
 
 		this.button = new PonderButton(x + 4, y + 4, 30, 30)

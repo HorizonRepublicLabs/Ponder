@@ -33,6 +33,8 @@ import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
+import org.joml.Matrix3x2fStack;
+
 public class PonderTagIndexScreen extends AbstractPonderScreen {
 
 	protected List<ModTagsEntry> currentModTagEntries = new LinkedList<>();
@@ -175,14 +177,14 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 	@Override
 	protected void renderWindow(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
 		super.renderWindow(graphics, mouseX, mouseY, partialTicks);
-		PoseStack poseStack = graphics.pose();
+		Matrix3x2fStack poseStack = graphics.pose();
 
-		poseStack.pushPose();
-		poseStack.translate(width / 2d, 30, 0);
+		poseStack.pushMatrix();
+		poseStack.translate(width / 2f, 30);
 
 		//title, box for icon and streak
-		poseStack.pushPose();
-		poseStack.translate(-120, 0, 0);
+		poseStack.pushMatrix();
+		poseStack.translate(-120, 0);
 
 		String title = Ponder.lang().translate(AbstractPonderScreen.WELCOME).string();
 
@@ -196,21 +198,21 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 
 		//34 = 30 bounds + 2 padding + 2 box width
 		//-3 = 2 padding + 1 pixel of the box
-		poseStack.translate(34, -3, 0);
+		poseStack.translate(34, -3);
 
 		int streakHeight = 36;
 		UIRenderHelper.streak(graphics, 0, 0, (streakHeight / 2), streakHeight, 280);
 
-		poseStack.scale(2f, 2f, 2f);
+		poseStack.scale(2f, 2f);
 		graphics.drawString(font, title, 3, 5, UIRenderHelper.COLOR_TEXT.getFirst().getRGB(), false);
 
-		poseStack.popPose();
-		poseStack.translate(0, 50, 0);
-		poseStack.pushPose();
+		poseStack.popMatrix();
+		poseStack.translate(0, 50);
+		poseStack.pushMatrix();
 		//at the middle, 80px from the top now
 
 		int maxWidth = (int) (width * .5f);
-		String desc = Ponder.lang().translate(AbstractPonderScreen.DESCRIPTION).string();
+		Component desc = Ponder.lang().translate(AbstractPonderScreen.DESCRIPTION).component();
 
 		int descWidth = font.width(desc);
 		if (descWidth + 2 < maxWidth)
@@ -218,7 +220,7 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 
 		int descHeight = font.wordWrapHeight(desc, maxWidth);
 
-		poseStack.translate(-maxWidth / 2f, 0, 0);
+		poseStack.translate(-maxWidth / 2f, 0);
 
 		new BoxElement().withBackground(PonderUI.BACKGROUND_FLAT)
 			.gradientBorder(PonderUI.COLOR_IDLE)
@@ -226,34 +228,34 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 			.withBounds(maxWidth + 6, descHeight + 5)
 			.render(graphics);
 
-		ClientFontHelper.drawSplitString(graphics, poseStack, font, desc, 0, 0, maxWidth, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
-		poseStack.popPose();
+		ClientFontHelper.drawSplitString(graphics, font, desc.getString(), 0, 0, maxWidth, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
+		poseStack.popMatrix();
 
-		poseStack.translate(0, -80, 0);
+		poseStack.translate(0, -80);
 		//at the middle of top edge now
 
 		for (ModTagsEntry entry : currentModTagEntries) {
-			poseStack.pushPose();
+			poseStack.pushMatrix();
 			renderTagsEntry(graphics, entry);
-			poseStack.popPose();
+			poseStack.popMatrix();
 		}
 
-		poseStack.popPose();
+		poseStack.popMatrix();
 
 	}
 
 	protected void renderTagsEntry(GuiGraphics graphics, ModTagsEntry entry) {
-		PoseStack poseStack = graphics.pose();
+		Matrix3x2fStack poseStack = graphics.pose();
 
 		int layoutWidth = entry.layoutArea().getWidth();
 		int layoutHeight = entry.layoutArea().getHeight();
 
-		poseStack.translate(0, entry.yPos(), 0);
+		poseStack.translate(0, entry.yPos());
 
 		String categories = Ponder.lang().translate(AbstractPonderScreen.CATEGORIES, entry.modName()).string();
 		int stringWidth = font.width(categories);
-		poseStack.pushPose();
-		poseStack.translate(-stringWidth / 2f, -20, 0);
+		poseStack.pushMatrix();
+		poseStack.translate(-stringWidth / 2f, -20);
 
 		new BoxElement().withBackground(PonderUI.BACKGROUND_FLAT)
 			.gradientBorder(PonderUI.COLOR_IDLE)
@@ -263,7 +265,7 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 
 		graphics.drawString(font, categories, 0, 0, UIRenderHelper.COLOR_TEXT.getFirst().getRGB(), false);
 
-		poseStack.popPose();
+		poseStack.popMatrix();
 
 		int extraLength = Mth.clamp(entry.tagCount, 2, 8);
 
@@ -275,9 +277,9 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 	@Override
 	protected void renderWindowForeground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
 		RenderSystem.disableDepthTest();
-		PoseStack poseStack = graphics.pose();
-		poseStack.pushPose();
-		poseStack.translate(0, 0, 200);
+		Matrix3x2fStack poseStack = graphics.pose();
+		poseStack.pushMatrix();
+		poseStack.translate(0, 0);
 
 		if (hoveredItem != null) {
 			List<Component> list = FontHelper.cutStringTextComponent(hoveredItem.getDescription(), Palette.ALL_GRAY);
@@ -285,7 +287,7 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 			graphics.setComponentTooltipForNextFrame(font, list, mouseX, mouseY);
 		}
 
-		poseStack.popPose();
+		poseStack.popMatrix();
 		RenderSystem.enableDepthTest();
 	}
 
@@ -307,5 +309,4 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 		int yPos
 	) {
 	}
-
 }

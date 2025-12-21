@@ -21,7 +21,6 @@ import net.minecraft.world.entity.animal.parrot.Parrot;
 import net.minecraft.world.phys.Vec3;
 
 public class ParrotElementImpl extends AnimatedSceneElementBase implements ParrotElement {
-
 	protected Vec3 location;
 	@Nullable
 	protected Parrot entity;
@@ -115,8 +114,8 @@ public class ParrotElementImpl extends AnimatedSceneElementBase implements Parro
 	}
 
 	@Override
-	protected void renderLast(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, float fade, float pt) {
-		PoseStack poseStack = graphics.pose();
+	protected void renderLast(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, PoseStack poseStack,
+							  float fade, float pt) {
 		EntityRenderDispatcher entityrenderermanager = Minecraft.getInstance()
 			.getEntityRenderDispatcher();
 
@@ -141,5 +140,4 @@ public class ParrotElementImpl extends AnimatedSceneElementBase implements Parro
 	public void setPose(ParrotPose pose) {
 		this.pose = pose;
 	}
-
 }

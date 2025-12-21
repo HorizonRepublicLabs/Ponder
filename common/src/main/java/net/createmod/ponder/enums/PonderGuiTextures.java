@@ -8,10 +8,10 @@ import net.createmod.catnip.render.ColoredRenderable;
 import net.createmod.catnip.theme.Color;
 import net.createmod.ponder.Ponder;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 
 public enum PonderGuiTextures implements TextureSheetSegment, ScreenElement, ColoredRenderable {
-
 	//logo
 	LOGO("logo", 0, 0, 32, 32, 32, 32),
 
@@ -45,9 +45,7 @@ public enum PonderGuiTextures implements TextureSheetSegment, ScreenElement, Col
 	ICON_RMB("widgets", 2, 4),
 
 	// PlacementIndicator
-	PLACEMENT_INDICATOR_SHEET("placement_indicator", 0, 0, 16, 256),
-
-	;
+	PLACEMENT_INDICATOR_SHEET("placement_indicator", 0, 0, 16, 256);
 
 	public final Identifier id;
 	private final int width;
@@ -81,7 +79,7 @@ public enum PonderGuiTextures implements TextureSheetSegment, ScreenElement, Col
 
 	@Override
 	public void render(GuiGraphics graphics, int x, int y) {
-		graphics.blit(getId(), x, y, 0, startX, startY, width, height, sheetWidth, sheetHeight);
+		graphics.blit(RenderPipelines.GUI_TEXTURED, getId(), x, y, 0, startX, startY, width, height, sheetWidth, sheetHeight);
 	}
 
 	@Override

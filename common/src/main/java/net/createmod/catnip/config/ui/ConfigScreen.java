@@ -7,8 +7,11 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
+import com.mojang.blaze3d.opengl.GlStateManager;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.TriConsumer;
+import org.joml.Matrix3x2fStack;
 import org.lwjgl.opengl.GL30;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -61,7 +64,7 @@ public abstract class ConfigScreen extends AbstractSimiScreen {
 
 	@Override
 	protected void renderWindowBackground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		if (this.minecraft != null && this.minecraft.level != null) {
+		if (this.minecraft.level != null) {
 			//in game
 			graphics.fill(0, 0, this.width, this.height, 0xb0_282c34);
 		} else {
@@ -80,7 +83,7 @@ public abstract class ConfigScreen extends AbstractSimiScreen {
 	@Override
 	protected void prepareFrame() {
 		UIRenderHelper.swapAndBlitColor(minecraft.getMainRenderTarget(), UIRenderHelper.framebuffer);
-		RenderSystem.clear(GL30.GL_STENCIL_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT, Minecraft.ON_OSX);
+		GlStateManager._clear(GL30.GL_STENCIL_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT);
 	}
 
 	@Override
@@ -124,22 +127,22 @@ public abstract class ConfigScreen extends AbstractSimiScreen {
 			return;
 		}
 
-		vanillaPanorama.render(graphics, this.width, this.height, 1, partialTicks); // TODO - Checkover if the partialticks are correct
+		vanillaPanorama.render(graphics, this.width, this.height, true);
 
 		graphics.fill(0, 0, this.width, this.height, 0x90_282c34);
 	}
 
 	protected static void renderCog(GuiGraphics graphics) {
-		float partialTicks = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
-		PoseStack poseStack = graphics.pose();
-		poseStack.pushPose();
+		float partialTicks = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
+		Matrix3x2fStack poseStack = graphics.pose();
+		poseStack.pushMatrix();
 
-		poseStack.translate(-100, 100, -100);
-		poseStack.scale(200, 200, 1);
+		poseStack.translate(-100, 100);
+		poseStack.scale(200, 200);
 		GuiGameElement.of(shadowState)
 			.rotateBlock(22.5, cogSpin.getValue(partialTicks), 22.5)
 			.render(graphics);
 
-		poseStack.popPose();
+		poseStack.popMatrix();
 	}
 }

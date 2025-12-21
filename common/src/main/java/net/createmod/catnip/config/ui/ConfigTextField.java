@@ -1,9 +1,9 @@
 package net.createmod.catnip.config.ui;
 
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.input.MouseButtonEvent;
 
 public class ConfigTextField extends HintableTextFieldWidget {
-
 	public ConfigTextField(Font font, int x, int y, int width, int height) {
 		super(font, x, y, width, height);
 	}
@@ -16,8 +16,8 @@ public class ConfigTextField extends HintableTextFieldWidget {
 	}
 
 	@Override
-	public void onClick(double pMouseX, double pMouseY) {
-		super.onClick(pMouseX, pMouseY);
+	public void onClick(MouseButtonEvent buttonEvent, boolean doubleClick) {
+		super.onClick(buttonEvent, doubleClick);
 		setFocused(true);
 	}
 

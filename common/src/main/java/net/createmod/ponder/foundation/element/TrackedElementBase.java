@@ -3,14 +3,15 @@ package net.createmod.ponder.foundation.element;
 import java.lang.ref.WeakReference;
 import java.util.function.Consumer;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.createmod.ponder.api.element.TrackedElement;
 import net.createmod.ponder.api.level.PonderLevel;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 
 public abstract class TrackedElementBase<T> extends PonderElementBase implements TrackedElement<T> {
-
 	private final WeakReference<T> reference;
 
 	public TrackedElementBase(T wrapped) {
@@ -26,15 +27,14 @@ public abstract class TrackedElementBase<T> extends PonderElementBase implements
 	}
 
 	@Override
-	public void renderFirst(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, float pt) {
+	public void renderFirst(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, PoseStack poseStack, float pt) {
 	}
 
 	@Override
-	public void renderLayer(PonderLevel world, MultiBufferSource buffer, RenderType type, GuiGraphics graphics, float pt) {
+	public void renderLayer(PonderLevel world, MultiBufferSource buffer, ChunkSectionLayer layer, GuiGraphics graphics, PoseStack poseStack, float pt) {
 	}
 
 	@Override
-	public void renderLast(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, float pt) {
+	public void renderLast(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, PoseStack poseStack, float pt) {
 	}
-
 }

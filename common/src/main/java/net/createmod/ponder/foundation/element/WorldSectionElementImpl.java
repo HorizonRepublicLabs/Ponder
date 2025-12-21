@@ -22,6 +22,7 @@ import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.math.VecHelper;
 import net.createmod.catnip.outliner.AABBOutline;
 import net.createmod.catnip.registry.RegisteredObjectsHelper;
+import net.createmod.catnip.render.RenderHelper;
 import net.createmod.catnip.render.SuperByteBuffer;
 import net.createmod.catnip.render.SuperByteBufferBuilder;
 import net.createmod.catnip.render.SuperByteBufferCache;
@@ -36,6 +37,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -361,7 +363,6 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 
 	@Override
 	protected void renderLayer(PonderLevel world, MultiBufferSource buffer, ChunkSectionLayer layer, GuiGraphics graphics, PoseStack poseStack, float fade, float pt) {
-		PoseStack poseStack = graphics.pose();
 		SuperByteBufferCache bufferCache = SuperByteBufferCache.getInstance();
 
 		int code = hashCode() ^ world.hashCode();
@@ -377,12 +378,7 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 		transformMS(structureBuffer.getTransforms(), pt);
 
 		int light = lightCoordsFromFade(fade);
-		RenderType type = switch (layer) {
-			case SOLID -> RenderTypes.solidMovingBlock();
-			case CUTOUT -> RenderTypes.cutoutMovingBlock();
-			case TRANSLUCENT -> RenderTypes.translucentMovingBlock();
-			case TRIPWIRE -> RenderTypes.tripwireMovingBlock();
-		};
+		RenderType type = RenderHelper.convertLayerToType(layer);
 		structureBuffer
 			.light(light)
 			.renderInto(poseStack, buffer.getBuffer(type));
@@ -390,7 +386,6 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 
 	@Override
 	protected void renderLast(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, PoseStack poseStack, float fade, float pt) {
-		PoseStack poseStack = graphics.pose();
 		redraw = false;
 		if (selectedBlock == null)
 			return;
@@ -422,7 +417,9 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 		Iterator<BlockEntity> iterator = renderedBlockEntities.iterator();
 		while (iterator.hasNext()) {
 			BlockEntity tile = iterator.next();
-			BlockEntityRenderer<BlockEntity> renderer = Minecraft.getInstance().getBlockEntityRenderDispatcher().getRenderer(tile);
+			BlockEntityRenderer<BlockEntity, BlockEntityRenderState> renderer = Minecraft.getInstance()
+				.getBlockEntityRenderDispatcher()
+				.getRenderer(tile);
 			if (renderer == null) {
 				iterator.remove();
 				continue;
@@ -434,7 +431,6 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 
 			try {
 				renderer.render(tile, pt, ms, buffer, LevelRenderer.getLightColor(world, pos), OverlayTexture.NO_OVERLAY);
-
 			} catch (Exception e) {
 				iterator.remove();
 				String message = "BlockEntity " + RegisteredObjectsHelper.getKeyOrThrow(tile.getType()) + " could not be rendered virtually.";

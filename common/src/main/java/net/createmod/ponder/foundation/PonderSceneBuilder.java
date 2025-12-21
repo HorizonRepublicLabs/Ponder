@@ -88,7 +88,6 @@ import net.minecraft.world.phys.Vec3;
  * Enqueue instructions to the schedule via this object's methods.
  */
 public class PonderSceneBuilder implements SceneBuilder {
-
 	private final OverlayInstructions overlay;
 	private final WorldInstructions world;
 	private final DebugInstructions debug;
@@ -219,7 +218,6 @@ public class PonderSceneBuilder implements SceneBuilder {
 	}
 
 	public class PonderEffectInstructions implements EffectInstructions {
-
 		@Override
 		public void emitParticles(Vec3 location, ParticleEmitter emitter, float amountPerCycle, int cycles) {
 			addInstruction(new EmitParticlesInstruction(location, emitter, amountPerCycle, cycles));
@@ -252,11 +250,9 @@ public class PonderSceneBuilder implements SceneBuilder {
 			addInstruction(new EmitParticlesInstruction(VecHelper.getCenterOf(pos),
 				effects().particleEmitterWithinBlockSpace(new DustParticleOptions(color, 1), Vec3.ZERO), amount, 2));
 		}
-
 	}
 
 	public class PonderOverlayInstructions implements OverlayInstructions {
-
 		@Override
 		public TextElementBuilder showText(int duration) {
 			TextWindowElement textWindowElement = new TextWindowElement();
@@ -335,11 +331,9 @@ public class PonderSceneBuilder implements SceneBuilder {
 		public void showOutline(PonderPalette color, Object slot, Selection selection, int duration) {
 			addInstruction(new OutlineSelectionInstruction(color, slot, selection, duration));
 		}
-
 	}
 
 	public class PonderSpecialInstructions implements SpecialInstructions {
-
 		@Override
 		public ElementLink<ParrotElement> createBirb(Vec3 location, Supplier<? extends ParrotPose> pose) {
 			ElementLink<ParrotElement> link = new ElementLinkImpl<>(ParrotElement.class);
@@ -650,7 +644,6 @@ public class PonderSceneBuilder implements SceneBuilder {
 	}
 
 	public class PonderDebugInstructions implements DebugInstructions {
-
 		@Override
 		public void debugSchematic() {
 			addInstruction(
@@ -666,7 +659,5 @@ public class PonderSceneBuilder implements SceneBuilder {
 		public void enqueueCallback(Consumer<PonderScene> callback) {
 			addInstruction(callback);
 		}
-
 	}
-
 }

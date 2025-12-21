@@ -45,10 +45,10 @@ public abstract class AbstractSimiWidget extends AbstractWidget implements Ticka
 		new Color(0xcc_cc2020, true)
 	).map(Color::setImmutable);
 
-	protected float z;
+	protected float z; // TODO - Check if this is needed anymore, remove if not
 	protected boolean wasHovered = false;
 	protected List<Component> toolTip = new LinkedList<>();
-	// Look into changing this to MouseButtonEvent
+	// TODO - Look into changing this to MouseButtonEvent
 	protected BiConsumer<Integer, Integer> onClick = (_$, _$$) -> {
 	};
 
@@ -139,11 +139,6 @@ public abstract class AbstractSimiWidget extends AbstractWidget implements Ticka
 
 	public void runCallback(double mouseX, double mouseY) {
 		onClick.accept((int) mouseX, (int) mouseY);
-	}
-
-	@Override
-	public boolean mouseClicked(MouseButtonEvent buttonEvent, boolean doubleClick) {
-		return this.isMouseOver(buttonEvent.x(), buttonEvent.y());
 	}
 
 	@Override

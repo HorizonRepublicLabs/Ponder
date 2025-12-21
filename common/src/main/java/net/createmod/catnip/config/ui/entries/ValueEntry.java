@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import com.mojang.blaze3d.platform.Window;
+
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.ClipboardManager;
@@ -78,7 +80,7 @@ public class ValueEntry<T> extends ConfigScreenList.LabeledEntry {
 		labelTooltip.addAll(commentLines.stream()
 			.filter(s -> !s.startsWith("Range"))
 			.map(s -> s.equals(".") ? " " : s)
-			.map(str -> Component.literal(str))
+			.map(Component::literal)
 			.flatMap(stc -> FontHelper.cutTextComponent(stc, Palette.ALL_GRAY).stream())
 			.toList()
 		);
@@ -114,8 +116,8 @@ public class ValueEntry<T> extends ConfigScreenList.LabeledEntry {
 			return false;
 		}
 
-		long handle = Minecraft.getInstance().getWindow().getWindow();
-		if (!InputConstants.isKeyDown(handle, GLFW.GLFW_KEY_LEFT_CONTROL)) {
+		Window window = Minecraft.getInstance().getWindow();
+		if (!InputConstants.isKeyDown(window, GLFW.GLFW_KEY_LEFT_CONTROL)) {
 			return false;
 		}
 
@@ -129,7 +131,7 @@ public class ValueEntry<T> extends ConfigScreenList.LabeledEntry {
 
 		// ctrl-click to copy the full path to clipboard
 		this.annotations.put("highlight", ":)");
-		clipboardHelper.setClipboard(handle, ConfigScreen.modID + ":" + configType.extension() + "." + path);
+		clipboardHelper.setClipboard(window, ConfigScreen.modID + ":" + configType.extension() + "." + path);
 
 		return true;
 	}

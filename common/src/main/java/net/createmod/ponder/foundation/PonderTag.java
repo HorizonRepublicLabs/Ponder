@@ -8,8 +8,11 @@ import net.createmod.catnip.gui.element.GuiGameElement;
 import net.createmod.catnip.gui.element.ScreenElement;
 import net.createmod.ponder.Ponder;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
+
+import org.joml.Matrix3x2fStack;
 
 public class PonderTag implements ScreenElement {
 	/**
@@ -52,20 +55,19 @@ public class PonderTag implements ScreenElement {
 	}
 
 	public void render(GuiGraphics graphics, int x, int y) {
-		PoseStack poseStack = graphics.pose();
-		poseStack.pushPose();
-		poseStack.translate(x, y, 0);
+		Matrix3x2fStack poseStack = graphics.pose();
+		poseStack.pushMatrix();
+		poseStack.translate(x, y);
 		if (textureIconLocation != null) {
-			//RenderSystem.setShaderTexture(0, icon);
-			poseStack.scale(0.25f, 0.25f, 1);
-			graphics.blit(textureIconLocation, 0, 0, 0, 0, 0, 64, 64, 64, 64);
+			poseStack.scale(0.25f, 0.25f);
+			graphics.blit(RenderPipelines.GUI_TEXTURED, textureIconLocation, 0, 0, 0, 0, 0, 64, 64, 64, 64);
 		} else if (!itemIcon.isEmpty()) {
-			poseStack.translate(-2, -2, 0);
-			poseStack.scale(1.25f, 1.25f, 1.25f);
 			GuiGameElement.of(itemIcon)
+				.scale(1.25f)
+				.at(-2, -2)
 				.render(graphics);
 		}
-		poseStack.popPose();
+		poseStack.popMatrix();
 	}
 
 	@Override

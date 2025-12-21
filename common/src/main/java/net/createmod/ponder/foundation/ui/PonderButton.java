@@ -22,6 +22,8 @@ import net.minecraft.client.input.MouseButtonInfo;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 
+import org.joml.Matrix3x2fStack;
+
 public class PonderButton extends BoxWidget {
 
 	public static final Couple<Color> COLOR_IDLE = Couple.create(
@@ -120,12 +122,12 @@ public class PonderButton extends BoxWidget {
 			return;
 
 		if (shortcut != null) {
-			PoseStack poseStack = graphics.pose();
-			poseStack.pushPose();
-			poseStack.translate(0, 0, z + 10);
+			Matrix3x2fStack poseStack = graphics.pose();
+			poseStack.pushMatrix();
+			poseStack.translate(0, 0);
 			graphics.drawCenteredString(Minecraft.getInstance().font, shortcut.getTranslatedKeyMessage().getString().toLowerCase(
 				Locale.ROOT), getX() + width / 2 + 8, getY() + height - 6, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().scaleAlpha(fade.getValue()).getRGB());
-			poseStack.popPose();
+			poseStack.popMatrix();
 		}
 	}
 

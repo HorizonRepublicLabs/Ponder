@@ -28,7 +28,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 
 public class PonderTooltipHandler {
-
 	private static final Color borderA = new Color(0x5000ff, false).setImmutable();
 	private static final Color borderB = new Color(0x5555ff, false).setImmutable();
 	private static final Color borderC = new Color(0xffffff, false).setImmutable();

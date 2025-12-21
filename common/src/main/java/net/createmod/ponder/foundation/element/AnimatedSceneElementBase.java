@@ -43,7 +43,7 @@ public abstract class AnimatedSceneElementBase extends PonderElementBase impleme
 								  float pt) {
 		poseStack.pushPose();
 		float currentFade = applyFade(poseStack, pt);
-		renderFirst(world, buffer, graphics, currentFade, poseStack, pt);
+		renderFirst(world, buffer, graphics, poseStack, currentFade, pt);
 		poseStack.popPose();
 	}
 
@@ -60,7 +60,7 @@ public abstract class AnimatedSceneElementBase extends PonderElementBase impleme
 	public final void renderLast(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, PoseStack poseStack, float pt) {
 		poseStack.pushPose();
 		float currentFade = applyFade(poseStack, pt);
-		renderLast(world, buffer, graphics, currentFade, poseStack, pt);
+		renderLast(world, buffer, graphics, poseStack, currentFade, pt);
 		poseStack.popPose();
 	}
 
@@ -78,12 +78,12 @@ public abstract class AnimatedSceneElementBase extends PonderElementBase impleme
 							   GuiGraphics graphics, PoseStack poseStack, float fade, float pt) {
 	}
 
-	protected void renderFirst(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, float fade,
-							   PoseStack poseStack, float pt) {
+	protected void renderFirst(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, PoseStack poseStack,
+							   float fade, float pt) {
 	}
 
-	protected void renderLast(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, float fade,
-							  PoseStack poseStack, float pt) {
+	protected void renderLast(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, PoseStack poseStack,
+							  float fade, float pt) {
 	}
 
 	protected int lightCoordsFromFade(float fade) {

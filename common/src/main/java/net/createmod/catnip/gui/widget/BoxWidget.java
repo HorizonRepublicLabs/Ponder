@@ -166,13 +166,6 @@ public class BoxWidget extends ElementWidget {
 		return getX() - padX <= mX && getY() - padY <= mY && mX < getX() + padX + width && mY < getY() + padY + height;
 	}
 
-	@Override
-	public boolean mouseClicked(MouseButtonEvent buttonEvent, boolean doubleClick) {
-		if (!active || !visible)
-			return false;
-		return isMouseOver(buttonEvent.x(), buttonEvent.y());
-	}
-
 	public BoxElement getBox() {
 		return box;
 	}

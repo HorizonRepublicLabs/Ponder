@@ -55,10 +55,8 @@ public class ClientFontHelper {
 		return lines;
 	}
 
-	public static void drawSplitString(GuiGraphics graphics, PoseStack poseStack, Font font, String text, int x, int y,
-									   int width, int color) {
+	public static void drawSplitString(GuiGraphics graphics, Font font, String text, int x, int y, int width, int color) {
 		List<String> list = cutString(font, text, width);
-		Matrix4f matrix4f = poseStack.last().pose();
 
 		for (String s : list) {
 			int f = x;
@@ -67,12 +65,12 @@ public class ClientFontHelper {
 				f += (width - i);
 			}
 
-			draw(graphics, font, s, f, y, color, matrix4f);
+			draw(graphics, font, s, f, y, color);
 			y += 9;
 		}
 	}
 
-	private static void draw(GuiGraphics graphics, Font font, @Nullable String text, int x, int y, int color, Matrix4f matrix) {
+	private static void draw(GuiGraphics graphics, Font font, @Nullable String text, int x, int y, int color) {
 		if (text != null) {
 			graphics.drawString(font, text, x, y, color, false);
 		}

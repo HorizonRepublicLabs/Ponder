@@ -2,6 +2,10 @@ package net.createmod.catnip.math;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.client.entity.ClientAvatarState;
+
+import net.minecraft.client.player.LocalPlayer;
+
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -260,24 +264,22 @@ public class VecHelper {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.options.bobView().get()) {
 			Entity renderViewEntity = mc.getCameraEntity();
-			if (renderViewEntity instanceof Player playerEntity) {
-				float walkDist_modified = playerEntity.walkDist;
-
-				float f = walkDist_modified - playerEntity.walkDistO;
-				float f1 = -(walkDist_modified + f * partialTicks);
-				float f2 = Mth.lerp(partialTicks, playerEntity.oBob, playerEntity.bob);
+			if (renderViewEntity instanceof LocalPlayer playerEntity) {
+				ClientAvatarState avatarState = playerEntity.avatarState();
+				float f = avatarState.getBackwardsInterpolatedWalkDistance(partialTicks);
+				float f1 = avatarState.getInterpolatedBob(partialTicks);
 				Quaternionf q2 =
-					com.mojang.math.Axis.XP.rotationDegrees(Math.abs(Mth.cos(f1 * (float) Math.PI - 0.2F) * f2) * 5.0F);
+					com.mojang.math.Axis.XP.rotationDegrees(Math.abs(Mth.cos(f * (float) Math.PI - 0.2F) * f1) * 5.0F);
 				q2.conjugate();
 				result3f.rotate(q2);
 
 				Quaternionf q1 =
-					com.mojang.math.Axis.ZP.rotationDegrees(Mth.sin(f1 * (float) Math.PI) * f2 * 3.0F);
+					com.mojang.math.Axis.ZP.rotationDegrees(Mth.sin(f * (float) Math.PI) * f1 * 3.0F);
 				q1.conjugate();
 				result3f.rotate(q1);
 
-				Vector3f bob_translation = new Vector3f((Mth.sin(f1 * (float) Math.PI) * f2 * 0.5F),
-					(-Math.abs(Mth.cos(f1 * (float) Math.PI) * f2)), 0.0f);
+				Vector3f bob_translation = new Vector3f((Mth.sin(f * (float) Math.PI) * f1 * 0.5F),
+					(-Math.abs(Mth.cos(f * (float) Math.PI) * f1)), 0.0f);
 				bob_translation.set(bob_translation.x(), -bob_translation.y(), bob_translation.z()); // this is weird but hey, if it works
 				result3f.add(bob_translation);
 			}
