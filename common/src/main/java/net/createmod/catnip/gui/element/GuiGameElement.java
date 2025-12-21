@@ -440,7 +440,7 @@ public class GuiGameElement {
 			MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
 			boolean flatLighting = !bakedModel.usesBlockLight();
 			if (useDefaultLighting && flatLighting) {
-				Lighting.setupForFlatItems();
+				ILightingSettings.ITEMS_FLAT.apply();
 			}
 
 			renderer.render(stack, ItemDisplayContext.GUI, false, poseStack, buffer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, bakedModel);
@@ -449,12 +449,11 @@ public class GuiGameElement {
 
 			RenderSystem.enableDepthTest();
 			if (useDefaultLighting && flatLighting) {
-				Lighting.setupFor3DItems();
+				ILightingSettings.ITEMS_3D.apply();
 			}
 
 			poseStack.popPose();
 		}
-
 	}
 
 	public static class GuiGameElementPictureInPictureRenderer extends PictureInPictureRenderer<PictureInPictureRenderState> {

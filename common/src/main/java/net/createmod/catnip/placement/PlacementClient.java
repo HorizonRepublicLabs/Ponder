@@ -5,6 +5,15 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.mojang.blaze3d.vertex.VertexFormat.Mode;
+
+import net.createmod.catnip.gui.render.FadedArrowRenderState;
+
+import net.createmod.catnip.gui.render.TexturedArrowRenderState;
+import net.createmod.catnip.gui.render.TexturedQuadRenderState;
+
+import org.joml.Matrix3x2f;
+import org.joml.Matrix3x2fStack;
 import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -185,83 +194,57 @@ public class PlacementClient {
 		float length = 10;
 
 		CClient.PlacementIndicatorSetting mode = PonderConfig.client().placementIndicator.get();
-		PoseStack poseStack = graphics.pose();
-		if (mode == CClient.PlacementIndicatorSetting.TRIANGLE)
-			fadedArrow(poseStack, centerX, centerY, r, g, b, a, length, snappedAngle);
-		else if (mode == CClient.PlacementIndicatorSetting.TEXTURE)
-			textured(poseStack, centerX, centerY, a, snappedAngle);
+		if (mode == CClient.PlacementIndicatorSetting.TRIANGLE) {
+			fadedArrow(graphics, centerX, centerY, r, g, b, a, length);
+		} else if (mode == CClient.PlacementIndicatorSetting.TEXTURE) {
+			textured(graphics, centerX, centerY, a, snappedAngle);
+		}
 	}
 
-	private static void fadedArrow(PoseStack ms, float centerX, float centerY, float r, float g, float b, float a,
-								   float length, float snappedAngle) {
-		//RenderSystem.disableTexture();
-		RenderSystem.enableBlend();
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.setShader(GameRenderer::getPositionColorShader);
-
-		ms.pushPose();
-		ms.translate(centerX, centerY, 5);
-		ms.mulPose(Axis.ZP.rotationDegrees(angle.getValue(0)));
-		// RenderSystem.rotatef(snappedAngle, 0, 0, 1);
+	private static void fadedArrow(GuiGraphics graphics, float centerX, float centerY, float r, float g, float b, float a, float length) {
+		Matrix3x2fStack poseStack = graphics.pose();
+		poseStack.pushMatrix();
+		poseStack.translate(centerX, centerY);
+		poseStack.rotate(angle.getValue(0) * (float) (Math.PI / 180));
 		double scale = PonderConfig.client().indicatorScale.get();
-		ms.scale((float) scale, (float) scale, 1);
+		poseStack.scale((float) scale, (float) scale);
 
-		Tesselator tesselator = Tesselator.getInstance();
-		BufferBuilder bufferbuilder = tesselator.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
+		int size = (int) ((10 + length) * scale);
+		graphics.guiRenderState.submitGuiElement(new FadedArrowRenderState(
+			new Matrix3x2f(graphics.pose()), size, length, r, g, b, a
+		));
 
-		Matrix4f mat = ms.last().pose();
-
-		bufferbuilder.addVertex(mat, 0, -(10 + length), 0).setColor(r, g, b, a);
-
-		bufferbuilder.addVertex(mat, -9, -3, 0).setColor(r, g, b, 0f);
-		bufferbuilder.addVertex(mat, -6, -6, 0).setColor(r, g, b, 0f);
-		bufferbuilder.addVertex(mat, -3, -8, 0).setColor(r, g, b, 0f);
-		bufferbuilder.addVertex(mat, 0, -8.5f, 0).setColor(r, g, b, 0f);
-		bufferbuilder.addVertex(mat, 3, -8, 0).setColor(r, g, b, 0f);
-		bufferbuilder.addVertex(mat, 6, -6, 0).setColor(r, g, b, 0f);
-		bufferbuilder.addVertex(mat, 9, -3, 0).setColor(r, g, b, 0f);
-
-		BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
-		RenderSystem.disableBlend();
-		//RenderSystem.enableTexture();
-		ms.popPose();
+		poseStack.popMatrix();
 	}
 
-	public static void textured(PoseStack ms, float centerX, float centerY, float alpha, float snappedAngle) {
-		//RenderSystem.enableTexture();
-		PonderGuiTextures.PLACEMENT_INDICATOR_SHEET.bind();
-		RenderSystem.enableDepthTest();
-		RenderSystem.enableBlend();
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
-
-		ms.pushPose();
-		ms.translate(centerX, centerY, 50);
-		float scale = PonderConfig.client().indicatorScale.get()
-			.floatValue() * .75f;
-		ms.scale(scale, scale, 1);
-		ms.scale(12, 12, 1);
+	public static void textured(GuiGraphics graphics, float centerX, float centerY, float alpha, float snappedAngle) {
+		Matrix3x2fStack poseStack = graphics.pose();
+		poseStack.pushMatrix();
+		poseStack.translate(centerX, centerY);
+		float scale = PonderConfig.client().indicatorScale.get().floatValue() * .75f;
+		poseStack.scale(scale, scale);
+		poseStack.scale(12, 12);
 
 		float index = snappedAngle / 22.5f;
-		float tex_size = 16f / 256f;
+		float texSize = 16f / 256f;
 
 		float tx = 0;
-		float ty = index * tex_size;
-		float tw = 1f;
-		float th = tex_size;
+		float ty = index * texSize;
+		float tw = 1;
+		float th = texSize;
 
-		Tesselator tesselator = Tesselator.getInstance();
-		BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+		int size = (int) (36 * scale);
+		graphics.guiRenderState.submitGuiElement(new TexturedArrowRenderState(
+			new Matrix3x2f(graphics.pose()),
+			PonderGuiTextures.PLACEMENT_INDICATOR_SHEET.bind(),
+			size,
+			alpha,
+			tx,
+			ty,
+			tw,
+			th
+		));
 
-		Matrix4f mat = ms.last().pose();
-		buffer.addVertex(mat, -1, -1, 0).setColor(1f, 1f, 1f, alpha).setUv(tx, ty);
-		buffer.addVertex(mat, -1, 1, 0).setColor(1f, 1f, 1f, alpha).setUv(tx, ty + th);
-		buffer.addVertex(mat, 1, 1, 0).setColor(1f, 1f, 1f, alpha).setUv(tx + tw, ty + th);
-		buffer.addVertex(mat, 1, -1, 0).setColor(1f, 1f, 1f, alpha).setUv(tx + tw, ty);
-
-		BufferUploader.drawWithShader(buffer.buildOrThrow());
-
-		RenderSystem.disableBlend();
-		ms.popPose();
+		poseStack.popMatrix();
 	}
 }

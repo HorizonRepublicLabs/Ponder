@@ -3,6 +3,7 @@ package net.createmod.catnip.gui.render;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
+import net.createmod.catnip.render.PonderRenderPipelines;
 import net.createmod.catnip.theme.Color;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.render.TextureSetup;
@@ -38,7 +39,7 @@ public record RadialSectorRenderState(
 
 	@Override
 	public RenderPipeline pipeline() {
-		return null;
+		return PonderRenderPipelines.POSITION_COLOR_STRIP;
 	}
 
 	@Override

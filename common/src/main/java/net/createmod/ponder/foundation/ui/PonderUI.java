@@ -605,7 +605,7 @@ public class PonderUI extends AbstractPonderScreen {
 	protected void renderScene(GuiGraphics graphics, int mouseX, int mouseY, int i, float partialTicks) {
 		SuperRenderTypeBuffer buffer = DefaultSuperRenderTypeBuffer.getInstance();
 		PonderScene scene = scenes.get(i);
-		double value = lazyIndex.getValue(AnimationTickHolder.getPartialTicksUI()); // TODO - Checkover
+		double value = lazyIndex.getValue(AnimationTickHolder.getPartialTicksUI());
 		double diff = i - value;
 		double slide = Mth.lerp(diff * diff, 200, 600) * diff;
 
@@ -672,7 +672,6 @@ public class PonderUI extends AbstractPonderScreen {
 
 		// coords for debug
 		if (PonderIndex.editingModeActive() && !userViewMode) {
-
 			poseStack.scale(-1, -1, 1);
 			poseStack.scale(1 / 16f, 1 / 16f, 1 / 16f);
 			poseStack.translate(1, -8, -1 / 64f);
@@ -857,13 +856,13 @@ public class PonderUI extends AbstractPonderScreen {
 				float fadedWidth = 200 * chase.getValue(partialTicks);
 				UIRenderHelper.streak(graphics, 0, 0, 12, 26, (int) fadedWidth);
 
-				RenderSystem.enableScissor((int) (x * s), 0, (int) (fadedWidth * s), (int) (height * s));
+				RenderSystem.enableScissorForRenderTypeDraws((int) (x * s), 0, (int) (fadedWidth * s), (int) (height * s));
 
 				String tagName = tag
 					.getTitle();
 				graphics.drawString(font, tagName, 3, 8, UIRenderHelper.COLOR_TEXT_ACCENT.getFirst().getRGB(), false);
 
-				RenderSystem.disableScissor();
+				RenderSystem.disableScissorForRenderTypeDraws();
 
 				ms.popMatrix();
 			});

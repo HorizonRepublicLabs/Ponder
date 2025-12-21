@@ -268,9 +268,6 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 		if (x.intValue() < 25)
 			x.setValue(25);
 
-		Matrix3x2fStack ms = graphics.pose();
-		ms.pushMatrix();
-		ms.translate(0, 0, 600);
 		names.forEach(s -> {
 			int sWidth = font.width(s);
 			UIRenderHelper.breadcrumbArrow(graphics, x.intValue(), y.intValue(), sWidth + spacing, 14, spacing / 2,
@@ -280,7 +277,6 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 
 			x.add(sWidth + spacing);
 		});
-		ms.popMatrix();
 	}
 
 	public static boolean isCurrentlyRenderingPreviousScreen() {
