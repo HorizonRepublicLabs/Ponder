@@ -9,16 +9,18 @@ import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.ponder.api.element.MinecartElement;
 import net.createmod.ponder.api.level.PonderLevel;
 import net.createmod.ponder.foundation.PonderScene;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.phys.Vec3;
 
 public class MinecartElementImpl extends AnimatedSceneElementBase implements MinecartElement {
-
 	private final Vec3 location;
 	private final LerpedFloat rotation;
 	@Nullable
@@ -96,9 +98,9 @@ public class MinecartElementImpl extends AnimatedSceneElementBase implements Min
 	}
 
 	@Override
-	public void renderLast(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, float fade, float pt) {
-		PoseStack poseStack = graphics.pose();
-		EntityRenderDispatcher entityrenderermanager = Minecraft.getInstance()
+	protected void renderLast(PonderLevel world, MultiBufferSource buffer, SubmitNodeCollector queue, Camera camera,
+							  CameraRenderState cameraRenderState, PoseStack poseStack, float fade, float pt) {
+		EntityRenderDispatcher dispatcher = Minecraft.getInstance()
 			.getEntityRenderDispatcher();
 		if (entity == null)
 			entity = constructor.create(world, 0, 0, 0);
@@ -110,8 +112,8 @@ public class MinecartElementImpl extends AnimatedSceneElementBase implements Min
 
 		poseStack.mulPose(Axis.YP.rotationDegrees(rotation.getValue(pt)));
 
-		entityrenderermanager.render(entity, 0, 0, 0, 0, pt, poseStack, buffer, lightCoordsFromFade(fade));
+		EntityRenderState state = dispatcher.extractEntity(entity, pt);
+		dispatcher.submit(state, cameraRenderState, 0, 0, 0, poseStack, queue);
 		poseStack.popPose();
 	}
-
 }

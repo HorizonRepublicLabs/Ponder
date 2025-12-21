@@ -13,7 +13,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 
 public class DisplayWorldSectionInstruction extends FadeIntoSceneInstruction<WorldSectionElement> {
-
 	private final Selection initialSelection;
 	@Nullable
 	private final Supplier<WorldSectionElement> mergeOnto;
@@ -56,5 +55,4 @@ public class DisplayWorldSectionInstruction extends FadeIntoSceneInstruction<Wor
 	protected Class<WorldSectionElement> getElementClass() {
 		return WorldSectionElement.class;
 	}
-
 }

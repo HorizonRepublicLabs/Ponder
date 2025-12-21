@@ -22,6 +22,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
+import org.joml.Matrix3x2fStack;
+
 public class InputWindowElement extends AnimatedOverlayElementBase {
 	private final Vec3 sceneSpace;
 	private final Pointing direction;
@@ -123,24 +125,24 @@ public class InputWindowElement extends AnimatedOverlayElementBase {
 			height = 24;
 		}
 
-		PoseStack poseStack = graphics.pose();
-		poseStack.pushPose();
-		poseStack.translate(sceneToScreen.x + xFade, sceneToScreen.y + yFade, 400);
+		Matrix3x2fStack poseStack = graphics.pose();
+		poseStack.pushMatrix();
+		poseStack.translate(sceneToScreen.x + xFade, sceneToScreen.y + yFade);
 
 		PonderUI.renderSpeechBox(graphics, 0, 0, width, height, false, direction, true);
 
-		poseStack.translate(0, 0, 100);
+		poseStack.translate(0, 0);
 
 		if (hasText)
 			graphics.drawString(font, text, 2, (int) ((height - font.lineHeight) / 2f + 2),
 				PonderPalette.WHITE.getColorObject().scaleAlpha(fade).getRGB(), false);
 
 		if (hasIcon) {
-			poseStack.pushPose();
-			poseStack.translate(keyWidth, 0, 0);
-			poseStack.scale(1.5f, 1.5f, 1.5f);
+			poseStack.pushMatrix();
+			poseStack.translate(keyWidth, 0);
+			poseStack.scale(1.5f, 1.5f);
 			icon.render(graphics, 0, 0);
-			poseStack.popPose();
+			poseStack.popMatrix();
 		}
 
 		if (hasItem) {
@@ -148,9 +150,8 @@ public class InputWindowElement extends AnimatedOverlayElementBase {
 				.<GuiGameElement.GuiRenderBuilder>at(keyWidth + (hasIcon ? 24 : 0), 0)
 				.scale(1.5)
 				.render(graphics);
-			RenderSystem.disableDepthTest();
 		}
 
-		poseStack.popPose();
+		poseStack.popMatrix();
 	}
 }

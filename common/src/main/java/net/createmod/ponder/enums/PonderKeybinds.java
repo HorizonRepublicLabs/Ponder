@@ -2,6 +2,11 @@ package net.createmod.ponder.enums;
 
 import java.util.function.Consumer;
 
+import net.createmod.ponder.Ponder;
+import net.minecraft.client.KeyMapping.Category;
+
+import net.minecraft.util.Unit;
+
 import org.lwjgl.glfw.GLFW;
 
 import net.createmod.catnip.client.ConflictSafeKeyMapping;
@@ -10,10 +15,9 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
 
 public enum PonderKeybinds {
-
 	PONDER("ponder", GLFW.GLFW_KEY_W);
 
-	public static final String CATEGORY = "key.categories.ponder";
+	public final Category CATEGORY = new Category(Ponder.id("ponder"));
 
 	private final KeyMapping mapping;
 

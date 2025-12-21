@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.resources.model.ModelBakery;
 
 public class DefaultSuperRenderTypeBuffer implements SuperRenderTypeBuffer {
-
 	private static final DefaultSuperRenderTypeBuffer INSTANCE = new DefaultSuperRenderTypeBuffer();
 
 	public static DefaultSuperRenderTypeBuffer getInstance() {
@@ -69,7 +68,6 @@ public class DefaultSuperRenderTypeBuffer implements SuperRenderTypeBuffer {
 			map.put(Sheets.solidBlockSheet(), fixedBufferPack.buffer(ChunkSectionLayer.SOLID));
 			map.put(Sheets.cutoutBlockSheet(), fixedBufferPack.buffer(ChunkSectionLayer.CUTOUT));
 			map.put(Sheets.translucentItemSheet(), fixedBufferPack.buffer(ChunkSectionLayer.TRANSLUCENT));
-//			map.put(Sheets.bannerSheet(), fixedBufferPack.buffer(RenderType.cutoutMipped()));
 			put(map, Sheets.translucentBlockItemSheet());
 			put(map, Sheets.shieldSheet());
 			put(map, Sheets.bedSheet());
@@ -82,9 +80,6 @@ public class DefaultSuperRenderTypeBuffer implements SuperRenderTypeBuffer {
 			put(map, RenderTypes.glintTranslucent());
 			put(map, RenderTypes.entityGlint());
 			put(map, RenderTypes.waterMask());
-			ModelBakery.DESTROY_TYPES.forEach((renderType) -> {
-				put(map, renderType);
-			});
 
 			//extras
 			put(map, PonderRenderTypes.outlineSolid());
@@ -94,6 +89,5 @@ public class DefaultSuperRenderTypeBuffer implements SuperRenderTypeBuffer {
 		private static void put(Object2ObjectLinkedOpenHashMap<RenderType, ByteBufferBuilder> map, RenderType type) {
 			map.put(type, new ByteBufferBuilder(type.bufferSize()));
 		}
-
 	}
 }

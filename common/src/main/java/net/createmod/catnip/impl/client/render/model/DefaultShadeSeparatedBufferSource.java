@@ -7,6 +7,7 @@ import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import net.createmod.catnip.client.render.model.ShadeSeparatedBufferSource;
 import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 
 class DefaultShadeSeparatedBufferSource implements ShadeSeparatedBufferSource {
 	private static final ChunkSectionLayer[] CHUNK_LAYERS = ChunkSectionLayer.values();
@@ -17,10 +18,10 @@ class DefaultShadeSeparatedBufferSource implements ShadeSeparatedBufferSource {
 
 	DefaultShadeSeparatedBufferSource() {
 		for (int layerIndex = 0; layerIndex < CHUNK_LAYER_AMOUNT; layerIndex++) {
-			ChunkSectionLayer renderType = CHUNK_LAYERS[layerIndex];
-			MeshEmitter emitter = new MeshEmitter(renderType);
+			ChunkSectionLayer layer = CHUNK_LAYERS[layerIndex];
+			MeshEmitter emitter = new MeshEmitter(layer);
 			emitters[layerIndex] = emitter;
-			emitterMap.put(renderType, emitter);
+			emitterMap.put(layer, emitter);
 		}
 	}
 

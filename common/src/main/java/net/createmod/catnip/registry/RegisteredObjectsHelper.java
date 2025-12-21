@@ -2,20 +2,21 @@ package net.createmod.catnip.registry;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Fluid;
+
+import java.util.Optional;
 
 public class RegisteredObjectsHelper {
 	public static <V> Identifier getKeyOrThrow(Registry<V> registry, V value) {
@@ -58,25 +59,22 @@ public class RegisteredObjectsHelper {
 		return getKeyOrThrow(BuiltInRegistries.RECIPE_SERIALIZER, value);
 	}
 
-	public static Item getItem(Identifier id) {
-		return BuiltInRegistries.ITEM.get(id);
+	public static Optional<Item> getItem(Identifier id) {
+		return BuiltInRegistries.ITEM.get(id).map(Reference::value);
 	}
 
-	public static Block getBlock(Identifier id) {
-		return BuiltInRegistries.BLOCK.get(id);
+	public static Optional<Block> getBlock(Identifier id) {
+		return BuiltInRegistries.BLOCK.get(id).map(Reference::value);
 	}
 
 	@Nullable
 	public static ItemLike getItemOrBlock(Identifier id) {
-		Item item = getItem(id);
-		if (item != Items.AIR)
-			return item;
+		Optional<Item> item = getItem(id);
+		if (item.isPresent())
+			return item.get();
 
-		Block block = getBlock(id);
-		if (block != Blocks.AIR)
-			return block;
-
-		return null;
+		Optional<Block> block = getBlock(id);
+		return block.orElse(null);
 	}
 
 	public static Identifier getKeyOrThrow(ItemLike itemLike) {
@@ -88,5 +86,4 @@ public class RegisteredObjectsHelper {
 
 		throw new IllegalArgumentException("Could not get key for itemLike " + itemLike + "!");
 	}
-
 }

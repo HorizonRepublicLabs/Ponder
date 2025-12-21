@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.createmod.catnip.gui.NavigatableSimiScreen;
 import net.createmod.catnip.gui.ScreenOpener;
@@ -18,29 +17,27 @@ import net.createmod.catnip.lang.ClientFontHelper;
 import net.createmod.catnip.layout.LayoutHelper;
 import net.createmod.catnip.registry.RegisteredObjectsHelper;
 import net.createmod.ponder.Ponder;
-import net.createmod.ponder.foundation.PonderChapter;
 import net.createmod.ponder.foundation.PonderIndex;
 import net.createmod.ponder.foundation.PonderTag;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.renderer.Rect2i;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 
+import org.joml.Matrix3x2fStack;
+
 public class PonderTagScreen extends AbstractPonderScreen {
+	private static final float MAIN_YMULT = 0.15f;
+
 	private final PonderTag tag;
 	protected final List<ItemEntry> items = new ArrayList<>();
 	private final double itemXmult = 0.5;
 	@Nullable
 	protected Rect2i itemArea;
-	protected final List<PonderChapter> chapters = new ArrayList<>();
-	private final double chapterXmult = 0.5;
-	private final double chapterYmult = 0.75;
-	@Nullable
-	protected Rect2i chapterArea;
-	private final double mainYmult = 0.15;
 
 	private ItemStack hoveredItem = ItemStack.EMPTY;
 
@@ -149,13 +146,11 @@ public class PonderTagScreen extends AbstractPonderScreen {
 		super.renderWindow(graphics, mouseX, mouseY, partialTicks);
 		renderItems(graphics, mouseX, mouseY, partialTicks);
 
-		renderChapters(graphics, mouseX, mouseY, partialTicks);
+		Matrix3x2fStack poseStack = graphics.pose();
+		poseStack.pushMatrix();
+		poseStack.translate(width / 2f - 120f, height * MAIN_YMULT - 40f);
 
-		PoseStack poseStack = graphics.pose();
-		poseStack.pushPose();
-		poseStack.translate(width / 2 - 120, height * mainYmult - 40, 0);
-
-		poseStack.pushPose();
+		poseStack.pushMatrix();
 		//poseStack.translate(0, 0, 800);
 		int x = 31 + 20 + 8;
 		int y = 31;
@@ -175,25 +170,25 @@ public class PonderTagScreen extends AbstractPonderScreen {
 		graphics.drawString(font, Ponder.lang().translate(AbstractPonderScreen.PONDERING_TAG).component(), x, y - 6, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().getRGB(), false);
 		y += 8;
 		x += 0;
-		poseStack.translate(x, y, 0);
-		poseStack.translate(0, 0, 5);
+		poseStack.translate(x, y);
+		poseStack.translate(0, 0);
 		graphics.drawString(font, title, 0, 0, UIRenderHelper.COLOR_TEXT.getFirst().getRGB(), false);
-		poseStack.popPose();
+		poseStack.popMatrix();
 
-		poseStack.pushPose();
-		poseStack.translate(23, 23, 10);
-		poseStack.scale(1.66f, 1.66f, 1.66f);
+		poseStack.pushMatrix();
+		poseStack.translate(23, 23);
+		poseStack.scale(1.66f, 1.66f);
 		tag.render(graphics, 0, 0);
-		poseStack.popPose();
-		poseStack.popPose();
+		poseStack.popMatrix();
+		poseStack.popMatrix();
 
-		poseStack.pushPose();
+		poseStack.pushMatrix();
 		int w = (int) (width * .45);
 		x = (width - w) / 2;
 		y = getItemsY() - 10 + Math.max(itemArea.getHeight(), 48);
 
 		String desc = tag.getDescription();
-		int h = font.wordWrapHeight(desc, w);
+		int h = font.wordWrapHeight(FormattedText.of(desc), w);
 
 
 		//PonderUI.renderBox(poseStack, x - 3, y - 3, w + 6, h + 6, false);
@@ -204,9 +199,9 @@ public class PonderTagScreen extends AbstractPonderScreen {
 			.withBounds(w + 6, h + 6)
 			.render(graphics);
 
-		poseStack.translate(0, 0, 100);
-		ClientFontHelper.drawSplitString(graphics, poseStack, font, desc, x, y, w, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
-		poseStack.popPose();
+		poseStack.translate(0, 0);
+		ClientFontHelper.drawSplitString(graphics, font, desc, x, y, w, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
+		poseStack.popMatrix();
 	}
 
 	protected void renderItems(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
@@ -219,9 +214,9 @@ public class PonderTagScreen extends AbstractPonderScreen {
 		String relatedTitle = Ponder.lang().translate(AbstractPonderScreen.ASSOCIATED).string();
 		int stringWidth = font.width(relatedTitle);
 
-		PoseStack poseStack = graphics.pose();
-		poseStack.pushPose();
-		poseStack.translate(x, y, 0);
+		Matrix3x2fStack poseStack = graphics.pose();
+		poseStack.pushMatrix();
+		poseStack.translate(x, y);
 		new BoxElement()
 			.withBackground(PonderUI.BACKGROUND_FLAT)
 			.gradientBorder(PonderUI.COLOR_IDLE)
@@ -229,52 +224,36 @@ public class PonderTagScreen extends AbstractPonderScreen {
 			.withBounds(stringWidth + 10, 10)
 			.render(graphics);
 
-		poseStack.translate(0, 0, 200);
+		poseStack.translate(0, 0);
 
 //		UIRenderHelper.streak(0, itemArea.getX() - 10, itemArea.getY() - 20, 20, 180, 0x101010);
 		graphics.drawCenteredString(font, relatedTitle, windowWidth / 2, itemArea.getY() - 20, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
 
-		poseStack.translate(0, 0, -200);
+		poseStack.translate(0, 0);
 
 		UIRenderHelper.streak(graphics, 0, 0, 0, itemArea.getHeight() + 10, itemArea.getWidth() / 2 + 75);
 		UIRenderHelper.streak(graphics, 180, 0, 0, itemArea.getHeight() + 10, itemArea.getWidth() / 2 + 75);
 
-		poseStack.popPose();
+		poseStack.popMatrix();
 
 	}
 
 	public int getItemsY() {
-		return (int) (mainYmult * height + 85);
-	}
-
-	protected void renderChapters(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		if (chapters.isEmpty())
-			return;
-
-		int chapterX = (int) (width * chapterXmult);
-		int chapterY = (int) (height * chapterYmult);
-
-		graphics.pose().pushPose();
-		graphics.pose().translate(chapterX, chapterY, 0);
-
-		UIRenderHelper.streak(graphics, 0, chapterArea.getX() - 10, chapterArea.getY() - 20, 20, 220);
-		graphics.drawString(font, "More Topics to Ponder about", chapterArea.getX() - 5, chapterArea.getY() - 25, UIRenderHelper.COLOR_TEXT_ACCENT.getFirst().getRGB(), false);
-
-		graphics.pose().popPose();
+		return (int) (MAIN_YMULT * height + 85);
 	}
 
 	@Override
 	protected void renderWindowForeground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
 		RenderSystem.disableDepthTest();
-		PoseStack poseStack = graphics.pose();
-		poseStack.pushPose();
+		Matrix3x2fStack poseStack = graphics.pose();
+		poseStack.pushMatrix();
 		poseStack.translate(0, 0, 200);
 
 		if (!hoveredItem.isEmpty()) {
 			graphics.renderTooltip(font, hoveredItem, mouseX, mouseY);
 		}
 
-		poseStack.popPose();
+		poseStack.popMatrix();
 		RenderSystem.enableDepthTest();
 	}
 

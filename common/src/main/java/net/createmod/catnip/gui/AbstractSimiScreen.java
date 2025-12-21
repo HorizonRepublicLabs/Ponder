@@ -21,7 +21,6 @@ import org.joml.Matrix3x2fStack;
 import org.jspecify.annotations.Nullable;
 
 public abstract class AbstractSimiScreen extends Screen {
-
 	protected static final Color BACKGROUND_COLOR = new Color(0x50_101010, true);
 
 	protected int windowWidth, windowHeight;

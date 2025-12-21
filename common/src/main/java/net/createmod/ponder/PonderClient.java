@@ -61,7 +61,7 @@ public class PonderClient {
 	}
 
 	public static void onRenderWorld(PoseStack ms) {
-		Vec3 cameraPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+		Vec3 cameraPos = Minecraft.getInstance().gameRenderer.getMainCamera().position();
 		float partialTicks = AnimationTickHolder.getPartialTicks();
 
 		ms.pushPose();

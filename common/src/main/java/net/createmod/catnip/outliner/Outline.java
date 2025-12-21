@@ -23,7 +23,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class Outline {
-
 	protected final OutlineParams params;
 
 	protected final Vector4f colorTemp = new Vector4f();
@@ -600,5 +599,4 @@ public abstract class Outline {
 			vec.set(rgb.getRedAsFloat(), rgb.getGreenAsFloat(), rgb.getBlueAsFloat(), rgb.getAlphaAsFloat() * alpha);
 		}
 	}
-
 }

@@ -11,6 +11,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.common.ClientCommonPacketListener;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
@@ -62,9 +63,9 @@ public class FabricNetworkHelper implements NetworkHelper {
 
 	@Override
 	public void sendToClientsTrackingAndSelf(Entity entity, CustomPacketPayload payload) {
-		Packet<?> packet = ServerPlayNetworking.createS2CPacket(payload);
+		Packet<ClientCommonPacketListener> packet = ServerPlayNetworking.createS2CPacket(payload);
 		if (entity.level().getChunkSource() instanceof ServerChunkCache chunkCache) {
-			chunkCache.broadcastAndSend(entity, packet);
+			chunkCache.sendToTrackingPlayersAndSelf(entity, packet);
 		} else {
 			throw new IllegalStateException("Cannot send clientbound payloads on the client");
 		}
@@ -72,9 +73,9 @@ public class FabricNetworkHelper implements NetworkHelper {
 
 	@Override
 	public void sendToClientsTrackingEntity(Entity entity, CustomPacketPayload payload) {
-		Packet<?> packet = ServerPlayNetworking.createS2CPacket(payload);
+		Packet<ClientCommonPacketListener> packet = ServerPlayNetworking.createS2CPacket(payload);
 		if (entity.level().getChunkSource() instanceof ServerChunkCache chunkCache) {
-			chunkCache.broadcast(entity, packet);
+			chunkCache.sendToTrackingPlayers(entity, packet);
 		} else {
 			throw new IllegalStateException("Cannot send clientbound payloads on the client");
 		}

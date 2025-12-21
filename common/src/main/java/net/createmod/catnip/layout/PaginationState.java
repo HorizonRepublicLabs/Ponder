@@ -116,6 +116,4 @@ public final class PaginationState {
 			"elementsPerPage=" + elementsPerPage + ", " +
 			"elementCount=" + elementCount + ']';
 	}
-
-
 }

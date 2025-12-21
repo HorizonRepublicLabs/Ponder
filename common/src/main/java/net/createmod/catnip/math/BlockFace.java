@@ -9,7 +9,6 @@ import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.codec.StreamCodec;
 
 public class BlockFace extends Pair<BlockPos, Direction> {
@@ -53,17 +52,4 @@ public class BlockFace extends Pair<BlockPos, Direction> {
 	public BlockPos getConnectedPos() {
 		return getPos().relative(getFace());
 	}
-
-	public CompoundTag serializeNBT() {
-		CompoundTag compoundNBT = new CompoundTag();
-		compoundNBT.put("Pos", NbtUtils.writeBlockPos(getPos()));
-		NBTHelper.writeEnum(compoundNBT, "Face", getFace());
-		return compoundNBT;
-	}
-
-	public static BlockFace fromNBT(CompoundTag compound) {
-		return new BlockFace(NBTHelper.readBlockPos(compound, "Pos"),
-			NBTHelper.readEnum(compound, "Face", Direction.class));
-	}
-
 }

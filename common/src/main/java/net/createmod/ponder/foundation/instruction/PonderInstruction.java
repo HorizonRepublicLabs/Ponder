@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 import net.createmod.ponder.foundation.PonderScene;
 
 public abstract class PonderInstruction {
-
 	public boolean isBlocking() {
 		return false;
 	}
@@ -43,5 +42,4 @@ public abstract class PonderInstruction {
 		}
 
 	}
-
 }

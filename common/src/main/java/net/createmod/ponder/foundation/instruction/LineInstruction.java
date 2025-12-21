@@ -5,7 +5,6 @@ import net.createmod.ponder.foundation.PonderScene;
 import net.minecraft.world.phys.Vec3;
 
 public class LineInstruction extends TickingInstruction {
-
 	private final PonderPalette color;
 	private final Vec3 start;
 	private final Vec3 end;
@@ -27,5 +26,4 @@ public class LineInstruction extends TickingInstruction {
 			.lineWidth(big ? 1 / 8f : 1 / 16f)
 			.colored(color.getColor());
 	}
-
 }

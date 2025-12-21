@@ -326,5 +326,4 @@ public class Color {
 		return rainbowColor(Hashing.crc32().hashLong(l).asInt())
 			.mixWith(WHITE, 0.5f);
 	}
-
 }

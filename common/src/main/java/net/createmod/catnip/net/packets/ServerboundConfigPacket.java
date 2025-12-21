@@ -7,6 +7,7 @@ import net.createmod.catnip.config.ui.ConfigHelper;
 import net.createmod.catnip.net.CatnipPackets;
 import net.createmod.catnip.net.base.ServerboundPacketPayload;
 import net.createmod.ponder.Ponder;
+import net.minecraft.commands.Commands;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
@@ -46,7 +47,7 @@ public class ServerboundConfigPacket<T> implements ServerboundPacketPayload {
 	@Override
 	public void handle(ServerPlayer player) {
 		try {
-			if (!player.hasPermissions(2))
+			if (!Commands.LEVEL_GAMEMASTERS.check(player.permissions()))
 				return;
 
 			ModConfigSpec spec = ConfigHelper.findModConfigSpecFor(ModConfig.Type.SERVER, modID);

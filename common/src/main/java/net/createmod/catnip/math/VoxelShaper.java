@@ -17,7 +17,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class VoxelShaper {
-
 	private final Map<Direction, VoxelShape> shapes = new HashMap<>();
 
 	public VoxelShape get(Direction direction) {
@@ -108,10 +107,10 @@ public class VoxelShaper {
 				.add(center);
 
 			VoxelShape rotated = blockBox(v1, v2);
-			result.setValue(Shapes.or(result.getValue(), rotated));
+			result.setValue(Shapes.or(result.get(), rotated));
 		});
 
-		return result.getValue();
+		return result.get();
 	}
 
 	protected static VoxelShape blockBox(Vec3 v1, Vec3 v2) {
@@ -140,5 +139,4 @@ public class VoxelShaper {
 			return new Vec3(0, -horizontalAngleFromDirection(direction), 0);
 		}
 	}
-
 }

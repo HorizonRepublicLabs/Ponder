@@ -9,7 +9,7 @@ neoForge {
 
     if ("parchment_version"() != "none") {
         parchment {
-            minecraftVersion = "minecraft_version"()
+            minecraftVersion = "parchment_minecraft_version"()
             mappingsVersion = "parchment_version"()
         }
     }

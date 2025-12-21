@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 
 public interface ModHooksHelper {
-
 	/**
 	 * Attempts to place a single Block as a Player, and should fire according events
 	 *
@@ -19,9 +18,8 @@ public interface ModHooksHelper {
 	boolean playerPlaceSingleBlock(Player player, Level level, BlockPos pos, BlockState newState);
 
 	default ItemStack getCloneItemFromBlockstate(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-		return state.getBlock().getCloneItemStack(level, pos, state);
+		return state.getCloneItemStack(level, pos, true);
 	}
 
 	boolean isPlayerFake(ServerPlayer player);
-
 }

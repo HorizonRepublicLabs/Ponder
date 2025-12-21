@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
-import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import com.mojang.blaze3d.opengl.GlConst;
@@ -33,7 +32,6 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.util.Mth;
 
 public class UIRenderHelper {
-
 	public static final Couple<Color> COLOR_TEXT = Couple.create(
 		new Color(0xff_eeeeee),
 		new Color(0xff_a3a3a3)
@@ -83,7 +81,7 @@ public class UIRenderHelper {
 	public static void swapAndBlitColor(RenderTarget src, RenderTarget dst) {
 		GlStateManager._glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, src.frameBufferId);
 		GlStateManager._glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, dst.frameBufferId);
-		GlStateManager._glBlitFrameBuffer(0, 0, src.viewWidth, src.viewHeight, 0, 0, dst.viewWidth, dst.viewHeight, GL30.GL_COLOR_BUFFER_BIT, GL20.GL_LINEAR);
+		GlStateManager._glBlitFrameBuffer(0, 0, src.viewWidth, src.viewHeight, 0, 0, dst.viewWidth, dst.viewHeight, GL30.GL_COLOR_BUFFER_BIT, GL30.GL_LINEAR);
 
 		GlStateManager._glBindFramebuffer(GlConst.GL_FRAMEBUFFER, dst.frameBufferId);
 	}

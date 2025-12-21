@@ -3,7 +3,6 @@ package net.createmod.ponder.foundation.instruction;
 import net.createmod.ponder.foundation.PonderScene;
 
 public class MarkAsFinishedInstruction extends PonderInstruction {
-
 	@Override
 	public boolean isComplete() {
 		return true;
@@ -18,5 +17,4 @@ public class MarkAsFinishedInstruction extends PonderInstruction {
 	public void onScheduled(PonderScene scene) {
 		scene.stopCounting();
 	}
-
 }

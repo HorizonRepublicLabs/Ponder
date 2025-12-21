@@ -15,7 +15,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SuperBufferFactory {
-
 	private static final ThreadLocal<ThreadLocalObjects> THREAD_LOCAL_OBJECTS = ThreadLocal.withInitial(ThreadLocalObjects::new);
 
 	private static SuperBufferFactory instance = new SuperBufferFactory();

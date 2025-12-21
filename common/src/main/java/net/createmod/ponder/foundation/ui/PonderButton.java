@@ -17,8 +17,12 @@ import net.createmod.ponder.foundation.PonderTag;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonInfo;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
+
+import org.joml.Matrix3x2fStack;
 
 public class PonderButton extends BoxWidget {
 
@@ -118,12 +122,12 @@ public class PonderButton extends BoxWidget {
 			return;
 
 		if (shortcut != null) {
-			PoseStack poseStack = graphics.pose();
-			poseStack.pushPose();
-			poseStack.translate(0, 0, z + 10);
+			Matrix3x2fStack poseStack = graphics.pose();
+			poseStack.pushMatrix();
+			poseStack.translate(0, 0);
 			graphics.drawCenteredString(Minecraft.getInstance().font, shortcut.getTranslatedKeyMessage().getString().toLowerCase(
 				Locale.ROOT), getX() + width / 2 + 8, getY() + height - 6, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().scaleAlpha(fade.getValue()).getRGB());
-			poseStack.popPose();
+			poseStack.popMatrix();
 		}
 	}
 
@@ -133,8 +137,8 @@ public class PonderButton extends BoxWidget {
 	}
 
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (shortcut != null && shortcut.matches(keyCode, scanCode)) {
+	public boolean keyPressed(KeyEvent event) {
+		if (shortcut != null && shortcut.matches(event)) {
 			gradientColor = getColorClick();
 			startGradientAnimation(getColorForState(), 0.15);
 
@@ -142,11 +146,11 @@ public class PonderButton extends BoxWidget {
 			return true;
 		}
 
-		return super.keyPressed(keyCode, scanCode, modifiers);
+		return super.keyPressed(event);
 	}
 
 	@Override
-	protected boolean isValidClickButton(int i) {
+	protected boolean isValidClickButton(MouseButtonInfo buttonInfo) {
 		return isVisible();
 	}
 

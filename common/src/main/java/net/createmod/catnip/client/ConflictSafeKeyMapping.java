@@ -19,11 +19,11 @@ import net.minecraft.client.KeyMapping;
 // TODO: Port - Remove in 1.21.9+
 @SuppressWarnings("JavadocReference")
 public class ConflictSafeKeyMapping extends KeyMapping {
-	public ConflictSafeKeyMapping(String description, int defaultKey, String category) {
+	public ConflictSafeKeyMapping(String description, int defaultKey, Category category) {
 		super(description, defaultKey, category);
 	}
 
-	public ConflictSafeKeyMapping(String description, InputConstants.Type type, int defaultKey, String category) {
+	public ConflictSafeKeyMapping(String description, InputConstants.Type type, int defaultKey, Category category) {
 		super(description, type, defaultKey, category);
 	}
 }

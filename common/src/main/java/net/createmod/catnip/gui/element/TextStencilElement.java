@@ -8,8 +8,9 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
-public class TextStencilElement extends DelegatedStencilElement {
+import org.joml.Matrix3x2fStack;
 
+public class TextStencilElement extends DelegatedStencilElement {
 	protected Font font;
 	protected MutableComponent component = Component.empty();
 	protected boolean centerVertically = false;
@@ -58,7 +59,7 @@ public class TextStencilElement extends DelegatedStencilElement {
 			y = height / 2f - (font.lineHeight - 1) / 2f;
 
 		graphics.drawString(font, component, Math.round(x), Math.round(y), Color.BLACK.getRGB(), false);
-		graphics.flush();
+		//graphics.flush(); TODO - Is there an replacement?
 	}
 
 	@Override
@@ -70,11 +71,11 @@ public class TextStencilElement extends DelegatedStencilElement {
 		if (centerVertically)
 			y = height / 2f - (font.lineHeight - 1) / 2f;
 
-		PoseStack poseStack = graphics.pose();
-		poseStack.pushPose();
-		poseStack.translate(x, y, 0);
+		Matrix3x2fStack poseStack = graphics.pose();
+		poseStack.pushMatrix();
+		poseStack.translate(x, y);
 		element.render(graphics, font.width(component), font.lineHeight + 2, alpha);
-		poseStack.popPose();
+		poseStack.popMatrix();
 	}
 
 	public MutableComponent getComponent() {

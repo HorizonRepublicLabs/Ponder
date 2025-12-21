@@ -13,7 +13,6 @@ import net.minecraft.world.level.BlockAndTintGetter;
 
 @SuppressWarnings({"UnusedReturnValue", "unused", "unchecked"})
 public interface SuperByteBuffer extends TransformStack<SuperByteBuffer> {
-
 	static int maxLight(int packedLight1, int packedLight2) {
 		int blockLight1 = LightTexture.block(packedLight1);
 		int skyLight1 = LightTexture.sky(packedLight1);

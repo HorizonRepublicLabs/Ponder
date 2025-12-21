@@ -10,7 +10,6 @@ import net.createmod.ponder.api.scene.PonderStoryBoard;
 import net.minecraft.resources.Identifier;
 
 public class GenericPonderSceneRegistrationHelper<T> implements PonderSceneRegistrationHelper<T> {
-
 	private final PonderSceneRegistrationHelper<Identifier> helperDelegate;
 	private final Function<T, Identifier> keyGen;
 

@@ -88,7 +88,6 @@ import net.minecraft.world.phys.Vec3;
  * Enqueue instructions to the schedule via this object's methods.
  */
 public class PonderSceneBuilder implements SceneBuilder {
-
 	private final OverlayInstructions overlay;
 	private final WorldInstructions world;
 	private final DebugInstructions debug;
@@ -219,7 +218,6 @@ public class PonderSceneBuilder implements SceneBuilder {
 	}
 
 	public class PonderEffectInstructions implements EffectInstructions {
-
 		@Override
 		public void emitParticles(Vec3 location, ParticleEmitter emitter, float amountPerCycle, int cycles) {
 			addInstruction(new EmitParticlesInstruction(location, emitter, amountPerCycle, cycles));
@@ -249,15 +247,12 @@ public class PonderSceneBuilder implements SceneBuilder {
 
 		@Override
 		public void createRedstoneParticles(BlockPos pos, int color, int amount) {
-			Vector3f rgb = new Color(color).asVectorF();
 			addInstruction(new EmitParticlesInstruction(VecHelper.getCenterOf(pos),
-				effects().particleEmitterWithinBlockSpace(new DustParticleOptions(rgb, 1), Vec3.ZERO), amount, 2));
+				effects().particleEmitterWithinBlockSpace(new DustParticleOptions(color, 1), Vec3.ZERO), amount, 2));
 		}
-
 	}
 
 	public class PonderOverlayInstructions implements OverlayInstructions {
-
 		@Override
 		public TextElementBuilder showText(int duration) {
 			TextWindowElement textWindowElement = new TextWindowElement();
@@ -317,7 +312,7 @@ public class PonderSceneBuilder implements SceneBuilder {
 
 		@Override
 		public void showFilterSlotInput(Vec3 location, Direction side, int duration) {
-			location = location.add(Vec3.atLowerCornerOf(side.getNormal()).scale(-3 / 128f));
+			location = location.add(side.getUnitVec3().scale(-3 / 128f));
 			Vec3 expands = VecHelper.axisAlingedPlaneOf(side).scale(11 / 128f);
 			addInstruction(new HighlightValueBoxInstruction(location, expands, duration));
 		}
@@ -336,11 +331,9 @@ public class PonderSceneBuilder implements SceneBuilder {
 		public void showOutline(PonderPalette color, Object slot, Selection selection, int duration) {
 			addInstruction(new OutlineSelectionInstruction(color, slot, selection, duration));
 		}
-
 	}
 
 	public class PonderSpecialInstructions implements SpecialInstructions {
-
 		@Override
 		public ElementLink<ParrotElement> createBirb(Vec3 location, Supplier<? extends ParrotPose> pose) {
 			ElementLink<ParrotElement> link = new ElementLinkImpl<>(ParrotElement.class);
@@ -651,7 +644,6 @@ public class PonderSceneBuilder implements SceneBuilder {
 	}
 
 	public class PonderDebugInstructions implements DebugInstructions {
-
 		@Override
 		public void debugSchematic() {
 			addInstruction(
@@ -667,7 +659,5 @@ public class PonderSceneBuilder implements SceneBuilder {
 		public void enqueueCallback(Consumer<PonderScene> callback) {
 			addInstruction(callback);
 		}
-
 	}
-
 }

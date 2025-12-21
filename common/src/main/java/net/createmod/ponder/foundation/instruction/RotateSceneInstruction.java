@@ -5,7 +5,6 @@ import net.createmod.ponder.foundation.PonderScene;
 import net.createmod.ponder.foundation.PonderScene.SceneTransform;
 
 public class RotateSceneInstruction extends PonderInstruction {
-
 	private final float xRot;
 	private final float yRot;
 	private final boolean relative;
@@ -29,5 +28,4 @@ public class RotateSceneInstruction extends PonderInstruction {
 		transform.xRotation.chase(targetX, .1f, Chaser.EXP);
 		transform.yRotation.chase(targetY, .1f, Chaser.EXP);
 	}
-
 }

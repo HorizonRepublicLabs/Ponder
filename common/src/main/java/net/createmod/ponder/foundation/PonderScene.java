@@ -18,8 +18,8 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
-import net.minecraft.resources.Identifier;
+import net.minecraft.client.renderer.SubmitNodeStorage;
+import net.minecraft.client.renderer.state.CameraRenderState;
 
 import org.apache.commons.lang3.mutable.MutableDouble;
 import org.apache.commons.lang3.mutable.MutableObject;
@@ -54,12 +54,12 @@ import net.createmod.ponder.foundation.ui.PonderUI;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Vec3i;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.ItemStack;
@@ -70,7 +70,6 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
 public class PonderScene {
-
 	public static final String TITLE_KEY = "header";
 
 	final PonderLocalization localization;
@@ -93,11 +92,13 @@ public class PonderScene {
 	private final String namespace;
 	private final Identifier identifier;
 	private final SceneCamera camera;
+	private final CameraRenderState cameraRenderState;
 	private final Outliner outliner;
 	private SceneTransform transform;
 //	private String defaultTitle;
 
 	private final WorldSectionElement baseWorldSection;
+	@Nullable
 	private final Entity renderViewEntity;
 	private Vec3 pointOfInterest;
 	@Nullable
@@ -143,6 +144,7 @@ public class PonderScene {
 		transform = new SceneTransform();
 		basePlateSize = getBounds().getXSpan();
 		camera = new SceneCamera();
+		cameraRenderState = new CameraRenderState();
 		baseWorldSection = new WorldSectionElementImpl();
 		keyframeTimes = new IntArrayList(4);
 		scaleFactor = 1;
@@ -174,17 +176,17 @@ public class PonderScene {
 				return;
 			double distanceTo = rayTrace.getFirst()
 				.distanceTo(from);
-			if (nearestHit.getValue() != null && distanceTo >= bestDistance.getValue())
+			if (nearestHit.get() != null && distanceTo >= bestDistance.doubleValue())
 				return;
 
 			nearestHit.setValue(Pair.of(wse, rayTrace));
 			bestDistance.setValue(distanceTo);
 		});
 
-		if (nearestHit.getValue() == null)
+		if (nearestHit.get() == null)
 			return Pair.of(ItemStack.EMPTY, BlockPos.ZERO);
 
-		Pair<Vec3, BlockHitResult> selectedHit = nearestHit.getValue().getSecond();
+		Pair<Vec3, BlockHitResult> selectedHit = nearestHit.get().getSecond();
 		BlockPos selectedPos = selectedHit.getSecond().getBlockPos();
 
 		BlockPos origin = new BlockPos(basePlateOffsetX, 0, basePlateOffsetZ);
@@ -194,13 +196,13 @@ public class PonderScene {
 		if (BoundingBox.fromCorners(origin, origin.offset(new Vec3i(basePlateSize - 1, 0, basePlateSize - 1)))
 			.isInside(selectedPos)) {
 			if (PonderIndex.editingModeActive())
-				nearestHit.getValue()
+				nearestHit.get()
 					.getFirst()
 					.selectBlock(selectedPos);
 			return Pair.of(ItemStack.EMPTY, selectedPos);
 		}
 
-		nearestHit.getValue()
+		nearestHit.get()
 			.getFirst()
 			.selectBlock(selectedPos);
 		BlockState blockState = world.getBlockState(selectedPos);
@@ -261,32 +263,39 @@ public class PonderScene {
 		activeSchedule.add(new HideAllInstruction(10, null));
 	}
 
-	public void renderScene(SuperRenderTypeBuffer buffer, GuiGraphics graphics, float pt) {
-		PoseStack ms = graphics.pose();
-		ms.pushPose();
+	public void renderScene(SuperRenderTypeBuffer buffer, SubmitNodeStorage queue, PoseStack poseStack, float pt) {
 		Minecraft mc = Minecraft.getInstance();
+
+		poseStack.pushPose();
 		Entity prevRVE = mc.getCameraEntity();
 
+		// Setup CameraRenderState
+		camera.set(transform.xRotation.getValue(pt) + 90, transform.yRotation.getValue(pt) + 180);
+		cameraRenderState.initialized = camera.isInitialized();
+		cameraRenderState.pos = camera.position();
+		cameraRenderState.blockPos = camera.blockPosition();
+		cameraRenderState.entityPos = camera.entity().getPosition(pt);
+		cameraRenderState.orientation.set(camera.rotation());
+
 		mc.setCameraEntity(this.renderViewEntity);
-		forEachVisible(PonderSceneElement.class, e -> e.renderFirst(world, buffer, graphics, pt));
+		forEachVisible(PonderSceneElement.class, e -> e.renderFirst(world, buffer, queue, camera, cameraRenderState, poseStack, pt));
 		mc.setCameraEntity(prevRVE);
 
 		for (ChunkSectionLayer layer : ChunkSectionLayer.values())
-			forEachVisible(PonderSceneElement.class, e -> e.renderLayer(world, buffer, layer, graphics, pt));
+			forEachVisible(PonderSceneElement.class, e -> e.renderLayer(world, buffer, layer, queue, camera, cameraRenderState, poseStack, pt));
 
-		forEachVisible(PonderSceneElement.class, e -> e.renderLast(world, buffer, graphics, pt));
-		camera.set(transform.xRotation.getValue(pt) + 90, transform.yRotation.getValue(pt) + 180);
-		world.renderEntities(ms, buffer, camera, pt);
-		world.renderParticles(ms, buffer, camera, pt);
-		outliner.renderOutlines(ms, buffer, Vec3.ZERO, pt);
+		forEachVisible(PonderSceneElement.class, e -> e.renderLast(world, buffer, queue, camera, cameraRenderState, poseStack, pt));
+		world.renderEntities(poseStack, queue, camera, cameraRenderState, pt);
+		world.renderParticles(poseStack, queue, camera, cameraRenderState, pt);
+		outliner.renderOutlines(poseStack, buffer, Vec3.ZERO, pt);
 
-		ms.popPose();
+		poseStack.popPose();
 	}
 
 	public void renderOverlay(PonderUI screen, GuiGraphics graphics, float partialTicks) {
-		graphics.pose().pushPose();
+		graphics.pose().pushMatrix();
 		forEachVisible(PonderOverlayElement.class, e -> e.render(this, screen, graphics, partialTicks));
-		graphics.pose().popPose();
+		graphics.pose().popMatrix();
 	}
 
 	public void setPointOfInterest(Vec3 poi) {
@@ -533,7 +542,6 @@ public class PonderScene {
 	}
 
 	public class SceneTransform {
-
 		public LerpedFloat xRotation, yRotation;
 
 		// Screen params
@@ -633,15 +641,11 @@ public class PonderScene {
 			cachedMat = apply(new PoseStack(), pt).last()
 				.pose();
 		}
-
 	}
 
 	public static class SceneCamera extends Camera {
-
 		public void set(float xRotation, float yRotation) {
 			setRotation(yRotation, xRotation);
 		}
-
 	}
-
 }

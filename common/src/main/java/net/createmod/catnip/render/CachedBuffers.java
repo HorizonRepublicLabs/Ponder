@@ -16,7 +16,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class CachedBuffers {
-
 	public static final Compartment<BlockState> GENERIC_BLOCK = new Compartment<>();
 	public static final Compartment<PartialModel> PARTIAL = new Compartment<>();
 	public static final Compartment<Pair<Direction, PartialModel>> DIRECTIONAL_PARTIAL = new Compartment<>();

@@ -28,8 +28,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -38,9 +41,8 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.util.ProblemReporter;
-import net.minecraft.util.ProblemReporter.PathElement;
-import net.minecraft.util.ProblemReporter.ScopedCollector;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -50,6 +52,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.TagValueInput;
 import net.minecraft.world.level.storage.TagValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -89,9 +92,12 @@ public class PonderLevel extends SchematicLevel {
 		blockEntities.forEach(
 			(k, v) -> originalBlockEntities.put(k, v.saveWithFullMetadata(registryAccess())));
 		entities.forEach(e -> {
-			CompoundTag tag = new CompoundTag();
-			e.save(tag);//TODO Used to use Forge's #serializeNBT, which includes Passengers
-			EntityType.create(tag, this).ifPresent(originalEntities::add);
+			try (ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(e.problemPath(), Ponder.LOGGER)) {
+				TagValueOutput output = TagValueOutput.createWithContext(reporter, registryAccess());
+				e.save(output);
+				ValueInput input = TagValueInput.create(reporter, registryAccess(), output.buildResult());
+				EntityType.create(input, this, EntitySpawnReason.LOAD).ifPresent(originalEntities::add);
+			}
 		});
 	}
 
@@ -109,9 +115,12 @@ public class PonderLevel extends SchematicLevel {
 			renderedBlockEntities.add(blockEntity);
 		});
 		originalEntities.forEach(e -> {
-			CompoundTag tag = new CompoundTag();
-			e.save(tag);//TODO Used to use Forge's #serializeNBT, which includes Passengers
-			EntityType.create(tag, this).ifPresent(entities::add);
+			try (ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(e.problemPath(), Ponder.LOGGER)) {
+				TagValueOutput output = TagValueOutput.createWithContext(reporter, registryAccess());
+				e.save(output);
+				ValueInput input = TagValueInput.create(reporter, registryAccess(), output.buildResult());
+				EntityType.create(input, this, EntitySpawnReason.LOAD).ifPresent(originalEntities::add);
+			}
 		});
 		particles.clearEffects();
 
@@ -173,11 +182,12 @@ public class PonderLevel extends SchematicLevel {
 		return this;
 	}
 
-	public void renderEntities(PoseStack ms, SuperRenderTypeBuffer buffer, Camera ari, float pt) {
-		Vec3 Vector3d = ari.position();
-		double d0 = Vector3d.x();
-		double d1 = Vector3d.y();
-		double d2 = Vector3d.z();
+	public void renderEntities(PoseStack poseStack, SubmitNodeCollector queue, Camera camera,
+							   CameraRenderState cameraRenderState, float pt) {
+		Vec3 vec3 = camera.position();
+		double camX = vec3.x();
+		double camY = vec3.y();
+		double camZ = vec3.z();
 
 		for (Entity entity : entities) {
 			if (entity.tickCount == 0) {
@@ -185,30 +195,16 @@ public class PonderLevel extends SchematicLevel {
 				entity.yOld = entity.getY();
 				entity.zOld = entity.getZ();
 			}
-			renderEntity(entity, d0, d1, d2, pt, ms, buffer);
+
+			EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
+			EntityRenderState state = dispatcher.extractEntity(entity, pt);
+			dispatcher.submit(state, cameraRenderState, state.x - camX, state.y - camY, state.z - camZ, poseStack, queue);
 		}
-
-		buffer.draw(RenderTypes.entitySolid(TextureAtlas.LOCATION_BLOCKS));
-		buffer.draw(RenderTypes.entityCutout(TextureAtlas.LOCATION_BLOCKS));
-		buffer.draw(RenderTypes.entityCutoutNoCull(TextureAtlas.LOCATION_BLOCKS));
-		buffer.draw(RenderTypes.entitySmoothCutout(TextureAtlas.LOCATION_BLOCKS));
 	}
 
-	private void renderEntity(Entity entity, double x, double y, double z, float pt, PoseStack ms,
-							  MultiBufferSource buffer) {
-		double d0 = Mth.lerp(pt, entity.xOld, entity.getX());
-		double d1 = Mth.lerp(pt, entity.yOld, entity.getY());
-		double d2 = Mth.lerp(pt, entity.zOld, entity.getZ());
-		float f = Mth.lerp(pt, entity.yRotO, entity.getYRot());
-		EntityRenderDispatcher renderManager = Minecraft.getInstance()
-			.getEntityRenderDispatcher();
-		int light = renderManager.getRenderer(entity)
-			.getPackedLightCoords(entity, pt);
-		renderManager.submit().render(entity, d0 - x, d1 - y, d2 - z, f, pt, ms, buffer, light);
-	}
-
-	public void renderParticles(PoseStack ms, MultiBufferSource buffer, Camera ari, float pt) {
-		particles.renderParticles(ms, buffer, ari, pt);
+	public void renderParticles(PoseStack ms, SubmitNodeCollector queue, Camera camera,
+								CameraRenderState cameraRenderState, float pt) {
+		particles.renderParticles(ms, queue, camera, cameraRenderState, pt);
 	}
 
 	public void tick() {

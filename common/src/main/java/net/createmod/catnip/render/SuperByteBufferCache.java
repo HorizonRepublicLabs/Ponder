@@ -10,7 +10,6 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
 public class SuperByteBufferCache {
-
 	private static final SuperByteBufferCache INSTANCE = new SuperByteBufferCache();
 
 	public static SuperByteBufferCache getInstance() {
@@ -61,5 +60,4 @@ public class SuperByteBufferCache {
 
 	public static class Compartment<T> {
 	}
-
 }

@@ -23,7 +23,6 @@ import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.phys.Vec3;
 
 public class BlockClusterOutline extends Outline {
-
 	private final Cluster cluster;
 
 	protected final Vector3f pos0Temp = new Vector3f();
@@ -265,5 +264,4 @@ public class BlockClusterOutline extends Outline {
 			return this.pos.hashCode() * 31 + axis.ordinal();
 		}
 	}
-
 }

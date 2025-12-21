@@ -4,7 +4,6 @@ import net.createmod.ponder.foundation.PonderScene;
 import net.createmod.ponder.foundation.element.InputWindowElement;
 
 public class ShowInputInstruction extends FadeInOutInstruction {
-
 	private final InputWindowElement element;
 
 	public ShowInputInstruction(InputWindowElement element, int ticks) {
@@ -27,5 +26,4 @@ public class ShowInputInstruction extends FadeInOutInstruction {
 	protected void applyFade(PonderScene scene, float fade) {
 		element.setFade(fade);
 	}
-
 }

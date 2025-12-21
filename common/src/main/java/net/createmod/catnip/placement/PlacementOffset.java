@@ -27,7 +27,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class PlacementOffset {
-
 	private final boolean success;
 	private Vec3i pos;
 	private Function<BlockState, BlockState> stateTransform;

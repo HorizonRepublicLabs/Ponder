@@ -12,11 +12,11 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 
 public abstract class AbstractSimiWidget extends AbstractWidget implements TickableGuiEventListener {
-
 	public static final Color HEADER_RGB = new Color(0x5391e1, false);
 	public static final Color HINT_RGB = new Color(0x96b7e0, false);
 
@@ -45,9 +45,10 @@ public abstract class AbstractSimiWidget extends AbstractWidget implements Ticka
 		new Color(0xcc_cc2020, true)
 	).map(Color::setImmutable);
 
-	protected float z;
+	protected float z; // TODO - Check if this is needed anymore, remove if not
 	protected boolean wasHovered = false;
 	protected List<Component> toolTip = new LinkedList<>();
+	// TODO - Look into changing this to MouseButtonEvent
 	protected BiConsumer<Integer, Integer> onClick = (_$, _$$) -> {
 	};
 
@@ -121,7 +122,7 @@ public abstract class AbstractSimiWidget extends AbstractWidget implements Ticka
 			int tty = this.lockedTooltipY == -1 ? mouseY : this.lockedTooltipY + this.getY();
 
 			Font font = Minecraft.getInstance().font;
-			graphics.renderComponentTooltip(font, tooltip, ttx, tty);
+			graphics.setComponentTooltipForNextFrame(font, tooltip, ttx, tty);
 		}
 	}
 
@@ -141,13 +142,8 @@ public abstract class AbstractSimiWidget extends AbstractWidget implements Ticka
 	}
 
 	@Override
-	protected boolean clicked(double mouseX, double mouseY) {
-		return this.isMouseOver(mouseX, mouseY);
-	}
-
-	@Override
-	public void onClick(double mouseX, double mouseY) {
-		runCallback(mouseX, mouseY);
+	public void onClick(MouseButtonEvent event, boolean doubleClick) {
+		runCallback(event.x(), event.y());
 	}
 
 	@Override

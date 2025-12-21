@@ -5,7 +5,6 @@ import net.createmod.ponder.foundation.PonderScene;
 import net.minecraft.world.phys.AABB;
 
 public class ChaseAABBInstruction extends TickingInstruction {
-
 	private final AABB bb;
 	private final Object slot;
 	private final PonderPalette color;
@@ -25,5 +24,4 @@ public class ChaseAABBInstruction extends TickingInstruction {
 			.lineWidth(1 / 16f)
 			.colored(color.getColor());
 	}
-
 }

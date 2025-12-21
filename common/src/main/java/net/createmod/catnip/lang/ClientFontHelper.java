@@ -4,6 +4,8 @@ import java.text.BreakIterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import net.minecraft.client.gui.Font.DisplayMode;
+
 import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -14,8 +16,9 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 
-public class ClientFontHelper {
+import org.jspecify.annotations.Nullable;
 
+public class ClientFontHelper {
 	public static List<String> cutString(Font font, String text, int maxWidthPerLine) {
 		// Split words
 		List<String> words = new LinkedList<>();
@@ -52,34 +55,24 @@ public class ClientFontHelper {
 		return lines;
 	}
 
-	public static void drawSplitString(GuiGraphics graphics, PoseStack ms, Font font, String text, int x, int y, int width,
-									   int color) {
+	public static void drawSplitString(GuiGraphics graphics, Font font, String text, int x, int y, int width, int color) {
 		List<String> list = cutString(font, text, width);
-		Matrix4f matrix4f = ms.last()
-			.pose();
 
 		for (String s : list) {
-			float f = (float) x;
+			int f = x;
 			if (font.isBidirectional()) {
 				int i = font.width(font.bidirectionalShaping(s));
-				f += (float) (width - i);
+				f += (width - i);
 			}
 
-			draw(graphics, font, s, f, (float) y, color, matrix4f, false);
+			draw(graphics, font, s, f, y, color);
 			y += 9;
 		}
 	}
 
-	private static int draw(GuiGraphics graphics, Font font, String p_228078_1_, float p_228078_2_, float p_228078_3_,
-							int p_228078_4_, Matrix4f p_228078_5_, boolean p_228078_6_) {
-		if (p_228078_1_ == null) {
-			return 0;
-		} else {
-			MultiBufferSource.BufferSource irendertypebuffer$impl = graphics.bufferSource();
-			int i = font.drawInBatch(p_228078_1_, p_228078_2_, p_228078_3_, p_228078_4_, p_228078_6_, p_228078_5_,
-				irendertypebuffer$impl, Font.DisplayMode.NORMAL, 0, LightTexture.FULL_BRIGHT);
-			irendertypebuffer$impl.endBatch();
-			return i;
+	private static void draw(GuiGraphics graphics, Font font, @Nullable String text, int x, int y, int color) {
+		if (text != null) {
+			graphics.drawString(font, text, x, y, color, false);
 		}
 	}
 }

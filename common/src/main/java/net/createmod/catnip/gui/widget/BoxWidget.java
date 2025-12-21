@@ -11,9 +11,9 @@ import net.createmod.catnip.gui.element.BoxElement;
 import net.createmod.catnip.gui.element.FadableScreenElement;
 import net.createmod.catnip.theme.Color;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.input.MouseButtonEvent;
 
 public class BoxWidget extends ElementWidget {
-
 	public static final Function<BoxWidget, FadableScreenElement> gradientFactory = (box) -> (ms, w, h, alpha) -> UIRenderHelper.angledGradient(ms, 90, w / 2, -2, w + 4, h + 4, box.gradientColor);
 
 	protected BoxElement box;
@@ -109,8 +109,8 @@ public class BoxWidget extends ElementWidget {
 	}
 
 	@Override
-	public void onClick(double x, double y) {
-		super.onClick(x, y);
+	public void onClick(MouseButtonEvent event, boolean doubleClick) {
+		super.onClick(event, doubleClick);
 
 		gradientColor = getColorClick();
 		startGradientAnimation(getColorForState(), 0.15);
@@ -119,6 +119,8 @@ public class BoxWidget extends ElementWidget {
 	@Override
 	protected void beforeRender(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
 		super.beforeRender(graphics, mouseX, mouseY, partialTicks);
+
+		//RenderSystem.enableDepthTest(); TODO - Is this needed here?
 
 		if (isHovered != wasHovered) {
 			animateGradientFromState();
@@ -160,13 +162,6 @@ public class BoxWidget extends ElementWidget {
 		float padY = 2 + paddingY;
 
 		return getX() - padX <= mX && getY() - padY <= mY && mX < getX() + padX + width && mY < getY() + padY + height;
-	}
-
-	@Override
-	protected boolean clicked(double pMouseX, double pMouseY) {
-		if (!active || !visible)
-			return false;
-		return isMouseOver(pMouseX, pMouseY);
 	}
 
 	public BoxElement getBox() {
@@ -222,5 +217,4 @@ public class BoxWidget extends ElementWidget {
 	public Couple<Color> getColorDisabled() {
 		return colorDisabled;
 	}
-
 }

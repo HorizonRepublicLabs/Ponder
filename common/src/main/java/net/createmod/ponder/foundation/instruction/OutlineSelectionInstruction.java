@@ -5,7 +5,6 @@ import net.createmod.ponder.api.scene.Selection;
 import net.createmod.ponder.foundation.PonderScene;
 
 public class OutlineSelectionInstruction extends TickingInstruction {
-
 	private final PonderPalette color;
 	private final Object slot;
 	private final Selection selection;
@@ -24,5 +23,4 @@ public class OutlineSelectionInstruction extends TickingInstruction {
 			.lineWidth(1 / 16f)
 			.colored(color.getColor());
 	}
-
 }

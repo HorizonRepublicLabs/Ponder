@@ -5,7 +5,6 @@ import net.minecraft.core.Direction.Axis;
 import net.minecraft.util.Mth;
 
 public class AngleHelper {
-
 	public static float horizontalAngle(Direction facing) {
 		if (facing.getAxis().isVertical())
 			return 0;
@@ -52,5 +51,4 @@ public class AngleHelper {
 	public static float wrapAngle180(float angle) {
 		return (angle + 180) % 360 - 180;
 	}
-
 }

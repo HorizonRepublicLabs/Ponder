@@ -1,24 +1,22 @@
 package net.createmod.catnip.gui.element;
 
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.opengl.GlStateManager;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 
 public interface StencilElement extends RenderElement {
-
 	@Override
 	default void render(GuiGraphics graphics) {
-		graphics.pose().pushPose();
+		graphics.pose().pushMatrix();
 		transform(graphics);
 		prepareStencil(graphics);
 		renderStencil(graphics);
 		prepareElement(graphics);
 		renderElement(graphics);
 		cleanUp(graphics);
-		graphics.pose().popPose();
+		graphics.pose().popMatrix();
 	}
 
 	void renderStencil(GuiGraphics graphics);
@@ -30,25 +28,24 @@ public interface StencilElement extends RenderElement {
 	}
 
 	default void prepareStencil(GuiGraphics graphics) {
-		graphics.flush();
-		GL11.glDisable(GL11.GL_STENCIL_TEST);
-		RenderSystem.stencilMask(~0);
-		RenderSystem.clear(GL11.GL_STENCIL_BUFFER_BIT, Minecraft.ON_OSX);
-		GL11.glEnable(GL11.GL_STENCIL_TEST);
-		RenderSystem.stencilOp(GL11.GL_REPLACE, GL11.GL_KEEP, GL11.GL_KEEP);
-		RenderSystem.stencilMask(0xFF);
-		RenderSystem.stencilFunc(GL11.GL_NEVER, 1, 0xFF);
+		//graphics.flush(); TODO - Is there an replacement?
+		GL30.glDisable(GL30.GL_STENCIL_TEST);
+		GL30.glStencilMask(~0);
+		GlStateManager._clear(GL30.GL_STENCIL_BUFFER_BIT);
+		GL30.glEnable(GL30.GL_STENCIL_TEST);
+		GL30.glStencilOp(GL30.GL_REPLACE, GL30.GL_KEEP, GL30.GL_KEEP);
+		GL30.glStencilMask(0xFF);
+		GL30.glStencilFunc(GL30.GL_NEVER, 1, 0xFF);
 	}
 
 	default void prepareElement(GuiGraphics graphics) {
-		GL11.glEnable(GL11.GL_STENCIL_TEST);
-		RenderSystem.stencilOp(GL11.GL_KEEP, GL11.GL_KEEP, GL11.GL_KEEP);
-		RenderSystem.stencilFunc(GL11.GL_EQUAL, 1, 0xFF);
+		GL30.glEnable(GL30.GL_STENCIL_TEST);
+		GL30.glStencilOp(GL30.GL_KEEP, GL30.GL_KEEP, GL30.GL_KEEP);
+		GL30.glStencilFunc(GL30.GL_EQUAL, 1, 0xFF);
 	}
 
 	default void cleanUp(GuiGraphics graphics) {
-		GL11.glDisable(GL11.GL_STENCIL_TEST);
-		graphics.flush();
-
+		GL30.glDisable(GL30.GL_STENCIL_TEST);
+		//graphics.flush(); TODO - Is there an replacement?
 	}
 }

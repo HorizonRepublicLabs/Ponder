@@ -15,10 +15,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Abilities;
 
 public class FlySpeedCommand {
-
 	public static ArgumentBuilder<CommandSourceStack, ?> register() {
 		return Commands.literal("flySpeed")
-			.requires(cs -> cs.hasPermission(2))
+			.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.then(Commands.argument("speed", FloatArgumentType.floatArg(0))
 				.then(Commands.argument("target", EntityArgument.player())
 					.executes(ctx -> sendFlySpeedUpdate(ctx, EntityArgument.getPlayer(ctx, "target"),
@@ -45,5 +44,4 @@ public class FlySpeedCommand {
 
 		return Command.SINGLE_SUCCESS;
 	}
-
 }

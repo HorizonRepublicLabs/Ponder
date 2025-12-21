@@ -10,7 +10,6 @@ import net.createmod.ponder.foundation.PonderTag;
 import net.minecraft.resources.Identifier;
 
 public class DefaultPonderTagRegistrationHelper implements PonderTagRegistrationHelper<Identifier> {
-
 	protected String namespace;
 	protected PonderTagRegistry tagRegistry;
 	protected PonderLocalization localization;

@@ -1,8 +1,22 @@
 package net.createmod.catnip.levelWrappers;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
+
+import net.minecraft.core.particles.ExplosionParticleInfo;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.util.random.WeightedList;
+import net.minecraft.world.attribute.EnvironmentAttributeSystem;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragonPart;
+import net.minecraft.world.item.crafting.RecipeAccess;
+
+import net.minecraft.world.level.ExplosionDamageCalculator;
+import net.minecraft.world.level.block.entity.FuelValues;
+import net.minecraft.world.level.border.WorldBorder;
+import net.minecraft.world.level.storage.LevelData.RespawnData;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -100,9 +114,9 @@ public class SchematicChunkSource extends ChunkSource {
 		private static final class DummyLevel extends Level {
 			private DummyLevel(WritableLevelData pLevelData, ResourceKey<Level> pDimension,
 							   RegistryAccess pRegistryAccess, Holder<DimensionType> pDimensionTypeRegistration,
-							   Supplier<ProfilerFiller> pProfiler, boolean pIsClientSide, boolean pIsDebug, long pBiomeZoomSeed,
+							   boolean pIsClientSide, boolean pIsDebug, long pBiomeZoomSeed,
 							   int pMaxChainedNeighborUpdates) {
-				super(pLevelData, pDimension, pRegistryAccess, pDimensionTypeRegistration, pProfiler, pIsClientSide, pIsDebug,
+				super(pLevelData, pDimension, pRegistryAccess, pDimensionTypeRegistration, pIsClientSide, pIsDebug,
 					pBiomeZoomSeed, pMaxChainedNeighborUpdates);
 				access = pRegistryAccess;
 			}
@@ -110,7 +124,7 @@ public class SchematicChunkSource extends ChunkSource {
 			private final RegistryAccess access;
 
 			private DummyLevel(Level level) {
-				this(null, null, level.registryAccess(), level.dimensionTypeRegistration(), null, false, false, 0, 0);
+				this(null, null, level.registryAccess(), level.dimensionTypeRegistration(), false, false, 0, 0);
 			}
 
 			@Override
@@ -119,7 +133,7 @@ public class SchematicChunkSource extends ChunkSource {
 			}
 
 			@Override
-			public void levelEvent(Player pPlayer, int pType, BlockPos pPos, int pData) {
+			public void levelEvent(@Nullable Entity except, int type, BlockPos pos, int data) {
 			}
 
 			@Override
@@ -136,7 +150,17 @@ public class SchematicChunkSource extends ChunkSource {
 			}
 
 			@Override
+			public EnvironmentAttributeSystem environmentAttributes() {
+				return null;
+			}
+
+			@Override
 			public PotionBrewing potionBrewing() {
+				return null;
+			}
+
+			@Override
+			public FuelValues fuelValues() {
 				return null;
 			}
 
@@ -151,6 +175,11 @@ public class SchematicChunkSource extends ChunkSource {
 			}
 
 			@Override
+			public int getSeaLevel() {
+				return 0;
+			}
+
+			@Override
 			public float getShade(Direction pDirection, boolean pShade) {
 				return 0;
 			}
@@ -160,28 +189,36 @@ public class SchematicChunkSource extends ChunkSource {
 			}
 
 			@Override
-			public void playSound(Player pPlayer, double pX, double pY, double pZ, SoundEvent pSound,
-								  SoundSource pCategory, float pVolume, float pPitch) {
+			public void playSound(@Nullable Entity except, double x, double y, double z, SoundEvent sound,
+								  SoundSource source, float volume, float pitch) {
 			}
 
 			@Override
-			public void playSound(Player pPlayer, Entity pEntity, SoundEvent pEvent, SoundSource pCategory,
-								  float pVolume, float pPitch) {
+			public void playSound(@Nullable Entity except, Entity sourceEntity, SoundEvent sound, SoundSource category,
+								  float volume, float pitch) {
 			}
 
 			@Override
-			public void playSeededSound(Player pPlayer, double pX, double pY, double pZ, Holder<SoundEvent> pSound,
-										SoundSource pSource, float pVolume, float pPitch, long pSeed) {
+			public void explode(@Nullable Entity source, @Nullable DamageSource damageSource,
+								@Nullable ExplosionDamageCalculator damageCalculator, double x, double y, double z,
+								float radius, boolean fire, ExplosionInteraction explosionInteraction,
+								ParticleOptions smallExplosionParticles, ParticleOptions largeExplosionParticles,
+								WeightedList<ExplosionParticleInfo> blockParticles, Holder<SoundEvent> explosionSound) {
 			}
 
 			@Override
-			public void playSeededSound(Player p_220363_, double p_220364_, double p_220365_, double p_220366_,
-										SoundEvent p_220367_, SoundSource p_220368_, float p_220369_, float p_220370_, long p_220371_) {
+			public void playSeededSound(@Nullable Entity except, double x, double y, double z, Holder<SoundEvent> sound,
+										SoundSource source, float volume, float pitch, long seed) {
 			}
 
 			@Override
-			public void playSeededSound(Player p_220372_, Entity p_220373_, Holder<SoundEvent> p_220374_, SoundSource p_220375_,
-										float p_220376_, float p_220377_, long p_220378_) {
+			public void playSeededSound(@Nullable Entity except, double x, double y, double z, SoundEvent sound,
+										SoundSource source, float volume, float pitch, long seed) {
+			}
+
+			@Override
+			public void playSeededSound(@Nullable Entity except, Entity sourceEntity, Holder<SoundEvent> sound,
+										SoundSource source, float volume, float pitch, long seed) {
 			}
 
 			@Override
@@ -190,7 +227,20 @@ public class SchematicChunkSource extends ChunkSource {
 			}
 
 			@Override
+			public void setRespawnData(RespawnData respawnData) {}
+
+			@Override
+			public RespawnData getRespawnData() {
+				return null;
+			}
+
+			@Override
 			public Entity getEntity(int pId) {
+				return null;
+			}
+
+			@Override
+			public Collection<EnderDragonPart> dragonParts() {
 				return null;
 			}
 
@@ -198,15 +248,6 @@ public class SchematicChunkSource extends ChunkSource {
 			@Override
 			public MapItemSavedData getMapData(MapId mapId) {
 				return null;
-			}
-
-			@Override
-			public void setMapData(MapId mapId, MapItemSavedData mapItemSavedData) {
-			}
-
-			@Override
-			public MapId getFreeMapId() {
-				return new MapId(0);
 			}
 
 			@Override
@@ -219,7 +260,12 @@ public class SchematicChunkSource extends ChunkSource {
 			}
 
 			@Override
-			public RecipeManager getRecipeManager() {
+			public RecipeAccess recipeAccess() {
+				return null;
+			}
+
+			@Override
+			public WorldBorder getWorldBorder() {
 				return null;
 			}
 
@@ -249,18 +295,18 @@ public class SchematicChunkSource extends ChunkSource {
 			}
 
 			// Neo's patched methods
-			public void setDayTimeFraction(float var1) {
+			public void setDayTimeFraction(float f) {
 			}
 
 			public float getDayTimeFraction() {
 				return 0;
 			}
 
-			public float getDayTimePerTick() {
-				return 0;
+			public void setDayTimePerTick(float f) {
 			}
 
-			public void setDayTimePerTick(float var1) {
+			public float getDayTimePerTick() {
+				return 0;
 			}
 		}
 
@@ -272,31 +318,26 @@ public class SchematicChunkSource extends ChunkSource {
 			return Blocks.VOID_AIR.defaultBlockState();
 		}
 
-		@Nullable
-		public BlockState setBlockState(BlockPos p_177436_1_, BlockState p_177436_2_, boolean p_177436_3_) {
-			return null;
-		}
-
-		public FluidState getFluidState(BlockPos p_204610_1_) {
+		public FluidState getFluidState(BlockPos pos) {
 			return Fluids.EMPTY.defaultFluidState();
 		}
 
-		public int getLightEmission(BlockPos p_217298_1_) {
+		public int getLightEmission(BlockPos pos) {
 			return 0;
 		}
 
 		@Nullable
-		public BlockEntity getBlockEntity(BlockPos p_177424_1_, EntityCreationType p_177424_2_) {
+		public BlockEntity getBlockEntity(BlockPos pos, EntityCreationType type) {
 			return null;
 		}
 
-		public void addAndRegisterBlockEntity(BlockEntity p_150813_1_) {
+		public void addAndRegisterBlockEntity(BlockEntity blockEntity) {
 		}
 
-		public void setBlockEntity(BlockEntity p_177426_2_) {
+		public void setBlockEntity(BlockEntity blockEntity) {
 		}
 
-		public void removeBlockEntity(BlockPos p_177425_1_) {
+		public void removeBlockEntity(BlockPos pos) {
 		}
 
 		public void markUnsaved() {
@@ -306,7 +347,7 @@ public class SchematicChunkSource extends ChunkSource {
 			return true;
 		}
 
-		public boolean isYSpaceEmpty(int p_76606_1_, int p_76606_2_) {
+		public boolean isYSpaceEmpty(int yStartInclusive, int yEndInclusive) {
 			return true;
 		}
 

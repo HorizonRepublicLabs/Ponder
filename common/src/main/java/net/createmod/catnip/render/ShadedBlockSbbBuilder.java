@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.PoseStack.Pose;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 
@@ -64,7 +65,7 @@ public class ShadedBlockSbbBuilder implements VertexConsumer {
 	}
 
 	protected void prepareForGeometry(BakedQuad quad) {
-		prepareForGeometry(quad.isShade());
+		prepareForGeometry(quad.shade());
 	}
 
 	@Override
@@ -74,9 +75,9 @@ public class ShadedBlockSbbBuilder implements VertexConsumer {
 	}
 
 	@Override
-	public void putBulkData(PoseStack.Pose pose, BakedQuad quad, float[] brightnesses, float red, float green, float blue, float alpha, int[] lights, int overlay, boolean readExistingColor) {
+	public void putBulkData(PoseStack.Pose pose, BakedQuad quad, float[] brightnesses, float red, float green, float blue, float alpha, int[] lights, int overlay) {
 		prepareForGeometry(quad);
-		bufferBuilder.putBulkData(pose, quad, brightnesses, red, green, blue, alpha, lights, overlay, readExistingColor);
+		bufferBuilder.putBulkData(pose, quad, brightnesses, red, green, blue, alpha, lights, overlay);
 	}
 
 	@Override
@@ -86,6 +87,11 @@ public class ShadedBlockSbbBuilder implements VertexConsumer {
 
 	@Override
 	public VertexConsumer setColor(int red, int green, int blue, int alpha) {
+		throw new UnsupportedOperationException("ShadedBlockSbbBuilder only supports putBulkData!");
+	}
+
+	@Override
+	public VertexConsumer setColor(int color) {
 		throw new UnsupportedOperationException("ShadedBlockSbbBuilder only supports putBulkData!");
 	}
 
@@ -106,6 +112,11 @@ public class ShadedBlockSbbBuilder implements VertexConsumer {
 
 	@Override
 	public VertexConsumer setNormal(float x, float y, float z) {
+		throw new UnsupportedOperationException("ShadedBlockSbbBuilder only supports putBulkData!");
+	}
+
+	@Override
+	public VertexConsumer setLineWidth(float p_456188_) {
 		throw new UnsupportedOperationException("ShadedBlockSbbBuilder only supports putBulkData!");
 	}
 }

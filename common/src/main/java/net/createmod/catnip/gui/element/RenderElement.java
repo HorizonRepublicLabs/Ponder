@@ -3,13 +3,13 @@ package net.createmod.catnip.gui.element;
 import net.minecraft.client.gui.GuiGraphics;
 
 public interface RenderElement extends FadableScreenElement {
-
 	static RenderElement of(ScreenElement renderable) {
 		return new AbstractRenderElement.SimpleRenderElement(renderable);
 	}
 
 	<T extends RenderElement> T at(float x, float y);
 
+	// TODO - Remove this if z is unneeded
 	<T extends RenderElement> T at(float x, float y, float z);// GuiGraphics automatically sorts render order (PIP rendering should be used if z is stilled needed)
 
 	<T extends RenderElement> T withBounds(int width, int height);
@@ -23,8 +23,6 @@ public interface RenderElement extends FadableScreenElement {
 	float getX();
 
 	float getY();
-
-	float getZ();
 
 	void render(GuiGraphics graphics);
 

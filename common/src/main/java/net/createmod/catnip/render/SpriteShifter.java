@@ -7,7 +7,6 @@ import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.resources.Identifier;
 
 public class SpriteShifter {
-
 	private static final Map<String, SpriteShiftEntry> ENTRY_CACHE = new HashMap<>();
 
 	public static SpriteShiftEntry get(Identifier originalIdentifier, Identifier targetIdentifier) {

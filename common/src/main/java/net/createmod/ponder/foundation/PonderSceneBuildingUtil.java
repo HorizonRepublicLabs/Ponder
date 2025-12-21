@@ -16,7 +16,6 @@ import net.minecraft.world.phys.Vec3;
  * Helpful shortcuts for marking boundaries, points or sections inside the scene
  */
 public class PonderSceneBuildingUtil implements SceneBuildingUtil {
-
 	private final SelectionUtil select;
 	private final VectorUtil vector;
 	private final PositionUtil grid;
@@ -45,8 +44,7 @@ public class PonderSceneBuildingUtil implements SceneBuildingUtil {
 		return grid;
 	}
 
-	public class PonderPositionUtil implements PositionUtil {
-
+	public static class PonderPositionUtil implements PositionUtil {
 		@Override
 		public BlockPos at(int x, int y, int z) {
 			return new BlockPos(x, y, z);
@@ -56,11 +54,9 @@ public class PonderSceneBuildingUtil implements SceneBuildingUtil {
 		public BlockPos zero() {
 			return at(0, 0, 0);
 		}
-
 	}
 
 	public class PonderVectorUtil implements VectorUtil {
-
 		@Override
 		public Vec3 centerOf(int x, int y, int z) {
 			return centerOf(grid().at(x, y, z));
@@ -88,19 +84,16 @@ public class PonderSceneBuildingUtil implements SceneBuildingUtil {
 
 		@Override
 		public Vec3 blockSurface(BlockPos pos, Direction face, float margin) {
-			return centerOf(pos).add(Vec3.atLowerCornerOf(face.getNormal())
-				.scale(.5f + margin));
+			return centerOf(pos).add(face.getUnitVec3().scale(.5f + margin));
 		}
 
 		@Override
 		public Vec3 of(double x, double y, double z) {
 			return new Vec3(x, y, z);
 		}
-
 	}
 
 	public class PonderSelectionUtil implements SelectionUtil {
-
 		@Override
 		public Selection everywhere() {
 			return SelectionImpl.of(sceneBounds);
@@ -151,7 +144,5 @@ public class PonderSceneBuildingUtil implements SceneBuildingUtil {
 		public Selection cuboid(BlockPos origin, Vec3i size) {
 			return SelectionImpl.of(BoundingBox.fromCorners(origin, origin.offset(size)));
 		}
-
 	}
-
 }

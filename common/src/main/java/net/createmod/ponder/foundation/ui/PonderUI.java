@@ -12,11 +12,10 @@ import java.util.stream.IntStream;
 
 import javax.annotation.Nullable;
 
-import com.mojang.blaze3d.framegraph.FrameGraphBuilder;
-
-import com.mojang.blaze3d.framegraph.FramePass;
+import com.mojang.blaze3d.platform.InputConstants;
 
 import net.createmod.ponder.foundation.PonderTag.Highlight;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.resources.Identifier;
 
 import org.joml.Matrix3x2fStack;
@@ -57,7 +56,6 @@ import net.createmod.ponder.api.registration.StoryBoardEntry.SceneOrderingEntry;
 import net.createmod.ponder.api.registration.StoryBoardEntry.SceneOrderingType;
 import net.createmod.ponder.enums.PonderConfig;
 import net.createmod.ponder.enums.PonderGuiTextures;
-import net.createmod.ponder.foundation.PonderChapter;
 import net.createmod.ponder.foundation.PonderIndex;
 import net.createmod.ponder.foundation.PonderScene;
 import net.createmod.ponder.foundation.PonderScene.SceneTransform;
@@ -119,8 +117,6 @@ public class PonderUI extends AbstractPonderScreen {
 	private List<LerpedFloat> tagFades = new ArrayList<>();
 	private final LerpedFloat fadeIn;
 	ItemStack stack;
-	@Nullable
-	PonderChapter chapter = null;
 
 	private boolean userViewMode;
 	private boolean identifyMode;
@@ -360,11 +356,6 @@ public class PonderUI extends AbstractPonderScreen {
 			tagFades.add(chase);
 
 		});
-
-		/*
-		 * if (chapter != null) { widgets.add(chap = new PonderButton(width - 31 - 24,
-		 * 31, () -> { }).showing(chapter)); }
-		 */
 
 		Options bindings = minecraft.options;
 		int spacing = 8;
@@ -616,11 +607,6 @@ public class PonderUI extends AbstractPonderScreen {
 		double value = lazyIndex.getValue(AnimationTickHolder.getPartialTicksUI()); // TODO - Checkover
 		double diff = i - value;
 		double slide = Mth.lerp(diff * diff, 200, 600) * diff;
-		FrameGraphBuilder frameGraph = new FrameGraphBuilder();
-
-		FramePass scenePass = frameGraph.addPass("scence");
-		scenePass.executes(() -> {});
-
 
 		RenderSystem.enableBlend();
 		RenderSystem.enableDepthTest();
@@ -766,7 +752,7 @@ public class PonderUI extends AbstractPonderScreen {
 						.style(ChatFormatting.GRAY)
 						.component();
 
-					graphics.renderComponentTooltip(
+					graphics.setComponentTooltipForNextFrame(
 						font,
 						font.getSplitter()
 							.splitLines(text, width / 3, Style.EMPTY)
@@ -1041,19 +1027,18 @@ public class PonderUI extends AbstractPonderScreen {
 	private void renderOverlay(GuiGraphics graphics, int i, float partialTicks) {
 		if (identifyMode)
 			return;
-		graphics.pose().pushPose();
+		graphics.pose().pushMatrix();
 		PonderScene story = scenes.get(i);
 		story.renderOverlay(this, graphics, skipCooling > 0 ? 0 : identifyMode ? ponderPartialTicksPaused : partialTicks);
-		graphics.pose().popPose();
+		graphics.pose().popMatrix();
 	}
 
 	@Override
-	public boolean mouseClicked(double x, double y, int button) {
+	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
 		if (identifyMode && hoveredBlockPos != null && PonderIndex.editingModeActive()) {
-			long handle = minecraft.getWindow()
-				.getWindow();
-			if (copiedBlockPos != null && button == 1) {
-				clipboardHelper.setClipboard(handle,
+			Window window = minecraft.getWindow();
+			if (copiedBlockPos != null && event.button() == InputConstants.MOUSE_BUTTON_RIGHT) {
+				clipboardHelper.setClipboard(window,
 					"util.select().fromTo(" + copiedBlockPos.getX() + ", " + copiedBlockPos.getY() + ", "
 						+ copiedBlockPos.getZ() + ", " + hoveredBlockPos.getX() + ", " + hoveredBlockPos.getY() + ", "
 						+ hoveredBlockPos.getZ() + ")");
@@ -1061,24 +1046,21 @@ public class PonderUI extends AbstractPonderScreen {
 				return true;
 			}
 
-			if (hasShiftDown())
-				clipboardHelper.setClipboard(handle, "util.select().position(" + hoveredBlockPos.getX() + ", "
+			if (minecraft.hasShiftDown())
+				clipboardHelper.setClipboard(window, "util.select().position(" + hoveredBlockPos.getX() + ", "
 					+ hoveredBlockPos.getY() + ", " + hoveredBlockPos.getZ() + ")");
 			else
-				clipboardHelper.setClipboard(handle, "util.grid().at(" + hoveredBlockPos.getX() + ", "
+				clipboardHelper.setClipboard(window, "util.grid().at(" + hoveredBlockPos.getX() + ", "
 					+ hoveredBlockPos.getY() + ", " + hoveredBlockPos.getZ() + ")");
 			copiedBlockPos = hoveredBlockPos;
 			return true;
 		}
 
-		return super.mouseClicked(x, y, button);
+		return super.mouseClicked(event, doubleClick);
 	}
 
 	@Override
 	protected String getBreadcrumbTitle() {
-		if (chapter != null)
-			return chapter.getTitle();
-
 		return stack.getItem()
 			.getDescription()
 			.getString();
@@ -1113,7 +1095,6 @@ public class PonderUI extends AbstractPonderScreen {
 		Color c;
 
 		switch (pointing) {
-			default:
 			case DOWN:
 				divotRotation = 0;
 				boxX -= w / 2;
@@ -1146,6 +1127,7 @@ public class PonderUI extends AbstractPonderScreen {
 				divotY += distance;
 				c = borderColors.getFirst();
 				break;
+			default:
 		}
 
 		new BoxElement().withBackground(PonderUI.BACKGROUND_FLAT)

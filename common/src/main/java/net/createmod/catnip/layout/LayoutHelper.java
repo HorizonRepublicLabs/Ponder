@@ -3,7 +3,6 @@ package net.createmod.catnip.layout;
 import net.minecraft.client.renderer.Rect2i;
 
 public interface LayoutHelper {
-
 	static LayoutHelper centeredHorizontal(int itemCount, int rows, int width, int height, int spacing) {
 		return new CenteredHorizontalLayoutHelper(itemCount, rows, width, height, spacing);
 	}
@@ -25,7 +24,6 @@ public interface LayoutHelper {
 	}
 
 	class CenteredHorizontalLayoutHelper implements LayoutHelper {
-
 		int itemCount;
 		int rows;
 		int width;
@@ -114,5 +112,4 @@ public interface LayoutHelper {
 		}
 
 	}
-
 }

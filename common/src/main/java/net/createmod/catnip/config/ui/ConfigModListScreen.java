@@ -6,6 +6,11 @@ import java.util.Locale;
 
 import javax.annotation.Nullable;
 
+import com.mojang.blaze3d.platform.InputConstants;
+
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+
 import org.lwjgl.glfw.GLFW;
 
 import net.createmod.catnip.gui.ScreenOpener;
@@ -73,25 +78,25 @@ public class ConfigModListScreen extends ConfigScreen {
 	}
 
 	@Override
-	public boolean mouseClicked(double x, double y, int button) {
-		if (search != null && !search.isMouseOver(x, y))
+	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+		if (search != null && !search.isMouseOver(event.x(), event.y()))
 			search.setFocused(false);
 
-		return super.mouseClicked(x, y, button);
+		return super.mouseClicked(event, doubleClick);
 	}
 
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (super.keyPressed(keyCode, scanCode, modifiers))
+	public boolean keyPressed(KeyEvent keyEvent) {
+		if (super.keyPressed(keyEvent))
 			return true;
 
-		if (search != null && Screen.hasControlDown()) {
-			if (keyCode == GLFW.GLFW_KEY_F) {
+		if (search != null && keyEvent.hasControlDown()) {
+			if (keyEvent.key() == InputConstants.KEY_F) {
 				this.setFocused(search);
 			}
 		}
 
-		if (keyCode == GLFW.GLFW_KEY_BACKSPACE) {
+		if (keyEvent.key() == InputConstants.KEY_BACKSPACE) {
 			ScreenOpener.open(parent);
 		}
 		return false;
@@ -109,7 +114,7 @@ public class ConfigModListScreen extends ConfigScreen {
 			}
 		}
 
-		list.setScrollAmount(list.getScrollAmount());
+		list.setScrollAmount(list.scrollAmount());
 		if (!list.children().isEmpty()) {
 			this.search.setTextColor(UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
 		} else {

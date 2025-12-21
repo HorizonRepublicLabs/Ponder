@@ -12,6 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
@@ -29,8 +30,9 @@ public class WrappedClientLevel extends ClientLevel {
 
 	private WrappedClientLevel(Level level) {
 		super(mc.getConnection(), mc.level.getLevelData(), level.dimension(), level.dimensionTypeRegistration(),
-			((ClientPacketListenerAccessor) mc.getConnection()).catnip$getServerChunkRadius(), mc.level.getServerSimulationDistance(), level.getProfilerSupplier(),
-			mc.levelRenderer, level.isDebug(), ((BiomeManagerAccessor) level.getBiomeManager()).catnip$getBiomeZoomSeed());
+			((ClientPacketListenerAccessor) mc.getConnection()).catnip$getServerChunkRadius(),
+			mc.level.getServerSimulationDistance(), mc.levelRenderer, level.isDebug(),
+			((BiomeManagerAccessor) level.getBiomeManager()).catnip$getBiomeZoomSeed(), level.getSeaLevel());
 		this.level = level;
 	}
 
@@ -54,7 +56,7 @@ public class WrappedClientLevel extends ClientLevel {
 	}
 
 	@Override
-	public BlockGetter getChunkForCollisions(int x, int z) {
+	public @Nullable BlockGetter getChunkForCollisions(int x, int z) {
 		return level.getChunkForCollisions(x, z);
 	}
 
@@ -76,65 +78,51 @@ public class WrappedClientLevel extends ClientLevel {
 		return level.getFluidState(pos);
 	}
 
-	@Nullable
 	@Override
-	public <T extends LivingEntity> T getNearestEntity(List<? extends T> p_217361_1_, TargetingConditions p_217361_2_,
-													   @Nullable LivingEntity p_217361_3_, double p_217361_4_, double p_217361_6_, double p_217361_8_) {
-		return level.getNearestEntity(p_217361_1_, p_217361_2_, p_217361_3_, p_217361_4_, p_217361_6_, p_217361_8_);
-	}
-
-	@Override
-	public int getBlockTint(BlockPos p_225525_1_, ColorResolver p_225525_2_) {
-		return level.getBlockTint(p_225525_1_, p_225525_2_);
+	public int getBlockTint(BlockPos pos, ColorResolver resolver) {
+		return level.getBlockTint(pos, resolver);
 	}
 
 	// FIXME: Emissive Lighting might not light stuff properly
 
 	@Override
-	public void addParticle(ParticleOptions p_195594_1_, double p_195594_2_, double p_195594_4_, double p_195594_6_,
-							double p_195594_8_, double p_195594_10_, double p_195594_12_) {
-		level.addParticle(p_195594_1_, p_195594_2_, p_195594_4_, p_195594_6_, p_195594_8_, p_195594_10_, p_195594_12_);
+	public void addParticle(ParticleOptions particle, double x, double y, double z, double xd, double yd, double zd) {
+		level.addParticle(particle, x, y, z, xd, yd, zd);
 	}
 
 	@Override
-	public void addParticle(ParticleOptions p_195590_1_, boolean p_195590_2_, double p_195590_3_, double p_195590_5_,
-							double p_195590_7_, double p_195590_9_, double p_195590_11_, double p_195590_13_) {
-		level.addParticle(p_195590_1_, p_195590_2_, p_195590_3_, p_195590_5_, p_195590_7_, p_195590_9_, p_195590_11_,
-			p_195590_13_);
+	public void addParticle(ParticleOptions particle, boolean overrideLimiter, boolean alwaysShow,
+							double x, double y, double z, double xd, double yd, double zd) {
+		level.addParticle(particle, overrideLimiter, alwaysShow, x, y, z, xd, yd, zd);
 	}
 
 	@Override
-	public void addAlwaysVisibleParticle(ParticleOptions p_195589_1_, double p_195589_2_, double p_195589_4_,
-										 double p_195589_6_, double p_195589_8_, double p_195589_10_, double p_195589_12_) {
-		level.addAlwaysVisibleParticle(p_195589_1_, p_195589_2_, p_195589_4_, p_195589_6_, p_195589_8_, p_195589_10_,
-			p_195589_12_);
+	public void addAlwaysVisibleParticle(ParticleOptions options, double x, double y, double z, double xd, double yd, double zd) {
+		level.addAlwaysVisibleParticle(options, x, y, z, xd, yd, zd);
 	}
 
 	@Override
-	public void addAlwaysVisibleParticle(ParticleOptions p_217404_1_, boolean p_217404_2_, double p_217404_3_,
-										 double p_217404_5_, double p_217404_7_, double p_217404_9_, double p_217404_11_, double p_217404_13_) {
-		level.addAlwaysVisibleParticle(p_217404_1_, p_217404_2_, p_217404_3_, p_217404_5_, p_217404_7_, p_217404_9_,
-			p_217404_11_, p_217404_13_);
+	public void addAlwaysVisibleParticle(ParticleOptions options, boolean overrideLimiter,
+										 double x, double y, double z, double xd, double yd, double zd) {
+		level.addAlwaysVisibleParticle(options, overrideLimiter, x, y, z, xd, yd, zd);
 	}
 
 	@Override
-	public void playLocalSound(double p_184134_1_, double p_184134_3_, double p_184134_5_, SoundEvent p_184134_7_,
-							   SoundSource p_184134_8_, float p_184134_9_, float p_184134_10_, boolean p_184134_11_) {
-		level.playLocalSound(p_184134_1_, p_184134_3_, p_184134_5_, p_184134_7_, p_184134_8_, p_184134_9_, p_184134_10_,
-			p_184134_11_);
+	public void playLocalSound(double x, double y, double z, SoundEvent sound,
+							   SoundSource source, float volume, float pitch, boolean distanceDelay) {
+		level.playLocalSound(x, y, z, sound, source, volume, pitch, distanceDelay);
 	}
 
 	@Override
-	public void playSound(@Nullable Player p_184148_1_, double p_184148_2_, double p_184148_4_, double p_184148_6_,
-						  SoundEvent p_184148_8_, SoundSource p_184148_9_, float p_184148_10_, float p_184148_11_) {
-		level.playSound(p_184148_1_, p_184148_2_, p_184148_4_, p_184148_6_, p_184148_8_, p_184148_9_, p_184148_10_,
-			p_184148_11_);
+	public void playSound(@Nullable Entity except, double x, double y, double z, SoundEvent sound,
+						  SoundSource source, float volume, float pitch) {
+		level.playSound(except, x, y, z, sound, source, volume, pitch);
 	}
 
 	@Nullable
 	@Override
-	public BlockEntity getBlockEntity(BlockPos p_175625_1_) {
-		return level.getBlockEntity(p_175625_1_);
+	public BlockEntity getBlockEntity(BlockPos pos) {
+		return level.getBlockEntity(pos);
 	}
 
 	public Level getWrappedLevel() {

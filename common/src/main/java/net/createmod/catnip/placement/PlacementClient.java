@@ -34,7 +34,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class PlacementClient {
-
 	static final LerpedFloat angle = LerpedFloat.angular()
 		.chase(0, 0.25f, LerpedFloat.Chaser.EXP);
 	@Nullable
