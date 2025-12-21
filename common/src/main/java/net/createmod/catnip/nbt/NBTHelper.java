@@ -8,6 +8,7 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
+import net.createmod.catnip.codecs.CatnipCodecUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
@@ -21,6 +22,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 
+// TODO - Everything here needs to be rethought with how codecs exist now and should be used everywhere they can
+@Deprecated(forRemoval = true)
 public class NBTHelper {
 	public static void putMarker(CompoundTag nbt, String marker) {
 		nbt.putBoolean(marker, true);
@@ -28,30 +31,15 @@ public class NBTHelper {
 
 	// Backwards compatible with 1.20
 	public static BlockPos readBlockPos(CompoundTag nbt, String key) {
-		Optional<BlockPos> pos = NbtUtils.readBlockPos(nbt, key);
+		Optional<BlockPos> pos = nbt.read(key, BlockPos.CODEC);
 		if (pos.isPresent())
 			return pos.get();
-		CompoundTag oldTag = nbt.getCompound(key);
-		return new BlockPos(oldTag.getInt("X"), oldTag.getInt("Y"), oldTag.getInt("Z"));
-	}
-
-	public static <T extends Enum<?>> T readEnum(CompoundTag nbt, String key, Class<T> enumClass) {
-		T[] enumConstants = enumClass.getEnumConstants();
-		if (enumConstants == null)
-			throw new IllegalArgumentException("Non-Enum class passed to readEnum: " + enumClass.getName());
-		if (nbt.contains(key, Tag.TAG_STRING)) {
-			String name = nbt.getString(key);
-			for (T t : enumConstants) {
-				if (t.name()
-					.equals(name))
-					return t;
-			}
-		}
-		return enumConstants[0];
-	}
-
-	public static <T extends Enum<?>> void writeEnum(CompoundTag nbt, String key, T enumConstant) {
-		nbt.putString(key, enumConstant.name());
+		CompoundTag oldTag = nbt.getCompoundOrEmpty(key);
+		return new BlockPos(
+			oldTag.getIntOr("X", 0),
+			oldTag.getIntOr("Y", 0),
+			oldTag.getIntOr("Z", 0)
+		);
 	}
 
 	public static <T> ListTag writeCompoundList(Iterable<T> list, Function<T, CompoundTag> serializer) {
@@ -78,14 +66,14 @@ public class NBTHelper {
 	public static ListTag writeItemList(Iterable<ItemStack> stacks, HolderLookup.Provider registries) {
 		ListTag listNBT = new ListTag();
 		for (ItemStack stack : stacks)
-			listNBT.add(stack.saveOptional(registries));
+			CatnipCodecUtils.encode(ItemStack.CODEC, registries, stack).ifPresent(listNBT::add);
 		return listNBT;
 	}
 
 	public static List<ItemStack> readItemList(ListTag stacks, HolderLookup.Provider registries) {
 		List<ItemStack> list = new ArrayList<>();
 		for (int i = 0; i < stacks.size(); i++)
-			list.add(i, ItemStack.parseOptional(registries, stacks.getCompound(i)));
+			CatnipCodecUtils.decode(ItemStack.CODEC, registries, stacks.getCompoundOrEmpty(i)).ifPresent(list::add);
 		return list;
 	}
 
@@ -104,8 +92,14 @@ public class NBTHelper {
 	public static AABB readAABB(ListTag bbTag) {
 		if (bbTag.isEmpty())
 			return null;
-		return new AABB(bbTag.getFloat(0), bbTag.getFloat(1), bbTag.getFloat(2), bbTag.getFloat(3),
-			bbTag.getFloat(4), bbTag.getFloat(5));
+		return new AABB(
+			bbTag.getFloat(0).orElseThrow(),
+			bbTag.getFloat(1).orElseThrow(),
+			bbTag.getFloat(2).orElseThrow(),
+			bbTag.getFloat(3).orElseThrow(),
+			bbTag.getFloat(4).orElseThrow(),
+			bbTag.getFloat(5).orElseThrow()
+		);
 	}
 
 	public static ListTag writeVec3i(Vec3i vec) {
@@ -138,14 +132,6 @@ public class NBTHelper {
 	}
 
 	public static int intFromCompound(CompoundTag compoundTag) {
-		return compoundTag.getInt("V");
-	}
-
-	public static void writeIdentifier(CompoundTag nbt, String key, Identifier identifier) {
-		nbt.putString(key, identifier.toString());
-	}
-
-	public static Identifier readIdentifier(CompoundTag nbt, String key) {
-		return Identifier.parse(nbt.getString(key));
+		return compoundTag.getIntOr("V", 0);
 	}
 }

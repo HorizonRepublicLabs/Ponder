@@ -111,8 +111,8 @@ public class BoxWidget extends ElementWidget {
 	}
 
 	@Override
-	public void onClick(MouseButtonEvent buttonEvent, boolean doubleClick) {
-		super.onClick(buttonEvent, doubleClick);
+	public void onClick(MouseButtonEvent event, boolean doubleClick) {
+		super.onClick(event, doubleClick);
 
 		gradientColor = getColorClick();
 		startGradientAnimation(getColorForState(), 0.15);

@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 
 import com.mojang.blaze3d.opengl.GlStateManager;
 
+import org.joml.Matrix3x2fStack;
 import org.lwjgl.opengl.GL30;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -184,9 +185,9 @@ public class ConfirmationScreen extends AbstractSimiScreen {
 		int offset = font.lineHeight + 1;
 		int lineY = y - offset;
 
-		PoseStack poseStack = graphics.pose();
-		poseStack.pushPose();
-		poseStack.translate(0, 0, 200);
+		Matrix3x2fStack poseStack = graphics.pose();
+		poseStack.pushMatrix();
+		poseStack.translate(0, 0);
 
 		for (FormattedText line : text) {
 			lineY += offset;
@@ -195,7 +196,7 @@ public class ConfirmationScreen extends AbstractSimiScreen {
 			graphics.drawString(font, line.getString(), x, lineY, 0xeaeaea, false);
 		}
 
-		poseStack.popPose();
+		poseStack.popMatrix();
 	}
 
 	@Override

@@ -1034,10 +1034,10 @@ public class PonderUI extends AbstractPonderScreen {
 	}
 
 	@Override
-	public boolean mouseClicked(MouseButtonEvent buttonEvent, boolean doubleClick) {
+	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
 		if (identifyMode && hoveredBlockPos != null && PonderIndex.editingModeActive()) {
 			Window window = minecraft.getWindow();
-			if (copiedBlockPos != null && buttonEvent.button() == InputConstants.MOUSE_BUTTON_RIGHT) {
+			if (copiedBlockPos != null && event.button() == InputConstants.MOUSE_BUTTON_RIGHT) {
 				clipboardHelper.setClipboard(window,
 					"util.select().fromTo(" + copiedBlockPos.getX() + ", " + copiedBlockPos.getY() + ", "
 						+ copiedBlockPos.getZ() + ", " + hoveredBlockPos.getX() + ", " + hoveredBlockPos.getY() + ", "
@@ -1056,7 +1056,7 @@ public class PonderUI extends AbstractPonderScreen {
 			return true;
 		}
 
-		return super.mouseClicked(buttonEvent, doubleClick);
+		return super.mouseClicked(event, doubleClick);
 	}
 
 	@Override

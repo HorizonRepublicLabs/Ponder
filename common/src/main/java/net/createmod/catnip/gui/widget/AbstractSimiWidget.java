@@ -142,8 +142,8 @@ public abstract class AbstractSimiWidget extends AbstractWidget implements Ticka
 	}
 
 	@Override
-	public void onClick(MouseButtonEvent buttonEvent, boolean doubleClick) {
-		runCallback(buttonEvent.x(), buttonEvent.y());
+	public void onClick(MouseButtonEvent event, boolean doubleClick) {
+		runCallback(event.x(), event.y());
 	}
 
 	@Override

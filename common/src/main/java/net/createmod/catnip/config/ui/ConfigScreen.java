@@ -46,8 +46,6 @@ public abstract class ConfigScreen extends AbstractSimiScreen {
 		(graphics, x, y, alpha) -> graphics.fill(-200, -200, 200, 200, 0x60_000000)
 	);
 
-	private static final PanoramaRenderer vanillaPanorama = new PanoramaRenderer(TitleScreen.CUBE_MAP);
-
 	public ConfigScreen(@Nullable Screen parent) {
 		this.parent = parent;
 	}
@@ -127,7 +125,10 @@ public abstract class ConfigScreen extends AbstractSimiScreen {
 			return;
 		}
 
-		vanillaPanorama.render(graphics, this.width, this.height, true);
+		Minecraft.getInstance()
+			.gameRenderer
+			.getPanorama()
+			.render(graphics, this.width, this.height, true);
 
 		graphics.fill(0, 0, this.width, this.height, 0x90_282c34);
 	}

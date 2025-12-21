@@ -12,10 +12,14 @@ import net.createmod.ponder.api.element.ParrotElement;
 import net.createmod.ponder.api.element.ParrotPose;
 import net.createmod.ponder.api.level.PonderLevel;
 import net.createmod.ponder.foundation.PonderScene;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.animal.parrot.Parrot;
 import net.minecraft.world.phys.Vec3;
@@ -114,9 +118,9 @@ public class ParrotElementImpl extends AnimatedSceneElementBase implements Parro
 	}
 
 	@Override
-	protected void renderLast(PonderLevel world, MultiBufferSource buffer, GuiGraphics graphics, PoseStack poseStack,
-							  float fade, float pt) {
-		EntityRenderDispatcher entityrenderermanager = Minecraft.getInstance()
+	protected void renderLast(PonderLevel world, MultiBufferSource buffer, SubmitNodeCollector queue, Camera camera,
+							  CameraRenderState cameraRenderState, PoseStack poseStack, float fade, float pt) {
+		EntityRenderDispatcher dispatcher = Minecraft.getInstance()
 			.getEntityRenderDispatcher();
 
 		if (entity == null) {
@@ -132,7 +136,8 @@ public class ParrotElementImpl extends AnimatedSceneElementBase implements Parro
 		float angle = AngleHelper.angleLerp(pt, entity.yRotO, entity.getYRot());
 		poseStack.mulPose(Axis.YP.rotationDegrees(angle));
 
-		entityrenderermanager.render(entity, 0, 0, 0, 0, pt, poseStack, buffer, lightCoordsFromFade(fade));
+		EntityRenderState state = dispatcher.extractEntity(entity, pt);
+		dispatcher.submit(state, cameraRenderState, 0, 0, 0, poseStack, queue);
 		poseStack.popPose();
 	}
 

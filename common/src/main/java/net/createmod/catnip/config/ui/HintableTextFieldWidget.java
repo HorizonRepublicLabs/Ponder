@@ -1,18 +1,19 @@
 package net.createmod.catnip.config.ui;
 
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 import net.createmod.catnip.gui.UIRenderHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.CommonComponents;
 
 public class HintableTextFieldWidget extends EditBox {
-
 	protected Font font;
-	protected String hint;
+	protected String hint = "";
 
 	public HintableTextFieldWidget(Font font, int x, int y, int width, int height) {
 		super(font, x, y, width, height, CommonComponents.EMPTY);
@@ -23,15 +24,11 @@ public class HintableTextFieldWidget extends EditBox {
 		this.hint = hint;
 	}
 
-	public void setHeight(int value) {
-		this.height = value;
-	}
-
 	@Override
 	public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
 		super.renderWidget(graphics, mouseX, mouseY, partialTicks);
 
-		if (hint == null || hint.isEmpty())
+		if (hint.isEmpty())
 			return;
 
 		if (!getValue().isEmpty())
@@ -41,23 +38,24 @@ public class HintableTextFieldWidget extends EditBox {
 	}
 
 	@Override
-	public boolean mouseClicked(double x, double y, int button) {
-		if (!isMouseOver(x, y))
+	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+		if (!isMouseOver(event.x(), event.y()))
 			return false;
 
-		if (button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
+		if (event.button() == InputConstants.MOUSE_BUTTON_RIGHT) {
 			setValue("");
 			return true;
-		} else
-			return super.mouseClicked(x, y, button);
+		} else {
+			return super.mouseClicked(event, doubleClick);
+		}
 	}
 
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (Minecraft.getInstance().options.keyInventory.matches(keyCode, scanCode)) {
+	public boolean keyPressed(KeyEvent keyevent) {
+		if (Minecraft.getInstance().options.keyInventory.matches(keyevent)) {
 			return true;
 		}
 
-		return super.keyPressed(keyCode, scanCode, modifiers);
+		return super.keyPressed(keyevent);
 	}
 }

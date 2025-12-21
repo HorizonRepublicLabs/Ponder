@@ -56,10 +56,10 @@ public class PonderProgressBar extends AbstractSimiWidget {
 	}
 
 	@Override
-	public void onClick(MouseButtonEvent buttonEvent, boolean doubleClick) {
+	public void onClick(MouseButtonEvent event, boolean doubleClick) {
 		PonderScene activeScene = ponder.getActiveScene();
 
-		int keyframeIndex = getHoveredKeyframeIndex(activeScene, buttonEvent.x());
+		int keyframeIndex = getHoveredKeyframeIndex(activeScene, event.x());
 
 		if (keyframeIndex == -1)
 			ponder.seekToTime(0);

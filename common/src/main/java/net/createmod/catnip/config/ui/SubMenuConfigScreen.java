@@ -388,7 +388,7 @@ public class SubMenuConfigScreen extends ConfigScreen {
 		if (super.keyPressed(keyCode, scanCode, modifiers))
 			return true;
 
-		if (search != null && Screen.hasControlDown()) {
+		if (search != null && keyEvent.hasControlDown()) {
 			if (keyCode == GLFW.GLFW_KEY_F) {
 				search.setFocused(true);
 			}

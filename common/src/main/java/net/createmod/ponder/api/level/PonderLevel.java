@@ -32,7 +32,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.LevelRenderState;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -182,11 +182,12 @@ public class PonderLevel extends SchematicLevel {
 		return this;
 	}
 
-	public void renderEntities(PoseStack ms, SuperRenderTypeBuffer buffer, Camera ari, float pt) {
-		Vec3 Vector3d = ari.position();
-		double d0 = Vector3d.x();
-		double d1 = Vector3d.y();
-		double d2 = Vector3d.z();
+	public void renderEntities(PoseStack poseStack, SubmitNodeCollector queue, Camera camera,
+							   CameraRenderState cameraRenderState, float pt) {
+		Vec3 vec3 = camera.position();
+		double camX = vec3.x();
+		double camY = vec3.y();
+		double camZ = vec3.z();
 
 		for (Entity entity : entities) {
 			if (entity.tickCount == 0) {
@@ -194,34 +195,16 @@ public class PonderLevel extends SchematicLevel {
 				entity.yOld = entity.getY();
 				entity.zOld = entity.getZ();
 			}
-			renderEntity(entity, d0, d1, d2, pt, ms, buffer);
+
+			EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
+			EntityRenderState state = dispatcher.extractEntity(entity, pt);
+			dispatcher.submit(state, cameraRenderState, state.x - camX, state.y - camY, state.z - camZ, poseStack, queue);
 		}
-
-		// TODO - Do we need this here still?
-		buffer.draw(RenderTypes.entitySolid(TextureAtlas.LOCATION_BLOCKS));
-		buffer.draw(RenderTypes.entityCutout(TextureAtlas.LOCATION_BLOCKS));
-		buffer.draw(RenderTypes.entityCutoutNoCull(TextureAtlas.LOCATION_BLOCKS));
-		buffer.draw(RenderTypes.entitySmoothCutout(TextureAtlas.LOCATION_BLOCKS));
 	}
 
-	private void renderEntity(Entity entity, double camX, double camY, double camZ, float pt, PoseStack ms,
-							  MultiBufferSource buffer) {
-		double d0 = Mth.lerp(pt, entity.xOld, entity.getX());
-		double d1 = Mth.lerp(pt, entity.yOld, entity.getY());
-		double d2 = Mth.lerp(pt, entity.zOld, entity.getZ());
-		float f = Mth.lerp(pt, entity.yRotO, entity.getYRot());
-		EntityRenderDispatcher renderManager = Minecraft.getInstance()
-			.getEntityRenderDispatcher();
-
-		EntityRenderState state = renderManager.extractEntity(entity, pt);
-
-		int light = renderManager.getRenderer(entity)
-			.getPackedLightCoords(entity, pt);
-		renderManager.render(entity, d0 - camX, d1 - camY, d2 - camZ, f, pt, ms, buffer, light);
-	}
-
-	public void renderParticles(PoseStack ms, MultiBufferSource buffer, Camera ari, float pt) {
-		particles.renderParticles(ms, buffer, ari, pt);
+	public void renderParticles(PoseStack ms, SubmitNodeCollector queue, Camera camera,
+								CameraRenderState cameraRenderState, float pt) {
+		particles.renderParticles(ms, queue, camera, cameraRenderState, pt);
 	}
 
 	public void tick() {

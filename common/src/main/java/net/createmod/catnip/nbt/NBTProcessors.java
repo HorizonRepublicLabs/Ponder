@@ -4,12 +4,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.UnaryOperator;
 
 import javax.annotation.Nullable;
 
 import net.createmod.catnip.codecs.CatnipCodecUtils;
 import net.createmod.catnip.components.ComponentProcessors;
+import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -37,8 +39,11 @@ public final class NBTProcessors {
 	// Triggered by block tag, not BE type
 	private static final UnaryOperator<CompoundTag> signProcessor = data -> {
 		for (String key : List.of("front_text", "back_text")) {
-			SignText text = CatnipCodecUtils.decode(SignText.DIRECT_CODEC, data.getCompound(key))
-				.orElse(null);
+			Optional<CompoundTag> tag = data.getCompound(key);
+			if (tag.isEmpty())
+				return null;
+
+			SignText text = CatnipCodecUtils.decode(SignText.DIRECT_CODEC, tag.get()).orElse(null);
 
 			if (text != null) {
 				for (Component component : text.getMessages(false)) {
@@ -54,17 +59,19 @@ public final class NBTProcessors {
 
 	public static UnaryOperator<CompoundTag> itemProcessor(String tagKey) {
 		return data -> {
-			CompoundTag compound = data.getCompound(tagKey);
-			if (!compound.contains("components", 10))
+			CompoundTag compound = data.getCompoundOrEmpty(tagKey);
+			Optional<CompoundTag> componentsOptional = compound.getCompound("components");
+			if (componentsOptional.isEmpty())
 				return data;
-			CompoundTag itemComponents = compound.getCompound("components");
-			HashSet<String> keys = new HashSet<>(itemComponents.getAllKeys());
-			for (String key : keys) {
-				DataComponentType<?> type = BuiltInRegistries.DATA_COMPONENT_TYPE.get(Identifier.parse(key));
-				if (type != null && ComponentProcessors.isUnsafeItemComponent(type))
-					itemComponents.remove(key);
+			CompoundTag components = componentsOptional.get();
+			for (String key : components.keySet()) {
+				Optional<DataComponentType<?>> optionalType = BuiltInRegistries.DATA_COMPONENT_TYPE.get(Identifier.parse(key)).map(Reference::value);
+				optionalType.ifPresent(type -> {
+					if (ComponentProcessors.isUnsafeItemComponent(type))
+						components.remove(key);
+				});
 			}
-			if (itemComponents.isEmpty())
+			if (components.isEmpty())
 				compound.remove("components");
 			return data;
 		};

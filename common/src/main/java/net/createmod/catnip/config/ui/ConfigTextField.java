@@ -9,15 +9,15 @@ public class ConfigTextField extends HintableTextFieldWidget {
 	}
 
 	@Override
-	public boolean mouseClicked(double x, double y, int button) {
-		if (!isMouseOver(x, y))
+	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+		if (!isMouseOver(event.x(), event.y()))
 			setFocused(false);
-		return super.mouseClicked(x, y, button);
+		return super.mouseClicked(event, doubleClick);
 	}
 
 	@Override
-	public void onClick(MouseButtonEvent buttonEvent, boolean doubleClick) {
-		super.onClick(buttonEvent, doubleClick);
+	public void onClick(MouseButtonEvent event, boolean doubleClick) {
+		super.onClick(event, doubleClick);
 		setFocused(true);
 	}
 

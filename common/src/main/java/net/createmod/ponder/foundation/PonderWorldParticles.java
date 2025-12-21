@@ -5,6 +5,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Queue;
 
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.state.CameraRenderState;
+
 import org.joml.Matrix4fStack;
 
 import com.google.common.collect.EvictingQueue;
@@ -63,7 +66,8 @@ public class PonderWorldParticles {
 		}
 	}
 
-	public void renderParticles(PoseStack ms, MultiBufferSource buffer, Camera renderInfo, float pt) {
+	public void renderParticles(PoseStack ms, SubmitNodeCollector queue, Camera camera,
+								CameraRenderState cameraRenderState, float pt) {
 		Minecraft mc = Minecraft.getInstance();
 		LightTexture lightTexture = mc.gameRenderer.lightTexture();
 
@@ -87,7 +91,7 @@ public class PonderWorldParticles {
 
 				if (bufferBuilder != null) {
 					for (Particle particle : iterable)
-						particle.render(bufferBuilder, renderInfo, pt);
+						particle.render(bufferBuilder, camera, pt);
 
 					MeshData meshData = bufferBuilder.build();
 					if (meshData != null)

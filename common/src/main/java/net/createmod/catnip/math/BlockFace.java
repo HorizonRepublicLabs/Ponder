@@ -52,17 +52,4 @@ public class BlockFace extends Pair<BlockPos, Direction> {
 	public BlockPos getConnectedPos() {
 		return getPos().relative(getFace());
 	}
-
-	public CompoundTag serializeNBT() {
-		CompoundTag compoundNBT = new CompoundTag();
-		compoundNBT.store("Pos", BlockPos.CODEC, getPos());
-		NBTHelper.writeEnum(compoundNBT, "Face", getFace());
-		return compoundNBT;
-	}
-
-	public static BlockFace fromNBT(CompoundTag compound) {
-
-		return new BlockFace(compound.read("Pos", BlockPos.CODEC).orElseThrow(),
-			NBTHelper.readEnum(compound, "Face", Direction.class));
-	}
 }

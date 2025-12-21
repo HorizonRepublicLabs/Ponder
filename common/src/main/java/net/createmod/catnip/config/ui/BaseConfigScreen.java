@@ -6,6 +6,10 @@ import java.util.function.UnaryOperator;
 
 import javax.annotation.Nullable;
 
+import com.mojang.blaze3d.platform.InputConstants;
+
+import net.minecraft.client.input.KeyEvent;
+
 import org.lwjgl.glfw.GLFW;
 
 import net.createmod.catnip.gui.ScreenOpener;
@@ -92,21 +96,21 @@ public class BaseConfigScreen extends ConfigScreen {
 		}
 
 		try {
-			clientSpec = ConfigHelper.findModConfigSpecFor(ModConfig.Type.CLIENT, this.modID);
+			clientSpec = ConfigHelper.findModConfigSpecFor(ModConfig.Type.CLIENT, modID);
 		} catch (ClassCastException | NullPointerException e) {
-			Ponder.LOGGER.debug("Unable to find ClientConfigSpec for mod: " + this.modID);
+			Ponder.LOGGER.debug("Unable to find ClientConfigSpec for mod: {}", modID);
 		}
 
 		try {
-			commonSpec = ConfigHelper.findModConfigSpecFor(ModConfig.Type.COMMON, this.modID);
+			commonSpec = ConfigHelper.findModConfigSpecFor(ModConfig.Type.COMMON, modID);
 		} catch (ClassCastException | NullPointerException e) {
-			Ponder.LOGGER.debug("Unable to find CommonConfigSpec for mod: " + this.modID);
+			Ponder.LOGGER.debug("Unable to find CommonConfigSpec for mod: {}", modID);
 		}
 
 		try {
-			serverSpec = ConfigHelper.findModConfigSpecFor(ModConfig.Type.SERVER, this.modID);
+			serverSpec = ConfigHelper.findModConfigSpecFor(ModConfig.Type.SERVER, modID);
 		} catch (ClassCastException | NullPointerException e) {
-			Ponder.LOGGER.debug("Unable to find ServerConfigSpec for mod: " + this.modID);
+			Ponder.LOGGER.debug("Unable to find ServerConfigSpec for mod: {}", modID);
 		}
 
 		return this;
@@ -229,13 +233,12 @@ public class BaseConfigScreen extends ConfigScreen {
 	}
 
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (super.keyPressed(keyCode, scanCode, modifiers))
+	public boolean keyPressed(KeyEvent keyEvent) {
+		if (super.keyPressed(keyEvent))
 			return true;
-		if (keyCode == GLFW.GLFW_KEY_BACKSPACE) {
+		if (keyEvent.key() == InputConstants.KEY_BACKSPACE) {
 			linkTo(parent);
 		}
 		return false;
 	}
-
 }

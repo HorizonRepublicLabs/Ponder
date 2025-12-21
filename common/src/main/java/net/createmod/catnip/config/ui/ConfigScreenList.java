@@ -24,6 +24,9 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -36,7 +39,6 @@ public class ConfigScreenList extends ObjectSelectionList<ConfigScreenList.Entry
 	public ConfigScreenList(Minecraft client, int width, int height, int top, int elementHeight) {
 		super(client, width, height, top, elementHeight);
 		currentText = null;
-		headerHeight = 3;
 	}
 
 	@Override
@@ -54,17 +56,18 @@ public class ConfigScreenList extends ObjectSelectionList<ConfigScreenList.Entry
 	protected void renderListItems(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
 		Window window = minecraft.getWindow();
 		double d0 = window.getGuiScale();
-		RenderSystem.enableScissor((int) (getX() * d0), (int) (window.getHeight() - (getBottom() * d0)), (int) (this.width * d0), (int) (this.height * d0));
+		// TODO - Check is this still works here
+		RenderSystem.enableScissorForRenderTypeDraws((int) (getX() * d0), (int) (window.getHeight() - (getBottom() * d0)), (int) (this.width * d0), (int) (this.height * d0));
 		super.renderListItems(graphics, mouseX, mouseY, partialTick);
-		RenderSystem.disableScissor();
+		RenderSystem.disableScissorForRenderTypeDraws();
 	}
 
 	@Override
-	public boolean mouseClicked(double x, double y, int button) {
-		//children().stream().filter(e -> e instanceof NumberEntry<?>).forEach(e -> e.mouseClicked(x, y, button));
-		//children().stream().filter(e -> e instanceof StringEntry).forEach(e -> e.mouseClicked(x, y, button));
+	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+		//children().stream().filter(e -> e instanceof NumberEntry<?>).forEach(e -> e.mouseClicked(buttonEvent, doubleClick));
+		//children().stream().filter(e -> e instanceof StringEntry).forEach(e -> e.mouseClicked(buttonEvent, doubleClick));
 
-		return super.mouseClicked(x, y, button);
+		return super.mouseClicked(event, doubleClick);
 	}
 
 	@Override
@@ -72,12 +75,8 @@ public class ConfigScreenList extends ObjectSelectionList<ConfigScreenList.Entry
 		return width - 16;
 	}
 
-	public int getWidth() {
-		return width;
-	}
-
 	@Override
-	protected int getScrollbarPosition() {
+	protected int scrollBarX() {
 		return getX() + this.width - 6;
 	}
 
@@ -94,7 +93,7 @@ public class ConfigScreenList extends ObjectSelectionList<ConfigScreenList.Entry
 	}
 
 	public boolean search(String query) {
-		if (query == null || query.isEmpty()) {
+		if (query.isEmpty()) {
 			setScrollAmount(0);
 			return true;
 		}
@@ -136,19 +135,19 @@ public class ConfigScreenList extends ObjectSelectionList<ConfigScreenList.Entry
 		}
 
 		@Override
-		public boolean mouseClicked(double x, double y, int button) {
-			return getGuiListeners().stream().anyMatch(l -> l.mouseClicked(x, y, button));
+		public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+			return getGuiListeners().stream().anyMatch(l -> l.mouseClicked(event, doubleClick));
 		}
 
 		@Override
-		public boolean keyPressed(int code, int keyPressed_2_, int keyPressed_3_) {
-			return getGuiListeners().stream().anyMatch(l -> l.keyPressed(code, keyPressed_2_, keyPressed_3_));
+		public boolean keyPressed(KeyEvent event) {
+			return getGuiListeners().stream().anyMatch(l -> l.keyPressed(event));
 		}
 
 		@Override
-		public boolean charTyped(char ch, int code) {
+		public boolean charTyped(CharacterEvent event) {
 			for (GuiEventListener l : getGuiListeners()) {
-				if (l.charTyped(ch, code)) {
+				if (l.charTyped(event)) {
 					return true;
 				}
 			}
@@ -176,7 +175,6 @@ public class ConfigScreenList extends ObjectSelectionList<ConfigScreenList.Entry
 	}
 
 	public static class LabeledEntry extends Entry {
-
 		protected static final float labelWidthMult = 0.4f;
 
 		protected TextStencilElement label;
@@ -262,12 +260,12 @@ public class ConfigScreenList extends ObjectSelectionList<ConfigScreenList.Entry
 				if (tooltip.isEmpty())
 					return;
 
-				RenderSystem.disableScissor();
-				graphics.pose().pushPose();
+				RenderSystem.disableScissorForRenderTypeDraws(); // TODO - Check if this is correct
+				graphics.pose().pushMatrix();
 				graphics.setComponentTooltipForNextFrame(font, tooltip, mouseX, mouseY);
 				//graphics.flush(); TODO - Is there an replacement?
 				//RemovedGuiUtils.drawHoveringText(ms, tooltip, mouseX, mouseY, screen.width, screen.height, 300, font);
-				graphics.pose().popPose();
+				graphics.pose().popMatrix();
 				GlStateManager._enableScissorTest();
 			}
 		}

@@ -18,6 +18,9 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.client.renderer.SubmitNodeStorage;
+import net.minecraft.client.renderer.state.CameraRenderState;
+
 import org.apache.commons.lang3.mutable.MutableDouble;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.joml.Matrix4f;
@@ -89,6 +92,7 @@ public class PonderScene {
 	private final String namespace;
 	private final Identifier identifier;
 	private final SceneCamera camera;
+	private final CameraRenderState cameraRenderState;
 	private final Outliner outliner;
 	private SceneTransform transform;
 //	private String defaultTitle;
@@ -140,6 +144,7 @@ public class PonderScene {
 		transform = new SceneTransform();
 		basePlateSize = getBounds().getXSpan();
 		camera = new SceneCamera();
+		cameraRenderState = new CameraRenderState();
 		baseWorldSection = new WorldSectionElementImpl();
 		keyframeTimes = new IntArrayList(4);
 		scaleFactor = 1;
@@ -258,22 +263,30 @@ public class PonderScene {
 		activeSchedule.add(new HideAllInstruction(10, null));
 	}
 
-	public void renderScene(SuperRenderTypeBuffer buffer, GuiGraphics graphics, PoseStack poseStack, float pt) {
-		poseStack.pushPose();
+	public void renderScene(SuperRenderTypeBuffer buffer, SubmitNodeStorage queue, PoseStack poseStack, float pt) {
 		Minecraft mc = Minecraft.getInstance();
+
+		poseStack.pushPose();
 		Entity prevRVE = mc.getCameraEntity();
 
+		// Setup CameraRenderState
+		camera.set(transform.xRotation.getValue(pt) + 90, transform.yRotation.getValue(pt) + 180);
+		cameraRenderState.initialized = camera.isInitialized();
+		cameraRenderState.pos = camera.position();
+		cameraRenderState.blockPos = camera.blockPosition();
+		cameraRenderState.entityPos = camera.entity().getPosition(pt);
+		cameraRenderState.orientation.set(camera.rotation());
+
 		mc.setCameraEntity(this.renderViewEntity);
-		forEachVisible(PonderSceneElement.class, e -> e.renderFirst(world, buffer, graphics, poseStack, pt));
+		forEachVisible(PonderSceneElement.class, e -> e.renderFirst(world, buffer, queue, camera, cameraRenderState, poseStack, pt));
 		mc.setCameraEntity(prevRVE);
 
 		for (ChunkSectionLayer layer : ChunkSectionLayer.values())
-			forEachVisible(PonderSceneElement.class, e -> e.renderLayer(world, buffer, layer, graphics, poseStack, pt));
+			forEachVisible(PonderSceneElement.class, e -> e.renderLayer(world, buffer, layer, queue, camera, cameraRenderState, poseStack, pt));
 
-		forEachVisible(PonderSceneElement.class, e -> e.renderLast(world, buffer, graphics, poseStack, pt));
-		camera.set(transform.xRotation.getValue(pt) + 90, transform.yRotation.getValue(pt) + 180);
-		world.renderEntities(poseStack, buffer, camera, pt);
-		world.renderParticles(poseStack, buffer, camera, pt);
+		forEachVisible(PonderSceneElement.class, e -> e.renderLast(world, buffer, queue, camera, cameraRenderState, poseStack, pt));
+		world.renderEntities(poseStack, queue, camera, cameraRenderState, pt);
+		world.renderParticles(poseStack, queue, camera, cameraRenderState, pt);
 		outliner.renderOutlines(poseStack, buffer, Vec3.ZERO, pt);
 
 		poseStack.popPose();
