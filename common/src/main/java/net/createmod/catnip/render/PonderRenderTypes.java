@@ -2,45 +2,40 @@ package net.createmod.catnip.render;
 
 import java.util.function.BiFunction;
 
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormat;
-
 import net.createmod.ponder.Ponder;
 import net.createmod.ponder.enums.PonderSpecialTextures;
 import net.createmod.ponder.mixin.client.accessor.RenderTypeAccessor;
-import net.minecraft.util.Util;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.rendertype.OutputTarget;
+import net.minecraft.client.renderer.rendertype.RenderSetup;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.Util;
 
-public abstract class PonderRenderTypes extends RenderType {
-	private static final RenderType OUTLINE_SOLID =
-		RenderTypeAccessor.catnip$create(createLayerName("outline_solid"), DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, false, CompositeState.builder()
-			.setShaderState(RENDERTYPE_ENTITY_SOLID_SHADER)
-			.setTextureState(new TextureStateShard(PonderSpecialTextures.BLANK.getId(), false, false))
-			.setCullState(CULL)
-			.setLightmapState(LIGHTMAP)
-			.setOverlayState(OVERLAY)
-			.createCompositeState(false));
+public abstract class PonderRenderTypes {
+	private static final RenderType OUTLINE_SOLID = RenderTypeAccessor.catnip$create(
+		createLayerName("outline_solid"),
+		RenderSetup.builder(RenderPipelines.ENTITY_SOLID)
+			.bufferSize(256)
+			.withTexture("Sampler0", PonderSpecialTextures.BLANK.getId())
+			.useLightmap()
+			.useOverlay()
+			.createRenderSetup()
+	);
 
 	private static final BiFunction<Identifier, Boolean, RenderType> OUTLINE_TRANSLUCENT = Util.memoize((texture, cull) ->
-		RenderTypeAccessor.catnip$create(createLayerName("outline_translucent" + (cull ? "_cull" : "")), DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true, CompositeState.builder()
-			.setShaderState(cull ? RENDERTYPE_ENTITY_TRANSLUCENT_CULL_SHADER : RENDERTYPE_ENTITY_TRANSLUCENT_SHADER)
-			.setTextureState(new TextureStateShard(texture, false, false))
-			.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-			.setCullState(cull ? CULL : NO_CULL)
-			.setLightmapState(LIGHTMAP)
-			.setOverlayState(OVERLAY)
-			.setWriteMaskState(COLOR_WRITE)
-			.createCompositeState(false)));
-
-	private static final RenderType FLUID =
-		RenderTypeAccessor.catnip$create(createLayerName("fluid"), DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS, 256, false, true, CompositeState.builder()
-			.setShaderState(RENDERTYPE_TRANSLUCENT_SHADER)
-			.setTextureState(BLOCK_SHEET_MIPPED)
-			.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-			.setLightmapState(LIGHTMAP)
-			//.setOverlayState(NO_OVERLAY)
-			.createCompositeState(true));
+		RenderTypeAccessor.catnip$create(
+			createLayerName("outline_translucent" + (cull ? "_cull" : "")),
+			RenderSetup.builder(cull ? RenderPipelines.ITEM_ENTITY_TRANSLUCENT_CULL : RenderPipelines.ENTITY_TRANSLUCENT)
+				.bufferSize(256)
+				.withTexture("Sampler0", texture)
+				.sortOnUpload()
+				.useLightmap()
+				.useOverlay()
+				.setOutputTarget(OutputTarget.ITEM_ENTITY_TARGET)
+				.createRenderSetup()
+		)
+	);
 
 	public static RenderType outlineSolid() {
 		return OUTLINE_SOLID;
@@ -50,16 +45,7 @@ public abstract class PonderRenderTypes extends RenderType {
 		return OUTLINE_TRANSLUCENT.apply(texture, cull);
 	}
 
-	//TODO vanilla uses the translucent render type for fluids, need to investigate if this is even needed
-	public static RenderType fluid() {
-		return FLUID;
-	}
-
 	private static String createLayerName(String name) {
 		return Ponder.MOD_ID + ":" + name;
-	}
-
-	private PonderRenderTypes(String name, VertexFormat format, VertexFormat.Mode mode, int bufferSize, boolean affectsCrumbling, boolean sortOnUpload, Runnable setupState, Runnable clearState) {
-		super(name, format, mode, bufferSize, affectsCrumbling, sortOnUpload, setupState, clearState);
 	}
 }

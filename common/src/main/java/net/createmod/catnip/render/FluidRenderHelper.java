@@ -7,8 +7,11 @@ import com.mojang.math.Axis;
 import net.createmod.catnip.data.Iterate;
 import net.createmod.catnip.platform.CatnipServices;
 import net.createmod.catnip.platform.services.ModFluidHelper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -34,7 +37,7 @@ public final class FluidRenderHelper<T> {
 			ms.translate(-center.x, -center.y, -center.z);
 		}
 
-		submitNode.submitCustomGeometry(ms, PonderRenderTypes.fluid(), (pose, vertexConsumer) -> {
+		submitNode.submitCustomGeometry(ms, RenderTypes.translucentMovingBlock(), (pose, vertexConsumer) -> {
 			renderFluidBox(fluid, xMin, yMin, zMin, xMax, yMax, zMax, vertexConsumer, pose, light, renderBottom);
 		});
 
@@ -106,7 +109,7 @@ public final class FluidRenderHelper<T> {
 	}
 
 	public static VertexConsumer getFluidBuilder(MultiBufferSource buffer) {
-		return buffer.getBuffer(PonderRenderTypes.fluid());
+		return buffer.getBuffer(RenderTypes.translucentMovingBlock());
 	}
 
 	public static void renderStillTiledFace(Direction dir, float left, float down, float right, float up,

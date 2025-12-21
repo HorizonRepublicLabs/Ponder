@@ -388,9 +388,10 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 		transformMS(structureBuffer.getTransforms(), pt);
 
 		int light = lightCoordsFromFade(fade);
+		RenderType type = RenderHelper.convertLayerToType(layer);
 		structureBuffer
 			.light(light)
-			.renderInto(poseStack, buffer.getBuffer(layer.pipeline()));
+			.renderInto(poseStack, buffer.getBuffer(type));
 	}
 
 	@Override
@@ -458,7 +459,7 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 	private SuperByteBuffer buildStructureBuffer(PonderLevel world, ChunkSectionLayer layer) {
 		ThreadLocalObjects objects = THREAD_LOCAL_OBJECTS.get();
 		SbbBuilder sbbBuilder = objects.sbbBuilder;
-		sbbBuilder.prepare(layer);
+		sbbBuilder.prepare(layer.pipeline());
 
 		world.setMask(section);
 		world.pushFakeLight(0);

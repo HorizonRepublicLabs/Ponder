@@ -9,6 +9,8 @@ import javax.annotation.Nonnull;
 
 import com.mojang.blaze3d.platform.Window;
 
+import net.minecraft.client.input.MouseButtonEvent;
+
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.ClipboardManager;
@@ -108,11 +110,11 @@ public class ValueEntry<T> extends ConfigScreenList.LabeledEntry {
 	}
 
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		if (super.mouseClicked(mouseX, mouseY, button))
+	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+		if (super.mouseClicked(event, doubleClick))
 			return true;
 
-		if (button != GLFW.GLFW_MOUSE_BUTTON_1) {
+		if (event.button() != InputConstants.MOUSE_BUTTON_LEFT) {
 			return false;
 		}
 
