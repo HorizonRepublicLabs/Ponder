@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.createmod.catnip.gui.NavigatableSimiScreen;
 import net.createmod.catnip.gui.ScreenOpener;
@@ -18,7 +17,6 @@ import net.createmod.catnip.lang.ClientFontHelper;
 import net.createmod.catnip.layout.LayoutHelper;
 import net.createmod.catnip.registry.RegisteredObjectsHelper;
 import net.createmod.ponder.Ponder;
-import net.createmod.ponder.foundation.PonderChapter;
 import net.createmod.ponder.foundation.PonderIndex;
 import net.createmod.ponder.foundation.PonderTag;
 import net.minecraft.client.gui.GuiGraphics;
@@ -33,8 +31,6 @@ import net.minecraft.world.level.ItemLike;
 import org.joml.Matrix3x2fStack;
 
 public class PonderTagScreen extends AbstractPonderScreen {
-	private static final double CHAPTER_XMULT = 0.5;
-	private static final double CHAPTER_YMULT = 0.75;
 	private static final float MAIN_YMULT = 0.15f;
 
 	private final PonderTag tag;
@@ -42,9 +38,6 @@ public class PonderTagScreen extends AbstractPonderScreen {
 	private final double itemXmult = 0.5;
 	@Nullable
 	protected Rect2i itemArea;
-	protected final List<PonderChapter> chapters = new ArrayList<>();
-	@Nullable
-	protected Rect2i chapterArea;
 
 	private ItemStack hoveredItem = ItemStack.EMPTY;
 
@@ -153,8 +146,6 @@ public class PonderTagScreen extends AbstractPonderScreen {
 		super.renderWindow(graphics, mouseX, mouseY, partialTicks);
 		renderItems(graphics, mouseX, mouseY, partialTicks);
 
-		renderChapters(graphics, mouseX, mouseY, partialTicks);
-
 		Matrix3x2fStack poseStack = graphics.pose();
 		poseStack.pushMatrix();
 		poseStack.translate(width / 2f - 120f, height * MAIN_YMULT - 40f);
@@ -249,23 +240,6 @@ public class PonderTagScreen extends AbstractPonderScreen {
 
 	public int getItemsY() {
 		return (int) (MAIN_YMULT * height + 85);
-	}
-
-	protected void renderChapters(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		if (chapters.isEmpty())
-			return;
-
-		int chapterX = (int) (width * CHAPTER_XMULT);
-		int chapterY = (int) (height * CHAPTER_YMULT);
-
-		Matrix3x2fStack poseStack = graphics.pose();
-		poseStack.pushMatrix();
-		poseStack.translate(chapterX, chapterY);
-
-		UIRenderHelper.streak(graphics, 0, chapterArea.getX() - 10, chapterArea.getY() - 20, 20, 220);
-		graphics.drawString(font, "More Topics to Ponder about", chapterArea.getX() - 5, chapterArea.getY() - 25, UIRenderHelper.COLOR_TEXT_ACCENT.getFirst().getRGB(), false);
-
-		poseStack.popMatrix();
 	}
 
 	@Override

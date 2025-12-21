@@ -56,7 +56,6 @@ import net.createmod.ponder.api.registration.StoryBoardEntry.SceneOrderingEntry;
 import net.createmod.ponder.api.registration.StoryBoardEntry.SceneOrderingType;
 import net.createmod.ponder.enums.PonderConfig;
 import net.createmod.ponder.enums.PonderGuiTextures;
-import net.createmod.ponder.foundation.PonderChapter;
 import net.createmod.ponder.foundation.PonderIndex;
 import net.createmod.ponder.foundation.PonderScene;
 import net.createmod.ponder.foundation.PonderScene.SceneTransform;
@@ -118,8 +117,6 @@ public class PonderUI extends AbstractPonderScreen {
 	private List<LerpedFloat> tagFades = new ArrayList<>();
 	private final LerpedFloat fadeIn;
 	ItemStack stack;
-	@Nullable
-	PonderChapter chapter = null;
 
 	private boolean userViewMode;
 	private boolean identifyMode;
@@ -359,11 +356,6 @@ public class PonderUI extends AbstractPonderScreen {
 			tagFades.add(chase);
 
 		});
-
-		/*
-		 * if (chapter != null) { widgets.add(chap = new PonderButton(width - 31 - 24,
-		 * 31, () -> { }).showing(chapter)); }
-		 */
 
 		Options bindings = minecraft.options;
 		int spacing = 8;
@@ -1069,9 +1061,6 @@ public class PonderUI extends AbstractPonderScreen {
 
 	@Override
 	protected String getBreadcrumbTitle() {
-		if (chapter != null)
-			return chapter.getTitle();
-
 		return stack.getItem()
 			.getDescription()
 			.getString();
