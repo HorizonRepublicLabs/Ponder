@@ -1,8 +1,6 @@
 package net.createmod.catnip.config.ui;
 
 public class ConfigAnnotations {
-
-
 	/**
 	 * Changes the way the Integer value is display.
 	 */

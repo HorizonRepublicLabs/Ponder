@@ -6,6 +6,8 @@ import java.util.List;
 
 import net.minecraft.client.gui.Font.DisplayMode;
 
+import net.minecraft.network.chat.FormattedText;
+
 import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -53,6 +55,10 @@ public class ClientFontHelper {
 			lines.add(currentLine.toString());
 		}
 		return lines;
+	}
+
+	public static void drawSplitString(GuiGraphics graphics, Font font, FormattedText text, int x, int y, int width, int color) {
+		drawSplitString(graphics, font, text.getString(), x, y, width, color);
 	}
 
 	public static void drawSplitString(GuiGraphics graphics, Font font, String text, int x, int y, int width, int color) {

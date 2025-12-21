@@ -33,13 +33,13 @@ public class SubMenuEntry extends ConfigScreenList.LabeledEntry {
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, int index, int y, int x, int width, int height, int mouseX, int mouseY, boolean p_230432_9_, float partialTicks) {
-		super.render(graphics, index, y, x, width, height, mouseX, mouseY, p_230432_9_, partialTicks);
+	public void renderContent(GuiGraphics graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
+		super.renderContent(graphics, mouseX, mouseY, isHovering, partialTick);
 
-		button.setX(x + width - 108);
-		button.setY(y + 10);
-		button.setHeight(height - 20);
-		button.render(graphics, mouseX, mouseY, partialTicks);
+		button.setX(getX() + getWidth() - 108);
+		button.setY(getY() + 10);
+		button.setHeight(getHeight() - 20);
+		button.render(graphics, mouseX, mouseY, partialTick);
 	}
 
 	@Override

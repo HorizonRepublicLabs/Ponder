@@ -75,21 +75,20 @@ public class EnumEntry extends ValueEntry<Enum<?>> {
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, int index, int y, int x, int width, int height, int mouseX, int mouseY,
-					   boolean p_230432_9_, float partialTicks) {
-		super.render(graphics, index, y, x, width, height, mouseX, mouseY, p_230432_9_, partialTicks);
+	public void renderContent(GuiGraphics graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
+		super.renderContent(graphics, mouseX, mouseY, isHovering, partialTick);
 
-		cycleLeft.setX(x + getLabelWidth(width) + 4);
-		cycleLeft.setY(y + 10);
-		cycleLeft.render(graphics, mouseX, mouseY, partialTicks);
+		cycleLeft.setX(getX() + getLabelWidth(getWidth()) + 4);
+		cycleLeft.setY(getY() + 10);
+		cycleLeft.render(graphics, mouseX, mouseY, partialTick);
 
-		valueText.at(cycleLeft.getX() + cycleWidth - 8, y + 10, 200)
-			.withBounds(width - getLabelWidth(width) - 2 * cycleWidth - resetWidth - 4, 16)
+		valueText.at(cycleLeft.getX() + cycleWidth - 8, getY() + 10, 200)
+			.withBounds(getWidth() - getLabelWidth(getWidth()) - 2 * cycleWidth - resetWidth - 4, 16)
 			.render(graphics);
 
-		cycleRight.setX(x + width - cycleWidth * 2 - resetWidth + 10);
-		cycleRight.setY(y + 10);
-		cycleRight.render(graphics, mouseX, mouseY, partialTicks);
+		cycleRight.setX(getX() + getWidth() - cycleWidth * 2 - resetWidth + 10);
+		cycleRight.setY(getY() + 10);
+		cycleRight.render(graphics, mouseX, mouseY, partialTick);
 
 		new BoxElement()
 			.withBackground(BoxElement.COLOR_BACKGROUND_FLAT)

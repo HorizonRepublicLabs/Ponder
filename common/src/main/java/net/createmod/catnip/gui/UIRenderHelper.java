@@ -6,7 +6,16 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import net.createmod.catnip.gui.render.BreadcrumbArrowRenderState;
+import net.createmod.catnip.gui.render.GradientRectRenderState;
+import net.createmod.catnip.gui.render.RadialSectorRenderState;
+import net.createmod.catnip.gui.render.TexturedQuadRenderState;
+
+import net.minecraft.client.gui.render.TextureSetup;
+
 import org.joml.Matrix3f;
+import org.joml.Matrix3x2f;
+import org.joml.Matrix3x2fStack;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL30;
 
@@ -104,14 +113,14 @@ public class UIRenderHelper {
 		Color c3 = color.scaleAlpha(0.0625f);
 		Color c4 = color.scaleAlpha(0f);
 
-		PoseStack poseStack = graphics.pose();
-		poseStack.pushPose();
-		poseStack.translate(x, y, 0);
-		poseStack.mulPose(Axis.ZP.rotationDegrees(angle - 90));
+		Matrix3x2fStack poseStack = graphics.pose();
+		poseStack.pushMatrix();
+		poseStack.translate(x, y);
+		poseStack.rotate((float) ((angle - 90) * (Math.PI / 180)));
 
 		streak(graphics, breadth / 2, length, c1, c2, c3, c4);
 
-		poseStack.popPose();
+		poseStack.popMatrix();
 	}
 
 	private static void streak(GuiGraphics graphics, int width, int height, Color c1, Color c2, Color c3, Color c4) {
@@ -126,24 +135,10 @@ public class UIRenderHelper {
 	}
 
 	/**
-	 * @see #angledGradient(GuiGraphics, float, int, int, int, float, float, Color, Color)
+	 * @see #angledGradient(GuiGraphics, float, int, int, float, float, Color, Color)
 	 */
 	public static void angledGradient(GuiGraphics graphics, float angle, int x, int y, float breadth, float length, Couple<Color> c) {
-		angledGradient(graphics, angle, x, y, 0, breadth, length, c);
-	}
-
-	/**
-	 * @see #angledGradient(GuiGraphics, float, int, int, int, float, float, Color, Color)
-	 */
-	public static void angledGradient(GuiGraphics graphics, float angle, int x, int y, int z, float breadth, float length, Couple<Color> c) {
-		angledGradient(graphics, angle, x, y, z, breadth, length, c.getFirst(), c.getSecond());
-	}
-
-	/**
-	 * @see #angledGradient(GuiGraphics, float, int, int, int, float, float, Color, Color)
-	 */
-	public static void angledGradient(GuiGraphics graphics, float angle, int x, int y, float breadth, float length, Color color1, Color color2) {
-		angledGradient(graphics, angle, x, y, 0, breadth, length, color1, color2);
+		angledGradient(graphics, angle, x, y, breadth, length, c.getFirst(), c.getSecond());
 	}
 
 	/**
@@ -154,120 +149,51 @@ public class UIRenderHelper {
 	 * @param endColor   the color at the ending edge
 	 * @param breadth    the total width of the gradient
 	 */
-	public static void angledGradient(GuiGraphics graphics, float angle, int x, int y, int z, float breadth, float length, Color startColor, Color endColor) {
-		PoseStack poseStack = graphics.pose();
-		poseStack.pushPose();
-		poseStack.translate(x, y, z);
-		poseStack.mulPose(Axis.ZP.rotationDegrees(angle - 90));
+	public static void angledGradient(GuiGraphics graphics, float angle, int x, int y, float breadth, float length, Color startColor, Color endColor) {
+		Matrix3x2fStack poseStack = graphics.pose();
+		poseStack.pushMatrix();
+		poseStack.translate(x, y);
+		poseStack.rotate((float) ((angle - 90) * (Math.PI / 180)));
 
 		float w = breadth / 2;
 		//graphics.fillGradient(-w, 0, w, length, startColor.getRGB(), endColor.getRGB());
-		drawGradientRect(poseStack.last().pose(), 0, -w, 0f, w, length, startColor, endColor);
+		drawGradientRect(graphics, -w, 0f, w, length, startColor, endColor);
 
-		poseStack.popPose();
+		poseStack.popMatrix();
 	}
 
-	public static void drawGradientRect(Matrix4f mat, int zLevel, float left, float top, float right, float bottom, Color startColor, Color endColor) {
-		RenderSystem.enableDepthTest();
-		//RenderSystem.disableTexture();
-		RenderSystem.enableBlend();
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.setShader(GameRenderer::getPositionColorShader);
-
-		Tesselator tesselator = Tesselator.getInstance();
-		BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-		buffer.addVertex(mat, right, top, zLevel).setColor(startColor.getRed(), startColor.getGreen(), startColor.getBlue(), startColor.getAlpha());
-		buffer.addVertex(mat, left, top, zLevel).setColor(startColor.getRed(), startColor.getGreen(), startColor.getBlue(), startColor.getAlpha());
-		buffer.addVertex(mat, left, bottom, zLevel).setColor(endColor.getRed(), endColor.getGreen(), endColor.getBlue(), endColor.getAlpha());
-		buffer.addVertex(mat, right, bottom, zLevel).setColor(endColor.getRed(), endColor.getGreen(), endColor.getBlue(), endColor.getAlpha());
-		BufferUploader.drawWithShader(buffer.buildOrThrow());
-
-		RenderSystem.disableBlend();
-		//RenderSystem.enableTexture();
+	public static void drawGradientRect(GuiGraphics graphics, float left, float top, float right, float bottom, Color startColor, Color endColor) {
+		graphics.guiRenderState.submitGuiElement(new GradientRectRenderState(
+			new Matrix3x2f(graphics.pose()),
+			left,
+			top,
+			right,
+			bottom,
+			startColor,
+			endColor
+		));
 	}
 
-	public static void breadcrumbArrow(GuiGraphics graphics, int x, int y, int z, int width, int height, int indent, Couple<Color> colors) {
-		breadcrumbArrow(graphics, x, y, z, width, height, indent, colors.getFirst(), colors.getSecond());
+	public static void breadcrumbArrow(GuiGraphics graphics, int x, int y, int width, int height, int indent, Couple<Color> colors) {
+		breadcrumbArrow(graphics, x, y, width, height, indent, colors.getFirst(), colors.getSecond());
 	}
 
 	// draws a wide chevron-style breadcrumb arrow pointing left
-	public static void breadcrumbArrow(GuiGraphics graphics, int x, int y, int z, int width, int height, int indent, Color startColor, Color endColor) {
-		PoseStack poseStack = graphics.pose();
-		poseStack.pushPose();
-		poseStack.translate(x - indent, y, z);
+	public static void breadcrumbArrow(GuiGraphics graphics, int x, int y, int width, int height, int indent, Color startColor, Color endColor) {
+		Matrix3x2fStack poseStack = graphics.pose();
+		poseStack.pushMatrix();
+		poseStack.translate(x - indent, y);
 
-		breadcrumbArrow(graphics, width, height, indent, startColor, endColor);
+		graphics.guiRenderState.submitGuiElement(new BreadcrumbArrowRenderState(
+			new Matrix3x2f(graphics.pose()),
+			width,
+			height,
+			indent,
+			startColor,
+			endColor
+		));
 
-		poseStack.popPose();
-	}
-
-	private static void breadcrumbArrow(GuiGraphics graphics, int width, int height, int indent, Color c1, Color c2) {
-
-		/*
-		 * 0,0       x1,y0 ********************* x2,y0 ***** x3,y0
-		 *       ****                                     ****
-		 *   ****                                     ****
-		 * x0,y1     x1,y1                       x2,y1
-		 *   ****                                     ****
-		 *       ****                                     ****
-		 *           x1,y2 ********************* x2,y2 ***** x3,y2
-		 *
-		 */
-
-		float x0 = 0;
-		float x1 = indent;
-		float x2 = width;
-		float x3 = indent + width;
-
-		float y0 = 0;
-		float y1 = height / 2f;
-		float y2 = height;
-
-		indent = Math.abs(indent);
-		width = Math.abs(width);
-		Color fc1 = Color.mixColors(c1, c2, 0);
-		Color fc2 = Color.mixColors(c1, c2, (indent) / (width + 2f * indent));
-		Color fc3 = Color.mixColors(c1, c2, (indent + width) / (width + 2f * indent));
-		Color fc4 = Color.mixColors(c1, c2, 1);
-
-		RenderSystem.disableDepthTest();
-		RenderSystem.enableBlend();
-		RenderSystem.disableCull();
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.setShader(GameRenderer::getPositionColorShader);
-
-		Tesselator tessellator = Tesselator.getInstance();
-		BufferBuilder bufferbuilder = tessellator.begin(VertexFormat.Mode.TRIANGLES, DefaultVertexFormat.POSITION_COLOR);
-		Matrix4f model = graphics.pose().last().pose();
-
-		bufferbuilder.addVertex(model, x0, y1, 0).setColor(fc1.getRed(), fc1.getGreen(), fc1.getBlue(), fc1.getAlpha());
-		bufferbuilder.addVertex(model, x1, y0, 0).setColor(fc2.getRed(), fc2.getGreen(), fc2.getBlue(), fc2.getAlpha());
-		bufferbuilder.addVertex(model, x1, y1, 0).setColor(fc2.getRed(), fc2.getGreen(), fc2.getBlue(), fc2.getAlpha());
-
-		bufferbuilder.addVertex(model, x0, y1, 0).setColor(fc1.getRed(), fc1.getGreen(), fc1.getBlue(), fc1.getAlpha());
-		bufferbuilder.addVertex(model, x1, y1, 0).setColor(fc2.getRed(), fc2.getGreen(), fc2.getBlue(), fc2.getAlpha());
-		bufferbuilder.addVertex(model, x1, y2, 0).setColor(fc2.getRed(), fc2.getGreen(), fc2.getBlue(), fc2.getAlpha());
-
-		bufferbuilder.addVertex(model, x1, y2, 0).setColor(fc2.getRed(), fc2.getGreen(), fc2.getBlue(), fc2.getAlpha());
-		bufferbuilder.addVertex(model, x1, y0, 0).setColor(fc2.getRed(), fc2.getGreen(), fc2.getBlue(), fc2.getAlpha());
-		bufferbuilder.addVertex(model, x2, y0, 0).setColor(fc3.getRed(), fc3.getGreen(), fc3.getBlue(), fc3.getAlpha());
-
-		bufferbuilder.addVertex(model, x1, y2, 0).setColor(fc2.getRed(), fc2.getGreen(), fc2.getBlue(), fc2.getAlpha());
-		bufferbuilder.addVertex(model, x2, y0, 0).setColor(fc3.getRed(), fc3.getGreen(), fc3.getBlue(), fc3.getAlpha());
-		bufferbuilder.addVertex(model, x2, y2, 0).setColor(fc3.getRed(), fc3.getGreen(), fc3.getBlue(), fc3.getAlpha());
-
-		bufferbuilder.addVertex(model, x2, y1, 0).setColor(fc3.getRed(), fc3.getGreen(), fc3.getBlue(), fc3.getAlpha());
-		bufferbuilder.addVertex(model, x2, y0, 0).setColor(fc3.getRed(), fc3.getGreen(), fc3.getBlue(), fc3.getAlpha());
-		bufferbuilder.addVertex(model, x3, y0, 0).setColor(fc4.getRed(), fc4.getGreen(), fc4.getBlue(), fc4.getAlpha());
-
-		bufferbuilder.addVertex(model, x2, y2, 0).setColor(fc3.getRed(), fc3.getGreen(), fc3.getBlue(), fc3.getAlpha());
-		bufferbuilder.addVertex(model, x2, y1, 0).setColor(fc3.getRed(), fc3.getGreen(), fc3.getBlue(), fc3.getAlpha());
-		bufferbuilder.addVertex(model, x3, y2, 0).setColor(fc4.getRed(), fc4.getGreen(), fc4.getBlue(), fc4.getAlpha());
-
-		BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
-		RenderSystem.enableCull();
-		RenderSystem.disableBlend();
-		//RenderSystem.enableTexture();
+		poseStack.popMatrix();
 	}
 
 	/**
@@ -276,95 +202,62 @@ public class UIRenderHelper {
 	 * @param arcAngle length of the sector arc
 	 */
 	public static void drawRadialSector(GuiGraphics graphics, float innerRadius, float outerRadius, float startAngle, float arcAngle, Color innerColor, Color outerColor) {
-		List<Point2D> innerPoints = getPointsForCircleArc(innerRadius, startAngle, arcAngle);
-		List<Point2D> outerPoints = getPointsForCircleArc(outerRadius, startAngle, arcAngle);
-
-		// if arcAngle > 0, start with inner. otherwise start with outer
-
-		RenderSystem.enableBlend();
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.setShader(GameRenderer::getPositionColorShader);
-
-		BufferBuilder builder = Tesselator.getInstance().begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_COLOR);
-
-		Matrix4f pose = graphics.pose().last().pose();
-		Matrix3f n = graphics.pose().last().normal();
-
-		for (int i = 0; i < innerPoints.size(); i++) {
-			Point2D point = outerPoints.get(i);
-			//builder.addVertex(pose, (float) point.getX(), (float) point.getY(), 0).setColor(innerColor.getRGB()).normal(n, 1, 1, 0);
-			builder.addVertex(pose, (float) point.getX(), (float) point.getY(), 0).setColor(outerColor.getRGB());
-
-			point = innerPoints.get(i);
-			builder.addVertex(pose, (float) point.getX(), (float) point.getY(), 0).setColor(innerColor.getRGB());
-		}
-
-		BufferUploader.drawWithShader(builder.buildOrThrow());
-
-		RenderSystem.disableBlend();
-
+		graphics.guiRenderState.submitGuiElement(RadialSectorRenderState.create(
+			new Matrix3x2f(graphics.pose()),
+			innerRadius,
+			outerRadius,
+			startAngle,
+			arcAngle,
+			innerColor,
+			outerColor
+		));
 	}
-
-	private static List<Point2D> getPointsForCircleArc(float radius, float startAngle, float arcAngle) {
-		int segmentCount = Math.abs(arcAngle) <= 90 ? 16 : 32;
-		List<Point2D> points = new ArrayList<>(segmentCount);
-
-
-		float theta = (Mth.DEG_TO_RAD * arcAngle) / (float) (segmentCount - 1);
-		float t = Mth.DEG_TO_RAD * startAngle;
-
-		for (int i = 0; i < segmentCount; i++) {
-			points.add(new Point2D.Float(
-				(float) (radius * Math.cos(t)),
-				(float) (radius * Math.sin(t))
-			));
-
-			t += theta;
-		}
-
-		return points;
-	}
-
 
 	//just like AbstractGui#drawTexture, but with a color at every vertex
-	public static void drawColoredTexture(GuiGraphics graphics, Color c, int x, int y, int tex_left, int tex_top, int width, int height) {
-		drawColoredTexture(graphics, c, x, y, 0, (float) tex_left, (float) tex_top, width, height, 256, 256);
+	public static void drawColoredTexture(GuiGraphics graphics, TextureSetup texture, Color c, int x, int y, int texLeft, int texTop, int width, int height) {
+		drawColoredTexture(graphics, texture, c, x, y, (float) texLeft, (float) texTop, width, height, 256, 256);
 	}
 
-	public static void drawColoredTexture(GuiGraphics graphics, Color c, int x, int y, int z, float tex_left, float tex_top, int width, int height, int sheet_width, int sheet_height) {
-		drawColoredTexture(graphics, c, x, x + width, y, y + height, z, width, height, tex_left, tex_top, sheet_width, sheet_height);
+	public static void drawColoredTexture(GuiGraphics graphics, TextureSetup texture, Color c, int x, int y, float texLeft, float texTop, int width, int height, int sheetWidth, int sheetHeight) {
+		//noinspection SuspiciousNameCombination
+		drawColoredTexture(graphics, texture, c, x, x + width, y, y + height, width, height, texLeft, texTop, sheetWidth, sheetHeight);
 	}
 
-	public static void drawStretched(GuiGraphics graphics, int left, int top, int w, int h, int z, TextureSheetSegment tex) {
-		tex.bind();
-		drawTexturedQuad(graphics.pose().last()
-				.pose(), Color.WHITE, left, left + w, top, top + h, z, tex.getStartX() / 256f, (tex.getStartX() + tex.getWidth()) / 256f,
-			tex.getStartY() / 256f, (tex.getStartY() + tex.getHeight()) / 256f);
+	public static void drawStretched(GuiGraphics graphics, int left, int top, int w, int h, TextureSheetSegment tex) {
+		drawTexturedQuad(
+			graphics, tex.bind(), Color.WHITE, left, left + w, top, top + h,
+			tex.getStartX() / 256f, (tex.getStartX() + tex.getWidth()) / 256f,
+			tex.getStartY() / 256f, (tex.getStartY() + tex.getHeight()) / 256f
+		);
 	}
 
-	public static void drawCropped(GuiGraphics graphics, int left, int top, int w, int h, int z, TextureSheetSegment tex) {
-		tex.bind();
-		drawTexturedQuad(graphics.pose().last()
-				.pose(), Color.WHITE, left, left + w, top, top + h, z, tex.getStartX() / 256f, (tex.getStartX() + w) / 256f,
-			tex.getStartY() / 256f, (tex.getStartY() + h) / 256f);
+	public static void drawCropped(GuiGraphics graphics, int left, int top, int w, int h, TextureSheetSegment tex) {
+		drawTexturedQuad(
+			graphics, tex.bind(), Color.WHITE, left, left + w, top, top + h,
+			tex.getStartX() / 256f, (tex.getStartX() + w) / 256f,
+			tex.getStartY() / 256f, (tex.getStartY() + h) / 256f
+		);
 	}
 
-	private static void drawColoredTexture(GuiGraphics graphics, Color c, int left, int right, int top, int bot, int z, int tex_width, int tex_height, float tex_left, float tex_top, int sheet_width, int sheet_height) {
-		drawTexturedQuad(graphics.pose().last().pose(), c, left, right, top, bot, z, (tex_left + 0.0F) / (float) sheet_width, (tex_left + (float) tex_width) / (float) sheet_width, (tex_top + 0.0F) / (float) sheet_height, (tex_top + (float) tex_height) / (float) sheet_height);
+	private static void drawColoredTexture(GuiGraphics graphics, TextureSetup texture, Color c, int left, int right, int top, int bot, int texWidth, int texHeight, float texLeft, float texRight, int sheetWidth, int sheetHeight) {
+		drawTexturedQuad(graphics, texture, c, left, right, top, bot, (texLeft + 0.0F) / (float) sheetWidth, (texLeft + (float) texWidth) / (float) sheetWidth, (texRight + 0.0F) / (float) sheetHeight, (texRight + (float) texHeight) / (float) sheetHeight);
 	}
 
-	private static void drawTexturedQuad(Matrix4f m, Color c, int left, int right, int top, int bot, int z, float u1, float u2, float v1, float v2) {
-		Tesselator tesselator = Tesselator.getInstance();
-		BufferBuilder bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-		RenderSystem.enableBlend();
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
-		bufferbuilder.addVertex(m, (float) left, (float) bot, (float) z).setColor(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha()).setUv(u1, v2);
-		bufferbuilder.addVertex(m, (float) right, (float) bot, (float) z).setColor(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha()).setUv(u2, v2);
-		bufferbuilder.addVertex(m, (float) right, (float) top, (float) z).setColor(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha()).setUv(u2, v1);
-		bufferbuilder.addVertex(m, (float) left, (float) top, (float) z).setColor(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha()).setUv(u1, v1);
-		BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
-		RenderSystem.disableBlend();
+	private static void drawTexturedQuad(GuiGraphics graphics, TextureSetup texture, Color c, int left, int right, int top, int bot, float u1, float u2, float v1, float v2) {
+		graphics.guiRenderState.submitGuiElement(new TexturedQuadRenderState(
+			new Matrix3x2f(graphics.pose()),
+			graphics.scissorStack.peek(),
+			texture,
+			c,
+			left,
+			right,
+			top,
+			bot,
+			u1,
+			u2,
+			v1,
+			v2
+		));
 	}
 
 	public static void flipForGuiRender(PoseStack poseStack) {
@@ -372,14 +265,13 @@ public class UIRenderHelper {
 	}
 
 	public static class CustomRenderTarget extends RenderTarget {
-
-		public CustomRenderTarget(boolean useDepth) {
-			super(useDepth);
+		public CustomRenderTarget(@Nullable String name, boolean useDepth) {
+			super(name, useDepth);
 		}
 
-		public static CustomRenderTarget create(Window mainWindow) {
-			CustomRenderTarget framebuffer = new CustomRenderTarget(true);
-			framebuffer.resize(mainWindow.getWidth(), mainWindow.getHeight(), Minecraft.ON_OSX);
+		public static CustomRenderTarget create(@Nullable String name, Window mainWindow) {
+			CustomRenderTarget framebuffer = new CustomRenderTarget(name, true);
+			framebuffer.resize(mainWindow.getWidth(), mainWindow.getHeight());
 			framebuffer.setClearColor(0, 0, 0, 0);
 			CatnipClientServices.CLIENT_HOOKS.enableStencilBuffer(framebuffer);
 			return framebuffer;
@@ -431,7 +323,5 @@ public class UIRenderHelper {
 			RenderSystem.setProjectionMatrix(projectionMatrix, VertexSorting.ORTHOGRAPHIC_Z);
 			//unbindRead();
 		}
-
 	}
-
 }

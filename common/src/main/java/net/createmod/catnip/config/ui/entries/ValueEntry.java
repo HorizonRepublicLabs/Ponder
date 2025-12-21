@@ -139,12 +139,12 @@ public class ValueEntry<T> extends ConfigScreenList.LabeledEntry {
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, int index, int y, int x, int width, int height, int mouseX, int mouseY, boolean p_230432_9_, float partialTicks) {
-		super.render(graphics, index, y, x, width, height, mouseX, mouseY, p_230432_9_, partialTicks);
+	public void renderContent(GuiGraphics graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
+		super.renderContent(graphics, mouseX, mouseY, isHovering, partialTick);
 
-		resetButton.setX(x + width - resetWidth + 6);
-		resetButton.setX(y + 10);
-		resetButton.render(graphics, mouseX, mouseY, partialTicks);
+		resetButton.setX(getX() + getWidth() - resetWidth + 6);
+		resetButton.setX(getY() + 10);
+		resetButton.render(graphics, mouseX, mouseY, partialTick);
 	}
 
 	@Override

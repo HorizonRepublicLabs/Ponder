@@ -129,8 +129,8 @@ public final class FluidRenderHelper<T> {
 		float centerV = texture.getV0() + (texture.getV1() - texture.getV0()) * 0.5f * textureScale;
 
 		float f;
-		float x2 = 0;
-		float y2 = 0;
+		float x2;
+		float y2;
 		float u1, u2;
 		float v1, v2;
 		for (float x1 = left; x1 < right; x1 = x2) {

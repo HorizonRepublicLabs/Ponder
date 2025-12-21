@@ -131,8 +131,6 @@ public class InputWindowElement extends AnimatedOverlayElementBase {
 
 		PonderUI.renderSpeechBox(graphics, 0, 0, width, height, false, direction, true);
 
-		poseStack.translate(0, 0);
-
 		if (hasText)
 			graphics.drawString(font, text, 2, (int) ((height - font.lineHeight) / 2f + 2),
 				PonderPalette.WHITE.getColorObject().scaleAlpha(fade).getRGB(), false);

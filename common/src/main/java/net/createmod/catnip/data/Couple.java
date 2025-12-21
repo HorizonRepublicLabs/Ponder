@@ -117,10 +117,12 @@ public class Couple<T> extends Pair<T, T> implements Iterable<T> {
 		return Couple.create(second, first);
 	}
 
+	@Deprecated(forRemoval = true)
 	public ListTag serializeEach(Function<T, CompoundTag> serializer) {
 		return NBTHelper.writeCompoundList(ImmutableList.of(first, second), serializer);
 	}
 
+	@Deprecated(forRemoval = true)
 	public static <S> Couple<S> deserializeEach(ListTag list, Function<CompoundTag, S> deserializer) {
 		List<S> readCompoundList = NBTHelper.readCompoundList(list, deserializer);
 		return new Couple<>(readCompoundList.get(0), readCompoundList.get(1));

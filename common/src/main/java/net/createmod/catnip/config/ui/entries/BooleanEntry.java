@@ -45,15 +45,14 @@ public class BooleanEntry extends ValueEntry<Boolean> {
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, int index, int y, int x, int width, int height, int mouseX, int mouseY,
-					   boolean p_230432_9_, float partialTicks) {
-		super.render(graphics, index, y, x, width, height, mouseX, mouseY, p_230432_9_, partialTicks);
+	public void renderContent(GuiGraphics graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
+		super.renderContent(graphics, mouseX, mouseY, isHovering, partialTick);
 
-		button.setX(x + width - 80 - resetWidth);
-		button.setY(y + 10);
+		button.setX(getX() + getWidth() - 80 - resetWidth);
+		button.setY(getY() + 10);
 		button.setWidth(35);
-		button.setHeight(height - 20);
-		button.render(graphics, mouseX, mouseY, partialTicks);
+		button.setHeight(getHeight() - 20);
+		button.render(graphics, mouseX, mouseY, partialTick);
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
+// TODO - Move to using ARGB instead
 @SuppressWarnings("PointlessBitwiseExpression")
 public class Color {
 	public final static Color TRANSPARENT_BLACK = new Color(0, 0, 0, 0).setImmutable();

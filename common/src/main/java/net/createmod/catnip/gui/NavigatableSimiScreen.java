@@ -126,17 +126,12 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 		int maxX = backTrack.getX() + backTrack.getWidth();
 		Couple<Color> colors = COLOR_NAV_ARROW;
 
-		ms.pushMatrix();
-		ms.translate(0, 0);
 		if (x + 30 < backTrack.getX())
-			UIRenderHelper.breadcrumbArrow(graphics, x + 30, height - 51, 0, maxX - (x + 30), 20, 5, colors);
+			UIRenderHelper.breadcrumbArrow(graphics, x + 30, height - 51, maxX - (x + 30), 20, 5, colors);
 
-		UIRenderHelper.breadcrumbArrow(graphics, x, height - 51, 0, 30, 20, 5, colors);
-		UIRenderHelper.breadcrumbArrow(graphics, x - 30, height - 51, 0, 30, 20, 5, colors);
-		ms.popMatrix();
+		UIRenderHelper.breadcrumbArrow(graphics, x, height - 51, 30, 20, 5, colors);
+		UIRenderHelper.breadcrumbArrow(graphics, x - 30, height - 51, 30, 20, 5, colors);
 
-		ms.pushMatrix();
-		ms.translate(0, 0);
 		if (backTrack.isHoveredOrFocused()) {
 			Component component = backTrackingComponent();
 			graphics.drawString(font, component, 41 - font.width(component) / 2, height - 16, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().getRGB(), false);
@@ -145,7 +140,6 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 				arrowAnimation.setValue(1);// called twice to also set the previous value to 1
 			}
 		}
-		ms.popMatrix();
 	}
 
 	@Override
@@ -279,7 +273,7 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 		ms.translate(0, 0, 600);
 		names.forEach(s -> {
 			int sWidth = font.width(s);
-			UIRenderHelper.breadcrumbArrow(graphics, x.intValue(), y.intValue(), 0, sWidth + spacing, 14, spacing / 2,
+			UIRenderHelper.breadcrumbArrow(graphics, x.intValue(), y.intValue(), sWidth + spacing, 14, spacing / 2,
 				new Color(0xdd101010), new Color(0x44101010));
 			graphics.drawString(font, s, x.intValue() + 5, y.intValue() + 3, first.get() ? 0xffeeffee : 0xffddeeff);
 			first.setFalse();

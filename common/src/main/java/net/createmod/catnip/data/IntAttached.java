@@ -12,7 +12,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 
 public class IntAttached<V> extends Pair<Integer, V> {
-
 	protected IntAttached(Integer first, V second) {
 		super(first, second);
 	}
@@ -49,6 +48,7 @@ public class IntAttached<V> extends Pair<Integer, V> {
 		return getSecond();
 	}
 
+	@Deprecated(forRemoval = true)
 	public CompoundTag serializeNBT(Function<V, CompoundTag> serializer) {
 		CompoundTag nbt = new CompoundTag();
 		nbt.put("Item", serializer.apply(getValue()));
@@ -60,8 +60,9 @@ public class IntAttached<V> extends Pair<Integer, V> {
 		return (i1, i2) -> Integer.compare(i2.getFirst(), i1.getFirst());
 	}
 
+	@Deprecated(forRemoval = true)
 	public static <T> IntAttached<T> read(CompoundTag nbt, Function<CompoundTag, T> deserializer) {
-		return IntAttached.with(nbt.getInt("Location"), deserializer.apply(nbt.getCompound("Item")));
+		return IntAttached.with(nbt.getIntOr("Location", 0), deserializer.apply(nbt.getCompoundOrEmpty("Item")));
 	}
 
 	public static <T> Codec<IntAttached<T>> codec(Codec<T> codec) {

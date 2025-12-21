@@ -228,7 +228,7 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 			.withBounds(maxWidth + 6, descHeight + 5)
 			.render(graphics);
 
-		ClientFontHelper.drawSplitString(graphics, font, desc.getString(), 0, 0, maxWidth, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
+		ClientFontHelper.drawSplitString(graphics, font, desc, 0, 0, maxWidth, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
 		poseStack.popMatrix();
 
 		poseStack.translate(0, -80);
@@ -276,19 +276,11 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 
 	@Override
 	protected void renderWindowForeground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		RenderSystem.disableDepthTest();
-		Matrix3x2fStack poseStack = graphics.pose();
-		poseStack.pushMatrix();
-		poseStack.translate(0, 0);
-
 		if (hoveredItem != null) {
 			List<Component> list = FontHelper.cutStringTextComponent(hoveredItem.getDescription(), Palette.ALL_GRAY);
-			list.add(0, Component.literal(hoveredItem.getTitle()));
+			list.addFirst(Component.literal(hoveredItem.getTitle()));
 			graphics.setComponentTooltipForNextFrame(font, list, mouseX, mouseY);
 		}
-
-		poseStack.popMatrix();
-		RenderSystem.enableDepthTest();
 	}
 
 	@Override

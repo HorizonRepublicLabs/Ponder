@@ -48,6 +48,7 @@ public class LongAttached<V> extends Pair<Long, V> {
 		return getSecond();
 	}
 
+	@Deprecated(forRemoval = true)
 	public CompoundTag serializeNBT(Function<V, CompoundTag> serializer) {
 		CompoundTag nbt = new CompoundTag();
 		nbt.put("Item", serializer.apply(getValue()));
@@ -59,8 +60,9 @@ public class LongAttached<V> extends Pair<Long, V> {
 		return (i1, i2) -> Long.compare(i2.getFirst(), i1.getFirst());
 	}
 
+	@Deprecated(forRemoval = true)
 	public static <T> LongAttached<T> read(CompoundTag nbt, Function<CompoundTag, T> deserializer) {
-		return LongAttached.with(nbt.getLong("Location"), deserializer.apply(nbt.getCompound("Item")));
+		return LongAttached.with(nbt.getLongOr("Location", 0), deserializer.apply(nbt.getCompoundOrEmpty("Item")));
 	}
 
 	public static <T> Codec<LongAttached<T>> codec(Codec<T> codec) {

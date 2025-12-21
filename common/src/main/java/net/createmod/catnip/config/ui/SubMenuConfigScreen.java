@@ -13,6 +13,9 @@ import java.util.function.Consumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.mojang.blaze3d.platform.InputConstants;
+
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.commands.Commands;
 
 import org.lwjgl.glfw.GLFW;
@@ -324,7 +327,7 @@ public class SubMenuConfigScreen extends ConfigScreen {
 		if (minecraft.hasSingleplayerServer())
 			return;
 
-		boolean canEdit = minecraft != null && minecraft.player != null && Commands.LEVEL_GAMEMASTERS.check(minecraft.player.permissions());
+		boolean canEdit = minecraft.player != null && Commands.LEVEL_GAMEMASTERS.check(minecraft.player.permissions());
 
 		Couple<Color> red = AbstractSimiWidget.COLOR_FAIL;
 		Couple<Color> green = AbstractSimiWidget.COLOR_SUCCESS;
@@ -368,9 +371,9 @@ public class SubMenuConfigScreen extends ConfigScreen {
 	}
 
 	@Override
-	public void resize(@Nonnull Minecraft client, int width, int height) {
-		double scroll = list.getScrollAmount();
-		init(client, width, height);
+	public void resize(int width, int height) {
+		double scroll = list.scrollBarX();
+		init(width, height);
 		list.setScrollAmount(scroll);
 	}
 
@@ -384,17 +387,17 @@ public class SubMenuConfigScreen extends ConfigScreen {
 	}
 
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (super.keyPressed(keyCode, scanCode, modifiers))
+	public boolean keyPressed(KeyEvent keyEvent) {
+		if (super.keyPressed(keyEvent))
 			return true;
 
 		if (search != null && keyEvent.hasControlDown()) {
-			if (keyCode == GLFW.GLFW_KEY_F) {
+			if (keyEvent.key() == InputConstants.KEY_F) {
 				search.setFocused(true);
 			}
 		}
 
-		if (keyCode == GLFW.GLFW_KEY_BACKSPACE) {
+		if (keyEvent.key() == InputConstants.KEY_BACKSPACE) {
 			attemptBackstep();
 		}
 

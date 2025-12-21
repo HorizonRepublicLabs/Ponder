@@ -14,6 +14,9 @@ import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.createmod.catnip.animation.LerpedFloat;
+import net.createmod.catnip.animation.LerpedFloat.Chaser;
+import net.createmod.catnip.config.ui.ConfigAnnotations.RequiresRelog;
+import net.createmod.catnip.config.ui.ConfigAnnotations.RequiresRestart;
 import net.createmod.catnip.gui.TickableGuiEventListener;
 import net.createmod.catnip.gui.UIRenderHelper;
 import net.createmod.catnip.gui.element.TextStencilElement;
@@ -203,59 +206,59 @@ public class ConfigScreenList extends ObjectSelectionList<ConfigScreenList.Entry
 		}
 
 		@Override
-		public void render(GuiGraphics graphics, int index, int y, int x, int width, int height, int mouseX, int mouseY, boolean p_230432_9_, float partialTicks) {
+		public void renderContent(GuiGraphics graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
 			if (isCurrentValueChanged()) {
 				if (differenceAnimation.getChaseTarget() != 1)
-					differenceAnimation.chase(1, .5f, LerpedFloat.Chaser.EXP);
+					differenceAnimation.chase(1, .5f, Chaser.EXP);
 			} else {
 				if (differenceAnimation.getChaseTarget() != 0)
-					differenceAnimation.chase(0, .6f, LerpedFloat.Chaser.EXP);
+					differenceAnimation.chase(0, .6f, Chaser.EXP);
 			}
 
-			float animation = differenceAnimation.getValue(partialTicks);
+			float animation = differenceAnimation.getValue(partialTick);
 			if (animation > .1f) {
 				int offset = (int) (30 * (1 - animation));
 
-				if (annotations.containsKey(ConfigAnnotations.RequiresRestart.CLIENT.getName())) {
-					UIRenderHelper.streak(graphics, 180, x + width + 10 + offset, y + height / 2, height - 6, 110, new Color(0x50_601010));
-				} else if (annotations.containsKey(ConfigAnnotations.RequiresRelog.TRUE.getName())) {
-					UIRenderHelper.streak(graphics, 180, x + width + 10 + offset, y + height / 2, height - 6, 110, new Color(0x40_eefb17));
+				if (annotations.containsKey(RequiresRestart.CLIENT.getName())) {
+					UIRenderHelper.streak(graphics, 180, getX() + getWidth() + 10 + offset, getY() + getHeight() / 2, getHeight() - 6, 110, new Color(0x50_601010));
+				} else if (annotations.containsKey(RequiresRelog.TRUE.getName())) {
+					UIRenderHelper.streak(graphics, 180, getX() + getWidth() + 10 + offset, getY() + getHeight() / 2, getHeight() - 6, 110, new Color(0x40_eefb17));
 				}
 
-				UIRenderHelper.breadcrumbArrow(graphics, x - 10 - offset, y + 6, 0, -20, 24, -18, new Color(0x70_ffffff), Color.TRANSPARENT_BLACK);
+				UIRenderHelper.breadcrumbArrow(graphics, getX() - 10 - offset, getY() + 6, -20, 24, -18, new Color(0x70_ffffff), Color.TRANSPARENT_BLACK);
 			}
 
-			UIRenderHelper.streak(graphics, 0, x - 10, y + height / 2, height - 6, width / 8 * 7, new Color(0xdd_000000));
-			UIRenderHelper.streak(graphics, 180, x + (int) (width * 1.35f) + 10, y + height / 2, height - 6, width / 8 * 7, new Color(0xdd_000000));
+			UIRenderHelper.streak(graphics, 0, getX() - 10, getY() + getHeight() / 2, getHeight() - 6, getWidth() / 8 * 7, new Color(0xdd_000000));
+			UIRenderHelper.streak(graphics, 180, getX() + (int) (getWidth() * 1.35f) + 10, getY() + getHeight() / 2, getHeight() - 6, getWidth() / 8 * 7, new Color(0xdd_000000));
 			MutableComponent component = label.getComponent();
 			Font font = Minecraft.getInstance().font;
-			if (font.width(component) > getLabelWidth(width) - 10) {
-				label.withText(font.substrByWidth(component, getLabelWidth(width) - 15).getString() + "...");
+			if (font.width(component) > getLabelWidth(getWidth()) - 10) {
+				label.withText(font.substrByWidth(component, getLabelWidth(getWidth()) - 15).getString() + "...");
 			}
 			if (unit != null) {
 				int unitWidth = font.width(unit);
-				graphics.drawString(font, unit, x + getLabelWidth(width) - unitWidth - 5, y + height / 2 + 2, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().getRGB());
-				label.at(x + 10, y + height / 2 - 10, 0).render(graphics);
+				graphics.drawString(font, unit, getX() + getLabelWidth(getWidth()) - unitWidth - 5, getY() + getHeight() / 2 + 2, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().getRGB());
+				label.at(getX() + 10, getY() + getHeight() / 2f - 10, 0).render(graphics);
 			} else {
-				label.at(x + 10, y + height / 2 - 4, 0).render(graphics);
+				label.at(getX() + 10, getY() + getHeight() / 2f - 4, 0).render(graphics);
 			}
 
 			if (annotations.containsKey("highlight")) {
-				highlightAnimation.startWithValue(1).chase(0, 0.1f, LerpedFloat.Chaser.LINEAR);
+				highlightAnimation.startWithValue(1).chase(0, 0.1f, Chaser.LINEAR);
 				annotations.remove("highlight");
 			}
 
-			animation = highlightAnimation.getValue(partialTicks);
+			animation = highlightAnimation.getValue(partialTick);
 			if (animation > .01f) {
 				Color highlight = new Color(0xa0_ffffff).scaleAlpha(animation);
-				UIRenderHelper.streak(graphics, 0, x - 10, y + height / 2, height - 6, 5, highlight);
-				UIRenderHelper.streak(graphics, 180, x + width, y + height / 2, height - 6, 5, highlight);
-				UIRenderHelper.streak(graphics, 90, x + width / 2 - 5, y + 3, width + 10, 5, highlight);
-				UIRenderHelper.streak(graphics, -90, x + width / 2 - 5, y + height - 3, width + 10, 5, highlight);
+				UIRenderHelper.streak(graphics, 0, getX() - 10, getY() + getHeight() / 2, getHeight() - 6, 5, highlight);
+				UIRenderHelper.streak(graphics, 180, getX() + getWidth(), getY() + getHeight() / 2, getHeight() - 6, 5, highlight);
+				UIRenderHelper.streak(graphics, 90, getX() + getWidth() / 2 - 5, getY() + 3, getWidth() + 10, 5, highlight);
+				UIRenderHelper.streak(graphics, -90, getX() + getWidth() / 2 - 5, getY() + getHeight() - 3, getWidth() + 10, 5, highlight);
 			}
 
 
-			if (mouseX > x && mouseX < x + getLabelWidth(width) && mouseY > y + 5 && mouseY < y + height - 5) {
+			if (mouseX > getX() && mouseX < getX() + getLabelWidth(getWidth()) && mouseY > getY() + 5 && mouseY < getY() + getHeight() - 5) {
 				List<Component> tooltip = getLabelTooltip();
 				if (tooltip.isEmpty())
 					return;

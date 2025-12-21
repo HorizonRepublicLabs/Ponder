@@ -84,8 +84,7 @@ public enum PonderGuiTextures implements TextureSheetSegment, ScreenElement, Col
 
 	@Override
 	public void render(GuiGraphics graphics, int x, int y, Color c) {
-		bind();
-		UIRenderHelper.drawColoredTexture(graphics, c, x, y, startX, startY, width, height);
+		UIRenderHelper.drawColoredTexture(graphics, bind(), c, x, y, startX, startY, width, height);
 	}
 
 	@Override

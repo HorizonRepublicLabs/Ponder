@@ -185,18 +185,12 @@ public class ConfirmationScreen extends AbstractSimiScreen {
 		int offset = font.lineHeight + 1;
 		int lineY = y - offset;
 
-		Matrix3x2fStack poseStack = graphics.pose();
-		poseStack.pushMatrix();
-		poseStack.translate(0, 0);
-
 		for (FormattedText line : text) {
 			lineY += offset;
 			if (line == null)
 				continue;
 			graphics.drawString(font, line.getString(), x, lineY, 0xeaeaea, false);
 		}
-
-		poseStack.popMatrix();
 	}
 
 	@Override

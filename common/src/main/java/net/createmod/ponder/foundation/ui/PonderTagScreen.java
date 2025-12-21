@@ -150,8 +150,6 @@ public class PonderTagScreen extends AbstractPonderScreen {
 		poseStack.pushMatrix();
 		poseStack.translate(width / 2f - 120f, height * MAIN_YMULT - 40f);
 
-		poseStack.pushMatrix();
-		//poseStack.translate(0, 0, 800);
 		int x = 31 + 20 + 8;
 		int y = 31;
 
@@ -170,8 +168,8 @@ public class PonderTagScreen extends AbstractPonderScreen {
 		graphics.drawString(font, Ponder.lang().translate(AbstractPonderScreen.PONDERING_TAG).component(), x, y - 6, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().getRGB(), false);
 		y += 8;
 		x += 0;
+		poseStack.pushMatrix();
 		poseStack.translate(x, y);
-		poseStack.translate(0, 0);
 		graphics.drawString(font, title, 0, 0, UIRenderHelper.COLOR_TEXT.getFirst().getRGB(), false);
 		poseStack.popMatrix();
 
@@ -187,9 +185,8 @@ public class PonderTagScreen extends AbstractPonderScreen {
 		x = (width - w) / 2;
 		y = getItemsY() - 10 + Math.max(itemArea.getHeight(), 48);
 
-		String desc = tag.getDescription();
-		int h = font.wordWrapHeight(FormattedText.of(desc), w);
-
+		FormattedText desc = FormattedText.of(tag.getDescription());
+		int h = font.wordWrapHeight(desc, w);
 
 		//PonderUI.renderBox(poseStack, x - 3, y - 3, w + 6, h + 6, false);
 		new BoxElement()
@@ -199,7 +196,6 @@ public class PonderTagScreen extends AbstractPonderScreen {
 			.withBounds(w + 6, h + 6)
 			.render(graphics);
 
-		poseStack.translate(0, 0);
 		ClientFontHelper.drawSplitString(graphics, font, desc, x, y, w, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
 		poseStack.popMatrix();
 	}
@@ -224,12 +220,8 @@ public class PonderTagScreen extends AbstractPonderScreen {
 			.withBounds(stringWidth + 10, 10)
 			.render(graphics);
 
-		poseStack.translate(0, 0);
-
 //		UIRenderHelper.streak(0, itemArea.getX() - 10, itemArea.getY() - 20, 20, 180, 0x101010);
 		graphics.drawCenteredString(font, relatedTitle, windowWidth / 2, itemArea.getY() - 20, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
-
-		poseStack.translate(0, 0);
 
 		UIRenderHelper.streak(graphics, 0, 0, 0, itemArea.getHeight() + 10, itemArea.getWidth() / 2 + 75);
 		UIRenderHelper.streak(graphics, 180, 0, 0, itemArea.getHeight() + 10, itemArea.getWidth() / 2 + 75);
@@ -244,17 +236,9 @@ public class PonderTagScreen extends AbstractPonderScreen {
 
 	@Override
 	protected void renderWindowForeground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		RenderSystem.disableDepthTest();
-		Matrix3x2fStack poseStack = graphics.pose();
-		poseStack.pushMatrix();
-		poseStack.translate(0, 0, 200);
-
 		if (!hoveredItem.isEmpty()) {
-			graphics.renderTooltip(font, hoveredItem, mouseX, mouseY);
+			graphics.setTooltipForNextFrame(font, hoveredItem, mouseX, mouseY);
 		}
-
-		poseStack.popMatrix();
-		RenderSystem.enableDepthTest();
 	}
 
 	@Override

@@ -115,11 +115,11 @@ public class PonderProgressBar extends AbstractSimiWidget {
 		poseStack.translate(getX() - 2, getY() - 2);
 
 		poseStack.pushMatrix();
-		poseStack.scale((width + 4) * progress.getValue(partialTicks), 1, 1);
+		poseStack.scale((width + 4) * progress.getValue(partialTicks), 1);
 		Color c1 = BAR_COLORS.getFirst();
 		Color c2 = BAR_COLORS.getSecond();
-		UIRenderHelper.drawGradientRect(poseStack.last().pose(), 310, 0f, 1f, 1f, 3f, c1, c1);
-		UIRenderHelper.drawGradientRect(poseStack.last().pose(), 310, 0f, 3f, 1f, 4f, c2, c2);
+		UIRenderHelper.drawGradientRect(graphics, 0f, 1f, 1f, 3f, c1, c1);
+		UIRenderHelper.drawGradientRect(graphics, 0f, 3f, 1f, 4f, c2, c2);
 		poseStack.popMatrix();
 
 		renderKeyframes(graphics, mouseX, partialTicks);
@@ -159,12 +159,12 @@ public class PonderProgressBar extends AbstractSimiWidget {
 	}
 
 	private void drawKeyframe(GuiGraphics graphics, PonderScene activeScene, boolean selected, int keyframeTime, int keyframePos, Color startColor, Color endColor, int height) {
-		PoseStack poseStack = graphics.pose();
+		Matrix3x2fStack poseStack = graphics.pose();
 		if (selected) {
 			Font font = Minecraft.getInstance().font;
-			UIRenderHelper.drawGradientRect(poseStack.last().pose(), 320, ((float) keyframePos), 9f, keyframePos + 2f, 9f + height, endColor, startColor);
-			poseStack.pushPose();
-			poseStack.translate(0, 0, 320);
+			UIRenderHelper.drawGradientRect(graphics, ((float) keyframePos), 9f, keyframePos + 2f, 9f + height, endColor, startColor);
+			poseStack.pushMatrix();
+			poseStack.translate(0, 0);
 			String text;
 			int offset;
 			if (activeScene.getCurrentTime() < keyframeTime) {
@@ -176,10 +176,10 @@ public class PonderProgressBar extends AbstractSimiWidget {
 			}
 			graphics.drawString(font, Component.literal(text)
 				.withStyle(ChatFormatting.BOLD), keyframePos + offset, 10, endColor.getRGB(), false);
-			poseStack.popPose();
+			poseStack.popMatrix();
 		}
 
-		UIRenderHelper.drawGradientRect(poseStack.last().pose(), 320, ((float) keyframePos), 0f, keyframePos + 2f, 1f + height, startColor, endColor);
+		UIRenderHelper.drawGradientRect(graphics, ((float) keyframePos), 0f, keyframePos + 2f, 1f + height, startColor, endColor);
 	}
 
 	@Override

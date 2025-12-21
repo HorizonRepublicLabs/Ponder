@@ -220,13 +220,7 @@ public class PonderIndexScreen extends AbstractPonderScreen {
 		if (hoveredItem.isEmpty())
 			return;
 
-		Matrix3x2fStack poseStack = graphics.pose();
-		poseStack.pushMatrix();
-		poseStack.translate(0, 0);
-
-		graphics.renderTooltip(font, hoveredItem, mouseX, mouseY);
-
-		poseStack.popMatrix();
+		graphics.setTooltipForNextFrame(font, hoveredItem, mouseX, mouseY);
 	}
 
 	@Override

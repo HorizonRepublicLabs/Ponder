@@ -23,13 +23,13 @@ public class StringEntry extends ValueEntry<String> {
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, int index, int y, int x, int width, int height, int mouseX, int mouseY, boolean p_230432_9_, float partialTicks) {
-		super.render(graphics, index, y, x, width, height, mouseX, mouseY, p_230432_9_, partialTicks);
+	public void renderContent(GuiGraphics graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
+		super.renderContent(graphics, mouseX, mouseY, isHovering, partialTick);
 
-		textField.setX(x + width - 82 - resetWidth);
-		textField.setY(y + 8);
-		textField.setWidth(Math.min(width - getLabelWidth(width) - resetWidth, 60));
-		textField.render(graphics, mouseX, mouseY, partialTicks);
+		textField.setX(getX() + getWidth() - 82 - resetWidth);
+		textField.setY(getY() + 8);
+		textField.setWidth(Math.min(getWidth() - getLabelWidth(getWidth()) - resetWidth, 60));
+		textField.render(graphics, mouseX, mouseY, partialTick);
 
 	}
 
