@@ -4,12 +4,9 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.function.Function;
 
-import net.createmod.catnip.render.PonderRenderTypes;
-import net.createmod.catnip.render.RenderTargetExtensions;
 import net.createmod.ponder.mixin.client.ParticleEngineAccessor;
 import net.fabricmc.fabric.api.client.rendering.v1.SpecialGuiElementRegistry;
 import net.minecraft.client.gui.render.pip.PictureInPictureRenderer;
-import net.minecraft.client.gui.render.state.pip.PictureInPictureRenderState;
 import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
 import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
@@ -18,7 +15,6 @@ import net.minecraft.client.resources.language.LanguageManager;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -65,11 +61,6 @@ public class FabricClientHooksHelper implements ModClientHooksHelper {
 		int keyCode = KeyBindingHelper.getBoundKeyOf(mapping).getValue();
 		Window window = Minecraft.getInstance().getWindow();
 		return InputConstants.isKeyDown(window, keyCode);
-	}
-
-	@Override
-	public void enableStencilBuffer(RenderTarget renderTarget) {
-		((RenderTargetExtensions) renderTarget).catnip$enableStencil();
 	}
 
 	@Override

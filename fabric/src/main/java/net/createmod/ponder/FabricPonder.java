@@ -3,6 +3,8 @@ package net.createmod.ponder;
 import java.util.Map;
 import java.util.Set;
 
+import fuzs.forgeconfigapiport.fabric.api.v5.ConfigRegistry;
+import fuzs.forgeconfigapiport.fabric.api.v5.ModConfigEvents;
 import net.createmod.catnip.command.CatnipCommands;
 import net.createmod.catnip.config.ConfigBase;
 import net.createmod.catnip.net.ConfigPathArgument;
@@ -36,8 +38,8 @@ public class FabricPonder implements ModInitializer {
 			CatnipCommands.register(dispatcher);
 		});
 
-		NeoForgeModConfigEvents.loading(Ponder.MOD_ID).register(PonderConfig::onLoad);
-		NeoForgeModConfigEvents.reloading(Ponder.MOD_ID).register(PonderConfig::onReload);
+		ModConfigEvents.loading(Ponder.MOD_ID).register(PonderConfig::onLoad);
+		ModConfigEvents.reloading(Ponder.MOD_ID).register(PonderConfig::onReload);
 
 		ServerLifecycleEvents.SERVER_STARTED.register(s -> server = s);
 		ServerLifecycleEvents.SERVER_STOPPED.register(s -> server = null);
@@ -46,7 +48,7 @@ public class FabricPonder implements ModInitializer {
 	private static void registerConfigs() {
 		Set<Map.Entry<ModConfig.Type, ConfigBase>> entries = PonderConfig.registerConfigs();
 		for (Map.Entry<ModConfig.Type, ConfigBase> entry : entries) {
-			NeoForgeConfigRegistry.INSTANCE.register(Ponder.MOD_ID, entry.getKey(), entry.getValue().specification);
+			ConfigRegistry.INSTANCE.register(Ponder.MOD_ID, entry.getKey(), entry.getValue().specification);
 		}
 	}
 

@@ -7,9 +7,7 @@
   "client": [
     "client.AbstractContainerScreenMixin",
     "client.GuiGraphicsMixin",
-    "client.KeyMappingMixin",
     "client.ParticleEngineAccessor",
-    "client.RenderTargetMixin",
     "client.TextureAtlasMixin",
     "client.TooltipRenderUtilMixin"
   ],

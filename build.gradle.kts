@@ -8,7 +8,7 @@ plugins {
     `maven-publish`
     id("fabric-loom") apply false // https://github.com/FabricMC/fabric-loom
     id("net.neoforged.moddev") apply false // https://projects.neoforged.net/neoforged/ModDevGradle
-    id("dev.lukebemish.immaculate") version "0.1.16" // https://github.com/lukebemishprojects/Immaculate
+    //id("dev.lukebemish.immaculate") version "0.1.16" // https://github.com/lukebemishprojects/Immaculate
 }
 
 apply(from = "gradle/property_loader.gradle.kts")
@@ -27,7 +27,7 @@ allprojects {
 subprojects {
     apply(plugin = "maven-publish")
     apply(plugin = "net.createmod.ponder.gradle")
-    apply(plugin = "dev.lukebemish.immaculate")
+    //apply(plugin = "dev.lukebemish.immaculate")
 
     apply(from = "../gradle/property_loader.gradle.kts")
     apply(from = "../gradle/signing.gradle.kts")
@@ -54,18 +54,18 @@ subprojects {
         }
     }
 
-    immaculate {
-        workflows.register("java") {
-            java()
-            palantir {
-                version = "2.83.0"
-                args.add("--aosp")
-            }
-            noTabs()
-            noTrailingSpaces()
-            trailingNewline()
-        }
-    }
+//    immaculate {
+//        workflows.register("java") {
+//            java()
+//            palantir {
+//                version = "2.83.0"
+//                args.add("--aosp")
+//            }
+//            noTabs()
+//            noTrailingSpaces()
+//            trailingNewline()
+//        }
+//    }
 
     java {
         toolchain.languageVersion = JavaLanguageVersion.of(21)

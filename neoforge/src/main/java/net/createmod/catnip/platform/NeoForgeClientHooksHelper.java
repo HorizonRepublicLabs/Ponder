@@ -77,11 +77,6 @@ public class NeoForgeClientHooksHelper implements ModClientHooksHelper {
 	}
 
 	@Override
-	public void enableStencilBuffer(RenderTarget renderTarget) {
-		renderTarget.enableStencil();
-	}
-
-	@Override
 	public void registerPictureInPictureRenderer(Class<?> stateClass, Function<BufferSource, PictureInPictureRenderer<?>> factory) {
 		PIP_RENDERERS.put(stateClass, factory);
 	}

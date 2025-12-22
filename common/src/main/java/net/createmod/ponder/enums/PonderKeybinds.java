@@ -5,11 +5,8 @@ import java.util.function.Consumer;
 import net.createmod.ponder.Ponder;
 import net.minecraft.client.KeyMapping.Category;
 
-import net.minecraft.util.Unit;
-
 import org.lwjgl.glfw.GLFW;
 
-import net.createmod.catnip.client.ConflictSafeKeyMapping;
 import net.createmod.catnip.platform.CatnipClientServices;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
@@ -22,7 +19,7 @@ public enum PonderKeybinds {
 	private final KeyMapping mapping;
 
 	PonderKeybinds(String description, int defaultKey) {
-		this.mapping = new ConflictSafeKeyMapping("key.ponder." + description, defaultKey, CATEGORY);
+		this.mapping = new KeyMapping("key.ponder." + description, defaultKey, CATEGORY);
 	}
 
 	public static void register(Consumer<KeyMapping> registrationCallback) {

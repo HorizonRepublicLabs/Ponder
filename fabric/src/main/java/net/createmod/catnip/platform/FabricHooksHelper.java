@@ -21,8 +21,9 @@ public class FabricHooksHelper implements ModHooksHelper {
 
 	@Override
 	public ItemStack getCloneItemFromBlockstate(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-		if (state.getBlock() instanceof BlockPickInteractionAware blockPickInteractionAware)
-			return blockPickInteractionAware.getPickedStack(state, level, pos, player, target);
+		// TODO
+//		if (state.getBlock() instanceof BlockPickInteractionAware blockPickInteractionAware)
+//			return blockPickInteractionAware.getPickedStack(state, level, pos, player, target);
 		return ModHooksHelper.super.getCloneItemFromBlockstate(state, target, level, pos, player);
 	}
 

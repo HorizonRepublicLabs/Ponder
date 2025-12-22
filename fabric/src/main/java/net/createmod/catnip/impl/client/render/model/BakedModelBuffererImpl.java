@@ -48,7 +48,20 @@ public final class BakedModelBuffererImpl {
 		model = universalEmitter.wrapModel(model);
 
 		poseStack.pushPose();
-		submitNodeCollector.submitBlockStateModel(poseStack, layer -> bufferSource.getBuffer(layer, false), model, 1, 1, 1, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
+		submitNodeCollector.submitBlockStateModel(
+			poseStack,
+			layer -> bufferSource.getBuffer(layer, false),
+			model,
+			1,
+			1,
+			1,
+			LightTexture.FULL_BRIGHT,
+			OverlayTexture.NO_OVERLAY,
+			0,
+			level,
+			pos,
+			state
+		);
 		Minecraft.getInstance()
 			.getBlockRenderer()
 			.getModelRenderer()
