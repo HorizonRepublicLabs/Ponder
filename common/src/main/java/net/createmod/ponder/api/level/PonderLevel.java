@@ -29,6 +29,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.SubmitNodeStorage;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
@@ -202,7 +203,7 @@ public class PonderLevel extends SchematicLevel {
 		}
 	}
 
-	public void renderParticles(PoseStack ms, SubmitNodeCollector queue, Camera camera,
+	public void renderParticles(PoseStack ms, SubmitNodeStorage queue, Camera camera,
 								CameraRenderState cameraRenderState, float pt) {
 		particles.renderParticles(ms, queue, camera, cameraRenderState, pt);
 	}

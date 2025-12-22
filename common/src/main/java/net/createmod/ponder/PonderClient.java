@@ -5,10 +5,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.event.ClientResourceReloadListener;
 import net.createmod.catnip.ghostblock.GhostBlocks;
-import net.createmod.catnip.gui.UIRenderHelper;
+import net.createmod.ponder.foundation.render.PonderSceneRenderState;
 import net.createmod.catnip.net.packets.ClientboundSimpleActionPacket;
 import net.createmod.catnip.outliner.Outliner;
 import net.createmod.catnip.placement.PlacementClient;
+import net.createmod.catnip.platform.CatnipClientServices;
 import net.createmod.catnip.platform.CatnipServices;
 import net.createmod.catnip.render.CachedBuffers;
 import net.createmod.catnip.render.DefaultSuperRenderTypeBuffer;
@@ -19,11 +20,11 @@ import net.createmod.ponder.foundation.PonderIndex;
 import net.createmod.ponder.foundation.content.BasePonderPlugin;
 import net.createmod.ponder.foundation.content.DebugPonderPlugin;
 import net.createmod.ponder.foundation.element.WorldSectionElementImpl;
+import net.createmod.ponder.foundation.render.PonderSceneRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.phys.Vec3;
 
 public class PonderClient {
-
 	public static final ClientResourceReloadListener RESOURCE_RELOAD_LISTENER = new ClientResourceReloadListener();
 	public static final GhostBlocks GHOST_BLOCKS = GhostBlocks.getInstance();
 
@@ -33,6 +34,8 @@ public class PonderClient {
 
 		ClientboundSimpleActionPacket.addAction("openPonder", () -> SimplePonderActions::openPonder);
 		ClientboundSimpleActionPacket.addAction("reloadPonder", () -> SimplePonderActions::reloadPonder);
+
+		CatnipClientServices.CLIENT_HOOKS.registerPictureInPictureRenderer(PonderSceneRenderState.class, PonderSceneRenderer::new);
 
 		PonderIndex.addPlugin(new BasePonderPlugin());
 
@@ -55,7 +58,6 @@ public class PonderClient {
 
 		GhostBlocks.getInstance().tickGhosts();
 		Outliner.getInstance().tickOutlines();
-
 	}
 
 	public static void onRenderWorld(PoseStack ms) {
@@ -79,5 +81,4 @@ public class PonderClient {
 	public static boolean isGameActive() {
 		return Minecraft.getInstance().level != null && Minecraft.getInstance().player != null;
 	}
-
 }

@@ -1,36 +1,48 @@
 package net.createmod.ponder.foundation;
 
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
 import java.util.Queue;
 
-import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.state.CameraRenderState;
-
+import org.joml.Matrix4f;
 import org.joml.Matrix4fStack;
 
-import com.google.common.collect.EvictingQueue;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
+import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.MeshData;
+import com.mojang.blaze3d.textures.FilterMode;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
 
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.createmod.ponder.api.level.PonderLevel;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.client.particle.ParticleGroup;
 import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollection;
+import net.minecraft.client.renderer.SubmitNodeCollector.ParticleGroupRenderer;
+import net.minecraft.client.renderer.SubmitNodeStorage;
+import net.minecraft.client.renderer.culling.Frustum;
+import net.minecraft.client.renderer.feature.ParticleFeatureRenderer;
+import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.ParticlesRenderState;
+import net.minecraft.client.renderer.state.QuadParticleRenderState;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.core.particles.ParticleLimit;
 
 public class PonderWorldParticles {
-	private final Map<ParticleRenderType, Queue<Particle>> byType = Maps.newIdentityHashMap();
-	private final Queue<Particle> queue = Queues.newArrayDeque();
+	private final ParticlesRenderState particleState = new ParticlesRenderState();
+	private final Map<ParticleRenderType, ParticleGroup<?>> particles = Maps.newIdentityHashMap();
+	private final Queue<Particle> particlesToAdd = Queues.newArrayDeque();
+	private final Object2IntOpenHashMap<ParticleLimit> trackedParticleCounts = new Object2IntOpenHashMap<>();
+	private final ParticleEngine particleEngine = Minecraft.getInstance().particleEngine;
+	private final ParticleFeatureRenderer.ParticleBufferCache particleBufferCache = new ParticleFeatureRenderer.ParticleBufferCache();
 
 	PonderLevel world;
 
@@ -38,77 +50,109 @@ public class PonderWorldParticles {
 		this.world = world;
 	}
 
-	public void addParticle(Particle p) {
-		this.queue.add(p);
-	}
-
-	public void tick() {
-		this.byType.forEach((renderType, queue) -> this.tickParticleList(queue));
-
-		Particle particle;
-		if (queue.isEmpty())
-			return;
-		while ((particle = this.queue.poll()) != null)
-			this.byType.computeIfAbsent(particle.getGroup(), $ -> EvictingQueue.create(16384))
-				.add(particle);
-	}
-
-	private void tickParticleList(Collection<Particle> particles) {
-		if (particles.isEmpty())
-			return;
-
-		Iterator<Particle> iterator = particles.iterator();
-		while (iterator.hasNext()) {
-			Particle particle = iterator.next();
-			particle.tick();
-			if (!particle.isAlive())
-				iterator.remove();
+	public void addParticle(Particle effect) {
+		Optional<ParticleLimit> optional = effect.getParticleLimit();
+		if (optional.isPresent()) {
+			if (this.hasSpaceInParticleLimit(optional.get())) {
+				this.particlesToAdd.add(effect);
+				this.updateCount(optional.get(), 1);
+			}
+		} else {
+			this.particlesToAdd.add(effect);
 		}
 	}
 
-	public void renderParticles(PoseStack ms, SubmitNodeCollector queue, Camera camera,
-								CameraRenderState cameraRenderState, float pt) {
-		Minecraft mc = Minecraft.getInstance();
-		LightTexture lightTexture = mc.gameRenderer.lightTexture();
+	public void tick() {
+		this.particles.forEach((renderType, particleGroup) -> particleGroup.tickParticles());
 
-		lightTexture.turnOnLightLayer();
-		RenderSystem.enableDepthTest();
+		Particle particle;
+		if (!this.particlesToAdd.isEmpty()) {
+			while ((particle = this.particlesToAdd.poll()) != null) {
+				this.particles.computeIfAbsent(particle.getGroup(), particleEngine::createParticleGroup).add(particle);
+			}
+		}
+	}
+
+	public void renderParticles(PoseStack poseStack, SubmitNodeStorage queue, Camera camera,
+								CameraRenderState cameraRenderState, float partialTick) {
+		Minecraft mc = Minecraft.getInstance();
+
 		Matrix4fStack stack = RenderSystem.getModelViewStack();
 		stack.pushMatrix();
-		stack.mul(ms.last().pose());
-		RenderSystem.applyModelViewMatrix();
+		stack.mul(poseStack.last().pose());
 
-		for (ParticleRenderType iparticlerendertype : this.byType.keySet()) {
-			if (iparticlerendertype == ParticleRenderType.NO_RENDER)
+		for (ParticleRenderType particlerendertype : ParticleEngine.RENDER_ORDER) {
+			ParticleGroup<?> particleGroup = particles.get(particlerendertype);
+			if (particleGroup != null && !particleGroup.isEmpty()) {
+				particleState.add(particleGroup.extractRenderState(ParticlesFrustum.INSTANCE, camera, partialTick));
+			}
+		}
+
+		particleState.submit(queue, cameraRenderState);
+
+		for (SubmitNodeCollection collection : queue.getSubmitsPerOrder().values()) {
+			List<ParticleGroupRenderer> renderers = collection.getParticleGroupRenderers();
+			if (renderers.isEmpty()) {
 				continue;
-			Iterable<Particle> iterable = this.byType.get(iparticlerendertype);
-			if (iterable != null) {
-				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-				RenderSystem.setShader(GameRenderer::getParticleShader);
+			}
 
-				Tesselator tesselator = Tesselator.getInstance();
-				BufferBuilder bufferBuilder = iparticlerendertype.begin(tesselator, mc.getTextureManager());
+			TextureManager textureManager = Minecraft.getInstance().getTextureManager();
 
-				if (bufferBuilder != null) {
-					for (Particle particle : iterable)
-						particle.render(bufferBuilder, camera, pt);
-
-					MeshData meshData = bufferBuilder.build();
-					if (meshData != null)
-						BufferUploader.drawWithShader(meshData);
+			for (ParticleGroupRenderer renderer : renderers) {
+				QuadParticleRenderState.PreparedBuffers preparedBuffers = renderer.prepare(particleBufferCache);
+				if (preparedBuffers != null) {
+					try (RenderPass renderPass = RenderSystem.getDevice()
+						.createCommandEncoder()
+						.createRenderPass(
+							() -> "Particles - Ponder World",
+							RenderSystem.outputColorTextureOverride,
+							OptionalInt.empty(),
+							RenderSystem.outputDepthTextureOverride,
+							OptionalDouble.empty()
+						)) {
+						this.prepareRenderPass(renderPass);
+						renderer.render(preparedBuffers, particleBufferCache, renderPass, textureManager, false);
+						renderer.render(preparedBuffers, particleBufferCache, renderPass, textureManager, true);
+					}
 				}
 			}
 		}
 
 		stack.popMatrix();
-		RenderSystem.applyModelViewMatrix();
-		RenderSystem.depthMask(true);
-		RenderSystem.disableBlend();
-		lightTexture.turnOffLightLayer();
+	}
+
+	private void prepareRenderPass(RenderPass renderPass) {
+		renderPass.setUniform("Projection", RenderSystem.getProjectionMatrixBuffer());
+		renderPass.setUniform("Fog", RenderSystem.getShaderFog());
+		renderPass.bindTexture(
+			"Sampler2", Minecraft.getInstance().gameRenderer.lightTexture().getTextureView(), RenderSystem.getSamplerCache().getClampToEdge(FilterMode.LINEAR)
+		);
+	}
+
+	protected void updateCount(ParticleLimit limit, int count) {
+		this.trackedParticleCounts.addTo(limit, count);
+	}
+
+	private boolean hasSpaceInParticleLimit(ParticleLimit limit) {
+		return this.trackedParticleCounts.getInt(limit) < limit.limit();
 	}
 
 	public void clearEffects() {
-		this.byType.clear();
+		this.particles.clear();
+		this.particlesToAdd.clear();
+		this.trackedParticleCounts.clear();
 	}
 
+	public static class ParticlesFrustum extends Frustum {
+		public static final Frustum INSTANCE = new ParticlesFrustum();
+
+		private ParticlesFrustum() {
+			super(new Matrix4f(), new Matrix4f());
+		}
+
+		@Override
+		public boolean pointInFrustum(double x, double y, double z) {
+			return true;
+		}
+	}
 }

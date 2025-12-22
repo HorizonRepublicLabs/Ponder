@@ -12,6 +12,11 @@ import java.util.stream.IntStream;
 
 import javax.annotation.Nullable;
 
+import com.mojang.math.Constants;
+
+import net.createmod.ponder.foundation.render.PonderSceneRenderState;
+
+import org.joml.Matrix3x2f;
 import org.joml.Matrix3x2fStack;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -593,128 +598,30 @@ public class PonderUI extends AbstractPonderScreen {
 	}
 
 	protected void renderVisibleScenes(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		renderScene(graphics, mouseX, mouseY, index, partialTicks);
+		renderScene(graphics, index, partialTicks);
 		float lazyIndexValue = lazyIndex.getValue(partialTicks);
 		if (Math.abs(lazyIndexValue - index) > 1 / 512f)
-			renderScene(graphics, mouseX, mouseY, lazyIndexValue < index ? index - 1 : index + 1, partialTicks);
+			renderScene(graphics, lazyIndexValue < index ? index - 1 : index + 1, partialTicks);
 	}
 
-	protected void renderScene(GuiGraphics graphics, int mouseX, int mouseY, int i, float partialTicks) {
-		SuperRenderTypeBuffer buffer = DefaultSuperRenderTypeBuffer.getInstance();
+	protected void renderScene(GuiGraphics graphics, int i, float partialTicks) {
 		PonderScene scene = scenes.get(i);
 		double value = lazyIndex.getValue(AnimationTickHolder.getPartialTicksUI());
 		double diff = i - value;
 		double slide = Mth.lerp(diff * diff, 200, 600) * diff;
 
-		RenderSystem.enableBlend();
-		RenderSystem.enableDepthTest();
 		RenderSystem.backupProjectionMatrix();
 
-		PoseStack poseStack = graphics.pose();
-		RenderSystem.setupLevelDiffuseLighting(DIFFUSE_LIGHT_0, DIFFUSE_LIGHT_1);
+		graphics.guiRenderState.submitPicturesInPictureState(new PonderSceneRenderState(
+			new Matrix3x2f(graphics.pose()),
+			scene,
+			width,
+			height,
+			slide,
+			finishingFlash,
+			partialTicks
+		));
 
-		// has to be outside of MS transforms, important for vertex sorting
-		Matrix4f matrix4f = new Matrix4f(RenderSystem.getProjectionMatrix());
-		matrix4f.translate(0, 0, 800);
-		RenderSystem.setProjectionMatrix(matrix4f, VertexSorting.DISTANCE_TO_ORIGIN);
-
-		poseStack.pushPose();
-		poseStack.translate(0, 0, -800);
-		scene.getTransform()
-			.updateScreenParams(width, height, slide);
-		scene.getTransform()
-			.apply(poseStack, partialTicks);
-		scene.getTransform()
-			.updateSceneRVE(partialTicks);
-		scene.renderScene(buffer, graphics, partialTicks);
-		buffer.draw();
-
-		BoundingBox bounds = scene.getBounds();
-		poseStack.pushPose();
-
-		// kool shadow fx
-		if (!scene.shouldHidePlatformShadow()) {
-			RenderSystem.enableCull();
-			RenderSystem.enableDepthTest();
-			poseStack.pushPose();
-			poseStack.translate(scene.getBasePlateOffsetX(), 0, scene.getBasePlateOffsetZ());
-			UIRenderHelper.flipForGuiRender(poseStack);
-
-			float flash = finishingFlash.getValue(partialTicks) * .9f;
-			float alpha = flash;
-			flash *= flash;
-			flash = ((flash * 2) - 1);
-			flash *= flash;
-			flash = 1 - flash;
-
-			for (int f = 0; f < 4; f++) {
-				poseStack.translate(scene.getBasePlateSize(), 0, 0);
-				poseStack.pushPose();
-				poseStack.translate(0, 0, -1 / 1024f);
-				if (flash > 0) {
-					poseStack.pushPose();
-					poseStack.scale(1, .5f + flash * .75f, 1);
-					graphics.fillGradient(0, -1, -scene.getBasePlateSize(), 0, new Color(0x00_c6ffc9).getRGB(), new Color(0xaa_c6ffc9).scaleAlpha(alpha).getRGB());
-					poseStack.popPose();
-				}
-				poseStack.translate(0, 0, 2 / 1024f);
-				graphics.fillGradient(0, 0, -scene.getBasePlateSize(), 4, new Color(0x66_000000).getRGB(), new Color(0x00_000000).getRGB());
-				poseStack.popPose();
-				poseStack.mulPose(Axis.YP.rotationDegrees(-90));
-			}
-			poseStack.popPose();
-			RenderSystem.disableCull();
-			RenderSystem.disableDepthTest();
-		}
-
-		// coords for debug
-		if (PonderIndex.editingModeActive() && !userViewMode) {
-			poseStack.scale(-1, -1, 1);
-			poseStack.scale(1 / 16f, 1 / 16f, 1 / 16f);
-			poseStack.translate(1, -8, -1 / 64f);
-
-			// X AXIS
-			poseStack.pushPose();
-			poseStack.translate(4, -3, 0);
-			poseStack.translate(0, 0, -2 / 1024f);
-			for (int x = 0; x <= bounds.getXSpan(); x++) {
-				poseStack.translate(-16, 0, 0);
-				graphics.drawString(font, x == bounds.getXSpan() ? "x" : "" + x, 0, 0, 0xFFFFFFFF, false);
-			}
-			poseStack.popPose();
-
-			// Z AXIS
-			poseStack.pushPose();
-			poseStack.scale(-1, 1, 1);
-			poseStack.translate(0, -3, -4);
-			poseStack.mulPose(Axis.YP.rotationDegrees(-90));
-			poseStack.translate(-8, -2, 2 / 64f);
-			for (int z = 0; z <= bounds.getZSpan(); z++) {
-				poseStack.translate(16, 0, 0);
-				graphics.drawString(font, z == bounds.getZSpan() ? "z" : "" + z, 0, 0, 0xFFFFFFFF, false);
-			}
-			poseStack.popPose();
-
-			// DIRECTIONS
-			poseStack.pushPose();
-			poseStack.translate(bounds.getXSpan() * -8, 0, bounds.getZSpan() * 8);
-			poseStack.mulPose(Axis.YP.rotationDegrees(-90));
-			for (Direction d : Iterate.horizontalDirections) {
-				poseStack.mulPose(Axis.YP.rotationDegrees(90));
-				poseStack.pushPose();
-				poseStack.translate(0, 0, bounds.getZSpan() * 16);
-				poseStack.mulPose(Axis.XP.rotationDegrees(-90));
-				graphics.drawString(font, d.name().substring(0, 1), 0, 0, 0x66FFFFFF, false);
-				graphics.drawString(font, "|", 2, 10, 0x44FFFFFF, false);
-				graphics.drawString(font, ".", 2, 14, 0x22FFFFFF, false);
-				poseStack.popPose();
-			}
-			poseStack.popPose();
-			buffer.draw();
-		}
-
-		poseStack.popPose();
-		poseStack.popPose();
 		RenderSystem.restoreProjectionMatrix();
 	}
 
@@ -846,7 +753,7 @@ public class PonderUI extends AbstractPonderScreen {
 
 				int x = button.getX() + button.getWidth() + 4;
 				int y = button.getY() - 2;
-				ms.translate(x, y + 5 * (1 - fade), 800);
+				ms.translate(x, y + 5 * (1 - fade));
 
 				float fadedWidth = 200 * chase.getValue(partialTicks);
 				UIRenderHelper.streak(graphics, 0, 0, 12, 26, (int) fadedWidth);
@@ -895,7 +802,7 @@ public class PonderUI extends AbstractPonderScreen {
 
 		Matrix3x2fStack poseStack = graphics.pose();
 		poseStack.pushMatrix();
-		poseStack.translate(right.getX() + 10, right.getY() - 6 + nextUp.getValue(partialTicks) * 5, 400);
+		poseStack.translate(right.getX() + 10, right.getY() - 6 + nextUp.getValue(partialTicks) * 5);
 		MutableComponent nextUpComponent = Ponder.lang().translate(AbstractPonderScreen.NEXT_UP).component();
 		int boxWidth = (Math.max(font.width(nextScene.getTitle()), font.width(nextUpComponent)) + 5);
 		renderSpeechBox(graphics, 0, 0, boxWidth, 20, right.isHoveredOrFocused(), Pointing.DOWN, false);
@@ -969,11 +876,11 @@ public class PonderUI extends AbstractPonderScreen {
 			.render(graphics);
 
 		// pondering about text
-		poseStack.translate(4, 6, 0);
+		poseStack.translate(4, 6);
 		graphics.drawString(font, Ponder.lang().translate(AbstractPonderScreen.PONDERING).component(), 0, 0, tooltipColor, false);
 
 		// scene title
-		poseStack.translate(0, 14, 0);
+		poseStack.translate(0, 14);
 
 		// short version for single scene views
 		if (scenes.size() == 1 || absoluteIndexDiff < 0.01) {
@@ -989,7 +896,7 @@ public class PonderUI extends AbstractPonderScreen {
 
 		poseStack.translate(0, 6);
 		poseStack.pushMatrix();
-		poseStack.mulPose(Axis.XN.rotationDegrees(indexDiff * -90 + Math.signum(indexDiff) * 90));
+		poseStack.rotate((indexDiff * -90 + Math.signum(indexDiff) * 90) * Constants.DEG_TO_RAD);
 		poseStack.translate(0, -6);
 		ClientFontHelper.drawSplitString(graphics, font, otherTitle, 0, 0, maxTitleWidth, UIRenderHelper.COLOR_TEXT
 			.getFirst()
@@ -998,8 +905,7 @@ public class PonderUI extends AbstractPonderScreen {
 		);
 		poseStack.popMatrix();
 
-
-		poseStack.mulPose(Axis.XN.rotationDegrees(indexDiff * -90));
+		poseStack.rotate((indexDiff * -90) * Constants.DEG_TO_RAD);
 		poseStack.translate(0, -6);
 		ClientFontHelper.drawSplitString(graphics, font, title, 0, 0, maxTitleWidth, UIRenderHelper.COLOR_TEXT
 			.getFirst()
@@ -1047,7 +953,7 @@ public class PonderUI extends AbstractPonderScreen {
 	@Override
 	protected String getBreadcrumbTitle() {
 		return stack.getItem()
-			.getDescription()
+			.getName()
 			.getString();
 	}
 
@@ -1063,9 +969,9 @@ public class PonderUI extends AbstractPonderScreen {
 
 	public static void renderSpeechBox(GuiGraphics graphics, int x, int y, int w, int h, boolean highlighted, Pointing pointing,
 									   boolean returnWithLocalTransform) {
-		PoseStack poseStack = graphics.pose();
+		Matrix3x2fStack poseStack = graphics.pose();
 		if (!returnWithLocalTransform) {
-			poseStack.pushPose();
+			poseStack.pushMatrix();
 		}
 
 		int boxX = x;
@@ -1121,21 +1027,20 @@ public class PonderUI extends AbstractPonderScreen {
 			.withBounds(w, h)
 			.render(graphics);
 
-		poseStack.pushPose();
-		poseStack.translate(divotX + divotRadius, divotY + divotRadius, 110);
-		poseStack.mulPose(Axis.ZP.rotationDegrees(divotRotation));
-		poseStack.translate(-divotRadius, -divotRadius, 0);
+		poseStack.pushMatrix();
+		poseStack.translate(divotX + divotRadius, divotY + divotRadius);
+		poseStack.rotate(divotRotation * Constants.DEG_TO_RAD);
+		poseStack.translate(-divotRadius, -divotRadius);
 		PonderGuiTextures.SPEECH_TOOLTIP_BACKGROUND.render(graphics, 0, 0);
 		PonderGuiTextures.SPEECH_TOOLTIP_COLOR.render(graphics, 0, 0, c);
-		poseStack.popPose();
+		poseStack.popMatrix();
 
 		if (returnWithLocalTransform) {
-			poseStack.translate(boxX, boxY, 0);
+			poseStack.translate(boxX, boxY);
 			return;
 		}
 
-		poseStack.popPose();
-
+		poseStack.popMatrix();
 	}
 
 	public ItemStack getHoveredTooltipItem() {

@@ -7,6 +7,8 @@ import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
+import com.mojang.math.Constants;
+
 import net.createmod.catnip.gui.render.FadedArrowRenderState;
 
 import net.createmod.catnip.gui.render.TexturedArrowRenderState;
@@ -205,7 +207,7 @@ public class PlacementClient {
 		Matrix3x2fStack poseStack = graphics.pose();
 		poseStack.pushMatrix();
 		poseStack.translate(centerX, centerY);
-		poseStack.rotate(angle.getValue(0) * (float) (Math.PI / 180));
+		poseStack.rotate(angle.getValue(0) * Constants.DEG_TO_RAD);
 		double scale = PonderConfig.client().indicatorScale.get();
 		poseStack.scale((float) scale, (float) scale);
 

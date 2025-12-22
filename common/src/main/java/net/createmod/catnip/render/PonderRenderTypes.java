@@ -13,6 +13,13 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Util;
 
 public abstract class PonderRenderTypes {
+	private static final RenderType GUI = RenderTypeAccessor.catnip$create(
+		createLayerName("gui"),
+		RenderSetup.builder(RenderPipelines.GUI)
+			.bufferSize(RenderType.SMALL_BUFFER_SIZE)
+			.createRenderSetup()
+	);
+
 	private static final RenderType OUTLINE_SOLID = RenderTypeAccessor.catnip$create(
 		createLayerName("outline_solid"),
 		RenderSetup.builder(RenderPipelines.ENTITY_SOLID)
@@ -36,6 +43,10 @@ public abstract class PonderRenderTypes {
 				.createRenderSetup()
 		)
 	);
+
+	public static RenderType gui() {
+		return GUI;
+	}
 
 	public static RenderType outlineSolid() {
 		return OUTLINE_SOLID;

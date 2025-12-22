@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.mojang.math.Constants;
+
 import net.createmod.catnip.gui.render.BreadcrumbArrowRenderState;
 import net.createmod.catnip.gui.render.GradientRectRenderState;
 import net.createmod.catnip.gui.render.RadialSectorRenderState;
@@ -81,7 +83,7 @@ public class UIRenderHelper {
 		Matrix3x2fStack poseStack = graphics.pose();
 		poseStack.pushMatrix();
 		poseStack.translate(x, y);
-		poseStack.rotate((float) ((angle - 90) * (Math.PI / 180)));
+		poseStack.rotate((angle - 90) * Constants.DEG_TO_RAD);
 
 		streak(graphics, breadth / 2, length, c1, c2, c3, c4);
 
@@ -118,7 +120,7 @@ public class UIRenderHelper {
 		Matrix3x2fStack poseStack = graphics.pose();
 		poseStack.pushMatrix();
 		poseStack.translate(x, y);
-		poseStack.rotate((float) ((angle - 90) * (Math.PI / 180)));
+		poseStack.rotate((angle - 90) * Constants.DEG_TO_RAD);
 
 		float w = breadth / 2;
 		//graphics.fillGradient(-w, 0, w, length, startColor.getRGB(), endColor.getRGB());
