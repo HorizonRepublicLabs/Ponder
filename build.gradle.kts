@@ -4,11 +4,13 @@ import org.gradle.internal.extensions.stdlib.capitalized
 import java.net.URI
 
 plugins {
+    idea
     java
     `maven-publish`
     id("fabric-loom") apply false // https://github.com/FabricMC/fabric-loom
     id("net.neoforged.moddev") apply false // https://projects.neoforged.net/neoforged/ModDevGradle
     //id("dev.lukebemish.immaculate") version "0.1.16" // https://github.com/lukebemishprojects/Immaculate
+    id("net.createmod.ponder.gradle")
 }
 
 apply(from = "gradle/property_loader.gradle.kts")
@@ -66,6 +68,10 @@ subprojects {
 //            trailingNewline()
 //        }
 //    }
+
+    defaultPackageInfos {
+        sources(sourceSets["main"])
+    }
 
     java {
         toolchain.languageVersion = JavaLanguageVersion.of(21)

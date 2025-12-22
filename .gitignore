@@ -24,6 +24,8 @@ build
 eclipse
 run
 .DS_Store
+src/*/generatedPackageInfos/
+*/src/*/generatedPackageInfos/
 
 # Vitepress
 docs/

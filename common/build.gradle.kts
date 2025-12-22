@@ -36,7 +36,7 @@ configurations {
 }
 
 artifacts {
-    add("commonJava", sourceSets["main"].java.sourceDirectories.singleFile)
+    for (file in sourceSets["main"].java.sourceDirectories.files) add("commonJava", file)
     add("commonResources", sourceSets["main"].resources.sourceDirectories.singleFile)
 }
 
