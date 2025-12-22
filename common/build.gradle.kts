@@ -2,6 +2,10 @@ plugins {
     id("net.neoforged.moddev")
 }
 
+defaultPackageInfos {
+    sources(sourceSets["main"])
+}
+
 neoForge {
     neoFormVersion = "neo_form_version"()
     accessTransformers.from("src/main/resources/META-INF/accesstransformer.cfg")
