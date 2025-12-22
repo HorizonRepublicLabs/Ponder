@@ -28,7 +28,7 @@ public interface ModFluidHelper<R> {
 		if (texture != null)
 			return texture;
 
-		return Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(MissingTextureAtlasSprite.getLocation());
+		return Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(TextureAtlas.LOCATION_BLOCKS).missingSprite();
 	}
 
 	boolean isLighterThanAir(R fluid);

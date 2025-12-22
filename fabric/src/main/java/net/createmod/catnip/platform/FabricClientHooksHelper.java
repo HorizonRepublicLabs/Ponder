@@ -2,10 +2,15 @@ package net.createmod.catnip.platform;
 
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.function.Function;
 
 import net.createmod.catnip.render.PonderRenderTypes;
 import net.createmod.catnip.render.RenderTargetExtensions;
 import net.createmod.ponder.mixin.client.ParticleEngineAccessor;
+import net.fabricmc.fabric.api.client.rendering.v1.SpecialGuiElementRegistry;
+import net.minecraft.client.gui.render.pip.PictureInPictureRenderer;
+import net.minecraft.client.gui.render.state.pip.PictureInPictureRenderState;
+import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
 import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.resources.language.LanguageManager;
@@ -65,6 +70,11 @@ public class FabricClientHooksHelper implements ModClientHooksHelper {
 	@Override
 	public void enableStencilBuffer(RenderTarget renderTarget) {
 		((RenderTargetExtensions) renderTarget).catnip$enableStencil();
+	}
+
+	@Override
+	public void registerPictureInPictureRenderer(Class<?> stateClass, Function<BufferSource, PictureInPictureRenderer<?>> factory) {
+		SpecialGuiElementRegistry.register(ctx -> factory.apply(ctx.vertexConsumers()));
 	}
 
 	@Override

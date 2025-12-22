@@ -1,14 +1,24 @@
 package net.createmod.catnip.platform;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Function;
 
 import com.mojang.blaze3d.platform.Window;
 
+import net.createmod.ponder.NeoForgePonderClient;
+import net.minecraft.client.gui.render.pip.PictureInPictureRenderer;
+import net.minecraft.client.gui.render.state.pip.PictureInPictureRenderState;
+import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.resources.Identifier;
 
+import net.neoforged.neoforge.client.event.RegisterPictureInPictureRenderersEvent;
+import net.neoforged.neoforge.common.NeoForge;
+
+import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
@@ -39,7 +49,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 
 public class NeoForgeClientHooksHelper implements ModClientHooksHelper {
-	private final Map<Identifier, ParticleProvider<?>> particleProviders = ((ParticleEngineAccessor) Minecraft.getInstance().particleEngine).ponder$getProviders();
+	private static final Map<Identifier, ParticleProvider<?>> particleProviders = ((ParticleEngineAccessor) Minecraft.getInstance().particleEngine).ponder$getProviders();
+
+	@Internal
+	public static final Map<Class<?>, Function<BufferSource, PictureInPictureRenderer<?>>> PIP_RENDERERS = new HashMap<>();
 
 	@Override
 	public Locale getCurrentLocale() {
@@ -53,7 +66,7 @@ public class NeoForgeClientHooksHelper implements ModClientHooksHelper {
 																	   double z, double mx, double my, double mz) {
 		Identifier key = RegisteredObjectsHelper.getKeyOrThrow(data.getType());
 		ParticleProvider<T> particleProvider = (ParticleProvider<T>) particleProviders.get(key);
-		return particleProvider == null ? null : particleProvider.createParticle(data, level, x, y, z, mx, my, mz);
+		return particleProvider == null ? null : particleProvider.createParticle(data, level, x, y, z, mx, my, mz, level.random);
 	}
 
 	@Override
@@ -71,6 +84,11 @@ public class NeoForgeClientHooksHelper implements ModClientHooksHelper {
 	@Override
 	public void enableStencilBuffer(RenderTarget renderTarget) {
 		renderTarget.enableStencil();
+	}
+
+	@Override
+	public void registerPictureInPictureRenderer(Class<?> stateClass, Function<BufferSource, PictureInPictureRenderer<?>> factory) {
+		PIP_RENDERERS.put(stateClass, factory);
 	}
 
 	@Override
@@ -105,3 +123,4 @@ public class NeoForgeClientHooksHelper implements ModClientHooksHelper {
 	public ShadedBlockSbbBuilder createSbbBuilder(BufferBuilder builder) {
 		return new NeoForgeShadedBlockSbbBuilder();
 	}
+}

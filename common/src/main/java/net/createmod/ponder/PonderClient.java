@@ -31,8 +31,6 @@ public class PonderClient {
 		SuperByteBufferCache.getInstance().registerCompartment(CachedBuffers.GENERIC_BLOCK);
 		SuperByteBufferCache.getInstance().registerCompartment(WorldSectionElementImpl.PONDER_WORLD_SECTION);
 
-		UIRenderHelper.init();
-
 		ClientboundSimpleActionPacket.addAction("openPonder", () -> SimplePonderActions::openPonder);
 		ClientboundSimpleActionPacket.addAction("reloadPonder", () -> SimplePonderActions::reloadPonder);
 

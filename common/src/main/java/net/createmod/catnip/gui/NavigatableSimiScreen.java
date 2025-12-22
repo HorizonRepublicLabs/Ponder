@@ -171,14 +171,11 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 		if (lastScreen != null && lastScreen != this && !transition.settled()) {
 			currentlyRenderingPreviousScreen = true;
 			ms.pushMatrix();
-			UIRenderHelper.framebuffer.clear(Minecraft.ON_OSX);
-			UIRenderHelper.framebuffer.bindWrite(true);
 			lastScreen.render(graphics, 0, 0, partialTicks);
 
 			ms.popMatrix();
 
 			ms.pushMatrix();
-			minecraft.getMainRenderTarget().bindWrite(true);
 
 			int dpx = (int) (guiScaledWidth / 2);
 			int dpy = (int) (guiScaledHeight / 2);
@@ -189,8 +186,8 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 
 			float scale = 1 + (0.2f * tValue);
 
-			RenderSystem.enableBlend();
-			RenderSystem.defaultBlendFunc();
+//			RenderSystem.enableBlend(); TODO - Was this needed here?
+//			RenderSystem.defaultBlendFunc(); TODO - Was this needed here?
 			Matrix4f matrix4f = new Matrix4f().setOrtho(0.0F, guiScaledWidth, guiScaledHeight, 0.0F, 1000.0F, 3000.0F);
 			PoseStack poseStack2 = new PoseStack();
 			poseStack2.last().pose().set(matrix4f);
@@ -199,8 +196,7 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 			poseStack2.translate(-dpx, -dpy, 0);
 
 
-			UIRenderHelper.drawFramebuffer(poseStack2, 1f - tValueAbsolute);
-			RenderSystem.disableBlend();
+//			RenderSystem.disableBlend(); TODO - Was this needed here?
 			ms.popMatrix();
 			currentlyRenderingPreviousScreen = false;
 		}

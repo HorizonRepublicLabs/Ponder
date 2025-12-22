@@ -6,7 +6,6 @@
   "refmap": "${mod_id}.refmap.json",
   "client": [
     "accessor.TimerAccessor",
-    "client.WindowResizeMixin",
     "client.accessor.BufferBuilderAccessor",
     "client.accessor.ClientPacketListenerAccessor",
     "client.accessor.GameRendererAccessor",

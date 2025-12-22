@@ -80,13 +80,7 @@ public abstract class ConfigScreen extends AbstractSimiScreen {
 
 	@Override
 	protected void prepareFrame() {
-		UIRenderHelper.swapAndBlitColor(minecraft.getMainRenderTarget(), UIRenderHelper.framebuffer);
 		GlStateManager._clear(GL30.GL_STENCIL_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT);
-	}
-
-	@Override
-	protected void endFrame() {
-		UIRenderHelper.swapAndBlitColor(UIRenderHelper.framebuffer, minecraft.getMainRenderTarget());
 	}
 
 	@Override

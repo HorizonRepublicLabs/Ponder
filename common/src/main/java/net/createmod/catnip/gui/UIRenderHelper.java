@@ -61,41 +61,6 @@ public class UIRenderHelper {
 	public static final Color COLOR_STREAK = new Color(0x101010, false).setImmutable();
 
 	/**
-	 * An FBO that has a stencil buffer for use wherever stencil are necessary. Forcing the main FBO to have a stencil
-	 * buffer will cause GL error spam when using fabulous graphics.
-	 */
-	@Nullable
-	public static CustomRenderTarget framebuffer;
-
-	public static void init() {
-		RenderSystem.recordRenderCall(() -> {
-			Window mainWindow = Minecraft.getInstance().getWindow();
-			framebuffer = CustomRenderTarget.create(mainWindow);
-		});
-	}
-
-	public static void updateWindowSize(Window mainWindow) {
-		if (framebuffer != null)
-			framebuffer.resize(mainWindow.getWidth(), mainWindow.getHeight(), Minecraft.ON_OSX);
-	}
-
-	public static void drawFramebuffer(PoseStack poseStack, float alpha) {
-		if (framebuffer != null)
-			framebuffer.renderWithAlpha(poseStack, alpha);
-	}
-
-	/**
-	 * Switch from src to dst, after copying the contents of src to dst.
-	 */
-	public static void swapAndBlitColor(RenderTarget src, RenderTarget dst) {
-		GlStateManager._glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, src.frameBufferId);
-		GlStateManager._glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, dst.frameBufferId);
-		GlStateManager._glBlitFrameBuffer(0, 0, src.viewWidth, src.viewHeight, 0, 0, dst.viewWidth, dst.viewHeight, GL30.GL_COLOR_BUFFER_BIT, GL30.GL_LINEAR);
-
-		GlStateManager._glBindFramebuffer(GlConst.GL_FRAMEBUFFER, dst.frameBufferId);
-	}
-
-	/**
 	 * @param angle   angle in degrees, 0 means fading to the right
 	 * @param x       x-position of the starting edge middle point
 	 * @param y       y-position of the starting edge middle point
@@ -262,66 +227,5 @@ public class UIRenderHelper {
 
 	public static void flipForGuiRender(PoseStack poseStack) {
 		poseStack.mulPose(new Matrix4f().scaling(1, -1, 1));
-	}
-
-	public static class CustomRenderTarget extends RenderTarget {
-		public CustomRenderTarget(@Nullable String name, boolean useDepth) {
-			super(name, useDepth);
-		}
-
-		public static CustomRenderTarget create(@Nullable String name, Window mainWindow) {
-			CustomRenderTarget framebuffer = new CustomRenderTarget(name, true);
-			framebuffer.resize(mainWindow.getWidth(), mainWindow.getHeight());
-			framebuffer.setClearColor(0, 0, 0, 0);
-			CatnipClientServices.CLIENT_HOOKS.enableStencilBuffer(framebuffer);
-			return framebuffer;
-		}
-
-		public void renderWithAlpha(PoseStack poseStack, float alpha) {
-			Window window = Minecraft.getInstance().getWindow();
-
-			float guiScaledWidth = window.getGuiScaledWidth();
-			float guiScaledHeight = window.getGuiScaledHeight();
-
-			float vx = guiScaledWidth;
-			float vy = guiScaledHeight;
-			float tx = (float) viewWidth / (float) width;
-			float ty = (float) viewHeight / (float) height;
-
-			RenderSystem.disableDepthTest();
-
-			Minecraft minecraft = Minecraft.getInstance();
-			ShaderInstance shaderinstance = minecraft.gameRenderer.blitShader;
-			shaderinstance.setSampler("DiffuseSampler", colorTextureId);
-			//Matrix4f matrix4f = Matrix4f.orthographic(guiScaledWidth, -guiScaledHeight, 1000.0F, 3000.0F);
-			Matrix4f matrix4f = poseStack.last().pose();
-			Matrix4f projectionMatrix = RenderSystem.getProjectionMatrix();
-			RenderSystem.setProjectionMatrix(matrix4f, VertexSorting.ORTHOGRAPHIC_Z);
-			if (shaderinstance.MODEL_VIEW_MATRIX != null) {
-				shaderinstance.MODEL_VIEW_MATRIX.set(new Matrix4f().translation(0.0F, 0.0F, -2000.0F));
-			}
-
-			if (shaderinstance.PROJECTION_MATRIX != null) {
-				shaderinstance.PROJECTION_MATRIX.set(matrix4f);
-			}
-
-			shaderinstance.apply();
-
-			//bindRead();
-
-			Tesselator tesselator = RenderSystem.renderThreadTesselator();
-			BufferBuilder bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-
-			bufferbuilder.addVertex(0, vy, 0).setUv(0, 0).setColor(1, 1, 1, alpha);
-			bufferbuilder.addVertex(vx, vy, 0).setUv(tx, 0).setColor(1, 1, 1, alpha);
-			bufferbuilder.addVertex(vx, 0, 0).setUv(tx, ty).setColor(1, 1, 1, alpha);
-			bufferbuilder.addVertex(0, 0, 0).setUv(0, ty).setColor(1, 1, 1, alpha);
-
-			BufferUploader.draw(bufferbuilder.buildOrThrow());
-
-			shaderinstance.clear();
-			RenderSystem.setProjectionMatrix(projectionMatrix, VertexSorting.ORTHOGRAPHIC_Z);
-			//unbindRead();
-		}
 	}
 }

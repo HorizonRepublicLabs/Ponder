@@ -124,10 +124,6 @@ public final class FluidRenderHelper<T> {
 		boolean horizontal = dir.getAxis().isHorizontal();
 		boolean x = dir.getAxis() == Direction.Axis.X;
 
-		float shrink = texture.uvShrinkRatio() * 0.25f * textureScale;
-		float centerU = texture.getU0() + (texture.getU1() - texture.getU0()) * 0.5f * textureScale;
-		float centerV = texture.getV0() + (texture.getV1() - texture.getV0()) * 0.5f * textureScale;
-
 		float f;
 		float x2;
 		float y2;
@@ -144,8 +140,7 @@ public final class FluidRenderHelper<T> {
 				u1 = texture.getU((x1 - f) * textureScale);
 				u2 = texture.getU((x2 - f) * textureScale);
 			}
-			u1 = Mth.lerp(shrink, u1, centerU);
-			u2 = Mth.lerp(shrink, u2, centerU);
+
 			for (float y1 = down; y1 < up; y1 = y2) {
 				f = Mth.floor(y1);
 				y2 = Math.min(f + 1, up);
@@ -157,8 +152,6 @@ public final class FluidRenderHelper<T> {
 					v1 = texture.getV((f - y2) * textureScale);
 					v2 = texture.getV((f - y1) * textureScale);
 				}
-				v1 = Mth.lerp(shrink, v1, centerV);
-				v2 = Mth.lerp(shrink, v2, centerV);
 
 				if (horizontal) {
 					if (x) {

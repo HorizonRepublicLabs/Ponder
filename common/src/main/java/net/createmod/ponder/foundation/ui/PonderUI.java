@@ -12,13 +12,6 @@ import java.util.stream.IntStream;
 
 import javax.annotation.Nullable;
 
-import com.mojang.blaze3d.platform.InputConstants;
-
-import net.createmod.ponder.foundation.PonderTag.Highlight;
-import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.network.chat.FormattedText;
-import net.minecraft.resources.Identifier;
-
 import org.joml.Matrix3x2fStack;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -27,6 +20,7 @@ import com.google.common.graph.ElementOrder;
 import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.MutableGraph;
 import com.mojang.blaze3d.platform.ClipboardManager;
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -62,6 +56,7 @@ import net.createmod.ponder.foundation.PonderScene;
 import net.createmod.ponder.foundation.PonderScene.SceneTransform;
 import net.createmod.ponder.foundation.PonderStoryBoardEntry;
 import net.createmod.ponder.foundation.PonderTag;
+import net.createmod.ponder.foundation.PonderTag.Highlight;
 import net.createmod.ponder.foundation.content.DebugScenes;
 import net.createmod.ponder.foundation.element.TextWindowElement;
 import net.minecraft.ChatFormatting;
@@ -70,11 +65,14 @@ import net.minecraft.client.Options;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -589,7 +587,6 @@ public class PonderUI extends AbstractPonderScreen {
 	protected void renderWindow(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
 		super.renderWindow(graphics, mouseX, mouseY, partialTicks);
 		partialTicks = getPartialTicks();
-		RenderSystem.enableBlend();
 		renderVisibleScenes(graphics, mouseX, mouseY,
 			skipCooling > 0 ? 0 : identifyMode ? ponderPartialTicksPaused : partialTicks);
 		renderWidgets(graphics, mouseX, mouseY, identifyMode ? ponderPartialTicksPaused : partialTicks);
@@ -722,8 +719,6 @@ public class PonderUI extends AbstractPonderScreen {
 	}
 
 	protected void renderWidgets(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		RenderSystem.disableDepthTest();
-
 		float fade = fadeIn.getValue(partialTicks);
 		float lazyIndexValue = lazyIndex.getValue(partialTicks);
 		float indexDiff = lazyIndexValue - index;
@@ -765,7 +760,7 @@ public class PonderUI extends AbstractPonderScreen {
 				} else
 					graphics.setTooltipForNextFrame(font, hoveredTooltipItem, 0, 0);
 				if (hoveredBlockPos != null && PonderIndex.editingModeActive() && !userViewMode) {
-					ms.translate(0, -15, 0);
+					ms.translate(0, -15);
 					boolean copied = hoveredBlockPos.equals(copiedBlockPos);
 					MutableComponent coords = Component.literal(hoveredBlockPos.getX() + ", " + hoveredBlockPos.getY() + ", " + hoveredBlockPos.getZ())
 						.withStyle(copied ? ChatFormatting.GREEN : ChatFormatting.GOLD);
@@ -868,8 +863,6 @@ public class PonderUI extends AbstractPonderScreen {
 			});
 
 		renderHoverTooltips(graphics, tooltipColor);
-
-		RenderSystem.enableDepthTest();
 	}
 
 	private void renderHoverTooltips(GuiGraphics graphics, int tooltipColor) {
@@ -1087,6 +1080,7 @@ public class PonderUI extends AbstractPonderScreen {
 		Color c;
 
 		switch (pointing) {
+			default:
 			case DOWN:
 				divotRotation = 0;
 				boxX -= w / 2;
@@ -1119,7 +1113,6 @@ public class PonderUI extends AbstractPonderScreen {
 				divotY += distance;
 				c = borderColors.getFirst();
 				break;
-			default:
 		}
 
 		new BoxElement().withBackground(PonderUI.BACKGROUND_FLAT)
