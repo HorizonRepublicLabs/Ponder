@@ -619,7 +619,8 @@ public class PonderUI extends AbstractPonderScreen {
 			height,
 			slide,
 			finishingFlash,
-			partialTicks
+			partialTicks,
+			Minecraft.getInstance().getWindow()
 		));
 
 		RenderSystem.restoreProjectionMatrix();
