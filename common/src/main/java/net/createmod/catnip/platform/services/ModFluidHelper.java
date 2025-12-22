@@ -1,6 +1,6 @@
 package net.createmod.catnip.platform.services;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import net.createmod.catnip.annotations.ClientOnly;
 import net.minecraft.client.Minecraft;

@@ -13,8 +13,8 @@ import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -40,7 +40,7 @@ public class ConfigHelper {
 			.expireAfterAccess(5, TimeUnit.MINUTES)
 			.build(new CacheLoader<>() {
 				@Override
-				public EnumMap<ModConfig.Type, ModConfig> load(@Nonnull String key) {
+				public EnumMap<ModConfig.Type, ModConfig> load(@NonNull String key) {
 					return findModConfigsUncached(key);
 				}
 			});

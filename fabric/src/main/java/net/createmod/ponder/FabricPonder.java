@@ -18,7 +18,7 @@ import net.minecraft.commands.synchronization.SingletonArgumentInfo;
 import net.minecraft.server.MinecraftServer;
 import net.neoforged.fml.config.ModConfig;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class FabricPonder implements ModInitializer {
 	@Nullable

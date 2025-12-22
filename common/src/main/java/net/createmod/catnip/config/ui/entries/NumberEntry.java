@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.util.Locale;
 import java.util.function.Function;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import net.createmod.catnip.config.ui.ConfigTextField;
 import net.createmod.catnip.config.ui.HintableTextFieldWidget;

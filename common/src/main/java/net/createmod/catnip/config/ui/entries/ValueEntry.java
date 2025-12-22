@@ -5,12 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-
 import com.mojang.blaze3d.platform.Window;
 
 import net.minecraft.client.input.MouseButtonEvent;
 
+import org.jspecify.annotations.NonNull;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.ClipboardManager;
@@ -152,12 +151,12 @@ public class ValueEntry<T> extends ConfigScreenList.LabeledEntry {
 		return (int) (totalWidth * labelWidthMult) + 30;
 	}
 
-	public void setValue(@Nonnull T value) {
+	public void setValue(@NonNull T value) {
 		ConfigHelper.setValue(path, this.value, value, annotations);
 		onValueChange(value);
 	}
 
-	@Nonnull
+	@NonNull
 	public T getValue() {
 		return ConfigHelper.getValue(path, this.value);
 	}

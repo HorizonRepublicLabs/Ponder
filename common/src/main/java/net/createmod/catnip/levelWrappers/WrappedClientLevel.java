@@ -2,7 +2,7 @@ package net.createmod.catnip.levelWrappers;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import net.createmod.ponder.mixin.accessor.BiomeManagerAccessor;
 import net.createmod.ponder.mixin.client.accessor.ClientPacketListenerAccessor;

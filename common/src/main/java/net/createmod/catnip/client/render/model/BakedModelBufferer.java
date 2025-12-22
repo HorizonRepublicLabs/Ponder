@@ -2,7 +2,7 @@ package net.createmod.catnip.client.render.model;
 
 import java.util.Iterator;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 

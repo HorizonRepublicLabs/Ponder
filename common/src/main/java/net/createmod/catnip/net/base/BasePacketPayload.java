@@ -1,7 +1,6 @@
 package net.createmod.catnip.net.base;
 
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
@@ -10,7 +9,7 @@ public sealed interface BasePacketPayload extends CustomPacketPayload permits Cl
 
 	@Override
 	@ApiStatus.NonExtendable
-	default @NotNull Type<? extends CustomPacketPayload> type() {
+	default Type<? extends CustomPacketPayload> type() {
 		return this.getTypeProvider().getType();
 	}
 

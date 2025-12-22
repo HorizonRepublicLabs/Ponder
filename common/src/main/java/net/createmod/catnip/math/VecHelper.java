@@ -1,6 +1,6 @@
 package net.createmod.catnip.math;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import net.minecraft.client.entity.ClientAvatarState;
 

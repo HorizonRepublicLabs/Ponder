@@ -1,6 +1,6 @@
 package net.createmod.catnip.outliner;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;

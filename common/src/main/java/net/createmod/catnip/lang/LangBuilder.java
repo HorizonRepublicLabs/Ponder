@@ -2,7 +2,7 @@ package net.createmod.catnip.lang;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import joptsimple.internal.Strings;
 import net.createmod.catnip.codecs.CatnipCodecUtils;
@@ -16,8 +16,6 @@ import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-
-import org.jetbrains.annotations.NotNull;
 
 public class LangBuilder {
 	String namespace;

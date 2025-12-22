@@ -2,7 +2,7 @@ package net.createmod.catnip.gui.widget;
 
 import java.util.function.Function;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.data.Couple;

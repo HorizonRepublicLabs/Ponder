@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import net.createmod.ponder.mixin.accessor.EntityAccessor;
 import net.minecraft.core.BlockPos;

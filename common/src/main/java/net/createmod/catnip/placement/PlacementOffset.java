@@ -2,7 +2,7 @@ package net.createmod.catnip.placement;
 
 import java.util.function.Function;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.advancements.CriteriaTriggers;

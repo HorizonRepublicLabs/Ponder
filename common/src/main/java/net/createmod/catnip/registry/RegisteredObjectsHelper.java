@@ -1,6 +1,6 @@
 package net.createmod.catnip.registry;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.Registry;

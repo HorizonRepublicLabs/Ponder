@@ -2,8 +2,6 @@ package net.createmod.catnip.theme;
 
 import java.util.function.UnaryOperator;
 
-import javax.annotation.Nonnull;
-
 import org.joml.Vector3f;
 
 import com.google.common.hash.Hashing;
@@ -12,6 +10,8 @@ import net.createmod.catnip.data.Couple;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
+
+import org.jspecify.annotations.NonNull;
 
 // TODO - Move to using ARGB instead
 @SuppressWarnings("PointlessBitwiseExpression")
@@ -271,7 +271,7 @@ public class Color {
 
 	// ********* //
 
-	public static Color mixColors(@Nonnull Color c1, @Nonnull Color c2, float w) {
+	public static Color mixColors(@NonNull Color c1, @NonNull Color c2, float w) {
 		return new Color(
 			(int) (c1.getRed() + (c2.getRed() - c1.getRed()) * w),
 			(int) (c1.getGreen() + (c2.getGreen() - c1.getGreen()) * w),
@@ -280,7 +280,7 @@ public class Color {
 		);
 	}
 
-	public static Color mixColors(@Nonnull Couple<Color> colors, float w) {
+	public static Color mixColors(@NonNull Couple<Color> colors, float w) {
 		return mixColors(colors.getFirst(), colors.getSecond(), w);
 	}
 

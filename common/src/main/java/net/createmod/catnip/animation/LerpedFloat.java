@@ -1,6 +1,6 @@
 package net.createmod.catnip.animation;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import net.createmod.catnip.math.AngleHelper;
 import net.minecraft.nbt.CompoundTag;

@@ -2,7 +2,7 @@ package net.createmod.ponder.foundation.ui;
 
 import java.util.Locale;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 

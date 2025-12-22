@@ -3,7 +3,7 @@ package net.createmod.catnip.placement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 

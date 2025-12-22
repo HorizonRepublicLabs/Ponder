@@ -1,6 +1,6 @@
 package net.createmod.ponder.foundation;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 

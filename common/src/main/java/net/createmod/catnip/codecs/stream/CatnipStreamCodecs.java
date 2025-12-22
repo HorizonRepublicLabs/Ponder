@@ -2,8 +2,6 @@ package net.createmod.catnip.codecs.stream;
 
 import java.util.function.Function;
 
-import org.jetbrains.annotations.NotNull;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,18 +27,18 @@ import net.minecraft.world.phys.Vec3;
 
 public interface CatnipStreamCodecs {
 	StreamCodec<ByteBuf, Character> CHAR = new StreamCodec<>() {
-		public @NotNull Character decode(ByteBuf buffer) {
+		public Character decode(ByteBuf buffer) {
 			return buffer.readChar();
 		}
 
-		public void encode(ByteBuf buffer, @NotNull Character value) {
+		public void encode(ByteBuf buffer, Character value) {
 			buffer.writeChar(value);
 		}
 	};
 
 	StreamCodec<ByteBuf, Vec3> VEC3 = new StreamCodec<>() {
 		@Override
-		public @NotNull Vec3 decode(ByteBuf buffer) {
+		public Vec3 decode(ByteBuf buffer) {
 			return new Vec3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
 		}
 
@@ -54,7 +52,7 @@ public interface CatnipStreamCodecs {
 
 	StreamCodec<ByteBuf, Vec3i> VEC3I = new StreamCodec<>() {
 		@Override
-		public @NotNull Vec3i decode(ByteBuf buffer) {
+		public Vec3i decode(ByteBuf buffer) {
 			return new Vec3i(buffer.readInt(), buffer.readInt(), buffer.readInt());
 		}
 
@@ -68,7 +66,7 @@ public interface CatnipStreamCodecs {
 
 	StreamCodec<FriendlyByteBuf, ListTag> COMPOUND_LIST_TAG = new StreamCodec<>() {
 		@Override
-		public @NotNull ListTag decode(FriendlyByteBuf buffer) {
+		public ListTag decode(FriendlyByteBuf buffer) {
 			return buffer.readCollection(size -> new ListTag(), COMPOUND_AS_TAG);
 		}
 

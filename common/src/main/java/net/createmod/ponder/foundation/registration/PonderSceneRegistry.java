@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.zip.GZIPInputStream;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;

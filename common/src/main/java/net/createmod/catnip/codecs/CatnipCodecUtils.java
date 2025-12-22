@@ -2,7 +2,7 @@ package net.createmod.catnip.codecs;
 
 import java.util.Optional;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;

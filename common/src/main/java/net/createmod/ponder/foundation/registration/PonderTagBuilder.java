@@ -2,7 +2,7 @@ package net.createmod.ponder.foundation.registration;
 
 import java.util.function.Consumer;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import net.createmod.ponder.api.registration.TagBuilder;
 import net.minecraft.resources.Identifier;

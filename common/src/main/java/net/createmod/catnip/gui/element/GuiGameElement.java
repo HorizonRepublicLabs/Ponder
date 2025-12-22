@@ -38,7 +38,7 @@ import org.joml.Matrix3x2fStack;
 
 import java.util.Objects;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class GuiGameElement {
     public static GuiRenderBuilder of(ItemStack stack) {

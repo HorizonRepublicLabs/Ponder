@@ -45,8 +45,6 @@ dependencies {
     modImplementation("dev.engine-room.flywheel:flywheel-fabric-${"flywheel_minecraft_version"()}:${"flywheel_version"()}")
 
     modApi(include("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${"forgeconfigapiport_version"()}")!!)
-    implementation(include("javax.annotation:javax.annotation-api:1.3.2")!!)
-    implementation(include("com.google.code.findbugs:jsr305:3.0.2")!!)
 }
 
 operator fun String.invoke(): String {
