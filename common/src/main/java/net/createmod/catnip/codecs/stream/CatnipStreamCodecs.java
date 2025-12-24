@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -101,5 +102,15 @@ public interface CatnipStreamCodecs {
 		(miss, location, direction, blockPos, isInside) ->
 			miss ? BlockHitResult.miss(location, direction, blockPos) :
 				new BlockHitResult(location, direction, blockPos, isInside)
+	);
+
+	StreamCodec<ByteBuf, AABB> AABB_STREAM_CODEC = StreamCodec.composite(
+		ByteBufCodecs.DOUBLE, i -> i.minX,
+		ByteBufCodecs.DOUBLE, i -> i.minY,
+		ByteBufCodecs.DOUBLE, i -> i.minZ,
+		ByteBufCodecs.DOUBLE, i -> i.maxX,
+		ByteBufCodecs.DOUBLE, i -> i.maxY,
+		ByteBufCodecs.DOUBLE, i -> i.maxZ,
+		AABB::new
 	);
 }
