@@ -124,7 +124,6 @@ public class PonderButton extends BoxWidget {
 		if (shortcut != null) {
 			Matrix3x2fStack poseStack = graphics.pose();
 			poseStack.pushMatrix();
-			poseStack.translate(0, 0);
 			graphics.drawCenteredString(Minecraft.getInstance().font, shortcut.getTranslatedKeyMessage().getString().toLowerCase(
 				Locale.ROOT), getX() + width / 2 + 8, getY() + height - 6, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().scaleAlpha(fade.getValue()).getRGB());
 			poseStack.popMatrix();

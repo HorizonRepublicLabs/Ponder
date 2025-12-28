@@ -185,7 +185,6 @@ public class TextWindowElement extends AnimatedOverlayElementBase {
 			poseStack.popMatrix();
 		}
 
-		poseStack.translate(0, 0);
 		for (int i = 0; i < lines.size(); i++) {
 			graphics.drawString(screen.getFontRenderer(), lines.get(i).getString(), (int) (targetX - 10), 3 + 9 * i, brighter.scaleAlphaForText(fade).getRGB(), false);
 		}

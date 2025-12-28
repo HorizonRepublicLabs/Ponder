@@ -164,7 +164,6 @@ public class PonderProgressBar extends AbstractSimiWidget {
 			Font font = Minecraft.getInstance().font;
 			UIRenderHelper.drawGradientRect(graphics, ((float) keyframePos), 9f, keyframePos + 2f, 9f + height, endColor, startColor);
 			poseStack.pushMatrix();
-			poseStack.translate(0, 0);
 			String text;
 			int offset;
 			if (activeScene.getCurrentTime() < keyframeTime) {
