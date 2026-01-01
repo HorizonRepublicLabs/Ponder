@@ -2,8 +2,6 @@ package net.createmod.catnip.theme;
 
 import java.util.function.UnaryOperator;
 
-import javax.annotation.Nonnull;
-
 import org.joml.Vector3f;
 
 import com.google.common.hash.Hashing;
@@ -12,6 +10,8 @@ import net.createmod.catnip.data.Couple;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
+
+import org.joml.Vector4f;
 
 @SuppressWarnings("PointlessBitwiseExpression")
 public class Color {
@@ -156,6 +156,10 @@ public class Color {
 		return new Vector3f(getRedAsFloat(), getGreenAsFloat(), getBlueAsFloat());
 	}
 
+	public Vector4f asVector4F() {
+		return new Vector4f(getRedAsFloat(), getGreenAsFloat(), getBlueAsFloat(), getAlphaAsFloat());
+	}
+
 	public Style asStyle() {
 		return Style.EMPTY.withColor(this.value);
 	}
@@ -270,7 +274,7 @@ public class Color {
 
 	// ********* //
 
-	public static Color mixColors(@Nonnull Color c1, @Nonnull Color c2, float w) {
+	public static Color mixColors(Color c1, Color c2, float w) {
 		return new Color(
 			(int) (c1.getRed() + (c2.getRed() - c1.getRed()) * w),
 			(int) (c1.getGreen() + (c2.getGreen() - c1.getGreen()) * w),
@@ -279,7 +283,7 @@ public class Color {
 		);
 	}
 
-	public static Color mixColors(@Nonnull Couple<Color> colors, float w) {
+	public static Color mixColors(Couple<Color> colors, float w) {
 		return mixColors(colors.getFirst(), colors.getSecond(), w);
 	}
 
@@ -293,8 +297,7 @@ public class Color {
 		int g2 = (color2 >> 8) & 0xFF;
 		int b2 = color2 & 0xFF;
 
-		return
-			((int) (a1 + (a2 - a1) * w) << 24) +
+		return ((int) (a1 + (a2 - a1) * w) << 24) +
 				((int) (r1 + (r2 - r1) * w) << 16) +
 				((int) (g1 + (g2 - g1) * w) << 8) +
 				((int) (b1 + (b2 - b1) * w) << 0);
@@ -312,19 +315,19 @@ public class Color {
 
 	private static int colorInPhase(int phase, int progress) {
 		phase = phase % 6;
-		if (phase <= 1)
+		if (phase <= 1) {
 			return 0;
-		if (phase == 2)
+		} else if (phase == 2) {
 			return progress;
-		if (phase <= 4)
+		} else if (phase <= 4) {
 			return 255;
-		else
+		} else {
 			return 255 - progress;
+		}
 	}
 
 	public static Color generateFromLong(long l) {
 		return rainbowColor(Hashing.crc32().hashLong(l).asInt())
 			.mixWith(WHITE, 0.5f);
 	}
-
 }
