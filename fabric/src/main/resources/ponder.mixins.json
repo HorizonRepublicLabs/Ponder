@@ -1,0 +1,23 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.createmod.ponder.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "${mod_id}.refmap.json",
+  "client": [
+    "client.AbstractContainerScreenMixin",
+    "client.GuiGraphicsMixin",
+    "client.KeyMappingMixin",
+    "client.ParticleEngineAccessor",
+    "client.RenderTargetMixin",
+    "client.TextureAtlasMixin",
+    "client.TooltipRenderUtilMixin"
+  ],
+  "mixins": [],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}
