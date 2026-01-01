@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.DoubleStream;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.DynamicOps;
@@ -56,8 +56,7 @@ public interface CatnipCodecs {
 	};
 
 	static <E> Codec<Set<E>> set(Codec<E> codec) {
-		return Codec.list(codec)
-			.xmap(ImmutableSet::copyOf, ImmutableList::copyOf);
+		return Codec.list(codec).xmap(Sets::newHashSet, Lists::newArrayList);
 	}
 
 	Codec<AABB> AABB_CODEC = DOUBLE_STREAM.comapFlatMap(
