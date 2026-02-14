@@ -23,7 +23,7 @@ gradlePlugin {
     }
 }
 
-val asmVersion = "9.5"
+val asmVersion = "9.9"
 val lotusVersion = "0.0.12"
 
 dependencies {

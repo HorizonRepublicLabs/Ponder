@@ -15,7 +15,7 @@ dependencies {
 }
 
 loom {
-    splitEnvironmentSourceSets()
+    clientOnlyMinecraftJar()
     accessWidenerPath = file("src/main/resources/ponder.accesswidener")
 }
 

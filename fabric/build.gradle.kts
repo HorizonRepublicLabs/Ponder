@@ -4,7 +4,7 @@ plugins {
 }
 
 loom {
-    splitEnvironmentSourceSets()
+    clientOnlyMinecraftJar()
     accessWidenerPath = project(":common").file("src/main/resources/ponder.accesswidener")
 
     runs {
