@@ -6,6 +6,7 @@
   "client": [
     "accessor.TimerAccessor",
     "catnip.LightingAccessor",
+    "catnip.ParticleEngineAccessor",
     "client.accessor.BufferBuilderAccessor",
     "client.accessor.ClientPacketListenerAccessor",
     "client.accessor.GameRendererAccessor",

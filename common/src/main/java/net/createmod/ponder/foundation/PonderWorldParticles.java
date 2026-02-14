@@ -19,6 +19,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.createmod.ponder.api.level.PonderLevel;
+import net.createmod.ponder.mixin.catnip.ParticleEngineAccessor;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
@@ -68,7 +69,8 @@ public class PonderWorldParticles {
 		Particle particle;
 		if (!this.particlesToAdd.isEmpty()) {
 			while ((particle = this.particlesToAdd.poll()) != null) {
-				this.particles.computeIfAbsent(particle.getGroup(), particleEngine::createParticleGroup).add(particle);
+				ParticleEngineAccessor accessor = (ParticleEngineAccessor) this.particleEngine;
+				this.particles.computeIfAbsent(particle.getGroup(), accessor::callCreateParticleGroup).add(particle);
 			}
 		}
 	}
@@ -81,7 +83,7 @@ public class PonderWorldParticles {
 		stack.pushMatrix();
 		stack.mul(poseStack.last().pose());
 
-		for (ParticleRenderType particlerendertype : ParticleEngine.RENDER_ORDER) {
+		for (ParticleRenderType particlerendertype : ParticleEngineAccessor.getRENDER_ORDER()) {
 			ParticleGroup<?> particleGroup = particles.get(particlerendertype);
 			if (particleGroup != null && !particleGroup.isEmpty()) {
 				particleState.add(particleGroup.extractRenderState(ParticlesFrustum.INSTANCE, camera, partialTick));
@@ -125,7 +127,7 @@ public class PonderWorldParticles {
 		renderPass.setUniform("Projection", RenderSystem.getProjectionMatrixBuffer());
 		renderPass.setUniform("Fog", RenderSystem.getShaderFog());
 		renderPass.bindTexture(
-			"Sampler2", Minecraft.getInstance().gameRenderer.lightTexture().getTextureView(), RenderSystem.getSamplerCache().getClampToEdge(FilterMode.LINEAR)
+			"Sampler2", Minecraft.getInstance().gameRenderer.lightmap(), RenderSystem.getSamplerCache().getClampToEdge(FilterMode.LINEAR)
 		);
 	}
 
