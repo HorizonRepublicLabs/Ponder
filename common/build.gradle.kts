@@ -19,16 +19,6 @@ loom {
     accessWidenerPath = file("src/main/resources/ponder.accesswidener")
 }
 
-sourceSets.main {
-    java {
-        exclude("**/catnip/config")
-        exclude("**/ConfigCommand.java")
-        exclude("**/ConfigPathArgument.java")
-        exclude("**/CClient.java")
-        exclude("**/PonderConfig.java")
-    }
-}
-
 configurations {
     consumable("commonJava")
     consumable("commonResources")

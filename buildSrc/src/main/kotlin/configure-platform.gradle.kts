@@ -62,6 +62,14 @@ publishing {
     }
 }
 
+tasks.withType<JavaCompile>() {
+    exclude("**/catnip/config")
+    exclude("**/ConfigCommand.java")
+    exclude("**/ConfigPathArgument.java")
+    exclude("**/CClient.java")
+    exclude("**/PonderConfig.java")
+}
+
 // fun fact: if you try to do 'if (name == null) return' you get an internal kotlin compiler error.
 if (name != "common") {
     val compileOnly: Configuration by configurations.getting
