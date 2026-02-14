@@ -1,46 +1,19 @@
 package net.createmod.catnip.gui;
 
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jspecify.annotations.Nullable;
-
-import com.mojang.math.Constants;
-
-import net.createmod.catnip.gui.render.BreadcrumbArrowRenderState;
-import net.createmod.catnip.gui.render.GradientRectRenderState;
-import net.createmod.catnip.gui.render.RadialSectorRenderState;
-import net.createmod.catnip.gui.render.TexturedQuadRenderState;
-
-import net.minecraft.client.gui.render.TextureSetup;
-
-import org.joml.Matrix3f;
 import org.joml.Matrix3x2f;
 import org.joml.Matrix3x2fStack;
 import org.joml.Matrix4f;
-import org.lwjgl.opengl.GL30;
 
-import com.mojang.blaze3d.opengl.GlConst;
-import com.mojang.blaze3d.opengl.GlStateManager;
-import com.mojang.blaze3d.pipeline.RenderTarget;
-import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.blaze3d.vertex.VertexSorting;
-import com.mojang.math.Axis;
+import com.mojang.math.Constants;
 
 import net.createmod.catnip.data.Couple;
-import net.createmod.catnip.platform.CatnipClientServices;
+import net.createmod.catnip.gui.render.BreadcrumbArrowRenderState;
+import net.createmod.catnip.gui.render.GradientRectRenderState;
+import net.createmod.catnip.gui.render.RadialSectorRenderState;
 import net.createmod.catnip.theme.Color;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.util.Mth;
+import net.minecraft.client.gui.render.TextureSetup;
 
 public class UIRenderHelper {
 	public static final Couple<Color> COLOR_TEXT = Couple.create(
@@ -211,20 +184,20 @@ public class UIRenderHelper {
 	}
 
 	private static void drawTexturedQuad(GuiGraphics graphics, TextureSetup texture, Color c, int left, int right, int top, int bot, float u1, float u2, float v1, float v2) {
-		graphics.guiRenderState.submitGuiElement(new TexturedQuadRenderState(
-			new Matrix3x2f(graphics.pose()),
-			graphics.scissorStack.peek(),
-			texture,
-			c,
-			left,
-			right,
-			top,
-			bot,
-			u1,
-			u2,
-			v1,
-			v2
-		));
+		// graphics.guiRenderState.submitGuiElement(new TexturedQuadRenderState(
+		// 	new Matrix3x2f(graphics.pose()),
+		// 	graphics.scissorStack.peek(),
+		// 	texture,
+		// 	c,
+		// 	left,
+		// 	right,
+		// 	top,
+		// 	bot,
+		// 	u1,
+		// 	u2,
+		// 	v1,
+		// 	v2
+		// ));
 	}
 
 	public static void flipForGuiRender(PoseStack poseStack) {

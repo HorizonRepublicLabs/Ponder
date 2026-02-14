@@ -1,8 +1,10 @@
 package net.createmod.catnip.gui.element;
 
-import com.mojang.blaze3d.platform.DestFactor;
-import com.mojang.blaze3d.platform.SourceFactor;
-import com.mojang.blaze3d.systems.RenderSystem;
+import java.util.Objects;
+
+import org.joml.Matrix3x2fStack;
+import org.jspecify.annotations.Nullable;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
@@ -12,6 +14,7 @@ import net.createmod.catnip.gui.UIRenderHelper;
 import net.createmod.catnip.impl.client.render.ColoringVertexConsumer;
 import net.createmod.catnip.math.VecHelper;
 import net.createmod.catnip.platform.CatnipClientServices;
+import net.createmod.catnip.render.virtual.SinglePosVirtualBlockGetter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -30,12 +33,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.Vec3;
-
-import org.joml.Matrix3x2fStack;
-
-import java.util.Objects;
-
-import org.jspecify.annotations.Nullable;
 
 public class GuiGameElement {
     public static GuiRenderBuilder of(ItemStack stack) {
@@ -114,10 +111,10 @@ public class GuiGameElement {
 
         protected void prepareMatrix(PoseStack poseStack) {
             poseStack.pushPose();
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            RenderSystem.enableDepthTest();
-            RenderSystem.enableBlend();
-            RenderSystem.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+            // RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            // RenderSystem.enableDepthTest();
+            // RenderSystem.enableBlend();
+            // RenderSystem.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
             prepareLighting();
         }
 
@@ -278,15 +275,11 @@ public class GuiGameElement {
 
         @Override
         public void render(GuiGraphics graphics) {
-            PoseStack poseStack = graphics.pose();
-            prepareMatrix(poseStack);
-            transformMatrix(poseStack);
-            renderItemIntoGUI(graphics, stack);
-            cleanUpMatrix(poseStack);
-        }
-
-        public void renderItemIntoGUI(GuiGraphics graphics, ItemStack stack) {
-			graphics.renderItem(stack, (int) this.x, (int) this.y);
+            // PoseStack poseStack = graphics.pose();
+            // prepareMatrix(poseStack);
+            // transformMatrix(poseStack);
+			// graphics.renderItem(this.stack, (int) this.x, (int) this.y);
+            // cleanUpMatrix(poseStack);
         }
     }
 }
