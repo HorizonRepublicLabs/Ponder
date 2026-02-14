@@ -1,16 +1,11 @@
 package net.createmod.catnip.net.packets;
 
 import io.netty.buffer.ByteBuf;
-import net.createmod.catnip.config.ui.ConfigHelper;
 import net.createmod.catnip.net.CatnipPackets;
 import net.createmod.catnip.net.base.ClientboundPacketPayload;
-import net.createmod.ponder.Ponder;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.neoforged.fml.config.ModConfig;
 
 public record ClientboundConfigPacket(String path, String value) implements ClientboundPacketPayload {
 	public static final StreamCodec<ByteBuf, ClientboundConfigPacket> STREAM_CODEC = StreamCodec.composite(
@@ -25,7 +20,7 @@ public record ClientboundConfigPacket(String path, String value) implements Clie
 	}
 
 	@Override
-	public void handle(LocalPlayer player) {
+	public void handle(LocalPlayer player) {/*
 		if (Minecraft.getInstance().player == null) {
 			return;
 		}
@@ -54,5 +49,5 @@ public record ClientboundConfigPacket(String path, String value) implements Clie
 			Ponder.LOGGER.warn("Exception during client-side config value set:", e);
 		}
 
-	}
+	*/}
 }

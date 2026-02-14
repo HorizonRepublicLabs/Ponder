@@ -16,7 +16,6 @@ import net.createmod.ponder.api.registration.LangRegistryAccess;
 import net.createmod.ponder.api.registration.PonderPlugin;
 import net.createmod.ponder.api.registration.SceneRegistryAccess;
 import net.createmod.ponder.api.registration.TagRegistryAccess;
-import net.createmod.ponder.enums.PonderConfig;
 import net.createmod.ponder.foundation.registration.DefaultPonderSceneRegistrationHelper;
 import net.createmod.ponder.foundation.registration.DefaultPonderTagRegistrationHelper;
 import net.createmod.ponder.foundation.registration.DefaultSharedTextRegistrationHelper;
@@ -98,6 +97,7 @@ public class PonderIndex {
 	}
 
 	public static boolean editingModeActive() {
-		return PonderConfig.client().editingMode.get();
+		// FIXME: config
+		return false;//PonderConfig.client().editingMode.get();
 	}
 }

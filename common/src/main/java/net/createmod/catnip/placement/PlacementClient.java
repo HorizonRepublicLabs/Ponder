@@ -3,39 +3,21 @@ package net.createmod.catnip.placement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joml.Matrix3x2f;
+import org.joml.Matrix3x2fStack;
 import org.jspecify.annotations.Nullable;
-
-import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import com.mojang.math.Constants;
 
-import net.createmod.catnip.gui.render.FadedArrowRenderState;
-
-import net.createmod.catnip.gui.render.TexturedArrowRenderState;
-import net.createmod.catnip.gui.render.TexturedQuadRenderState;
-
-import org.joml.Matrix3x2f;
-import org.joml.Matrix3x2fStack;
-import org.joml.Matrix4f;
-
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.math.Axis;
-
 import net.createmod.catnip.animation.LerpedFloat;
+import net.createmod.catnip.gui.render.FadedArrowRenderState;
+import net.createmod.catnip.gui.render.TexturedArrowRenderState;
 import net.createmod.catnip.math.AngleHelper;
 import net.createmod.catnip.math.VecHelper;
-import net.createmod.ponder.config.CClient;
-import net.createmod.ponder.enums.PonderConfig;
 import net.createmod.ponder.enums.PonderGuiTextures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -195,12 +177,13 @@ public class PlacementClient {
 
 		float length = 10;
 
-		CClient.PlacementIndicatorSetting mode = PonderConfig.client().placementIndicator.get();
-		if (mode == CClient.PlacementIndicatorSetting.TRIANGLE) {
-			fadedArrow(graphics, centerX, centerY, r, g, b, a, length);
-		} else if (mode == CClient.PlacementIndicatorSetting.TEXTURE) {
+		// FIXME: config
+		// CClient.PlacementIndicatorSetting mode = PonderConfig.client().placementIndicator.get();
+		// if (mode == CClient.PlacementIndicatorSetting.TRIANGLE) {
+			// fadedArrow(graphics, centerX, centerY, r, g, b, a, length);
+		// } else if (mode == CClient.PlacementIndicatorSetting.TEXTURE) {
 			textured(graphics, centerX, centerY, a, snappedAngle);
-		}
+		// }
 	}
 
 	private static void fadedArrow(GuiGraphics graphics, float centerX, float centerY, float r, float g, float b, float a, float length) {
@@ -208,7 +191,8 @@ public class PlacementClient {
 		poseStack.pushMatrix();
 		poseStack.translate(centerX, centerY);
 		poseStack.rotate(angle.getValue(0) * Constants.DEG_TO_RAD);
-		double scale = PonderConfig.client().indicatorScale.get();
+		// FIXME: config
+		double scale = 1;//PonderConfig.client().indicatorScale.get();
 		poseStack.scale((float) scale, (float) scale);
 
 		int size = (int) ((10 + length) * scale);
@@ -223,7 +207,8 @@ public class PlacementClient {
 		Matrix3x2fStack poseStack = graphics.pose();
 		poseStack.pushMatrix();
 		poseStack.translate(centerX, centerY);
-		float scale = PonderConfig.client().indicatorScale.get().floatValue() * .75f;
+		// FIXME: config
+		float scale = /*PonderConfig.client().indicatorScale.get().floatValue()*/ 1 * .75f;
 		poseStack.scale(scale, scale);
 		poseStack.scale(12, 12);
 

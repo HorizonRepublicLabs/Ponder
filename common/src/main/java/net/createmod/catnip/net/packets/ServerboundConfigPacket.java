@@ -3,16 +3,11 @@ package net.createmod.catnip.net.packets;
 import java.util.Objects;
 
 import io.netty.buffer.ByteBuf;
-import net.createmod.catnip.config.ui.ConfigHelper;
 import net.createmod.catnip.net.CatnipPackets;
 import net.createmod.catnip.net.base.ServerboundPacketPayload;
-import net.createmod.ponder.Ponder;
-import net.minecraft.commands.Commands;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.fml.config.ModConfig;
-import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class ServerboundConfigPacket<T> implements ServerboundPacketPayload {
 	@SuppressWarnings("rawtypes")
@@ -45,7 +40,7 @@ public class ServerboundConfigPacket<T> implements ServerboundPacketPayload {
 	}
 
 	@Override
-	public void handle(ServerPlayer player) {
+	public void handle(ServerPlayer player) {/*
 		try {
 			if (!Commands.LEVEL_GAMEMASTERS.check(player.permissions()))
 				return;
@@ -63,7 +58,7 @@ public class ServerboundConfigPacket<T> implements ServerboundPacketPayload {
 		} catch (Exception e) {
 			Ponder.LOGGER.warn("Unable to handle ConfigureConfig Packet. ", e);
 		}
-	}
+	*/}
 
 	public String serialize(T value) {
 		if (value instanceof Boolean)

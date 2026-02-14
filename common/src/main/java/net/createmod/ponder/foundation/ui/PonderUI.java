@@ -10,16 +10,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.jspecify.annotations.Nullable;
-
-import com.mojang.math.Constants;
-
-import net.createmod.ponder.foundation.render.PonderSceneRenderState;
-
 import org.joml.Matrix3x2f;
 import org.joml.Matrix3x2fStack;
-import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.jspecify.annotations.Nullable;
 
 import com.google.common.graph.ElementOrder;
 import com.google.common.graph.GraphBuilder;
@@ -28,15 +22,12 @@ import com.mojang.blaze3d.platform.ClipboardManager;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexSorting;
-import com.mojang.math.Axis;
+import com.mojang.math.Constants;
 
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.animation.LerpedFloat.Chaser;
 import net.createmod.catnip.data.Couple;
-import net.createmod.catnip.data.Iterate;
 import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.gui.NavigatableSimiScreen;
 import net.createmod.catnip.gui.ScreenOpener;
@@ -47,14 +38,11 @@ import net.createmod.catnip.gui.widget.BoxWidget;
 import net.createmod.catnip.lang.ClientFontHelper;
 import net.createmod.catnip.math.Pointing;
 import net.createmod.catnip.registry.RegisteredObjectsHelper;
-import net.createmod.catnip.render.DefaultSuperRenderTypeBuffer;
-import net.createmod.catnip.render.SuperRenderTypeBuffer;
 import net.createmod.catnip.theme.Color;
 import net.createmod.ponder.Ponder;
 import net.createmod.ponder.api.registration.StoryBoardEntry;
 import net.createmod.ponder.api.registration.StoryBoardEntry.SceneOrderingEntry;
 import net.createmod.ponder.api.registration.StoryBoardEntry.SceneOrderingType;
-import net.createmod.ponder.enums.PonderConfig;
 import net.createmod.ponder.enums.PonderGuiTextures;
 import net.createmod.ponder.foundation.PonderIndex;
 import net.createmod.ponder.foundation.PonderScene;
@@ -64,6 +52,7 @@ import net.createmod.ponder.foundation.PonderTag;
 import net.createmod.ponder.foundation.PonderTag.Highlight;
 import net.createmod.ponder.foundation.content.DebugScenes;
 import net.createmod.ponder.foundation.element.TextWindowElement;
+import net.createmod.ponder.foundation.render.PonderSceneRenderState;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
@@ -72,7 +61,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
@@ -80,7 +68,6 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.Vec3;
 
 public class PonderUI extends AbstractPonderScreen {
@@ -1095,10 +1082,12 @@ public class PonderUI extends AbstractPonderScreen {
 	}
 
 	public boolean isComfyReadingEnabled() {
-		return PonderConfig.client().comfyReading.get();
+		// FIXME: config
+		return false;//PonderConfig.client().comfyReading.get();
 	}
 
 	public void setComfyReadingEnabled(boolean slowTextMode) {
-		PonderConfig.client().comfyReading.set(slowTextMode);
+		// FIXME: config
+		//PonderConfig.client().comfyReading.set(slowTextMode);
 	}
 }
