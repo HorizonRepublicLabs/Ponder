@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.client.model.loading.v1.wrapper.WrapperBlockState
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadTransform;
-import net.fabricmc.fabric.api.renderer.v1.render.BlockVertexConsumerProvider;
+import net.fabricmc.fabric.api.renderer.v1.render.BlockMultiBufferSource;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
@@ -18,14 +18,13 @@ import org.jetbrains.annotations.UnknownNullability;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.createmod.catnip.client.render.model.ShadeSeparatedBufferSource;
-import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 
 // Modified from https://github.com/Engine-Room/Flywheel/blob/2f67f54c8898d91a48126c3c753eefa6cd224f84/fabric/src/lib/java/dev/engine_room/flywheel/lib/model/baked/UniversalMeshEmitter.java
-class UniversalMeshEmitter implements BlockVertexConsumerProvider {
+class UniversalMeshEmitter implements BlockMultiBufferSource {
 	private final WrapperModel wrapperModel = new WrapperModel();
 
 	@UnknownNullability

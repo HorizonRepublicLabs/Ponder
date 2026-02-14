@@ -1,12 +1,13 @@
 package net.createmod.catnip.render;
 
+import net.createmod.catnip.render.virtual.EmptyVirtualBlockGetter;
+
 import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import dev.engine_room.flywheel.lib.model.baked.EmptyVirtualBlockGetter;
 import net.createmod.catnip.client.render.model.BakedModelBufferer;
 import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
 import net.minecraft.client.Minecraft;
