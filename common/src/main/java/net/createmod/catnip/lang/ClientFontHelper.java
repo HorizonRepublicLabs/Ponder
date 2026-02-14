@@ -4,19 +4,11 @@ import java.text.BreakIterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.minecraft.client.gui.Font.DisplayMode;
-
 import net.minecraft.network.chat.FormattedText;
-
-import org.joml.Matrix4f;
-
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.createmod.catnip.platform.CatnipClientServices;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
 
 import org.jspecify.annotations.Nullable;
 

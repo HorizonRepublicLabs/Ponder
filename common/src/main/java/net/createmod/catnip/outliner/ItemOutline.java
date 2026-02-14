@@ -4,12 +4,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.createmod.catnip.render.SuperRenderTypeBuffer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.SubmitNodeCollection;
 import net.minecraft.client.renderer.SubmitNodeStorage;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
@@ -37,7 +37,7 @@ public class ItemOutline extends Outline {
 		Minecraft.getInstance()
 			.getItemModelResolver()
 			.updateForTopItem(renderState, stack, ItemDisplayContext.FIXED, null, null, 0);
-		renderState.submit(ms, queue, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0);
+		renderState.submit(ms, queue, LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0);
 
 		for (SubmitNodeCollection collection : queue.getSubmitsPerOrder().values()) {
 			for (SubmitNodeStorage.ItemSubmit itemSubmit : collection.getItemSubmits()) {

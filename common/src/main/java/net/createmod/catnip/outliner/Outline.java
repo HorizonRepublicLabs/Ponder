@@ -1,5 +1,9 @@
 package net.createmod.catnip.outliner;
 
+import com.mojang.math.Axis;
+
+import net.minecraft.util.LightCoordsUtil;
+
 import org.jspecify.annotations.Nullable;
 
 import org.joml.Matrix3f;
@@ -11,12 +15,10 @@ import org.joml.Vector4f;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import dev.engine_room.flywheel.lib.transform.TransformStack;
 import net.createmod.catnip.math.AngleHelper;
 import net.createmod.catnip.render.BindableTexture;
 import net.createmod.catnip.render.SuperRenderTypeBuffer;
 import net.createmod.catnip.theme.Color;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -56,10 +58,10 @@ public abstract class Outline {
 		float vAngle = AngleHelper.deg(Mth.atan2(hDistance, diff.y())) - 90;
 
 		poseStack.pushPose();
-		TransformStack.of(poseStack)
-			.translate(start.x - camera.x, start.y - camera.y, start.z - camera.z)
-			.rotateYDegrees(hAngle)
-			.rotateXDegrees(vAngle);
+		poseStack.translate(start.x - camera.x, start.y - camera.y, start.z - camera.z);
+		poseStack.mulPose(Axis.YP.rotationDegrees(hAngle));
+		poseStack.mulPose(Axis.XP.rotationDegrees(vAngle));
+
 		bufferCuboidLine(poseStack.last(), consumer, new Vector3f(), Direction.SOUTH, length, width, color, lightmap,
 			disableNormals);
 		poseStack.popPose();
@@ -529,7 +531,7 @@ public abstract class Outline {
 			lineWidth = 1 / 32f;
 			fadeLineWidth = true;
 			rgb = Color.WHITE;
-			lightmap = LightTexture.FULL_BRIGHT;
+			lightmap = LightCoordsUtil.FULL_BRIGHT;
 		}
 
 		// builder

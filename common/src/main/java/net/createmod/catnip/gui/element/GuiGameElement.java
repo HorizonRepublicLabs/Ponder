@@ -1,9 +1,10 @@
 package net.createmod.catnip.gui.element;
 
+import com.mojang.blaze3d.platform.DestFactor;
+import com.mojang.blaze3d.platform.SourceFactor;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-
-import dev.engine_room.flywheel.lib.model.baked.SinglePosVirtualBlockGetter;
 
 import net.createmod.catnip.client.render.model.BakedModelBufferer;
 import net.createmod.catnip.gui.ILightingSettings;
@@ -13,16 +14,13 @@ import net.createmod.catnip.math.VecHelper;
 import net.createmod.catnip.platform.CatnipClientServices;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.render.state.GuiItemRenderState;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
-import net.minecraft.client.renderer.item.TrackingItemStackRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.ARGB;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.BaseFireBlock;
@@ -33,7 +31,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.Vec3;
 
-import org.joml.Matrix3x2f;
 import org.joml.Matrix3x2fStack;
 
 import java.util.Objects;
@@ -116,13 +113,12 @@ public class GuiGameElement {
         }
 
         protected void prepareMatrix(PoseStack poseStack) {
-            // TODO
-            //			poseStack.pushPose();
-            //			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            //			RenderSystem.enableDepthTest();
-            //			RenderSystem.enableBlend();
-            //			RenderSystem.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-            //			prepareLighting();
+            poseStack.pushPose();
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.enableDepthTest();
+            RenderSystem.enableBlend();
+            RenderSystem.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+            prepareLighting();
         }
 
         protected void transformMatrix(PoseStack poseStack) {
@@ -235,7 +231,7 @@ public class GuiGameElement {
             //
             //			BlockState stateBefore = blockEntity.getBlockState();
             //			blockEntity.setBlockState(blockState);
-            //			renderer.render(blockEntity, /*partials*/0, ms, buffer, LightTexture.FULL_BRIGHT,
+            //			renderer.render(blockEntity, /*partials*/0, ms, buffer, LightCoordsUtil.FULL_BRIGHT,
             // OverlayTexture.NO_OVERLAY);
             //			blockEntity.setBlockState(stateBefore);
         }
@@ -282,28 +278,15 @@ public class GuiGameElement {
 
         @Override
         public void render(GuiGraphics graphics) {
-            // TODO
-            //			PoseStack poseStack = graphics.pose();
-            //			prepareMatrix(poseStack);
-            //			transformMatrix(poseStack);
-            //			renderItemIntoGUI(graphics, stack);
-            //			cleanUpMatrix(poseStack);
+            PoseStack poseStack = graphics.pose();
+            prepareMatrix(poseStack);
+            transformMatrix(poseStack);
+            renderItemIntoGUI(graphics, stack);
+            cleanUpMatrix(poseStack);
         }
 
         public void renderItemIntoGUI(GuiGraphics graphics, ItemStack stack) {
-            Minecraft mc = Minecraft.getInstance();
-
-            TrackingItemStackRenderState state = new TrackingItemStackRenderState();
-            mc.getItemModelResolver()
-                    .updateForTopItem(state, stack, ItemDisplayContext.GUI, mc.level, mc.player, 0);
-
-            graphics.guiRenderState.submitItem(new GuiItemRenderState(
-                    stack.getItem().getName().toString(),
-                    new Matrix3x2f(graphics.pose()),
-                    state,
-                    (int) x,
-                    (int) y,
-                    graphics.scissorStack.peek()));
+			graphics.renderItem(stack, (int) this.x, (int) this.y);
         }
     }
 }

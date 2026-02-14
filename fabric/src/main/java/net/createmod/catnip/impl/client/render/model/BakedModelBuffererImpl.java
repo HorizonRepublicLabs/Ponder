@@ -2,12 +2,12 @@ package net.createmod.catnip.impl.client.render.model;
 
 import java.util.Iterator;
 
-import net.fabricmc.fabric.api.renderer.v1.Renderer;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+
+import net.minecraft.util.LightCoordsUtil;
 
 import org.jspecify.annotations.Nullable;
 
@@ -55,7 +55,7 @@ public final class BakedModelBuffererImpl {
 			1,
 			1,
 			1,
-			LightTexture.FULL_BRIGHT,
+			LightCoordsUtil.FULL_BRIGHT,
 			OverlayTexture.NO_OVERLAY,
 			0,
 			level,

@@ -5,13 +5,11 @@ import org.joml.Matrix4f;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import dev.engine_room.flywheel.lib.transform.TransformStack;
 import net.createmod.catnip.theme.Color;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockAndTintGetter;
 
-@SuppressWarnings({"UnusedReturnValue", "unused", "unchecked"})
+@SuppressWarnings({"UnusedReturnValue", "unused"})
 public interface SuperByteBuffer extends TransformStack<SuperByteBuffer> {
 	static int maxLight(int packedLight1, int packedLight2) {
 		int blockLight1 = LightTexture.block(packedLight1);

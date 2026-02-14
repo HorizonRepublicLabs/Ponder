@@ -7,8 +7,6 @@ import org.joml.Matrix4f;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import dev.engine_room.flywheel.lib.math.MatrixMath;
-
 // https://github.com/Engine-Room/Flywheel/blob/2f67f54c8898d91a48126c3c753eefa6cd224f84/common/src/lib/java/dev/engine_room/flywheel/lib/model/baked/TransformingVertexConsumer.java
 public class TransformingVertexConsumer implements VertexConsumer {
 	@UnknownNullability

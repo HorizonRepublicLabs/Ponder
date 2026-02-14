@@ -6,12 +6,11 @@ import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.ponder.api.element.AnimatedSceneElement;
 import net.createmod.ponder.api.level.PonderLevel;
 import net.minecraft.client.Camera;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
@@ -93,10 +92,10 @@ public abstract class AnimatedSceneElementBase extends PonderElementBase impleme
 	}
 
 	protected int lightCoordsFromFade(float fade) {
-		int light = LightTexture.FULL_BRIGHT;
+		int light = LightCoordsUtil.FULL_BRIGHT;
 		if (fade != 1) {
 			light = (int) (Mth.lerp(fade, 5, 0xF));
-			light = LightTexture.pack(light, light);
+			light = LightCoordsUtil.pack(light, light);
 		}
 		return light;
 	}

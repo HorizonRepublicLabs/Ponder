@@ -12,6 +12,8 @@ import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.resources.language.LanguageManager;
 
+import net.minecraft.util.LightCoordsUtil;
+
 import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.Window;
@@ -70,12 +72,12 @@ public class FabricClientHooksHelper implements ModClientHooksHelper {
 
 	@Override
 	public void submitFullFluidState(PoseStack ms, OrderedSubmitNodeCollector submitNode, FluidState fluid) {
-		CatnipServices.FLUID_RENDERER.submitFluidBox(fluid, 0, 0, 0, 1, 1, 1, submitNode, ms, LightTexture.FULL_BRIGHT, false, true);
+		CatnipServices.FLUID_RENDERER.submitFluidBox(fluid, 0, 0, 0, 1, 1, 1, submitNode, ms, LightCoordsUtil.FULL_BRIGHT, false, true);
 	}
 
 	@Override
 	public void renderFullFluidState(PoseStack ms, MultiBufferSource.BufferSource buffer, FluidState fluid) {
-		CatnipServices.FLUID_RENDERER.renderFluidBox(fluid, 0, 0, 0, 1, 1, 1, buffer, ms, LightTexture.FULL_BRIGHT, false, true);
+		CatnipServices.FLUID_RENDERER.renderFluidBox(fluid, 0, 0, 0, 1, 1, 1, buffer, ms, LightCoordsUtil.FULL_BRIGHT, false, true);
 	}
 
 	@Override
