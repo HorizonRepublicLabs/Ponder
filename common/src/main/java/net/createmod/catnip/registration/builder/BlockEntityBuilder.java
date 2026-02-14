@@ -1,6 +1,7 @@
 package net.createmod.catnip.registration.builder;
 
 import dev.engine_room.flywheel.lib.visualization.SimpleBlockEntityVisualizer;
+import net.createmod.catnip.annotations.ClientOnly;
 import net.createmod.catnip.registration.CatnipRegistry;
 import net.createmod.catnip.registration.holder.BlockEntityHolder;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -15,8 +16,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import net.minecraft.world.level.block.state.BlockState;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +25,7 @@ import java.util.stream.Collectors;
 
 public class BlockEntityBuilder<T extends BlockEntity> extends AbstractBuilder<BlockEntityType<?>, BlockEntityType<T>, BlockEntityHolder<T>> {
 	private final BlockEntityFactory<T> factory;
-	private final Set<Supplier<@NotNull Block>> validBlocks = new HashSet<>();
+	private final Set<Supplier<Block>> validBlocks = new HashSet<>();
 
 	public BlockEntityBuilder(CatnipRegistry owner, String name, BlockEntityFactory<T> factory) {
 		super(owner, name, BuiltInRegistries.BLOCK_ENTITY_TYPE);
@@ -34,33 +33,33 @@ public class BlockEntityBuilder<T extends BlockEntity> extends AbstractBuilder<B
 	}
 
 	@SafeVarargs
-	public final BlockEntityBuilder<T> validBlocks(Supplier<@NotNull Block>... blocks) {
+	public final BlockEntityBuilder<T> validBlocks(Supplier<Block>... blocks) {
 		return validBlocks(List.of(blocks));
 	}
 
-	public BlockEntityBuilder<T> validBlocks(List<Supplier<@NotNull Block>> blocks) {
+	public BlockEntityBuilder<T> validBlocks(List<Supplier<Block>> blocks) {
 		validBlocks.addAll(blocks);
 		return this;
 	}
 
-	// TODO - ClientOnly
-	public BlockEntityBuilder<T> renderer(Supplier<@NotNull BlockEntityRendererProvider<T>> renderer) {
+	@ClientOnly
+	public BlockEntityBuilder<T> renderer(Supplier<BlockEntityRendererProvider<T>> renderer) {
 		chainAfterRegisterCallback(holder -> BlockEntityRenderers.register(holder.value(), renderer.get()));
 		return this;
 	}
 
-	// TODO - ClientOnly
-	public BlockEntityBuilder<T> visualizer(Supplier<SimpleBlockEntityVisualizer.@NotNull Factory<T>> visualizer) {
+	@ClientOnly
+	public BlockEntityBuilder<T> visualizer(Supplier<SimpleBlockEntityVisualizer.Factory<T>> visualizer) {
 		return visualizer(visualizer, be -> true);
 	}
 
-	// TODO - ClientOnly
-	public BlockEntityBuilder<T> visualizer(Supplier<SimpleBlockEntityVisualizer.@NotNull Factory<T>> visualizer, boolean skipVanillaRenderer) {
+	@ClientOnly
+	public BlockEntityBuilder<T> visualizer(Supplier<SimpleBlockEntityVisualizer.Factory<T>> visualizer, boolean skipVanillaRenderer) {
 		return visualizer(visualizer, be -> skipVanillaRenderer);
 	}
 
-	// TODO - ClientOnly
-	public BlockEntityBuilder<T> visualizer(Supplier<SimpleBlockEntityVisualizer.@NotNull Factory<T>> visualizer, Predicate<T> skipVanillaRender) {
+	@ClientOnly
+	public BlockEntityBuilder<T> visualizer(Supplier<SimpleBlockEntityVisualizer.Factory<T>> visualizer, Predicate<T> skipVanillaRender) {
 		chainAfterRegisterCallback(holder ->
 			SimpleBlockEntityVisualizer.builder(holder.value())
 				.factory(visualizer.get())
