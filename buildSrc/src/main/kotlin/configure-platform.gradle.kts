@@ -94,6 +94,6 @@ if (name != "common") {
 
     tasks.named<Jar>("sourcesJar") {
         dependsOn(resolvableCommonJava, resolvableCommonResources)
-        from(commonJava, resolvableCommonResources)
+        from(resolvableCommonJava, resolvableCommonResources)
     }
 }
