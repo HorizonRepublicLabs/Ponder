@@ -28,7 +28,6 @@ src/*/generatedPackageInfos/
 */src/*/generatedPackageInfos/
 
 # Vitepress
-docs/
 docs/.vitepress/dist/
 docs/.vitepress/cache/
 
