@@ -1,0 +1,34 @@
+[versions]
+minecraft = "26.1-snapshot-2"
+
+# https://neoforged.net/
+neoforge = "26.1.0.0-alpha.6+snapshot-2"
+mdg = "2.0.+"
+
+# https://fabricmc.net/develop/
+loom = "1.15.+"
+fabric-loader = "0.18.4"
+fabric-api = "0.141.2+26.1"
+
+# we need to manually depend on mixin (+extras) in common
+mixin = "0.15.4+mixin.0.8.7"
+mixin-extras = "0.5.3"
+
+[libraries]
+minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
+fabric_loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
+fabric_api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-api" }
+mixin = { module = "net.fabricmc:sponge-mixin", version.ref = "mixin" }
+mixin-extras = { module = "io.github.llamalad7:mixinextras-common", version.ref = "mixin-extras" }
+
+[bundles]
+fabric = [ "fabric_loader", "fabric_api" ]
+mixin = [ "mixin", "mixin-extras" ]
+
+[plugins]
+mdg = { id = "net.neoforged.moddev", version.ref = "mdg" }
+loom = { id = "net.fabricmc.fabric-loom", version.ref = "loom" }
+
+# convention plugins
+configure-platform = { id = "configure-platform" }
+ponder-gradle = { id = "net.createmod.ponder.gradle" }

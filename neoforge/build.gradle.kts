@@ -1,18 +1,12 @@
 plugins {
-    id("net.neoforged.moddev")
+    alias(libs.plugins.mdg)
+    alias(libs.plugins.configure.platform)
 }
 
 neoForge {
-    version = "neo_version"()
+    version = libs.versions.neoforge.get()
 
-    accessTransformers.from(project(":common").file("src/main/resources/META-INF/accesstransformer.cfg"))
-
-    if ("parchment_version"() != "none") {
-        parchment {
-            minecraftVersion = "parchment_minecraft_version"()
-            mappingsVersion = "parchment_version"()
-        }
-    }
+    accessTransformers.from(file("src/main/resources/META-INF/accesstransformer.cfg"))
 
     runs {
         create("client") {
@@ -26,27 +20,13 @@ neoForge {
         }
 
         configureEach {
-            jvmArgument("-XX:+AllowEnhancedClassRedefinition")
-            jvmArgument("-XX:+IgnoreUnrecognizedVMOptions")
             jvmArgument("-Dmixin.debug.export=true")
-            jvmArgument("-Dmixin.env.remapRefMap=true")
-            jvmArgument("-Dmixin.env.refMapRemappingFile=${projectDir}/build/createSrgToMcp/output.srg")
+            jvmArgument("-XX:+IgnoreUnrecognizedVMOptions")
+            jvmArgument("-XX:+AllowEnhancedClassRedefinition")
         }
     }
 
-    mods {
-        create("mod_id"()) {
-            sourceSet(sourceSets["main"])
-        }
+    mods.register("ponder") {
+        sourceSet(sourceSets.main.get())
     }
-}
-
-dependencies {
-    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${"flywheel_minecraft_version"()}:${"flywheel_version"()}")
-    runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${"flywheel_minecraft_version"()}:${"flywheel_version"()}")
-}
-
-operator fun String.invoke(): String {
-    return rootProject.ext[this] as? String
-        ?: throw IllegalStateException("Property $this is not defined")
 }

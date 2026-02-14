@@ -1,17 +1,17 @@
-import java.util.Properties
-
 plugins {
     `kotlin-dsl`
-    id("java-gradle-plugin")
+    `java-gradle-plugin`
     kotlin("jvm") version "1.9.23"
 }
 
 repositories {
-    gradlePluginPortal()
+    exclusiveContent {
+        forRepositories(maven("https://maven.ithundxr.dev/releases")).filter {
+            includeModule("dev.ithundxr.lotus", "lotus-gradle")
+        }
+    }
+
     mavenCentral()
-    maven("https://maven.ithundxr.dev/releases")
-    maven("https://maven.fabricmc.net")
-    maven("https://maven.neoforged.net/releases")
 }
 
 gradlePlugin {
@@ -23,24 +23,13 @@ gradlePlugin {
     }
 }
 
-val properties by lazy {
-    Properties().apply {
-        load(rootDir.parentFile.resolve("gradle.properties").inputStream())
-    }
-}
+val asmVersion = "9.5"
+val lotusVersion = "0.0.12"
 
 dependencies {
-    implementation("org.ow2.asm:asm:${"asm_version"()}")
-    implementation("org.ow2.asm:asm-tree:${"asm_version"()}")
-    implementation("org.ow2.asm:asm-util:${"asm_version"()}")
+    implementation("org.ow2.asm:asm:$asmVersion")
+    implementation("org.ow2.asm:asm-tree:$asmVersion")
+    implementation("org.ow2.asm:asm-util:$asmVersion")
 
-    implementation("dev.ithundxr.lotus:lotus-gradle:${"lotus_gradle_version"()}")
-
-    implementation("fabric-loom:fabric-loom.gradle.plugin:${properties["loom_version"]}")
-    implementation("net.neoforged.moddev:net.neoforged.moddev.gradle.plugin:${properties["mdg_version"]}")
-}
-
-operator fun String.invoke(): String {
-    return rootProject.ext[this] as? String
-        ?: throw IllegalStateException("Property $this is not defined")
+    implementation("dev.ithundxr.lotus:lotus-gradle:$lotusVersion")
 }
