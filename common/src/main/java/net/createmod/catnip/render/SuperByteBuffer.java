@@ -6,17 +6,16 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.createmod.catnip.theme.Color;
-import net.minecraft.core.Direction;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.level.BlockAndTintGetter;
 
-@SuppressWarnings({"UnusedReturnValue", "unused"})
-public interface SuperByteBuffer extends TransformStack<SuperByteBuffer> {
+public interface SuperByteBuffer {
 	static int maxLight(int packedLight1, int packedLight2) {
-		int blockLight1 = LightTexture.block(packedLight1);
-		int skyLight1 = LightTexture.sky(packedLight1);
-		int blockLight2 = LightTexture.block(packedLight2);
-		int skyLight2 = LightTexture.sky(packedLight2);
-		return LightTexture.pack(Math.max(blockLight1, blockLight2), Math.max(skyLight1, skyLight2));
+		int blockLight1 = LightCoordsUtil.block(packedLight1);
+		int skyLight1 = LightCoordsUtil.sky(packedLight1);
+		int blockLight2 = LightCoordsUtil.block(packedLight2);
+		int skyLight2 = LightCoordsUtil.sky(packedLight2);
+		return LightCoordsUtil.pack(Math.max(blockLight1, blockLight2), Math.max(skyLight1, skyLight2));
 	}
 
 	void renderInto(PoseStack ms, VertexConsumer consumer);
@@ -57,10 +56,6 @@ public interface SuperByteBuffer extends TransformStack<SuperByteBuffer> {
 	//
 
 	default void delete() {
-	}
-
-	default <Self extends SuperByteBuffer> Self rotate(Direction.Axis axis, float radians) {
-		return (Self) rotate(radians, axis);
 	}
 
 	default <Self extends SuperByteBuffer> Self color(Color color) {

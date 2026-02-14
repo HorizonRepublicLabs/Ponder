@@ -1,5 +1,7 @@
 package net.createmod.catnip.impl.client.render;
 
+import static org.joml.Math.fma;
+
 import org.jetbrains.annotations.UnknownNullability;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
@@ -29,9 +31,9 @@ public class TransformingVertexConsumer implements VertexConsumer {
 		Matrix4f matrix = poseStack.last().pose();
 
 		delegate.addVertex(
-			MatrixMath.transformPositionX(matrix, x, y, z),
-			MatrixMath.transformPositionY(matrix, x, y, z),
-			MatrixMath.transformPositionZ(matrix, x, y, z));
+			transformPositionX(matrix, x, y, z),
+			transformPositionY(matrix, x, y, z),
+			transformPositionZ(matrix, x, y, z));
 		return this;
 	}
 
@@ -69,9 +71,9 @@ public class TransformingVertexConsumer implements VertexConsumer {
 	public VertexConsumer setNormal(float x, float y, float z) {
 		Matrix3f matrix = poseStack.last().normal();
 		delegate.setNormal(
-			MatrixMath.transformNormalX(matrix, x, y, z),
-			MatrixMath.transformNormalY(matrix, x, y, z),
-			MatrixMath.transformNormalZ(matrix, x, y, z));
+			transformNormalX(matrix, x, y, z),
+			transformNormalY(matrix, x, y, z),
+			transformNormalZ(matrix, x, y, z));
 		return this;
 	}
 
@@ -79,5 +81,31 @@ public class TransformingVertexConsumer implements VertexConsumer {
 	public VertexConsumer setLineWidth(float width) {
 		delegate.setLineWidth(width);
 		return this;
+	}
+
+	// https://github.com/Engine-Room/Flywheel/blob/1.20.1/dev/common/src/lib/java/dev/engine_room/flywheel/lib/math/MatrixMath.java
+
+	public static float transformPositionX(Matrix4f matrix, float x, float y, float z) {
+		return fma(matrix.m00(), x, fma(matrix.m10(), y, fma(matrix.m20(), z, matrix.m30())));
+	}
+
+	public static float transformPositionY(Matrix4f matrix, float x, float y, float z) {
+		return fma(matrix.m01(), x, fma(matrix.m11(), y, fma(matrix.m21(), z, matrix.m31())));
+	}
+
+	public static float transformPositionZ(Matrix4f matrix, float x, float y, float z) {
+		return fma(matrix.m02(), x, fma(matrix.m12(), y, fma(matrix.m22(), z, matrix.m32())));
+	}
+
+	private static float transformNormalX(Matrix3f matrix, float x, float y, float z) {
+		return fma(matrix.m00(), x, fma(matrix.m10(), y, matrix.m20() * z));
+	}
+
+	private static float transformNormalY(Matrix3f matrix, float x, float y, float z) {
+		return fma(matrix.m01(), x, fma(matrix.m11(), y, matrix.m21() * z));
+	}
+
+	private static float transformNormalZ(Matrix3f matrix, float x, float y, float z) {
+		return fma(matrix.m02(), x, fma(matrix.m12(), y, matrix.m22() * z));
 	}
 }

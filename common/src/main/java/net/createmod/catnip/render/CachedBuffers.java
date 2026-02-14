@@ -3,6 +3,7 @@ package net.createmod.catnip.render;
 import java.util.function.Supplier;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
 import net.createmod.catnip.math.AngleHelper;
 import net.createmod.catnip.render.SuperByteBufferCache.Compartment;
@@ -37,11 +38,10 @@ public class CachedBuffers {
 	public static Supplier<PoseStack> rotateToFace(Direction facing) {
 		return () -> {
 			PoseStack stack = new PoseStack();
-			TransformStack.of(stack)
-				.center()
-				.rotateYDegrees(AngleHelper.horizontalAngle(facing))
-				.rotateXDegrees(AngleHelper.verticalAngle(facing))
-				.uncenter();
+			stack.translate(0.5, 0.5, 0.5);
+			stack.mulPose(Axis.YP.rotationDegrees(AngleHelper.horizontalAngle(facing)));
+			stack.mulPose(Axis.XP.rotationDegrees(AngleHelper.verticalAngle(facing)));
+			stack.translate(-0.5, -0.5, -0.5);
 			return stack;
 		};
 	}
@@ -49,11 +49,10 @@ public class CachedBuffers {
 	public static Supplier<PoseStack> rotateToFaceVertical(Direction facing) {
 		return () -> {
 			PoseStack stack = new PoseStack();
-			TransformStack.of(stack)
-				.center()
-				.rotateYDegrees(AngleHelper.horizontalAngle(facing))
-				.rotateXDegrees(AngleHelper.verticalAngle(facing) + 90)
-				.uncenter();
+			stack.translate(0.5, 0.5, 0.5);
+			stack.mulPose(Axis.YP.rotationDegrees(AngleHelper.horizontalAngle(facing)));
+			stack.mulPose(Axis.XP.rotationDegrees(AngleHelper.verticalAngle(facing) + 90));
+			stack.translate(-0.5, -0.5, -0.5);
 			return stack;
 		};
 	}

@@ -14,8 +14,8 @@ import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.SheetedDecalTextureGenerator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 
-import dev.engine_room.flywheel.lib.transform.TransformStack;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.client.render.model.BakedModelBufferer;
 import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
@@ -38,14 +38,14 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -224,15 +224,15 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 			double rotZ = Mth.lerp(pt, prevAnimatedRotation.z, animatedRotation.z);
 			double rotY = Mth.lerp(pt, prevAnimatedRotation.y, animatedRotation.y);
 			in = in.subtract(centerOfRotation);
-			in = VecHelper.rotate(in, -rotX, Axis.X);
-			in = VecHelper.rotate(in, -rotZ, Axis.Z);
-			in = VecHelper.rotate(in, -rotY, Axis.Y);
+			in = VecHelper.rotate(in, -rotX, Direction.Axis.X);
+			in = VecHelper.rotate(in, -rotZ, Direction.Axis.Z);
+			in = VecHelper.rotate(in, -rotY, Direction.Axis.Y);
 			in = in.add(centerOfRotation);
 			if (stabilizationAnchor != null) {
 				in = in.subtract(stabilizationAnchor);
-				in = VecHelper.rotate(in, rotX, Axis.X);
-				in = VecHelper.rotate(in, rotZ, Axis.Z);
-				in = VecHelper.rotate(in, rotY, Axis.Y);
+				in = VecHelper.rotate(in, rotX, Direction.Axis.X);
+				in = VecHelper.rotate(in, rotZ, Direction.Axis.Z);
+				in = VecHelper.rotate(in, rotY, Direction.Axis.Y);
 				in = in.add(stabilizationAnchor);
 			}
 		}
@@ -248,20 +248,18 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 			double rotZ = Mth.lerp(pt, prevAnimatedRotation.z, animatedRotation.z);
 			double rotY = Mth.lerp(pt, prevAnimatedRotation.y, animatedRotation.y);
 
-			TransformStack.of(ms)
-				.translate(centerOfRotation)
-				.rotateXDegrees((float) rotX)
-				.rotateYDegrees((float) rotY)
-				.rotateZDegrees((float) rotZ)
-				.translateBack(centerOfRotation);
+			ms.translate(centerOfRotation);
+			ms.mulPose(Axis.XP.rotationDegrees((float) rotX));
+			ms.mulPose(Axis.YP.rotationDegrees((float) rotY));
+			ms.mulPose(Axis.ZP.rotationDegrees((float) rotZ));
+			ms.translate(-centerOfRotation.x, -centerOfRotation.y, -centerOfRotation.z);
 
 			if (stabilizationAnchor != null) {
-				TransformStack.of(ms)
-					.translate(stabilizationAnchor)
-					.rotateXDegrees((float) -rotX)
-					.rotateYDegrees((float) -rotY)
-					.rotateZDegrees((float) -rotZ)
-					.translateBack(stabilizationAnchor);
+				ms.translate(stabilizationAnchor);
+				ms.mulPose(Axis.XP.rotationDegrees((float) -rotX));
+				ms.mulPose(Axis.YP.rotationDegrees((float) -rotY));
+				ms.mulPose(Axis.ZP.rotationDegrees((float) -rotZ));
+				ms.translate(-stabilizationAnchor.x, -stabilizationAnchor.y, -stabilizationAnchor.z);
 			}
 		}
 	}

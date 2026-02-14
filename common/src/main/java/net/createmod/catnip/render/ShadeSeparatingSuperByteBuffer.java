@@ -1,19 +1,15 @@
 package net.createmod.catnip.render;
 
-import org.jspecify.annotations.Nullable;
 import org.joml.Matrix3f;
-import org.joml.Matrix3fc;
 import org.joml.Matrix4f;
-import org.joml.Matrix4fc;
-import org.joml.Quaternionfc;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.joml.Vector4f;
+import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import dev.engine_room.flywheel.lib.util.ShadersModHelper;
 import it.unimi.dsi.fastutil.longs.Long2IntMap;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import net.createmod.catnip.theme.Color;
@@ -218,54 +214,6 @@ public class ShadeSeparatingSuperByteBuffer implements SuperByteBuffer {
 
 	public PoseStack getTransforms() {
 		return transforms;
-	}
-
-	@Override
-	public SuperByteBuffer scale(float factorX, float factorY, float factorZ) {
-		transforms.scale(factorX, factorY, factorZ);
-		return this;
-	}
-
-	@Override
-	public SuperByteBuffer rotate(Quaternionfc quaternion) {
-		var last = transforms.last();
-		last.pose().rotate(quaternion);
-		last.normal().rotate(quaternion);
-		return this;
-	}
-
-	@Override
-	public SuperByteBuffer translate(float x, float y, float z) {
-		transforms.translate(x, y, z);
-		return this;
-	}
-
-	@Override
-	public SuperByteBuffer mulPose(Matrix4fc pose) {
-		transforms.last()
-			.pose()
-			.mul(pose);
-		return this;
-	}
-
-	@Override
-	public SuperByteBuffer mulNormal(Matrix3fc normal) {
-		transforms.last()
-			.normal()
-			.mul(normal);
-		return this;
-	}
-
-	@Override
-	public SuperByteBuffer pushPose() {
-		transforms.pushPose();
-		return this;
-	}
-
-	@Override
-	public SuperByteBuffer popPose() {
-		transforms.popPose();
-		return this;
 	}
 
 	public SuperByteBuffer color(float r, float g, float b, float a) {
