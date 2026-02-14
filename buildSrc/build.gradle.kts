@@ -22,14 +22,3 @@ gradlePlugin {
         }
     }
 }
-
-val asmVersion = "9.9"
-val lotusVersion = "0.0.12"
-
-dependencies {
-    implementation("org.ow2.asm:asm:$asmVersion")
-    implementation("org.ow2.asm:asm-tree:$asmVersion")
-    implementation("org.ow2.asm:asm-util:$asmVersion")
-
-    implementation("dev.ithundxr.lotus:lotus-gradle:$lotusVersion")
-}

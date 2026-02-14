@@ -1,7 +1,7 @@
 group = "net.createmod.ponder"
 
 val buildNumber: String = providers.environmentVariable("BUILD_NUMBER").orElse("99999").get()
-version = "1.0.$buildNumber+mc${rootProject.libs.versions.minecraft.get()}"
+version = "1.0.$buildNumber+mc${libs.versions.minecraft.get()}"
 
 // compute once, read in subprojects
 ext["git_hash"] = calculateGitHash() + (if (hasUnstaged()) "-modified" else "")
