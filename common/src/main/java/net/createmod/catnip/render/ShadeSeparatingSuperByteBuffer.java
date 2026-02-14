@@ -13,7 +13,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import it.unimi.dsi.fastutil.longs.Long2IntMap;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import net.createmod.catnip.theme.Color;
-import net.createmod.ponder.mixin.client.accessor.RenderSystemAccessor;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
@@ -110,8 +109,8 @@ public class ShadeSeparatingSuperByteBuffer implements SuperByteBuffer {
 		int nextShadeSwapVertex = shadeSwapIndex < shadeSwapVertices.length ? shadeSwapVertices[shadeSwapIndex] : -1;
 		float unshadedDiffuse = 1;
 		if (applyDiffuse) {
-			lightDir0.set(RenderSystemAccessor.catnip$getShaderLightDirections()[0]).normalize();
-			lightDir1.set(RenderSystemAccessor.catnip$getShaderLightDirections()[1]).normalize();
+			//lightDir0.set(RenderSystemAccessor.catnip$getShaderLightDirections()[0]).normalize();
+			//lightDir1.set(RenderSystemAccessor.catnip$getShaderLightDirections()[1]).normalize();
 			if (shadeSwapVertices.length > 0) {
 				// Pretend unshaded faces always point up to get the correct max diffuse value for the current level.
 				normal.set(0, invertFakeDiffuseNormal ? -1 : 1, 0);

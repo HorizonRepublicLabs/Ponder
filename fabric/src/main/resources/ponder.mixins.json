@@ -4,11 +4,8 @@
   "package": "net.createmod.ponder.mixin",
   "compatibilityLevel": "JAVA_25",
   "client": [
-    "client.AbstractContainerScreenMixin",
-    "client.GuiGraphicsMixin",
     "client.ParticleEngineAccessor",
-    "client.TextureAtlasMixin",
-    "client.TooltipRenderUtilMixin"
+    "client.TextureAtlasMixin"
   ],
   "mixins": [],
   "injectors": {
