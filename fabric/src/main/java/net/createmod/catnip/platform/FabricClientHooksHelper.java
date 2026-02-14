@@ -4,37 +4,34 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.function.Function;
 
-import net.createmod.ponder.mixin.client.ParticleEngineAccessor;
-import net.fabricmc.fabric.api.client.rendering.v1.SpecialGuiElementRegistry;
-import net.minecraft.client.gui.render.pip.PictureInPictureRenderer;
-import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
-import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
-import net.minecraft.client.resources.language.LanguageManager;
-
-import net.minecraft.util.LightCoordsUtil;
-
 import org.jspecify.annotations.Nullable;
 
-import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.createmod.catnip.client.render.model.ShadeSeparatedBufferSource;
 import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
 import net.createmod.catnip.impl.client.render.model.BakedModelBuffererImpl;
 import net.createmod.catnip.platform.services.ModClientHooksHelper;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.createmod.ponder.mixin.client.ParticleEngineAccessor;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.fabricmc.fabric.api.client.rendering.v1.PictureInPictureRendererRegistry;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.render.pip.PictureInPictureRenderer;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
+import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.resources.language.LanguageManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
@@ -55,19 +52,19 @@ public class FabricClientHooksHelper implements ModClientHooksHelper {
 
 	@Override
 	public Minecraft getMinecraftFromScreen(Screen screen) {
-		return Screens.getClient(screen);
+		return Screens.getMinecraft(screen);
 	}
 
 	@Override
 	public boolean isKeyPressed(KeyMapping mapping) {
-		int keyCode = KeyBindingHelper.getBoundKeyOf(mapping).getValue();
+		int keyCode = KeyMappingHelper.getBoundKeyOf(mapping).getValue();
 		Window window = Minecraft.getInstance().getWindow();
 		return InputConstants.isKeyDown(window, keyCode);
 	}
 
 	@Override
 	public void registerPictureInPictureRenderer(Class<?> stateClass, Function<BufferSource, PictureInPictureRenderer<?>> factory) {
-		SpecialGuiElementRegistry.register(ctx -> factory.apply(ctx.vertexConsumers()));
+		PictureInPictureRendererRegistry.register(ctx -> factory.apply(ctx.bufferSource()));
 	}
 
 	@Override

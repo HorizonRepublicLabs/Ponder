@@ -1,5 +1,7 @@
 package net.createmod.catnip.platform;
 
+import org.jetbrains.annotations.ApiStatus;
+
 import net.createmod.catnip.net.base.CatnipPacketRegistry;
 import net.createmod.catnip.net.base.ClientboundPacketPayload;
 import net.createmod.catnip.net.base.ServerboundPacketPayload;
@@ -20,8 +22,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.phys.Vec3;
 
-import org.jetbrains.annotations.ApiStatus;
-
 public class FabricNetworkHelper implements NetworkHelper {
 	@ApiStatus.Internal
 	@Override
@@ -33,12 +33,12 @@ public class FabricNetworkHelper implements NetworkHelper {
 				throw new IllegalStateException("Packet class is both clientbound and serverbound: " + type.clazz());
 			} else if (clientbound) {
 				CatnipPacketRegistry.PacketType<ClientboundPacketPayload> casted = (CatnipPacketRegistry.PacketType<ClientboundPacketPayload>) type;
-				PayloadTypeRegistry.playS2C().register(casted.type(), casted.codec());
+				PayloadTypeRegistry.clientboundPlay().register(casted.type(), casted.codec());
 				if (CatnipServices.PLATFORM.getEnv().isClient())
 					ClientPlayNetworking.registerGlobalReceiver(casted.type(), (payload, ctx) -> payload.handle(ctx.player()));
 			} else if (serverbound) {
 				CatnipPacketRegistry.PacketType<ServerboundPacketPayload> casted = (CatnipPacketRegistry.PacketType<ServerboundPacketPayload>) type;
-				PayloadTypeRegistry.playC2S().register(casted.type(), casted.codec());
+				PayloadTypeRegistry.serverboundPlay().register(casted.type(), casted.codec());
 				ServerPlayNetworking.registerGlobalReceiver(casted.type(), ((payload, ctx) -> payload.handle(ctx.player())));
 			}
 		}
@@ -57,13 +57,13 @@ public class FabricNetworkHelper implements NetworkHelper {
 
 	@Override
 	public void sendToAllClients(CustomPacketPayload payload) {
-		Packet<?> packet = ServerPlayNetworking.createS2CPacket(payload);
+		Packet<?> packet = ServerPlayNetworking.createClientboundPacket(payload);
 		FabricPonder.getServer().getPlayerList().broadcastAll(packet);
 	}
 
 	@Override
 	public void sendToClientsTrackingAndSelf(Entity entity, CustomPacketPayload payload) {
-		Packet<ClientCommonPacketListener> packet = ServerPlayNetworking.createS2CPacket(payload);
+		Packet<ClientCommonPacketListener> packet = ServerPlayNetworking.createClientboundPacket(payload);
 		if (entity.level().getChunkSource() instanceof ServerChunkCache chunkCache) {
 			chunkCache.sendToTrackingPlayersAndSelf(entity, packet);
 		} else {
@@ -73,7 +73,7 @@ public class FabricNetworkHelper implements NetworkHelper {
 
 	@Override
 	public void sendToClientsTrackingEntity(Entity entity, CustomPacketPayload payload) {
-		Packet<ClientCommonPacketListener> packet = ServerPlayNetworking.createS2CPacket(payload);
+		Packet<ClientCommonPacketListener> packet = ServerPlayNetworking.createClientboundPacket(payload);
 		if (entity.level().getChunkSource() instanceof ServerChunkCache chunkCache) {
 			chunkCache.sendToTrackingPlayers(entity, packet);
 		} else {
@@ -90,7 +90,7 @@ public class FabricNetworkHelper implements NetworkHelper {
 
 	@Override
 	public void sendToClientsAround(ServerLevel serverLevel, Vec3 pos, double radius, CustomPacketPayload payload) {
-		Packet<?> packet = ServerPlayNetworking.createS2CPacket(payload);
+		Packet<?> packet = ServerPlayNetworking.createClientboundPacket(payload);
 		serverLevel.getServer().getPlayerList().broadcast(null, pos.x(), pos.y(), pos.z(), radius, serverLevel.dimension(), packet);
 	}
 }

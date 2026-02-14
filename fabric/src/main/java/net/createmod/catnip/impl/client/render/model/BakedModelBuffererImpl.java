@@ -2,13 +2,6 @@ package net.createmod.catnip.impl.client.render.model;
 
 import java.util.Iterator;
 
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
-
-import net.minecraft.util.LightCoordsUtil;
-
 import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -18,8 +11,12 @@ import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
 import net.createmod.catnip.impl.client.render.TransformingVertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockAndTintGetter;
@@ -48,20 +45,20 @@ public final class BakedModelBuffererImpl {
 		model = universalEmitter.wrapModel(model);
 
 		poseStack.pushPose();
-		submitNodeCollector.submitBlockStateModel(
-			poseStack,
-			layer -> bufferSource.getBuffer(layer, false),
-			model,
-			1,
-			1,
-			1,
-			LightCoordsUtil.FULL_BRIGHT,
-			OverlayTexture.NO_OVERLAY,
-			0,
-			level,
-			pos,
-			state
-		);
+		// submitNodeCollector.submitBlockStateModel(
+		// 	poseStack,
+		// 	layer -> bufferSource.getBuffer(layer, false),
+		// 	model,
+		// 	1,
+		// 	1,
+		// 	1,
+		// 	LightCoordsUtil.FULL_BRIGHT,
+		// 	OverlayTexture.NO_OVERLAY,
+		// 	0,
+		// 	level,
+		// 	pos,
+		// 	state
+		// );
 		Minecraft.getInstance()
 			.getBlockRenderer()
 			.getModelRenderer()

@@ -1,11 +1,11 @@
 package net.createmod.ponder;
 
+import org.jspecify.annotations.Nullable;
+
 import net.createmod.catnip.animation.AnimationTickHolder;
-import net.createmod.catnip.config.ui.BaseConfigScreen;
 import net.createmod.catnip.data.Couple;
 import net.createmod.catnip.placement.PlacementClient;
 import net.createmod.catnip.theme.Color;
-import net.createmod.ponder.enums.PonderConfig;
 import net.createmod.ponder.enums.PonderKeybinds;
 import net.createmod.ponder.foundation.PonderTooltipHandler;
 import net.createmod.ponder.utility.FabricClientResourceReloadListener;
@@ -13,14 +13,12 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.InvalidateRenderStateCallback;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.packs.PackType;
-
-import org.jspecify.annotations.Nullable;
 
 public class FabricPonderClient implements ClientModInitializer {
 	public static final FabricClientResourceReloadListener FABRIC$RESOURCE_RELOAD_LISTENER = new FabricClientResourceReloadListener();
@@ -47,7 +45,7 @@ public class FabricPonderClient implements ClientModInitializer {
 		HudRenderCallback.EVENT.register((graphics, deltaTracker) -> PlacementClient.onRenderCrosshairOverlay(graphics, AnimationTickHolder.getPartialTicksUI()));
 
 		ItemTooltipCallback.EVENT.register((stack, context, flag, lines) -> PonderTooltipHandler.addToTooltip(lines, stack));
-		PonderKeybinds.register(KeyBindingHelper::registerKeyBinding);
+		PonderKeybinds.register(KeyMappingHelper::registerKeyMapping);
 
 		ClientLifecycleEvents.CLIENT_STARTED.register(FabricPonderClient::onClientStarted);
 
@@ -57,10 +55,11 @@ public class FabricPonderClient implements ClientModInitializer {
 	}
 
 	private void prepareConfigUI() {
-		BaseConfigScreen.setDefaultActionFor(Ponder.MOD_ID, base -> base
-				.withButtonLabels("Client Settings", null, null)
-				.withSpecs(PonderConfig.client().specification, null, null)
-		);
+		// FIXME: config
+		// BaseConfigScreen.setDefaultActionFor(Ponder.MOD_ID, base -> base
+		// 		.withButtonLabels("Client Settings", null, null)
+		// 		.withSpecs(PonderConfig.client().specification, null, null)
+		// );
 	}
 
 	private static void onClientStarted(Minecraft client) {
