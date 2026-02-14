@@ -5,12 +5,6 @@ plugins {
 }
 
 repositories {
-    exclusiveContent {
-        forRepositories(maven("https://maven.ithundxr.dev/releases")).filter {
-            includeModule("dev.ithundxr.lotus", "lotus-gradle")
-        }
-    }
-
     mavenCentral()
 }
 

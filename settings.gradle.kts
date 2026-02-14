@@ -11,3 +11,5 @@ plugins {
 
 rootProject.name = "ponder"
 include("common", "fabric", "neoforge")
+
+includeBuild("build-logic")
