@@ -16,6 +16,7 @@ import net.createmod.catnip.render.SuperRenderTypeBuffer;
 import net.createmod.catnip.theme.Color;
 import net.createmod.ponder.foundation.PonderScene;
 import net.createmod.ponder.foundation.PonderScene.SceneTransform;
+import net.createmod.ponder.mixin.catnip.LightingAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.render.pip.PictureInPictureRenderer;
 import net.minecraft.client.renderer.GameRenderer;
@@ -39,7 +40,8 @@ public class PonderSceneRenderer extends PictureInPictureRenderer<PonderSceneRen
 		Lighting lighting = gameRenderer.getLighting();
 		FeatureRenderDispatcher renderDispatcher = gameRenderer.getFeatureRenderDispatcher();
 
-		lighting.updateBuffer(Entry.LEVEL, DIFFUSE_LIGHT_0, DIFFUSE_LIGHT_1);
+		// we use a different light angle, can't use an existing CardinalLightType
+		((LightingAccessor) lighting).callUpdateBuffer(Entry.LEVEL, DIFFUSE_LIGHT_0, DIFFUSE_LIGHT_1);
 
 		SubmitNodeStorage queue = renderDispatcher.getSubmitNodeStorage();
 		renderScene(state, poseStack, queue);

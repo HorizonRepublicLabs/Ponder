@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_25",
   "client": [
     "accessor.TimerAccessor",
+    "catnip.LightingAccessor",
     "client.accessor.BufferBuilderAccessor",
     "client.accessor.ClientPacketListenerAccessor",
     "client.accessor.GameRendererAccessor",

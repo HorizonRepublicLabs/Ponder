@@ -97,20 +97,13 @@ public abstract class AbstractSimiWidget extends AbstractWidget implements Ticka
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		if (visible) {
-			isHovered = isMouseOver(mouseX, mouseY);
-			renderWidget(graphics, mouseX, mouseY, partialTicks);
-			renderTooltip(graphics, mouseX, mouseY, partialTicks);
-			wasHovered = isHoveredOrFocused();
-		}
-	}
-
-	@Override
-	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		beforeRender(graphics, mouseX, mouseY, partialTicks);
-		doRender(graphics, mouseX, mouseY, partialTicks);
-		afterRender(graphics, mouseX, mouseY, partialTicks);
+	protected final void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+		this.isHovered &= this.isActive();
+		this.beforeRender(graphics, mouseX, mouseY, partialTicks);
+		this.doRender(graphics, mouseX, mouseY, partialTicks);
+		this.afterRender(graphics, mouseX, mouseY, partialTicks);
+		this.renderTooltip(graphics, mouseX, mouseY, partialTicks);
+		this.wasHovered = this.isHoveredOrFocused();
 	}
 
 	protected void renderTooltip(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
