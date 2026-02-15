@@ -1,0 +1,35 @@
+package net.createmod.catnip.platform.services;
+
+import org.jspecify.annotations.Nullable;
+
+import net.createmod.catnip.annotations.ClientOnly;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.material.FluidState;
+
+public interface ModFluidHelper<R> {
+	@ClientOnly
+	int getColor(R fluid, @Nullable BlockAndTintGetter level, @Nullable BlockPos pos);
+
+	int getLuminosity(R fluid);
+
+	@ClientOnly
+	@Nullable
+	TextureAtlasSprite getStillTexture(R fluid);
+
+	@ClientOnly
+	default TextureAtlasSprite getStillTextureOrMissing(R fluid) {
+		TextureAtlasSprite texture = this.getStillTexture(fluid);
+		if (texture != null)
+			return texture;
+
+		return Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(TextureAtlas.LOCATION_BLOCKS).missingSprite();
+	}
+
+	boolean isLighterThanAir(R fluid);
+
+	R toStack(FluidState state);
+}
