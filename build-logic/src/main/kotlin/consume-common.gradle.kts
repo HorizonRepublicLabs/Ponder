@@ -2,10 +2,12 @@ val compileOnly: Configuration by configurations.getting
 val commonJava: Configuration by configurations.dependencyScope("commonJava")
 val commonResources: Configuration by configurations.dependencyScope("commonResources")
 
+val commonPath = project.parent!!.path + ":common"
+
 dependencies {
-    compileOnly(project(":common"))
-    commonJava(project(path = ":common", configuration = "commonJava"))
-    commonResources(project(path = ":common", configuration = "commonResources"))
+    compileOnly(project(commonPath))
+    commonJava(project(path = commonPath, configuration = "commonJava"))
+    commonResources(project(path = commonPath, configuration = "commonResources"))
 }
 
 val resolvableCommonJava: Configuration by configurations.resolvable("resolvableCommonJava") {

@@ -16,6 +16,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.data.Couple;
 import net.createmod.catnip.gui.element.BoxElement;
+import net.createmod.catnip.gui.texture.CatnipGuiTextures;
 import net.createmod.catnip.gui.widget.BoxWidget;
 import net.createmod.catnip.lang.Lang;
 import net.createmod.catnip.theme.Color;
@@ -84,7 +85,7 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 		if (previousScreen instanceof NavigatableSimiScreen screen) {
 			screen.initBackTrackIcon(backTrack);
 		} else {
-			backTrack.showing(PonderGuiTextures.ICON_DISABLE);
+			backTrack.showing(CatnipGuiTextures.ICON_DISABLE);
 		}
 
 	}

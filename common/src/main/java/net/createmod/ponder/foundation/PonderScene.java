@@ -16,15 +16,11 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.jspecify.annotations.Nullable;
-
-import net.minecraft.client.renderer.SubmitNodeStorage;
-import net.minecraft.client.renderer.state.CameraRenderState;
-
 import org.apache.commons.lang3.mutable.MutableDouble;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
+import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -54,7 +50,9 @@ import net.createmod.ponder.foundation.ui.PonderUI;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.SubmitNodeStorage;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -571,7 +569,7 @@ public class PonderScene {
 		}
 
 		public PoseStack apply(PoseStack ms) {
-			return apply(ms, AnimationTickHolder.getPartialTicks(world));
+			return apply(ms, AnimationTickHolder.getPartialTicks());
 		}
 
 		public PoseStack apply(PoseStack ms, float pt) {

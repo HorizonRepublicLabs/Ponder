@@ -12,6 +12,7 @@ import com.mojang.math.Constants;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.gui.render.FadedArrowRenderState;
 import net.createmod.catnip.gui.render.TexturedArrowRenderState;
+import net.createmod.catnip.gui.texture.CatnipGuiTextures;
 import net.createmod.catnip.math.AngleHelper;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.client.Minecraft;
@@ -222,7 +223,7 @@ public class PlacementClient {
 		int size = (int) (36 * scale);
 		graphics.guiRenderState.submitGuiElement(new TexturedArrowRenderState(
 			new Matrix3x2f(graphics.pose()),
-			PonderGuiTextures.PLACEMENT_INDICATOR_SHEET.bind(),
+			CatnipGuiTextures.PLACEMENT_INDICATOR_SHEET.bind(),
 			size,
 			alpha,
 			tx,

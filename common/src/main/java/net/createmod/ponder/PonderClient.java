@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.event.ClientResourceReloadListener;
 import net.createmod.catnip.ghostblock.GhostBlocks;
-import net.createmod.ponder.foundation.render.PonderSceneRenderState;
 import net.createmod.catnip.net.packets.ClientboundSimpleActionPacket;
 import net.createmod.catnip.outliner.Outliner;
 import net.createmod.catnip.placement.PlacementClient;
@@ -20,6 +19,7 @@ import net.createmod.ponder.foundation.PonderIndex;
 import net.createmod.ponder.foundation.content.BasePonderPlugin;
 import net.createmod.ponder.foundation.content.DebugPonderPlugin;
 import net.createmod.ponder.foundation.element.WorldSectionElementImpl;
+import net.createmod.ponder.foundation.render.PonderSceneRenderState;
 import net.createmod.ponder.foundation.render.PonderSceneRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.phys.Vec3;
@@ -72,10 +72,6 @@ public class PonderClient {
 
 		buffer.draw();
 		ms.popPose();
-	}
-
-	public static void invalidateRenderers() {
-		SuperByteBufferCache.getInstance().invalidate();
 	}
 
 	public static boolean isGameActive() {

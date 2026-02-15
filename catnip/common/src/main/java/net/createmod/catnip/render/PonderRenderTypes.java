@@ -2,6 +2,8 @@ package net.createmod.catnip.render;
 
 import java.util.function.BiFunction;
 
+import net.createmod.catnip.Catnip;
+import net.createmod.catnip.gui.texture.CatnipSpecialTextures;
 import net.createmod.catnip.mixin.client.RenderTypeAccessor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.rendertype.OutputTarget;
@@ -22,7 +24,7 @@ public abstract class PonderRenderTypes {
 		createLayerName("outline_solid"),
 		RenderSetup.builder(RenderPipelines.ENTITY_SOLID)
 			.bufferSize(256)
-			.withTexture("Sampler0", PonderSpecialTextures.BLANK.getId())
+			.withTexture("Sampler0", CatnipSpecialTextures.BLANK.getId())
 			.useLightmap()
 			.useOverlay()
 			.createRenderSetup()
@@ -55,6 +57,6 @@ public abstract class PonderRenderTypes {
 	}
 
 	private static String createLayerName(String name) {
-		return Ponder.MOD_ID + ":" + name;
+		return Catnip.ID + ":" + name;
 	}
 }

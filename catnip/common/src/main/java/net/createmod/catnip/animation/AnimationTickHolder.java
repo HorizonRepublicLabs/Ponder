@@ -1,10 +1,8 @@
 package net.createmod.catnip.animation;
 
-import net.createmod.catnip.levelWrappers.WrappedClientLevel;
 import net.createmod.catnip.mixin.client.TimerAccessor;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.level.LevelAccessor;
 
 public class AnimationTickHolder {
 	private static int ticks;
@@ -32,22 +30,8 @@ public class AnimationTickHolder {
 		return includePaused ? ticks + pausedTicks : ticks;
 	}
 
-	public static int getTicks(LevelAccessor level) {
-		if (level instanceof WrappedClientLevel)
-			return getTicks(((WrappedClientLevel) level).getWrappedLevel());
-		return level instanceof PonderLevel ? PonderUI.ponderTicks : getTicks();
-	}
-
-	public static float getPartialTicks(LevelAccessor level) {
-		return level instanceof PonderLevel ? PonderUI.getPartialTicks() : getPartialTicks();
-	}
-
 	public static float getRenderTime() {
 		return getTicks() + getPartialTicks();
-	}
-
-	public static float getRenderTime(LevelAccessor level) {
-		return getTicks(level) + getPartialTicks(level);
 	}
 
 	/**
