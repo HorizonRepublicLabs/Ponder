@@ -6,7 +6,7 @@ import net.createmod.catnip.net.base.CatnipPacketRegistry;
 import net.createmod.catnip.net.base.ClientboundPacketPayload;
 import net.createmod.catnip.net.base.ServerboundPacketPayload;
 import net.createmod.catnip.platform.services.NetworkHelper;
-import net.createmod.ponder.FabricPonder;
+import net.createmod.ponder.fabric.FabricPonder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;

@@ -1,8 +1,9 @@
-package net.createmod.ponder;
+package net.createmod.ponder.fabric;
 
 import org.jspecify.annotations.Nullable;
 
 import net.createmod.catnip.command.CatnipCommands;
+import net.createmod.ponder.Ponder;
 import net.createmod.ponder.command.PonderCommands;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;

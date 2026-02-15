@@ -1,4 +1,4 @@
-package net.createmod.ponder.utility;
+package net.createmod.ponder.fabric.utility;
 
 import net.createmod.catnip.event.ClientResourceReloadListener;
 import net.createmod.ponder.Ponder;

@@ -1,4 +1,4 @@
-package net.createmod.ponder;
+package net.createmod.ponder.neoforge;
 
 import java.util.Map;
 import java.util.Set;
@@ -6,12 +6,14 @@ import java.util.Set;
 import net.createmod.catnip.command.CatnipCommands;
 import net.createmod.catnip.config.ConfigBase;
 import net.createmod.catnip.net.ConfigPathArgument;
+import net.createmod.ponder.Ponder;
 import net.createmod.ponder.command.PonderCommands;
 import net.createmod.ponder.enums.PonderConfig;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.commands.synchronization.ArgumentTypeInfos;
 import net.minecraft.commands.synchronization.SingletonArgumentInfo;
 import net.minecraft.core.registries.BuiltInRegistries;
+
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;

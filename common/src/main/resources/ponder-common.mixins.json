@@ -3,16 +3,10 @@
   "minVersion": "0.8",
   "package": "net.createmod.ponder.mixin",
   "compatibilityLevel": "JAVA_25",
-  "client": [
-    "net.createmod.catnip.mixin.BufferBuilderAccessor",
-    "net.createmod.catnip.mixin.ClientPacketListenerAccessor",
-    "net.createmod.catnip.mixin.GameRendererAccessor",
-    "net.createmod.catnip.mixin.RenderTypeAccessor",
-    "net.createmod.catnip.mixin.ScreenAccessor",
-    "net.createmod.catnip.mixin.TimerAccessor"
-  ],
   "mixins": [
     "accessor.ParrotAccessor"
+  ],
+  "client": [
   ],
   "injectors": {
     "defaultRequire": 1

@@ -23,10 +23,10 @@
   ],
   "entrypoints": {
     "main": [
-      "net.createmod.ponder.FabricPonder"
+      "net.createmod.ponder.fabric.FabricPonder"
     ],
     "client": [
-      "net.createmod.ponder.FabricPonderClient"
+      "net.createmod.ponder.fabric.FabricPonderClient"
     ]
   },
   "depends": {

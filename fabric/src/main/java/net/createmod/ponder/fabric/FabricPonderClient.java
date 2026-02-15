@@ -1,4 +1,4 @@
-package net.createmod.ponder;
+package net.createmod.ponder.fabric;
 
 import org.jspecify.annotations.Nullable;
 
@@ -6,9 +6,10 @@ import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.data.Couple;
 import net.createmod.catnip.placement.PlacementClient;
 import net.createmod.catnip.theme.Color;
+import net.createmod.ponder.PonderClient;
 import net.createmod.ponder.enums.PonderKeybinds;
+import net.createmod.ponder.fabric.utility.FabricClientResourceReloadListener;
 import net.createmod.ponder.foundation.PonderTooltipHandler;
-import net.createmod.ponder.utility.FabricClientResourceReloadListener;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -36,7 +37,6 @@ public class FabricPonderClient implements ClientModInitializer {
 		});
 
 		InvalidateRenderStateCallback.EVENT.register(() -> {
-			PonderClient.invalidateRenderers();
 			AnimationTickHolder.reset();
 		});
 		// TODO

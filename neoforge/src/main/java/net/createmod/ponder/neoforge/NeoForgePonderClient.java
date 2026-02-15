@@ -1,4 +1,8 @@
-package net.createmod.ponder;
+package net.createmod.ponder.neoforge;
+
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.config.ui.BaseConfigScreen;
@@ -8,12 +12,15 @@ import net.createmod.catnip.placement.PlacementClient;
 import net.createmod.catnip.platform.NeoForgeClientHooksHelper;
 import net.createmod.catnip.render.StitchedSprite;
 import net.createmod.catnip.theme.Color;
+import net.createmod.ponder.Ponder;
+import net.createmod.ponder.PonderClient;
 import net.createmod.ponder.enums.PonderConfig;
 import net.createmod.ponder.enums.PonderKeybinds;
 import net.createmod.ponder.foundation.PonderTooltipHandler;
 import net.minecraft.client.gui.render.state.pip.PictureInPictureRenderState;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.level.LevelAccessor;
+
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -35,10 +42,6 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.level.LevelEvent.Load;
 import net.neoforged.neoforge.event.level.LevelEvent.Unload;
-
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 @Mod(value = Ponder.MOD_ID, dist = Dist.CLIENT)
 public class NeoForgePonderClient {

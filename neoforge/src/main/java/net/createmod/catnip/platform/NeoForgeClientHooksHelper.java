@@ -6,19 +6,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
 
-import com.mojang.blaze3d.platform.Window;
-
-import net.minecraft.client.gui.render.pip.PictureInPictureRenderer;
-import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
-import net.minecraft.resources.Identifier;
-
-import net.minecraft.util.LightCoordsUtil;
-
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -28,17 +20,22 @@ import net.createmod.catnip.impl.client.render.model.BakedModelBuffererImpl;
 import net.createmod.catnip.platform.services.ModClientHooksHelper;
 import net.createmod.catnip.registry.RegisteredObjectsHelper;
 import net.createmod.catnip.render.ShadedBlockSbbBuilder;
-import net.createmod.ponder.mixin.client.accessor.ParticleEngineAccessor;
-import net.createmod.ponder.render.NeoForgeShadedBlockSbbBuilder;
+import net.createmod.ponder.neoforge.mixin.client.accessor.ParticleEngineAccessor;
+import net.createmod.ponder.neoforge.render.NeoForgeShadedBlockSbbBuilder;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.render.pip.PictureInPictureRenderer;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
