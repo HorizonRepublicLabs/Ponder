@@ -11,5 +11,5 @@ dependencies {
 
 loom {
     clientOnlyMinecraftJar()
-    accessWidenerPath = file("src/main/resources/ponder.accesswidener")
+    //accessWidenerPath = file("src/main/resources/ponder.accesswidener")
 }

@@ -10,6 +10,12 @@ plugins {
 }
 
 rootProject.name = "ponder"
-include("common", "fabric", "neoforge")
+
+for (platform in listOf("common", "fabric", "neoforge")) {
+    include(platform)
+
+    include(":catnip:$platform")
+    project(":catnip:$platform").projectDir = file("catnip/$platform")
+}
 
 includeBuild("build-logic")

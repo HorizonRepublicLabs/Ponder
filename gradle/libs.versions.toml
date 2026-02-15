@@ -16,13 +16,13 @@ mixin-extras = "0.5.3"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
-fabric_loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
-fabric_api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-api" }
+fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
+fabric-api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-api" }
 mixin = { module = "net.fabricmc:sponge-mixin", version.ref = "mixin" }
 mixin-extras = { module = "io.github.llamalad7:mixinextras-common", version.ref = "mixin-extras" }
 
 [bundles]
-fabric = [ "fabric_loader", "fabric_api" ]
+fabric = [ "fabric-loader", "fabric-api" ]
 mixin = [ "mixin", "mixin-extras" ]
 
 [plugins]
@@ -31,4 +31,4 @@ loom = { id = "net.fabricmc.fabric-loom", version.ref = "loom" }
 
 # convention plugins
 configure-platform = { id = "configure-platform" }
-ponder-gradle = { id = "net.createmod.ponder.gradle" }
+setup-git-hash = { id = "setup-git-hash" }
