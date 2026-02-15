@@ -7,6 +7,7 @@ dependencies {
     minecraft(libs.minecraft)
     compileOnly(libs.bundles.mixin)
     annotationProcessor(libs.mixin.extras)
+    compileOnlyApi(project(":catnip:common"))
 }
 
 loom {

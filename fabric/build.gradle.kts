@@ -23,5 +23,6 @@ loom {
 
 dependencies {
     minecraft(libs.minecraft)
-    implementation(libs.bundles.fabric)
+    api(libs.bundles.fabric)
+    api(project(":catnip:fabric"))
 }

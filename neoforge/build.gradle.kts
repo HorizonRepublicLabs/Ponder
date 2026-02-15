@@ -30,3 +30,7 @@ neoForge {
         sourceSet(sourceSets.main.get())
     }
 }
+
+dependencies {
+    api(project(":catnip:neoforge"))
+}
