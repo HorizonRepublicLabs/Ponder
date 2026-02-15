@@ -78,8 +78,8 @@ publishing {
     }
 }
 
-// generate package-infos for the main sourceSet
-extensions.getByType<PackageInfosExtension>().sources(sourceSets.main.get())
+// generate package-infos for the main (and client, if present) sourceSet(s)
+extensions.getByType<PackageInfosExtension>().sources(sourceSets.named { it == "main" || it == "client" })
 
 // FIXME: temporary hack - disable everything config-related
 tasks.withType<JavaCompile> {

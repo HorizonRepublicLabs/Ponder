@@ -13,6 +13,12 @@ open class PackageInfosExtension(private val project: Project) {
         }
     }
 
+    fun sources(sourceSets: Iterable<SourceSet>) {
+        for (sourceSet in sourceSets) {
+            forSourceSet(sourceSet)
+        }
+    }
+
     private fun forSourceSet(sourceSet: SourceSet) {
         // We have to capture the source set name for the lazy string literals,
         // otherwise it'll just be whatever the last source set is in the list.

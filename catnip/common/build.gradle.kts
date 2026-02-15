@@ -10,6 +10,6 @@ dependencies {
 }
 
 loom {
-    clientOnlyMinecraftJar()
+    splitEnvironmentSourceSets()
     accessWidenerPath = file("src/main/resources/catnip.accesswidener")
 }

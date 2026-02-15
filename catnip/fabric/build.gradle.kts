@@ -4,7 +4,7 @@ plugins {
 }
 
 loom {
-    clientOnlyMinecraftJar()
+    splitEnvironmentSourceSets()
 
     runs {
         named("server") {

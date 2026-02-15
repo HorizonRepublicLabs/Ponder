@@ -11,7 +11,7 @@ dependencies {
 }
 
 loom {
-    clientOnlyMinecraftJar()
+    splitEnvironmentSourceSets()
     // manually use the catnip common AW here, it won't be picked up since it's not a fabric mod
     accessWidenerPath = project(":catnip:common").file("src/main/resources/catnip.accesswidener")
 }
