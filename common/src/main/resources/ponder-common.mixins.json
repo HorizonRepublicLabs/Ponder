@@ -4,19 +4,14 @@
   "package": "net.createmod.ponder.mixin",
   "compatibilityLevel": "JAVA_25",
   "client": [
-    "accessor.TimerAccessor",
-    "catnip.LightingAccessor",
-    "catnip.ParticleEngineAccessor",
-    "client.accessor.BufferBuilderAccessor",
-    "client.accessor.ClientPacketListenerAccessor",
-    "client.accessor.GameRendererAccessor",
-    "client.accessor.RenderTypeAccessor",
-    "client.accessor.ScreenAccessor"
+    "net.createmod.catnip.mixin.BufferBuilderAccessor",
+    "net.createmod.catnip.mixin.ClientPacketListenerAccessor",
+    "net.createmod.catnip.mixin.GameRendererAccessor",
+    "net.createmod.catnip.mixin.RenderTypeAccessor",
+    "net.createmod.catnip.mixin.ScreenAccessor",
+    "net.createmod.catnip.mixin.TimerAccessor"
   ],
   "mixins": [
-    "accessor.BiomeManagerAccessor",
-    "accessor.EntityAccessor",
-    "accessor.MinecraftServerAccessor",
     "accessor.ParrotAccessor"
   ],
   "injectors": {

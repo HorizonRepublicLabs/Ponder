@@ -1,4 +1,4 @@
-package net.createmod.ponder.mixin.catnip;
+package net.createmod.catnip.mixin.client;
 
 import java.util.List;
 

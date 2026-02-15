@@ -1,4 +1,4 @@
-package net.createmod.ponder.mixin.catnip;
+package net.createmod.catnip.mixin.client;
 
 import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;

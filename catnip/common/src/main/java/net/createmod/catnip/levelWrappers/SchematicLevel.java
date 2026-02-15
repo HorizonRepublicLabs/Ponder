@@ -9,10 +9,12 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 import org.jspecify.annotations.Nullable;
+import org.slf4j.Logger;
+
+import com.mojang.logging.LogUtils;
 
 import net.createmod.catnip.components.ComponentProcessors;
 import net.createmod.catnip.math.BBHelper;
-import net.createmod.ponder.Ponder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -44,6 +46,8 @@ import net.minecraft.world.ticks.BlackholeTickAccess;
 import net.minecraft.world.ticks.LevelTickAccess;
 
 public class SchematicLevel extends WrappedLevel implements ServerLevelAccessor, SchematicLevelAccessor {
+	private static final Logger logger = LogUtils.getLogger();
+
 	protected Map<BlockPos, BlockState> blocks;
 	protected Map<BlockPos, BlockEntity> blockEntities;
 	protected List<BlockEntity> renderedBlockEntities;
@@ -110,7 +114,7 @@ public class SchematicLevel extends WrappedLevel implements ServerLevelAccessor,
 				}
 				return blockEntity;
 			} catch (Exception e) {
-				Ponder.LOGGER.debug("Could not create BlockEntity of block {}", blockState, e);
+				logger.debug("Could not create BlockEntity of block {}", blockState, e);
 			}
 		}
 		return null;

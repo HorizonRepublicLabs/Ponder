@@ -14,7 +14,6 @@ import net.createmod.catnip.gui.render.FadedArrowRenderState;
 import net.createmod.catnip.gui.render.TexturedArrowRenderState;
 import net.createmod.catnip.math.AngleHelper;
 import net.createmod.catnip.math.VecHelper;
-import net.createmod.ponder.enums.PonderGuiTextures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ClientLevel;

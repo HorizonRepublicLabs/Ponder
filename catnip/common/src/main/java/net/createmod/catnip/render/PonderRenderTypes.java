@@ -2,9 +2,7 @@ package net.createmod.catnip.render;
 
 import java.util.function.BiFunction;
 
-import net.createmod.ponder.Ponder;
-import net.createmod.ponder.enums.PonderSpecialTextures;
-import net.createmod.ponder.mixin.client.accessor.RenderTypeAccessor;
+import net.createmod.catnip.mixin.client.RenderTypeAccessor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.rendertype.OutputTarget;
 import net.minecraft.client.renderer.rendertype.RenderSetup;

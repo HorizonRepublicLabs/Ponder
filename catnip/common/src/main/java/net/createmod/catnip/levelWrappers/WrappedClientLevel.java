@@ -2,8 +2,8 @@ package net.createmod.catnip.levelWrappers;
 
 import org.jspecify.annotations.Nullable;
 
-import net.createmod.ponder.mixin.accessor.BiomeManagerAccessor;
-import net.createmod.ponder.mixin.client.accessor.ClientPacketListenerAccessor;
+import net.createmod.catnip.mixin.BiomeManagerAccessor;
+import net.createmod.catnip.mixin.client.ClientPacketListenerAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;

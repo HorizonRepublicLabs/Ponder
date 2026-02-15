@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.jspecify.annotations.Nullable;
 
-import net.createmod.ponder.mixin.accessor.BiomeManagerAccessor;
-import net.createmod.ponder.mixin.accessor.EntityAccessor;
-import net.createmod.ponder.mixin.accessor.MinecraftServerAccessor;
+import net.createmod.catnip.mixin.BiomeManagerAccessor;
+import net.createmod.catnip.mixin.EntityAccessor;
+import net.createmod.catnip.mixin.MinecraftServerAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;

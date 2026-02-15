@@ -1,0 +1,25 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.createmod.catnip.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": [
+    "BiomeManagerAccessor",
+    "EntityAccessor",
+    "MinecraftServerAccessor"
+  ],
+  "client": [
+    "client.GameRendererAccessor",
+    "client.LightingAccessor",
+    "client.ParticleEngineAccessor",
+    "client.RenderTypeAccessor",
+    "client.ScreenAccessor",
+    "client.TimerAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}

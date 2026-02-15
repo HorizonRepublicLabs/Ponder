@@ -7,7 +7,7 @@ import java.util.function.Predicate;
 
 import org.jspecify.annotations.Nullable;
 
-import net.createmod.ponder.mixin.accessor.EntityAccessor;
+import net.createmod.catnip.mixin.EntityAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;

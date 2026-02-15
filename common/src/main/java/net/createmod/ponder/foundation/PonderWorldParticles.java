@@ -18,8 +18,8 @@ import com.mojang.blaze3d.textures.FilterMode;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import net.createmod.catnip.mixin.client.ParticleEngineAccessor;
 import net.createmod.ponder.api.level.PonderLevel;
-import net.createmod.ponder.mixin.catnip.ParticleEngineAccessor;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;

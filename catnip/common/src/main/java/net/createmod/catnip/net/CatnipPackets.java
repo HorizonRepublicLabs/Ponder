@@ -2,12 +2,12 @@ package net.createmod.catnip.net;
 
 import java.util.Locale;
 
+import net.createmod.catnip.Catnip;
 import net.createmod.catnip.net.base.BasePacketPayload;
 import net.createmod.catnip.net.base.CatnipPacketRegistry;
 import net.createmod.catnip.net.packets.ClientboundConfigPacket;
 import net.createmod.catnip.net.packets.ClientboundSimpleActionPacket;
 import net.createmod.catnip.net.packets.ServerboundConfigPacket;
-import net.createmod.ponder.Ponder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -25,7 +25,7 @@ public enum CatnipPackets implements BasePacketPayload.PacketTypeProvider {
 	<T extends BasePacketPayload> CatnipPackets(Class<T> clazz, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
 		String name = this.name().toLowerCase(Locale.ROOT);
 		this.type = new CatnipPacketRegistry.PacketType<>(
-			new CustomPacketPayload.Type<>(Ponder.id(name)),
+			new CustomPacketPayload.Type<>(Catnip.id(name)),
 			clazz, codec
 		);
 	}
@@ -38,7 +38,7 @@ public enum CatnipPackets implements BasePacketPayload.PacketTypeProvider {
 	}
 
 	public static void register() {
-		CatnipPacketRegistry registry = new CatnipPacketRegistry(Ponder.MOD_ID, 1);
+		CatnipPacketRegistry registry = new CatnipPacketRegistry(Catnip.ID, 1);
 
 		for (CatnipPackets packet : values()) {
 			registry.registerPacket(packet.type);

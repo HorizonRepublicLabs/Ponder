@@ -1,9 +1,7 @@
 package net.createmod.catnip.animation;
 
 import net.createmod.catnip.levelWrappers.WrappedClientLevel;
-import net.createmod.ponder.api.level.PonderLevel;
-import net.createmod.ponder.foundation.ui.PonderUI;
-import net.createmod.ponder.mixin.accessor.TimerAccessor;
+import net.createmod.catnip.mixin.client.TimerAccessor;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.LevelAccessor;

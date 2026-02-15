@@ -6,8 +6,6 @@ plugins {
 neoForge {
     version = libs.versions.neoforge.get()
 
-    //accessTransformers.from(file("src/main/resources/META-INF/accesstransformer.cfg"))
-
     runs {
         create("client") {
             client()

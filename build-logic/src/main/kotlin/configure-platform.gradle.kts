@@ -39,6 +39,10 @@ fun versionOf(name: String): Any {
     return libs.findVersion(name).get()
 }
 
+
+val authors = findProperty("authors") as String
+val contributors = findProperty("contributors") as String
+
 // expand placeholders in metadata files
 tasks.processResources {
     val properties = mapOf(
@@ -47,7 +51,11 @@ tasks.processResources {
         "minecraft_version" to versionOf("minecraft"),
         "neo_version" to versionOf("neoforge"),
         "fabric_api_version" to versionOf("fabric-api"),
-        "fabric_loader_version" to versionOf("fabric-loader")
+        "fabric_loader_version" to versionOf("fabric-loader"),
+        "authors" to authors,
+        "contributors" to contributors,
+        "authors_json" to formatForJson(authors),
+        "contributors_json" to formatForJson(contributors)
     )
 
     inputs.properties(properties)
@@ -86,4 +94,13 @@ if (name == "common") {
     plugins.apply("provide-common")
 } else {
     plugins.apply("consume-common")
+}
+
+// trick to sneak multiple entries into a single placeholder in a JSON file.
+// the file must be valid even with placeholders, so we can't just do something like this: [${placeholder}]
+// instead, the placeholder is expected to be in a string, like this: ["${placeholder}"]
+// this takes a string in the format 'a, b, c' and adds quotes, so the end result will be like this: a", "b", "c
+// when filled into the placeholder, you get a valid list: ["a", "b", "c"]
+fun formatForJson(entries: String): String {
+    return entries.split(", ").joinToString(separator = "\", \"")
 }

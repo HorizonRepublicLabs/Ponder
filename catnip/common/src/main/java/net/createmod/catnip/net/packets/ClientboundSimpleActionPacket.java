@@ -5,11 +5,14 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import org.slf4j.Logger;
+
+import com.mojang.logging.LogUtils;
+
 import io.netty.buffer.ByteBuf;
 import net.createmod.catnip.net.CatnipPackets;
 import net.createmod.catnip.net.SimpleCatnipActions;
 import net.createmod.catnip.net.base.ClientboundPacketPayload;
-import net.createmod.ponder.Ponder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -22,6 +25,7 @@ public record ClientboundSimpleActionPacket(String action, String value) impleme
 		ClientboundSimpleActionPacket::new
 	);
 
+	private static final Logger logger = LogUtils.getLogger();
 	private static final Map<String, Supplier<Consumer<String>>> actions = new HashMap<>();
 
 	public static void addAction(String name, Supplier<Consumer<String>> action) {
@@ -41,7 +45,7 @@ public record ClientboundSimpleActionPacket(String action, String value) impleme
 	@Override
 	public void handle(LocalPlayer player) {
 		if (!actions.containsKey(action)) {
-			Ponder.LOGGER.warn("Received ClientboundSimpleActionPacket with invalid Action {}, ignoring the packet", action);
+			logger.warn("Received ClientboundSimpleActionPacket with invalid Action {}, ignoring the packet", action);
 			return;
 		}
 

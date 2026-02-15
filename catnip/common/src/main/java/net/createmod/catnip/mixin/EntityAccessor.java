@@ -1,4 +1,4 @@
-package net.createmod.ponder.mixin.accessor;
+package net.createmod.catnip.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;

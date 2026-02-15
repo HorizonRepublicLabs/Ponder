@@ -8,8 +8,8 @@ import org.jspecify.annotations.Nullable;
 
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.gui.widget.AbstractSimiWidget;
+import net.createmod.catnip.mixin.client.ScreenAccessor;
 import net.createmod.catnip.theme.Color;
-import net.createmod.ponder.mixin.client.accessor.ScreenAccessor;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Renderable;

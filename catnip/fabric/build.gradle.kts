@@ -5,7 +5,6 @@ plugins {
 
 loom {
     clientOnlyMinecraftJar()
-    //accessWidenerPath = project(":common").file("src/main/resources/ponder.accesswidener")
 
     runs {
         named("server") {

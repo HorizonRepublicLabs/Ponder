@@ -1,4 +1,4 @@
-package net.createmod.ponder.mixin.client.accessor;
+package net.createmod.catnip.mixin.client;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;

@@ -4,7 +4,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.jspecify.annotations.Nullable;
 
-import net.createmod.ponder.mixin.client.accessor.GameRendererAccessor;
+import net.createmod.catnip.mixin.client.GameRendererAccessor;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.ClientAvatarState;

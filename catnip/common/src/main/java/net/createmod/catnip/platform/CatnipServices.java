@@ -2,14 +2,19 @@ package net.createmod.catnip.platform;
 
 import java.util.ServiceLoader;
 
+import org.slf4j.Logger;
+
+import com.mojang.logging.LogUtils;
+
 import net.createmod.catnip.platform.services.ModFluidHelper;
 import net.createmod.catnip.platform.services.ModHooksHelper;
 import net.createmod.catnip.platform.services.NetworkHelper;
 import net.createmod.catnip.platform.services.PlatformHelper;
 import net.createmod.catnip.render.FluidRenderHelper;
-import net.createmod.ponder.Ponder;
 
 public class CatnipServices {
+	private static final Logger logger = LogUtils.getLogger();
+
 	public static final PlatformHelper PLATFORM = load(PlatformHelper.class);
 	public static final ModFluidHelper<?> FLUID_HELPER = load(ModFluidHelper.class);
 	public static final FluidRenderHelper<?> FLUID_RENDERER = new FluidRenderHelper<>();
@@ -17,10 +22,10 @@ public class CatnipServices {
 	public static final NetworkHelper NETWORK = load(NetworkHelper.class);
 
 	public static <T> T load(Class<T> clazz) {
-		final T loadedService = ServiceLoader.load(clazz)
+		T loadedService = ServiceLoader.load(clazz)
 			.findFirst()
 			.orElseThrow(() -> new NullPointerException("Failed to load service for " + clazz.getName()));
-		Ponder.LOGGER.debug("Loaded {} for service {}", loadedService, clazz);
+		logger.debug("Loaded {} for service {}", loadedService, clazz);
 		return loadedService;
 	}
 }
