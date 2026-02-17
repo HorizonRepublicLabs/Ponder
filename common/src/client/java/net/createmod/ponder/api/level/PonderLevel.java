@@ -12,9 +12,9 @@ import org.jspecify.annotations.Nullable;
 import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.createmod.catnip.levelWrappers.SchematicLevel;
-import net.createmod.catnip.levelWrappers.WrappedClientLevel;
-import net.createmod.catnip.platform.CatnipClientServices;
+import net.createmod.catnip.api.client.level.wrapper.WrappedClientLevel;
+import net.createmod.catnip.api.client.platform.CatnipClientServices;
+import net.createmod.catnip.api.level.wrapper.SchematicLevel;
 import net.createmod.ponder.Ponder;
 import net.createmod.ponder.api.VirtualBlockEntity;
 import net.createmod.ponder.api.element.WorldSectionElement;

@@ -1,6 +1,6 @@
 package net.createmod.ponder.command;
 
-import net.createmod.catnip.gui.ScreenOpener;
+import net.createmod.catnip.api.client.gui.ScreenOpener;
 import net.createmod.ponder.Ponder;
 import net.createmod.ponder.foundation.PonderIndex;
 import net.createmod.ponder.foundation.ui.PonderIndexScreen;

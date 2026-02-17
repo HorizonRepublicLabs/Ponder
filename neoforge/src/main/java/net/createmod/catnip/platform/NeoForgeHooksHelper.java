@@ -1,17 +1,17 @@
 package net.createmod.catnip.platform;
 
-import net.createmod.catnip.placement.IPlacementHelper;
-import net.createmod.catnip.platform.services.ModHooksHelper;
+import net.createmod.catnip.api.placement.IPlacementHelper;
+import net.createmod.catnip.api.platform.services.ModHooksHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
+
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.BlockSnapshot;
 import net.neoforged.neoforge.common.util.FakePlayer;

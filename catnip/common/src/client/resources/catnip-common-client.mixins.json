@@ -1,15 +1,15 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.createmod.catnip.mixin",
+  "package": "net.createmod.catnip.impl.client.mixin",
   "compatibilityLevel": "JAVA_25",
   "client": [
-    "client.GameRendererAccessor",
-    "client.LightingAccessor",
-    "client.ParticleEngineAccessor",
-    "client.RenderTypeAccessor",
-    "client.ScreenAccessor",
-    "client.TimerAccessor"
+    "GameRendererAccessor",
+    "LightingAccessor",
+    "ParticleEngineAccessor",
+    "RenderTypeAccessor",
+    "ScreenAccessor",
+    "TimerAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,6 +1,6 @@
 package net.createmod.ponder.enums;
 
-import net.createmod.catnip.render.BindableTexture;
+import net.createmod.catnip.api.client.render.BindableTexture;
 import net.createmod.ponder.Ponder;
 import net.minecraft.resources.Identifier;
 

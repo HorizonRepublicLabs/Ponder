@@ -3,9 +3,9 @@ package net.createmod.ponder.foundation.element;
 import org.joml.Matrix3x2fStack;
 import org.jspecify.annotations.Nullable;
 
-import net.createmod.catnip.gui.element.GuiGameElement;
-import net.createmod.catnip.gui.element.ScreenElement;
-import net.createmod.catnip.math.Pointing;
+import net.createmod.catnip.api.client.gui.element.GuiGameElement;
+import net.createmod.catnip.api.client.gui.element.ScreenElement;
+import net.createmod.catnip.api.math.Pointing;
 import net.createmod.ponder.Ponder;
 import net.createmod.ponder.api.PonderPalette;
 import net.createmod.ponder.api.element.InputElementBuilder;

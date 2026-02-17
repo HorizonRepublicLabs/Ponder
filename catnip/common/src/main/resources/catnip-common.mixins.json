@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.createmod.catnip.mixin",
+  "package": "net.createmod.catnip.impl.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
     "BiomeManagerAccessor",

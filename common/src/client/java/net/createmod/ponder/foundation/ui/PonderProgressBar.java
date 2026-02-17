@@ -2,12 +2,12 @@ package net.createmod.ponder.foundation.ui;
 
 import org.joml.Matrix3x2fStack;
 
-import net.createmod.catnip.animation.LerpedFloat;
-import net.createmod.catnip.data.Couple;
-import net.createmod.catnip.gui.UIRenderHelper;
-import net.createmod.catnip.gui.element.BoxElement;
-import net.createmod.catnip.gui.widget.AbstractSimiWidget;
-import net.createmod.catnip.theme.Color;
+import net.createmod.catnip.api.animation.LerpedFloat;
+import net.createmod.catnip.api.client.gui.UIRenderHelper;
+import net.createmod.catnip.api.client.gui.element.BoxElement;
+import net.createmod.catnip.api.client.gui.widget.AbstractSimiWidget;
+import net.createmod.catnip.api.data.Couple;
+import net.createmod.catnip.api.theme.Color;
 import net.createmod.ponder.foundation.PonderScene;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;

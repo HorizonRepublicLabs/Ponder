@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-import net.createmod.catnip.platform.services.PlatformHelper;
+import net.createmod.catnip.api.platform.Env;
+import net.createmod.catnip.api.platform.Loader;
+import net.createmod.catnip.api.platform.services.PlatformHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;

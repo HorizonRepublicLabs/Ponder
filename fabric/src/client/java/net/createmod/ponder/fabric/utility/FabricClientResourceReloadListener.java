@@ -1,6 +1,6 @@
 package net.createmod.ponder.fabric.utility;
 
-import net.createmod.catnip.event.ClientResourceReloadListener;
+import net.createmod.catnip.impl.client.ClientResourceReloadListener;
 import net.createmod.ponder.Ponder;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resources.Identifier;

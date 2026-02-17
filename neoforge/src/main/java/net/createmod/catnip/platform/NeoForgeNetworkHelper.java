@@ -1,16 +1,18 @@
 package net.createmod.catnip.platform;
 
-import net.createmod.catnip.net.base.CatnipPacketRegistry;
-import net.createmod.catnip.net.base.ClientboundPacketPayload;
-import net.createmod.catnip.net.base.ServerboundPacketPayload;
-import net.createmod.catnip.platform.services.NetworkHelper;
-import net.minecraft.client.player.LocalPlayer;
+import org.jetbrains.annotations.ApiStatus;
+
+import net.createmod.catnip.api.network.base.CatnipPacketRegistry;
+import net.createmod.catnip.api.network.base.ClientboundPacketPayload;
+import net.createmod.catnip.api.network.base.ServerboundPacketPayload;
+import net.createmod.catnip.api.platform.services.NetworkHelper;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.phys.Vec3;
+
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.fml.ModContainer;
@@ -19,8 +21,6 @@ import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-
-import org.jetbrains.annotations.ApiStatus;
 
 public class NeoForgeNetworkHelper implements NetworkHelper {
 	@ApiStatus.Internal

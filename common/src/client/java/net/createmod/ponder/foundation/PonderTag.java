@@ -3,8 +3,8 @@ package net.createmod.ponder.foundation;
 import org.joml.Matrix3x2fStack;
 import org.jspecify.annotations.Nullable;
 
-import net.createmod.catnip.gui.element.GuiGameElement;
-import net.createmod.catnip.gui.element.ScreenElement;
+import net.createmod.catnip.api.client.gui.element.GuiGameElement;
+import net.createmod.catnip.api.client.gui.element.ScreenElement;
 import net.createmod.ponder.Ponder;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;

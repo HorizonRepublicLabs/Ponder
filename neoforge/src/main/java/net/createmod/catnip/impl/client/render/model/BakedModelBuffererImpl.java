@@ -7,8 +7,8 @@ import org.jspecify.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import dev.engine_room.flywheel.lib.model.baked.VirtualBlockGetter;
-import net.createmod.catnip.client.render.model.ShadeSeparatedBufferSource;
-import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
+import net.createmod.catnip.api.client.render.model.ShadeSeparatedBufferSource;
+import net.createmod.catnip.api.client.render.model.ShadeSeparatedResultConsumer;
 import net.createmod.catnip.impl.client.render.TransformingVertexConsumer;
 import net.createmod.ponder.neoforge.render.VirtualRenderHelper;
 import net.minecraft.client.Minecraft;

@@ -10,10 +10,11 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.createmod.catnip.client.render.model.ShadeSeparatedBufferSource;
-import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
+import net.createmod.catnip.api.client.platform.ModClientHooksHelper;
+import net.createmod.catnip.api.client.render.model.ShadeSeparatedBufferSource;
+import net.createmod.catnip.api.client.render.model.ShadeSeparatedResultConsumer;
+import net.createmod.catnip.api.platform.CatnipServices;
 import net.createmod.catnip.impl.client.render.model.BakedModelBuffererImpl;
-import net.createmod.catnip.platform.services.ModClientHooksHelper;
 import net.createmod.ponder.fabric.mixin.client.ParticleEngineAccessor;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.PictureInPictureRendererRegistry;

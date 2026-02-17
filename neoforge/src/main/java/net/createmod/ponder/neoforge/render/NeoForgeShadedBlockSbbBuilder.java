@@ -3,7 +3,7 @@ package net.createmod.ponder.neoforge.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import net.createmod.catnip.render.ShadedBlockSbbBuilder;
+import net.createmod.catnip.api.client.render.ShadedBlockSbbBuilder;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 
 @Deprecated(forRemoval = true)

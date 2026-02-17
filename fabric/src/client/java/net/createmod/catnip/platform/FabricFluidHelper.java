@@ -2,7 +2,7 @@ package net.createmod.catnip.platform;
 
 import org.jspecify.annotations.Nullable;
 
-import net.createmod.catnip.platform.services.ModFluidHelper;
+import net.createmod.catnip.api.platform.services.ModFluidHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering;

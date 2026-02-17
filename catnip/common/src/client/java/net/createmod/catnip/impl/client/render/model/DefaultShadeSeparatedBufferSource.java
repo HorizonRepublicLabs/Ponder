@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
-import net.createmod.catnip.client.render.model.ShadeSeparatedBufferSource;
-import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
+import net.createmod.catnip.api.client.render.model.ShadeSeparatedBufferSource;
+import net.createmod.catnip.api.client.render.model.ShadeSeparatedResultConsumer;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 
 class DefaultShadeSeparatedBufferSource implements ShadeSeparatedBufferSource {

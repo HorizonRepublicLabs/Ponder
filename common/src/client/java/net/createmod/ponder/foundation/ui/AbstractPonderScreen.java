@@ -2,8 +2,8 @@ package net.createmod.ponder.foundation.ui;
 
 import static net.createmod.ponder.foundation.registration.PonderLocalization.UI_PREFIX;
 
-import net.createmod.catnip.gui.NavigatableSimiScreen;
-import net.createmod.catnip.gui.ScreenOpener;
+import net.createmod.catnip.api.client.gui.NavigatableSimiScreen;
+import net.createmod.catnip.api.client.gui.ScreenOpener;
 import net.createmod.ponder.Ponder;
 import net.minecraft.network.chat.Component;
 

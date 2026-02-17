@@ -14,12 +14,13 @@ import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.createmod.catnip.client.render.model.ShadeSeparatedBufferSource;
-import net.createmod.catnip.client.render.model.ShadeSeparatedResultConsumer;
+import net.createmod.catnip.api.client.platform.ModClientHooksHelper;
+import net.createmod.catnip.api.client.render.ShadedBlockSbbBuilder;
+import net.createmod.catnip.api.client.render.model.ShadeSeparatedBufferSource;
+import net.createmod.catnip.api.client.render.model.ShadeSeparatedResultConsumer;
+import net.createmod.catnip.api.platform.CatnipServices;
+import net.createmod.catnip.api.registry.RegisteredObjectsHelper;
 import net.createmod.catnip.impl.client.render.model.BakedModelBuffererImpl;
-import net.createmod.catnip.platform.services.ModClientHooksHelper;
-import net.createmod.catnip.registry.RegisteredObjectsHelper;
-import net.createmod.catnip.render.ShadedBlockSbbBuilder;
 import net.createmod.ponder.neoforge.mixin.client.accessor.ParticleEngineAccessor;
 import net.createmod.ponder.neoforge.render.NeoForgeShadedBlockSbbBuilder;
 import net.minecraft.client.KeyMapping;

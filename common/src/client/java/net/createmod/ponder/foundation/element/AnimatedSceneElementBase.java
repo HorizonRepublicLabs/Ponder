@@ -4,7 +4,7 @@ import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.createmod.catnip.animation.LerpedFloat;
+import net.createmod.catnip.api.animation.LerpedFloat;
 import net.createmod.ponder.api.element.AnimatedSceneElement;
 import net.createmod.ponder.api.level.PonderLevel;
 import net.minecraft.client.Camera;

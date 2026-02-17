@@ -2,8 +2,8 @@ package net.createmod.ponder.api.scene;
 
 import java.util.function.Predicate;
 
-import net.createmod.catnip.outliner.Outline;
-import net.createmod.catnip.outliner.Outliner;
+import net.createmod.catnip.api.client.outliner.Outline;
+import net.createmod.catnip.api.client.outliner.Outliner;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 

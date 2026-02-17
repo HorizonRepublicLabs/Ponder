@@ -5,8 +5,8 @@ import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.createmod.catnip.lang.LangBuilder;
-import net.createmod.catnip.net.CatnipPackets;
+import net.createmod.catnip.api.lang.LangBuilder;
+import net.createmod.catnip.api.network.CatnipPackets;
 import net.minecraft.resources.Identifier;
 
 public class Ponder {

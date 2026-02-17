@@ -5,7 +5,7 @@ import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.Window;
 
-import net.createmod.catnip.animation.LerpedFloat;
+import net.createmod.catnip.api.animation.LerpedFloat;
 import net.createmod.ponder.foundation.PonderScene;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.render.state.pip.PictureInPictureRenderState;

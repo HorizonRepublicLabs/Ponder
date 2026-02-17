@@ -1,7 +1,9 @@
 package net.createmod.catnip.platform;
 
-import net.createmod.catnip.platform.services.ModFluidHelper;
-import net.createmod.catnip.render.FluidRenderHelper;
+import net.createmod.catnip.api.client.render.FluidRenderHelper;
+import net.createmod.catnip.api.platform.CatnipServices;
+import net.createmod.catnip.api.platform.services.ModFluidHelper;
+
 import net.neoforged.neoforge.fluids.FluidStack;
 
 @SuppressWarnings("unchecked")

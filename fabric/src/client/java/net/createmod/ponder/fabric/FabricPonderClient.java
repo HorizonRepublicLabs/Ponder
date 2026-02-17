@@ -2,10 +2,10 @@ package net.createmod.ponder.fabric;
 
 import org.jspecify.annotations.Nullable;
 
-import net.createmod.catnip.animation.AnimationTickHolder;
-import net.createmod.catnip.data.Couple;
-import net.createmod.catnip.placement.PlacementClient;
-import net.createmod.catnip.theme.Color;
+import net.createmod.catnip.api.client.animation.AnimationTickHolder;
+import net.createmod.catnip.api.data.Couple;
+import net.createmod.catnip.api.theme.Color;
+import net.createmod.catnip.impl.client.placement.PlacementClient;
 import net.createmod.ponder.PonderClient;
 import net.createmod.ponder.enums.PonderKeybinds;
 import net.createmod.ponder.fabric.utility.FabricClientResourceReloadListener;

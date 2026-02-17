@@ -6,8 +6,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
-import net.createmod.catnip.math.Pointing;
-import net.createmod.catnip.math.VecHelper;
+import net.createmod.catnip.api.math.Pointing;
+import net.createmod.catnip.api.math.VecHelper;
 import net.createmod.ponder.Ponder;
 import net.createmod.ponder.api.ParticleEmitter;
 import net.createmod.ponder.api.PonderPalette;

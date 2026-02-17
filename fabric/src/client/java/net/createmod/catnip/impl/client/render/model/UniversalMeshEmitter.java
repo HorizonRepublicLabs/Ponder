@@ -7,7 +7,7 @@ import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import net.createmod.catnip.client.render.model.ShadeSeparatedBufferSource;
+import net.createmod.catnip.api.client.render.model.ShadeSeparatedBufferSource;
 import net.fabricmc.fabric.api.client.model.loading.v1.wrapper.WrapperBlockStateModel;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;

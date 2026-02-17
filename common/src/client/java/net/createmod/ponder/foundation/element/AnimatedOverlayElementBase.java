@@ -1,6 +1,6 @@
 package net.createmod.ponder.foundation.element;
 
-import net.createmod.catnip.animation.LerpedFloat;
+import net.createmod.catnip.api.animation.LerpedFloat;
 import net.createmod.ponder.api.element.AnimatedOverlayElement;
 
 public abstract class AnimatedOverlayElementBase extends PonderElementBase implements AnimatedOverlayElement {

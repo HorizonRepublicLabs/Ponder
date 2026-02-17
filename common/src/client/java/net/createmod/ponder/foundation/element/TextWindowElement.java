@@ -6,9 +6,9 @@ import java.util.function.Supplier;
 import org.joml.Matrix3x2fStack;
 import org.jspecify.annotations.Nullable;
 
-import net.createmod.catnip.data.Couple;
-import net.createmod.catnip.gui.element.BoxElement;
-import net.createmod.catnip.theme.Color;
+import net.createmod.catnip.api.client.gui.element.BoxElement;
+import net.createmod.catnip.api.data.Couple;
+import net.createmod.catnip.api.theme.Color;
 import net.createmod.ponder.api.PonderPalette;
 import net.createmod.ponder.api.element.TextElementBuilder;
 import net.createmod.ponder.foundation.PonderIndex;

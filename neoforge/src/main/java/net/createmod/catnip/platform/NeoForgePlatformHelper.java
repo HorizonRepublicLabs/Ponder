@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-import net.createmod.catnip.config.ui.ConfigScreen;
-import net.createmod.catnip.platform.services.PlatformHelper;
+import net.createmod.catnip.api.client.config.ConfigScreen;
+import net.createmod.catnip.api.platform.CatnipServices;
+import net.createmod.catnip.api.platform.Env;
+import net.createmod.catnip.api.platform.Loader;
+import net.createmod.catnip.api.platform.services.PlatformHelper;
+
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLEnvironment;

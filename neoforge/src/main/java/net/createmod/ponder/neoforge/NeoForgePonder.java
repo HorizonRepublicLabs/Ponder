@@ -3,9 +3,9 @@ package net.createmod.ponder.neoforge;
 import java.util.Map;
 import java.util.Set;
 
-import net.createmod.catnip.command.CatnipCommands;
-import net.createmod.catnip.config.ConfigBase;
-import net.createmod.catnip.net.ConfigPathArgument;
+import net.createmod.catnip.api.config.ConfigBase;
+import net.createmod.catnip.api.network.ConfigPathArgument;
+import net.createmod.catnip.impl.command.CatnipCommands;
 import net.createmod.ponder.Ponder;
 import net.createmod.ponder.command.PonderCommands;
 import net.createmod.ponder.enums.PonderConfig;

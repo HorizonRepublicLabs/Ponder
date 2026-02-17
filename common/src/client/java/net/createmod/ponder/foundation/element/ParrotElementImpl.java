@@ -7,7 +7,7 @@ import org.jspecify.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
-import net.createmod.catnip.math.AngleHelper;
+import net.createmod.catnip.api.math.AngleHelper;
 import net.createmod.ponder.api.element.ParrotElement;
 import net.createmod.ponder.api.element.ParrotPose;
 import net.createmod.ponder.api.level.PonderLevel;

@@ -1,6 +1,6 @@
 package net.createmod.ponder.foundation.instruction;
 
-import net.createmod.catnip.animation.LerpedFloat.Chaser;
+import net.createmod.catnip.api.animation.LerpedFloat.Chaser;
 import net.createmod.ponder.foundation.PonderScene;
 import net.createmod.ponder.foundation.PonderScene.SceneTransform;
 

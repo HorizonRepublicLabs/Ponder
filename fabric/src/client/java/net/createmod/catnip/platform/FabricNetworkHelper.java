@@ -2,10 +2,11 @@ package net.createmod.catnip.platform;
 
 import org.jetbrains.annotations.ApiStatus;
 
-import net.createmod.catnip.net.base.CatnipPacketRegistry;
-import net.createmod.catnip.net.base.ClientboundPacketPayload;
-import net.createmod.catnip.net.base.ServerboundPacketPayload;
-import net.createmod.catnip.platform.services.NetworkHelper;
+import net.createmod.catnip.api.network.base.CatnipPacketRegistry;
+import net.createmod.catnip.api.network.base.ClientboundPacketPayload;
+import net.createmod.catnip.api.network.base.ServerboundPacketPayload;
+import net.createmod.catnip.api.platform.CatnipServices;
+import net.createmod.catnip.api.platform.services.NetworkHelper;
 import net.createmod.ponder.fabric.FabricPonder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

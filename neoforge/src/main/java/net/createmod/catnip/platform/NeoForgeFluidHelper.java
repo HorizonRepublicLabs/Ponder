@@ -1,24 +1,21 @@
 package net.createmod.catnip.platform;
 
+import org.jspecify.annotations.Nullable;
+
+import net.createmod.catnip.api.platform.services.ModFluidHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-
-import net.createmod.catnip.platform.services.ModFluidHelper;
-import net.minecraft.world.level.material.Fluid;
-
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
-
-import org.jspecify.annotations.Nullable;
 
 public class NeoForgeFluidHelper implements ModFluidHelper<FluidStack> {
 	@OnlyIn(Dist.CLIENT)

@@ -1,6 +1,6 @@
 package net.createmod.ponder.api.element;
 
-import net.createmod.catnip.gui.element.ScreenElement;
+import net.createmod.catnip.api.client.gui.element.ScreenElement;
 import net.minecraft.world.item.ItemStack;
 
 public interface InputElementBuilder {
