@@ -39,7 +39,6 @@ fun versionOf(name: String): Any {
     return libs.findVersion(name).get()
 }
 
-
 val authors = findProperty("authors") as String
 val contributors = findProperty("contributors") as String
 
@@ -78,6 +77,13 @@ publishing {
     }
 }
 
+// will only exist in common/fabric
+val loom: Any? = extensions.findByName("loom")
+// reflection in the buildscript. have I hit a new low?
+// we need to call this now or else the sourceSet won't exist, and
+// I don't even know where to begin with compiling against loom here.
+loom?.javaClass?.getMethod("splitEnvironmentSourceSets")?.invoke(loom)
+
 // generate package-infos for the main (and client, if present) sourceSet(s)
 extensions.getByType<PackageInfosExtension>().sources(sourceSets.named { it == "main" || it == "client" })
 
@@ -90,10 +96,10 @@ tasks.withType<JavaCompile> {
     exclude("**/PonderConfig.java")
 }
 
-if (name == "common") {
-    plugins.apply("provide-common")
-} else {
-    plugins.apply("consume-common")
+when (name) {
+    "common" -> plugins.apply("provide-common")
+    "fabric" -> plugins.apply("consume-common-split")
+    else -> plugins.apply("consume-common-merged")
 }
 
 // trick to sneak multiple entries into a single placeholder in a JSON file.

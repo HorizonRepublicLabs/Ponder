@@ -1,7 +1,10 @@
 package net.createmod.catnip.api.platform.services;
 
+import org.jspecify.annotations.Nullable;
+
 import net.createmod.catnip.impl.ServiceHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -25,4 +28,16 @@ public interface ModHooksHelper {
 	}
 
 	boolean isPlayerFake(ServerPlayer player);
+
+	/// @return the current [MinecraftServer], if present
+	@Nullable
+	MinecraftServer getServer();
+
+	default MinecraftServer getServerOrThrow() {
+		MinecraftServer server = this.getServer();
+		if (server != null)
+			return server;
+
+		throw new IllegalStateException("No server is currently available");
+	}
 }

@@ -1,7 +1,10 @@
-package net.createmod.catnip.platform;
+package net.createmod.catnip.impl.fabric.service;
 
-import net.createmod.catnip.api.placement.IPlacementHelper;
+import org.jspecify.annotations.Nullable;
+
 import net.createmod.catnip.api.platform.services.ModHooksHelper;
+import net.fabricmc.fabric.api.entity.FakePlayer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -9,35 +12,30 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.util.BlockSnapshot;
-import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.event.level.BlockEvent;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
+public class FabricHooksHelper implements ModHooksHelper {
+	@Nullable
+	private static MinecraftServer currentServer;
 
-public class NeoForgeHooksHelper implements ModHooksHelper {
+	static {
+		ServerLifecycleEvents.SERVER_STARTED.register(server -> currentServer = server);
+		ServerLifecycleEvents.SERVER_STOPPED.register(_ -> currentServer = null);
+	}
 
 	@Override
 	public boolean playerPlaceSingleBlock(Player player, Level level, BlockPos pos, BlockState newState) {
-		BlockSnapshot snapshot = BlockSnapshot.create(level.dimension(), level, pos);
 		level.setBlockAndUpdate(pos, newState);
-
-		BlockEvent.EntityPlaceEvent event = new BlockEvent.EntityPlaceEvent(snapshot, IPlacementHelper.ID, player);
-		if (NeoForge.EVENT_BUS.post(event).isCanceled()) {
-			snapshot.restore(Block.UPDATE_CLIENTS); // TODO - Checkover
-			return true;
-		}
-
 		return false;
 	}
 
 	@Override
 	public ItemStack getCloneItemFromBlockstate(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-		return state.getCloneItemStack(pos, level, true, player);
+		// TODO
+//		if (state.getBlock() instanceof BlockPickInteractionAware blockPickInteractionAware)
+//			return blockPickInteractionAware.getPickedStack(state, level, pos, player, target);
+		return ModHooksHelper.super.getCloneItemFromBlockstate(state, target, level, pos, player);
 	}
 
 	@Override
@@ -47,6 +45,6 @@ public class NeoForgeHooksHelper implements ModHooksHelper {
 
 	@Override
 	public MinecraftServer getServer() {
-		return ServerLifecycleHooks.getCurrentServer();
+		return currentServer;
 	}
 }

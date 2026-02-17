@@ -3,7 +3,7 @@ package net.createmod.catnip.api.client.level.wrapper;
 import org.jspecify.annotations.Nullable;
 
 import net.createmod.catnip.impl.client.mixin.ClientPacketListenerAccessor;
-import net.createmod.catnip.impl.mixin.mixin.BiomeManagerAccessor;
+import net.createmod.catnip.impl.mixin.BiomeManagerAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;

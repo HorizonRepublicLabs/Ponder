@@ -8,14 +8,14 @@ import net.createmod.catnip.api.client.render.model.ShadeSeparatedBufferSource;
 import net.createmod.catnip.api.client.render.model.ShadeSeparatedResultConsumer;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 
-class DefaultShadeSeparatedBufferSource implements ShadeSeparatedBufferSource {
+public class DefaultShadeSeparatedBufferSource implements ShadeSeparatedBufferSource {
 	private static final ChunkSectionLayer[] CHUNK_LAYERS = ChunkSectionLayer.values();
 	private static final int CHUNK_LAYER_AMOUNT = CHUNK_LAYERS.length;
 
 	private final MeshEmitter[] emitters = new MeshEmitter[CHUNK_LAYER_AMOUNT];
 	private final Reference2ReferenceMap<ChunkSectionLayer, MeshEmitter> emitterMap = new Reference2ReferenceOpenHashMap<>();
 
-	DefaultShadeSeparatedBufferSource() {
+	public DefaultShadeSeparatedBufferSource() {
 		for (int layerIndex = 0; layerIndex < CHUNK_LAYER_AMOUNT; layerIndex++) {
 			ChunkSectionLayer layer = CHUNK_LAYERS[layerIndex];
 			MeshEmitter emitter = new MeshEmitter(layer);

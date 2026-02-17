@@ -17,8 +17,18 @@
   },
   "license": "MIT",
   "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.createmod.catnip.impl.Catnip::init"
+    ],
+    "client": [
+      "net.createmod.catnip.impl.client.CatnipClient::init"
+    ]
+  },
   "mixins": [
-    "catnip-common.mixins.json"
+    "catnip-common.mixins.json",
+    "catnip-common-client.mixins.json",
+    "catnip-fabric-client.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${fabric_loader_version}",

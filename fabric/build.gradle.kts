@@ -4,8 +4,6 @@ plugins {
 }
 
 loom {
-    splitEnvironmentSourceSets()
-
     runs {
         named("server") {
             runDir = "run/server"

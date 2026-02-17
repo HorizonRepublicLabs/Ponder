@@ -10,6 +10,5 @@ dependencies {
 }
 
 loom {
-    splitEnvironmentSourceSets()
     accessWidenerPath = file("catnip.accesswidener")
 }
