@@ -21,6 +21,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.TickRateManager;
 import net.minecraft.world.attribute.EnvironmentAttributeSystem;
+import net.minecraft.world.clock.ClockManager;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragonPart;
@@ -226,6 +227,11 @@ public class WrappedLevel extends Level {
 	@Override
 	public RegistryAccess registryAccess() {
 		return level.registryAccess();
+	}
+
+	@Override
+	public ClockManager clockManager() {
+		return this.level.clockManager();
 	}
 
 	@Override

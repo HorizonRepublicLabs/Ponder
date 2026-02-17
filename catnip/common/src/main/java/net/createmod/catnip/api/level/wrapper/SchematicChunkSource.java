@@ -19,6 +19,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.TickRateManager;
 import net.minecraft.world.attribute.EnvironmentAttributeSystem;
+import net.minecraft.world.clock.ClockManager;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragonPart;
@@ -286,6 +287,11 @@ public class SchematicChunkSource extends ChunkSource {
 
 			@Override
 			public TickRateManager tickRateManager() {
+				return null;
+			}
+
+			@Override
+			public ClockManager clockManager() {
 				return null;
 			}
 

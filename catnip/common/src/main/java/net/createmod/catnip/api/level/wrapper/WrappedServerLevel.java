@@ -24,6 +24,7 @@ import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
+import net.minecraft.world.level.storage.LevelStorageSource.LevelStorageAccess;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.ticks.LevelTicks;
 import net.minecraft.world.ticks.TickPriority;
@@ -32,12 +33,12 @@ public class WrappedServerLevel extends ServerLevel {
 	protected ServerLevel level;
 
 	public WrappedServerLevel(ServerLevel level) {
-		super(level.getServer(), Util.backgroundExecutor(),
-			((MinecraftServerAccessor) level.getServer()).catnip$getStorageSource(),
-			(ServerLevelData) level.getLevelData(), level.dimension(), new LevelStem(level.dimensionTypeRegistration(),
-				level.getChunkSource().getGenerator()), level.isDebug(),
-			((BiomeManagerAccessor) level.getBiomeManager()).catnip$getBiomeZoomSeed(), Collections.emptyList(),
-			false, level.getRandomSequences());
+		LevelStorageAccess storage = ((MinecraftServerAccessor) level.getServer()).catnip$getStorageSource();
+		ServerLevelData data = (ServerLevelData) level.getLevelData();
+		LevelStem stem = new LevelStem(level.dimensionTypeRegistration(), level.getChunkSource().getGenerator());
+		long seed = ((BiomeManagerAccessor) level.getBiomeManager()).catnip$getBiomeZoomSeed();
+
+		super(level.getServer(), Util.backgroundExecutor(), storage, data, level.dimension(), stem, level.isDebug(), seed, Collections.emptyList(), false);
 		this.level = level;
 	}
 
