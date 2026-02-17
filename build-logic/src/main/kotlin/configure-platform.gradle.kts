@@ -30,13 +30,15 @@ tasks.withType<Jar> {
 }
 
 val libs: VersionCatalog = versionCatalogs.named("libs")
-fun versionOf(name: String): Any {
+fun versionOf(name: String): String {
+    val version = libs.findVersion(name).get().toString()
+
     // thank you fabric loader for mangling all non-release versions
     // FIXME remove when on full 26.1
     if (name == "minecraft" && project.name == "fabric")
-        return "26.1-alpha.2";
+        return version.replace("snapshot-", "alpha.")
 
-    return libs.findVersion(name).get()
+    return version
 }
 
 val authors = findProperty("authors") as String
