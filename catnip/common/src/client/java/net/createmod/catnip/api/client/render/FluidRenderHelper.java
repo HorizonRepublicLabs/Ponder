@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 
+import net.createmod.catnip.api.client.platform.ClientFluidHelper;
 import net.createmod.catnip.api.data.Iterate;
 import net.createmod.catnip.api.platform.services.ModFluidHelper;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -11,26 +12,27 @@ import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
+import net.minecraft.core.TypedInstance;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 
-public final class FluidRenderHelper<T> {
-	public static final FluidRenderHelper<?> FLUID_RENDERER = new FluidRenderHelper<>();
+public final class FluidRenderHelper {
+	private FluidRenderHelper() {}
 
-	public void submitFluidBox(FluidState fluid, float xMin, float yMin, float zMin, float xMax, float yMax, float zMax,
-							   OrderedSubmitNodeCollector submitNode, PoseStack ms, int light, boolean renderBottom, boolean invertGasses) {
-		this.submitFluidBox(submitNode, this.helper().toStack(fluid), xMin, yMin, zMin, xMax, yMax, zMax, ms, light, renderBottom, invertGasses);
+	public static void submitFluidBox(FluidState fluid, float xMin, float yMin, float zMin, float xMax, float yMax, float zMax,
+									  OrderedSubmitNodeCollector submitNode, PoseStack ms, int light, boolean renderBottom, boolean invertGasses) {
+		submitFluidBox(submitNode, ModFluidHelper.INSTANCE.instanceFor(fluid), xMin, yMin, zMin, xMax, yMax, zMax, ms, light, renderBottom, invertGasses);
 	}
 
-	public void submitFluidBox(OrderedSubmitNodeCollector submitNode, T fluid, float xMin, float yMin, float zMin, float xMax, float yMax, float zMax,
-							   PoseStack ms, int light, boolean renderBottom, boolean invertGasses) {
-		ModFluidHelper<T> helper = this.helper();
-
+	public static void submitFluidBox(OrderedSubmitNodeCollector submitNode, TypedInstance<Fluid> fluid,
+									  float xMin, float yMin, float zMin, float xMax, float yMax, float zMax,
+									  PoseStack ms, int light, boolean renderBottom, boolean invertGasses) {
 		Vec3 center = new Vec3(xMin + (xMax - xMin) / 2, yMin + (yMax - yMin) / 2, zMin + (zMax - zMin) / 2);
 		ms.pushPose();
-		if (invertGasses && helper.isLighterThanAir(fluid)) {
+		if (invertGasses && ModFluidHelper.INSTANCE.isLighterThanAir(fluid)) {
 			ms.translate(center.x, center.y, center.z);
 			ms.mulPose(Axis.XP.rotationDegrees(180));
 			ms.translate(-center.x, -center.y, -center.z);
@@ -43,28 +45,26 @@ public final class FluidRenderHelper<T> {
 		ms.popPose();
 	}
 
-	public void renderFluidBox(FluidState fluid, float xMin, float yMin, float zMin, float xMax, float yMax, float zMax,
-							   MultiBufferSource buffer, PoseStack ms, int light, boolean renderBottom, boolean invertGasses) {
-		this.renderFluidBox(fluid, xMin, yMin, zMin, xMax, yMax, zMax, getFluidBuilder(buffer), ms, light, renderBottom, invertGasses);
+	public static void renderFluidBox(FluidState fluid, float xMin, float yMin, float zMin, float xMax, float yMax, float zMax,
+									  MultiBufferSource buffer, PoseStack ms, int light, boolean renderBottom, boolean invertGasses) {
+		renderFluidBox(fluid, xMin, yMin, zMin, xMax, yMax, zMax, getFluidBuilder(buffer), ms, light, renderBottom, invertGasses);
 	}
 
-	public void renderFluidBox(FluidState fluid, float xMin, float yMin, float zMin, float xMax,
-							   float yMax, float zMax, VertexConsumer builder, PoseStack ms, int light, boolean renderBottom, boolean invertGasses) {
-		this.renderFluidBox(this.helper().toStack(fluid), xMin, yMin, zMin, xMax, yMax, zMax, builder, ms, light, renderBottom, invertGasses);
+	public static void renderFluidBox(FluidState fluid, float xMin, float yMin, float zMin, float xMax,
+									  float yMax, float zMax, VertexConsumer builder, PoseStack ms, int light, boolean renderBottom, boolean invertGasses) {
+		renderFluidBox(ModFluidHelper.INSTANCE.instanceFor(fluid), xMin, yMin, zMin, xMax, yMax, zMax, builder, ms, light, renderBottom, invertGasses);
 	}
 
-	public void renderFluidBox(T fluid, float xMin, float yMin, float zMin, float xMax,
-							   float yMax, float zMax, MultiBufferSource buffer, PoseStack ms, int light, boolean renderBottom, boolean invertGasses) {
-		this.renderFluidBox(fluid, xMin, yMin, zMin, xMax, yMax, zMax, getFluidBuilder(buffer), ms, light, renderBottom, invertGasses);
+	public static void renderFluidBox(TypedInstance<Fluid> fluid, float xMin, float yMin, float zMin, float xMax,
+									  float yMax, float zMax, MultiBufferSource buffer, PoseStack ms, int light, boolean renderBottom, boolean invertGasses) {
+		renderFluidBox(fluid, xMin, yMin, zMin, xMax, yMax, zMax, getFluidBuilder(buffer), ms, light, renderBottom, invertGasses);
 	}
 
-	public void renderFluidBox(T fluid, float xMin, float yMin, float zMin, float xMax, float yMax, float zMax,
-							   VertexConsumer builder, PoseStack ms, int light, boolean renderBottom, boolean invertGasses) {
-		ModFluidHelper<T> helper = this.helper();
-
+	public static void renderFluidBox(TypedInstance<Fluid> fluid, float xMin, float yMin, float zMin, float xMax, float yMax, float zMax,
+									  VertexConsumer builder, PoseStack ms, int light, boolean renderBottom, boolean invertGasses) {
 		Vec3 center = new Vec3(xMin + (xMax - xMin) / 2, yMin + (yMax - yMin) / 2, zMin + (zMax - zMin) / 2);
 		ms.pushPose();
-		if (invertGasses && helper.isLighterThanAir(fluid)) {
+		if (invertGasses && ModFluidHelper.INSTANCE.isLighterThanAir(fluid)) {
 			ms.translate(center.x, center.y, center.z);
 			ms.mulPose(Axis.XP.rotationDegrees(180));
 			ms.translate(-center.x, -center.y, -center.z);
@@ -75,15 +75,13 @@ public final class FluidRenderHelper<T> {
 		ms.popPose();
 	}
 
-	private void renderFluidBox(T fluid, float xMin, float yMin, float zMin, float xMax, float yMax, float zMax,
-							   VertexConsumer builder, PoseStack.Pose peek, int light, boolean renderBottom) {
-		ModFluidHelper<T> helper = this.helper();
-
-		TextureAtlasSprite fluidTexture = helper.getStillTextureOrMissing(fluid);
-		int color = helper.getColor(fluid, null, null);
+	private static void renderFluidBox(TypedInstance<Fluid> fluid, float xMin, float yMin, float zMin, float xMax, float yMax, float zMax,
+									   VertexConsumer builder, PoseStack.Pose peek, int light, boolean renderBottom) {
+		TextureAtlasSprite fluidTexture = ClientFluidHelper.INSTANCE.getStillTextureOrMissing(fluid);
+		int color = ClientFluidHelper.INSTANCE.getColor(fluid, null, null);
 
 		int blockLightIn = (light >> 4) & 0xF;
-		int luminosity = Math.max(blockLightIn, helper.getLuminosity(fluid));
+		int luminosity = Math.max(blockLightIn, ModFluidHelper.INSTANCE.getLuminosity(fluid));
 		light = (light & 0xF00000) | luminosity << 4;
 
 		for (Direction side : Iterate.directions) {
@@ -190,10 +188,5 @@ public final class FluidRenderHelper<T> {
 			.setLight(light)
 			.setNormal(peek.copy(), normal.getX(), normal.getY(), normal.getZ())
 		;
-	}
-
-	@SuppressWarnings("unchecked")
-	private ModFluidHelper<T> helper() {
-		return (ModFluidHelper<T>) ModFluidHelper.INSTANCE;
 	}
 }

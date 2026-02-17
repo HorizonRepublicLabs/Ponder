@@ -47,7 +47,7 @@ public class NeoForgeFluidHelper implements ModFluidHelper<FluidStack> {
 	}
 
 	@Override
-	public FluidStack toStack(FluidState state) {
+	public FluidStack instanceFor(FluidState state) {
 		return new FluidStack(state.getType(), 1000);
 	}
 }

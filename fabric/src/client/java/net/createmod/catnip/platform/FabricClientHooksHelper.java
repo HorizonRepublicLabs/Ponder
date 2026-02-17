@@ -70,12 +70,12 @@ public class FabricClientHooksHelper implements ModClientHooksHelper {
 
 	@Override
 	public void submitFullFluidState(PoseStack ms, OrderedSubmitNodeCollector submitNode, FluidState fluid) {
-		FluidRenderHelper.FLUID_RENDERER.submitFluidBox(fluid, 0, 0, 0, 1, 1, 1, submitNode, ms, LightCoordsUtil.FULL_BRIGHT, false, true);
+		FluidRenderHelper.INSTANCE.submitFluidBox(fluid, 0, 0, 0, 1, 1, 1, submitNode, ms, LightCoordsUtil.FULL_BRIGHT, false, true);
 	}
 
 	@Override
 	public void renderFullFluidState(PoseStack ms, MultiBufferSource.BufferSource buffer, FluidState fluid) {
-		FluidRenderHelper.FLUID_RENDERER.renderFluidBox(fluid, 0, 0, 0, 1, 1, 1, buffer, ms, LightCoordsUtil.FULL_BRIGHT, false, true);
+		FluidRenderHelper.INSTANCE.renderFluidBox(fluid, 0, 0, 0, 1, 1, 1, buffer, ms, LightCoordsUtil.FULL_BRIGHT, false, true);
 	}
 
 	@Override

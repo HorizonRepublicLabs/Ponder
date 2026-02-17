@@ -81,7 +81,7 @@ public class NeoForgeClientHooksHelper implements ModClientHooksHelper {
 
 	@Override
 	public void renderFullFluidState(PoseStack ms, MultiBufferSource.BufferSource buffer, FluidState fluid) {
-		FluidRenderHelper.FLUID_RENDERER.renderFluidBox(fluid, 0, 0, 0, 1, 1, 1, buffer, ms,
+		FluidRenderHelper.INSTANCE.renderFluidBox(fluid, 0, 0, 0, 1, 1, 1, buffer, ms,
 			LightCoordsUtil.FULL_BRIGHT, false, true);
 	}
 

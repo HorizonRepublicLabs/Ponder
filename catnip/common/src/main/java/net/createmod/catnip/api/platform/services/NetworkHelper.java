@@ -2,7 +2,6 @@ package net.createmod.catnip.api.platform.services;
 
 import org.jetbrains.annotations.ApiStatus;
 
-import net.createmod.catnip.annotations.ClientOnly;
 import net.createmod.catnip.api.network.base.CatnipPacketRegistry;
 import net.createmod.catnip.api.network.packets.ClientboundSimpleActionPacket;
 import net.createmod.catnip.impl.ServiceHelper;
@@ -19,9 +18,6 @@ public interface NetworkHelper {
 
 	@ApiStatus.Internal
 	void registerPackets(CatnipPacketRegistry packetRegistry);
-
-	@ClientOnly
-	void sendToServer(CustomPacketPayload payload);
 
 	void sendToClient(ServerPlayer player, CustomPacketPayload payload);
 

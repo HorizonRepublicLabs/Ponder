@@ -37,7 +37,7 @@ public class FabricFluidHelper implements ModFluidHelper<FluidVariant> {
 	}
 
 	@Override
-	public FluidVariant toStack(FluidState state) {
+	public FluidVariant instanceFor(FluidState state) {
 		return FluidVariant.of(state.getType());
 	}
 }

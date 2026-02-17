@@ -1,38 +1,26 @@
 package net.createmod.catnip.api.platform.services;
 
-import org.jspecify.annotations.Nullable;
-
-import net.createmod.catnip.annotations.ClientOnly;
 import net.createmod.catnip.impl.ServiceHelper;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.core.TypedInstance;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 
-public interface ModFluidHelper<R> {
-	ModFluidHelper<?> INSTANCE = ServiceHelper.load(ModFluidHelper.class);
+/// Platform bridge for working with fluids.
+///
+/// **Important**: the methods in this class take a `TypedInstance<Fluid>`, but that isn't entirely correct.
+/// - On Fabric, a `FluidVariant` is required.
+/// - On Neoforge, a `FluidStack` is required.
+///
+/// TypedInstance<Fluid> is the best common supertype between platforms.
+public interface ModFluidHelper {
+	ModFluidHelper INSTANCE = ServiceHelper.load(ModFluidHelper.class);
 
-	@ClientOnly
-	int getColor(R fluid, @Nullable BlockAndTintGetter level, @Nullable BlockPos pos);
+	int getLuminosity(TypedInstance<Fluid> fluid);
 
-	int getLuminosity(R fluid);
+	boolean isLighterThanAir(TypedInstance<Fluid> fluid);
 
-	@ClientOnly
-	@Nullable
-	TextureAtlasSprite getStillTexture(R fluid);
-
-	@ClientOnly
-	default TextureAtlasSprite getStillTextureOrMissing(R fluid) {
-		TextureAtlasSprite texture = this.getStillTexture(fluid);
-		if (texture != null)
-			return texture;
-
-		return Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(TextureAtlas.LOCATION_BLOCKS).missingSprite();
-	}
-
-	boolean isLighterThanAir(R fluid);
-
-	R toStack(FluidState state);
+	/// Create a new fluid instance based on the given [FluidState].
+	///
+	/// It's safe to cast the returned object to either `FluidVariant` or `FluidStack`, depending on the platform.
+	TypedInstance<Fluid> instanceFor(FluidState state);
 }

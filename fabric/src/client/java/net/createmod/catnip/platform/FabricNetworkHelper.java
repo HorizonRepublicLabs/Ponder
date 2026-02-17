@@ -8,8 +8,6 @@ import net.createmod.catnip.api.network.base.ServerboundPacketPayload;
 import net.createmod.catnip.api.platform.services.NetworkHelper;
 import net.createmod.catnip.api.platform.services.PlatformHelper;
 import net.createmod.ponder.fabric.FabricPonder;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -43,12 +41,6 @@ public class FabricNetworkHelper implements NetworkHelper {
 				ServerPlayNetworking.registerGlobalReceiver(casted.type(), ((payload, ctx) -> payload.handle(ctx.player())));
 			}
 		}
-	}
-
-	@Environment(EnvType.CLIENT)
-	@Override
-	public void sendToServer(CustomPacketPayload payload) {
-		ClientPlayNetworking.send(payload);
 	}
 
 	@Override
