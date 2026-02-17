@@ -1,4 +1,4 @@
-package net.createmod.catnip.impl.client.render.model;
+package net.createmod.catnip.impl.neoforge.render;
 
 import org.jetbrains.annotations.UnknownNullability;
 

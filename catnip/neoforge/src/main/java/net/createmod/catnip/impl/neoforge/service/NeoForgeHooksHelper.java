@@ -1,4 +1,4 @@
-package net.createmod.catnip.platform;
+package net.createmod.catnip.impl.neoforge.service;
 
 import net.createmod.catnip.api.placement.IPlacementHelper;
 import net.createmod.catnip.api.platform.services.ModHooksHelper;

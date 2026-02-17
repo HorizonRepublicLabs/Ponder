@@ -6,11 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.createmod.catnip.api.lang.LangBuilder;
-import net.createmod.catnip.api.network.LegacyCatnipPackets;
 import net.minecraft.resources.Identifier;
 
 public class Ponder {
-
 	public static final String MOD_ID = "ponder";
 	public static final String MOD_NAME = "Ponder";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
@@ -23,9 +21,4 @@ public class Ponder {
 	public static Identifier id(String path) {
 		return Identifier.fromNamespaceAndPath(MOD_ID, path);
 	}
-
-	public static void init() {
-		LegacyCatnipPackets.register();
-	}
-
 }

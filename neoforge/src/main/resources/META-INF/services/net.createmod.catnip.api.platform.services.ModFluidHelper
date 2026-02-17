@@ -1,1 +1,1 @@
-net.createmod.catnip.platform.NeoForgeFluidHelper
+net.createmod.catnip.impl.neoforge.service.NeoForgeFluidHelper

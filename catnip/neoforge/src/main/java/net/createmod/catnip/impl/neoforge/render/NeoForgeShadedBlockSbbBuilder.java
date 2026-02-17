@@ -1,4 +1,4 @@
-package net.createmod.ponder.neoforge.render;
+package net.createmod.catnip.impl.neoforge.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

@@ -1,4 +1,4 @@
-package net.createmod.ponder.neoforge.render;
+package net.createmod.catnip.impl.neoforge.render;
 
 import dev.engine_room.flywheel.api.model.Model;
 import dev.engine_room.flywheel.lib.model.baked.BakedModelBuilder;

@@ -22,7 +22,7 @@
       "net.createmod.catnip.impl.Catnip::init"
     ],
     "client": [
-      "net.createmod.catnip.impl.client.CatnipClient::init"
+      "net.createmod.catnip.impl.fabric.client.CatnipFabricClient"
     ]
   },
   "mixins": [

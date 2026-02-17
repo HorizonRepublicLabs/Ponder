@@ -1,1 +1,1 @@
-net.createmod.catnip.platform.NeoForgeNetworkHelper
+net.createmod.catnip.impl.neoforge.service.NeoForgeNetworkHelper

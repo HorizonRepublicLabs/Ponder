@@ -1,18 +1,8 @@
 package net.createmod.ponder;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
-import net.createmod.catnip.api.client.animation.AnimationTickHolder;
-import net.createmod.catnip.api.client.ghostblock.GhostBlocks;
-import net.createmod.catnip.api.client.outliner.Outliner;
 import net.createmod.catnip.api.client.platform.ModClientHooksHelper;
-import net.createmod.catnip.api.client.render.CachedBuffers;
-import net.createmod.catnip.api.client.render.DefaultSuperRenderTypeBuffer;
 import net.createmod.catnip.api.client.render.SuperByteBufferCache;
-import net.createmod.catnip.api.client.render.SuperRenderTypeBuffer;
 import net.createmod.catnip.api.platform.services.PlatformHelper;
-import net.createmod.catnip.impl.client.ClientResourceReloadListener;
-import net.createmod.catnip.impl.client.placement.PlacementClient;
 import net.createmod.catnip.impl.network.ClientboundSimpleActionPacket;
 import net.createmod.ponder.command.SimplePonderActions;
 import net.createmod.ponder.foundation.PonderIndex;
@@ -21,15 +11,9 @@ import net.createmod.ponder.foundation.content.DebugPonderPlugin;
 import net.createmod.ponder.foundation.element.WorldSectionElementImpl;
 import net.createmod.ponder.foundation.render.PonderSceneRenderState;
 import net.createmod.ponder.foundation.render.PonderSceneRenderer;
-import net.minecraft.client.Minecraft;
-import net.minecraft.world.phys.Vec3;
 
 public class PonderClient {
-	public static final ClientResourceReloadListener RESOURCE_RELOAD_LISTENER = new ClientResourceReloadListener();
-	public static final GhostBlocks GHOST_BLOCKS = GhostBlocks.getInstance();
-
 	public static void init() {
-		SuperByteBufferCache.getInstance().registerCompartment(CachedBuffers.GENERIC_BLOCK);
 		SuperByteBufferCache.getInstance().registerCompartment(WorldSectionElementImpl.PONDER_WORLD_SECTION);
 
 		ClientboundSimpleActionPacket.addAction("openPonder", () -> SimplePonderActions::openPonder);
@@ -46,35 +30,5 @@ public class PonderClient {
 
 	public static void modLoadCompleted() {
 		PonderIndex.registerAll();
-	}
-
-	public static void onTick() {
-		AnimationTickHolder.tick();
-
-		if (!isGameActive())
-			return;
-
-		PlacementClient.tick(); // Should be called before GhostBlocks' tick as it can add new ghosts
-
-		GhostBlocks.getInstance().tickGhosts();
-		Outliner.getInstance().tickOutlines();
-	}
-
-	public static void onRenderWorld(PoseStack ms) {
-		Vec3 cameraPos = Minecraft.getInstance().gameRenderer.getMainCamera().position();
-		float partialTicks = AnimationTickHolder.getPartialTicks();
-
-		ms.pushPose();
-		SuperRenderTypeBuffer buffer = DefaultSuperRenderTypeBuffer.getInstance();
-
-		GHOST_BLOCKS.renderAll(ms, buffer, cameraPos);
-		Outliner.getInstance().renderOutlines(ms, buffer, cameraPos, partialTicks);
-
-		buffer.draw();
-		ms.popPose();
-	}
-
-	public static boolean isGameActive() {
-		return Minecraft.getInstance().level != null && Minecraft.getInstance().player != null;
 	}
 }

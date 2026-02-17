@@ -1,4 +1,4 @@
-package net.createmod.catnip.platform;
+package net.createmod.catnip.impl.neoforge.service;
 
 import java.util.HashMap;
 import java.util.Iterator;

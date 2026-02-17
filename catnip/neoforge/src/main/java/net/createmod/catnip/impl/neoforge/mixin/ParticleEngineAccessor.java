@@ -1,4 +1,4 @@
-package net.createmod.ponder.neoforge.mixin.client.accessor;
+package net.createmod.catnip.impl.neoforge.mixin;
 
 import java.util.Map;
 

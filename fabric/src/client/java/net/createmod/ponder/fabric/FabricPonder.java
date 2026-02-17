@@ -1,7 +1,6 @@
 package net.createmod.ponder.fabric;
 
 import net.createmod.catnip.impl.command.CatnipCommands;
-import net.createmod.ponder.Ponder;
 import net.createmod.ponder.command.PonderCommands;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -9,8 +8,6 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 public class FabricPonder implements ModInitializer {
 	@Override
 	public void onInitialize() {
-		Ponder.init();
-
 		registerConfigs();
 
 		// FIXME: config

@@ -1,1 +1,1 @@
-net.createmod.catnip.platform.NeoForgeClientHooksHelper
+net.createmod.catnip.impl.neoforge.service.NeoForgeClientHooksHelper

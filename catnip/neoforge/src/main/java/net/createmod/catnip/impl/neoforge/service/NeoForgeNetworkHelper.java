@@ -1,4 +1,4 @@
-package net.createmod.catnip.platform;
+package net.createmod.catnip.impl.neoforge.service;
 
 import org.jetbrains.annotations.ApiStatus;
 
