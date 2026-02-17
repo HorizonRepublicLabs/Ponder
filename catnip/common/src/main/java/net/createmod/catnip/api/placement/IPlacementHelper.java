@@ -64,46 +64,6 @@ public interface IPlacementHelper {
 		return offset;
 	}
 
-	/**
-	 * overwrite this method if your placement helper needs a different rendering than the default ghost state
-	 *
-	 * @param pos    the position of the Block the player is looking at or clicked on
-	 * @param state  the Blockstate of the Block that the player is looking at or clicked on
-	 * @param ray    the exact raytrace result
-	 * @param offset the PlacementOffset returned by {@link #getOffset(Player, Level, BlockState, BlockPos, BlockHitResult)}<br>
-	 *               the offset will always be successful if this method is called
-	 */
-	default void renderAt(BlockPos pos, BlockState state, BlockHitResult ray, PlacementOffset offset) {
-		displayGhost(offset);
-	}
-
-	//RIP
-	static void renderArrow(Vec3 center, Vec3 target, Direction arrowPlane) {
-		renderArrow(center, target, arrowPlane, 1D);
-	}
-
-	static void renderArrow(Vec3 center, Vec3 target, Direction arrowPlane, double distanceFromCenter) {
-		Vec3 direction = target.subtract(center).normalize();
-		Vec3 facing = arrowPlane.getUnitVec3();
-		Vec3 start = center.add(direction);
-		Vec3 offset = direction.scale(distanceFromCenter - 1);
-		Vec3 offsetA = direction.cross(facing).normalize().scale(.25);
-		Vec3 offsetB = facing.cross(direction).normalize().scale(.25);
-		Vec3 endA = center.add(direction.scale(.75)).add(offsetA);
-		Vec3 endB = center.add(direction.scale(.75)).add(offsetB);
-		Outliner.getInstance().showLine("placementArrowA" + center + target, start.add(offset), endA.add(offset)).lineWidth(1 / 16f);
-		Outliner.getInstance().showLine("placementArrowB" + center + target, start.add(offset), endB.add(offset)).lineWidth(1 / 16f);
-	}
-
-	default void displayGhost(PlacementOffset offset) {
-		if (!offset.hasGhostState())
-			return;
-
-		GhostBlocks.getInstance().showGhostState(this, offset.getTransform().apply(offset.getGhostState()))
-			.at(offset.getBlockPos())
-			.breathingAlpha();
-	}
-
 	static List<Direction> orderedByDistanceOnlyAxis(BlockPos pos, Vec3 hit, Direction.Axis axis) {
 		return orderedByDistance(pos, hit, dir -> dir.getAxis() == axis);
 	}

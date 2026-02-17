@@ -13,6 +13,7 @@ import net.createmod.catnip.api.animation.LerpedFloat;
 import net.createmod.catnip.api.client.gui.render.FadedArrowRenderState;
 import net.createmod.catnip.api.client.gui.render.TexturedArrowRenderState;
 import net.createmod.catnip.api.client.gui.texture.CatnipGuiTextures;
+import net.createmod.catnip.api.client.placement.PlacementHelperRenderer;
 import net.createmod.catnip.api.math.AngleHelper;
 import net.createmod.catnip.api.math.VecHelper;
 import net.createmod.catnip.api.placement.IPlacementHelper;
@@ -76,7 +77,7 @@ public class PlacementClient {
 			ItemStack heldItem = mc.player.getItemInHand(hand);
 
 			List<IPlacementHelper> filteredForHeldItem = new ArrayList<>();
-			for (IPlacementHelper helper : PlacementHelpers.getHelpersView()) {
+			for (IPlacementHelper helper : PlacementHelpers.get()) {
 				if (helper.matchesItem(heldItem))
 					filteredForHeldItem.add(helper);
 			}
@@ -101,7 +102,7 @@ public class PlacementClient {
 				PlacementOffset offset = h.getOffset(mc.player, world, state, pos, ray, heldItem);
 
 				if (offset.isSuccessful()) {
-					h.renderAt(pos, state, ray, offset);
+					PlacementHelperRenderer.get(h).render(h, pos, state, ray, offset);
 					setTarget(offset.getBlockPos());
 					atLeastOneMatch = true;
 					break;
