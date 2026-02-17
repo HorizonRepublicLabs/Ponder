@@ -83,7 +83,7 @@ extensions.getByType<PackageInfosExtension>().sources(sourceSets.named { it == "
 
 // FIXME: temporary hack - disable everything config-related
 tasks.withType<JavaCompile> {
-    exclude("**/catnip/config")
+    exclude("**/config")
     exclude("**/ConfigCommand.java")
     exclude("**/ConfigPathArgument.java")
     exclude("**/CClient.java")
