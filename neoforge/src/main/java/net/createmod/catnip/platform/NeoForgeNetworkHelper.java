@@ -2,10 +2,10 @@ package net.createmod.catnip.platform;
 
 import org.jetbrains.annotations.ApiStatus;
 
-import net.createmod.catnip.api.network.base.CatnipPacketRegistry;
+import net.createmod.catnip.api.network.NetworkHelper;
 import net.createmod.catnip.api.network.base.ClientboundPacketPayload;
 import net.createmod.catnip.api.network.base.ServerboundPacketPayload;
-import net.createmod.catnip.api.platform.services.NetworkHelper;
+import net.createmod.catnip.api.network.registry.CatnipPayloadRegistrar;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,25 +22,25 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 public class NeoForgeNetworkHelper implements NetworkHelper {
 	@ApiStatus.Internal
 	@Override
-	public void registerPackets(CatnipPacketRegistry packetRegistry) {
+	public void registerPackets(CatnipPayloadRegistrar packetRegistry) {
 		ModContainer container = ModList.get().getModContainerById(packetRegistry.modId).orElseThrow();
 		container.getEventBus().addListener((RegisterPayloadHandlersEvent e) -> {
 			PayloadRegistrar registrar = e.registrar(packetRegistry.networkVersion);
 
-			for (CatnipPacketRegistry.PacketType<?> type : packetRegistry.packetsView) {
+			for (CatnipPayloadRegistrar.PacketType<?> type : packetRegistry.packetsView) {
 				boolean clientbound = ClientboundPacketPayload.class.isAssignableFrom(type.clazz());
 				boolean serverbound = ServerboundPacketPayload.class.isAssignableFrom(type.clazz());
 				if (clientbound && serverbound) {
 					throw new IllegalStateException("Packet class is both clientbound and serverbound: " + type.clazz());
 				} else if (clientbound) {
-					CatnipPacketRegistry.PacketType<ClientboundPacketPayload> casted = (CatnipPacketRegistry.PacketType<ClientboundPacketPayload>) type;
+					CatnipPayloadRegistrar.PacketType<ClientboundPacketPayload> casted = (CatnipPayloadRegistrar.PacketType<ClientboundPacketPayload>) type;
 						registrar.playToClient(casted.type(), casted.codec(), (payload, ctx) -> {
 							ctx.enqueueWork(() -> {
 								payload.handleInternal(ctx.player());
 							});
 						});
 				} else if (serverbound) {
-					CatnipPacketRegistry.PacketType<ServerboundPacketPayload> casted = (CatnipPacketRegistry.PacketType<ServerboundPacketPayload>) type;
+					CatnipPayloadRegistrar.PacketType<ServerboundPacketPayload> casted = (CatnipPayloadRegistrar.PacketType<ServerboundPacketPayload>) type;
 					registrar.playToServer(casted.type(), casted.codec(), (payload, ctx) -> {
 						ctx.enqueueWork(() -> {
 							payload.handle((ServerPlayer) ctx.player());

@@ -4,11 +4,11 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 
-import net.createmod.catnip.api.network.ConfigPathArgument;
-import net.createmod.catnip.api.network.packets.ClientboundConfigPacket;
-import net.createmod.catnip.api.network.packets.ClientboundSimpleActionPacket;
-import net.createmod.catnip.api.platform.services.NetworkHelper;
+import net.createmod.catnip.api.config.ConfigPathArgument;
+import net.createmod.catnip.api.network.NetworkHelper;
 import net.createmod.catnip.config.ui.ConfigHelper;
+import net.createmod.catnip.impl.network.ClientboundConfigPacket;
+import net.createmod.catnip.impl.network.ClientboundSimpleActionPacket;
 import net.createmod.ponder.Ponder;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;

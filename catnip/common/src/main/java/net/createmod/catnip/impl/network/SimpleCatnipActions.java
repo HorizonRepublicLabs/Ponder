@@ -1,4 +1,4 @@
-package net.createmod.catnip.api.network;
+package net.createmod.catnip.impl.network;
 
 public class SimpleCatnipActions {
 

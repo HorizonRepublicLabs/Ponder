@@ -1,4 +1,4 @@
-package net.createmod.catnip.api.network;
+package net.createmod.catnip.api.config;
 
 import java.util.ArrayList;
 import java.util.Collection;

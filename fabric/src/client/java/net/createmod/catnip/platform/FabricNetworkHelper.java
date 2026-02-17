@@ -1,19 +1,15 @@
 package net.createmod.catnip.platform;
 
-import org.jetbrains.annotations.ApiStatus;
-
-import net.createmod.catnip.api.network.base.CatnipPacketRegistry;
-import net.createmod.catnip.api.network.base.ClientboundPacketPayload;
-import net.createmod.catnip.api.network.base.ServerboundPacketPayload;
-import net.createmod.catnip.api.platform.services.NetworkHelper;
-import net.createmod.catnip.api.platform.services.PlatformHelper;
+import net.createmod.catnip.api.network.NetworkHelper;
+import net.createmod.catnip.api.network.PayloadCodecRegistry;
+import net.createmod.catnip.api.network.ServerboundPayloadHandler;
 import net.createmod.ponder.fabric.FabricPonder;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.common.ClientCommonPacketListener;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload.Type;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,25 +18,22 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.phys.Vec3;
 
 public class FabricNetworkHelper implements NetworkHelper {
-	@ApiStatus.Internal
+	private static final PayloadCodecRegistry clientboundCodecs = PayloadTypeRegistry.clientboundPlay()::register;
+	private static final PayloadCodecRegistry serverboundCodecs = PayloadTypeRegistry.serverboundPlay()::register;
+
 	@Override
-	public void registerPackets(CatnipPacketRegistry packetRegistry) {
-		for (CatnipPacketRegistry.PacketType<?> type : packetRegistry.packetsView) {
-			boolean clientbound = ClientboundPacketPayload.class.isAssignableFrom(type.clazz());
-			boolean serverbound = ServerboundPacketPayload.class.isAssignableFrom(type.clazz());
-			if (clientbound && serverbound) {
-				throw new IllegalStateException("Packet class is both clientbound and serverbound: " + type.clazz());
-			} else if (clientbound) {
-				CatnipPacketRegistry.PacketType<ClientboundPacketPayload> casted = (CatnipPacketRegistry.PacketType<ClientboundPacketPayload>) type;
-				PayloadTypeRegistry.clientboundPlay().register(casted.type(), casted.codec());
-				if (PlatformHelper.INSTANCE.getEnv().isClient())
-					ClientPlayNetworking.registerGlobalReceiver(casted.type(), (payload, ctx) -> payload.handle(ctx.player()));
-			} else if (serverbound) {
-				CatnipPacketRegistry.PacketType<ServerboundPacketPayload> casted = (CatnipPacketRegistry.PacketType<ServerboundPacketPayload>) type;
-				PayloadTypeRegistry.serverboundPlay().register(casted.type(), casted.codec());
-				ServerPlayNetworking.registerGlobalReceiver(casted.type(), ((payload, ctx) -> payload.handle(ctx.player())));
-			}
-		}
+	public PayloadCodecRegistry clientboundCodecs() {
+		return clientboundCodecs;
+	}
+
+	@Override
+	public PayloadCodecRegistry serverboundCodecs() {
+		return serverboundCodecs;
+	}
+
+	@Override
+	public <T extends CustomPacketPayload> void registerPayloadHandler(Type<T> type, ServerboundPayloadHandler<T> handler) {
+		ServerPlayNetworking.registerGlobalReceiver(type, (payload, context) -> handler.handle(payload, context.player()));
 	}
 
 	@Override

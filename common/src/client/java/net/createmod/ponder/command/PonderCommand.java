@@ -6,9 +6,9 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 
-import net.createmod.catnip.api.network.packets.ClientboundSimpleActionPacket;
+import net.createmod.catnip.api.network.NetworkHelper;
 import net.createmod.catnip.api.platform.services.ModHooksHelper;
-import net.createmod.catnip.api.platform.services.NetworkHelper;
+import net.createmod.catnip.impl.network.ClientboundSimpleActionPacket;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;

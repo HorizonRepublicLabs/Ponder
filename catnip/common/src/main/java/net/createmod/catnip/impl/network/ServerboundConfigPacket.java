@@ -1,17 +1,16 @@
-package net.createmod.catnip.api.network.packets;
+package net.createmod.catnip.impl.network;
 
 import java.util.Objects;
 
 import io.netty.buffer.ByteBuf;
-import net.createmod.catnip.api.network.CatnipPackets;
-import net.createmod.catnip.api.network.base.ServerboundPacketPayload;
+import net.createmod.catnip.api.network.SelfHandlingPayload;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 
-public class ServerboundConfigPacket<T> implements ServerboundPacketPayload {
-	@SuppressWarnings("rawtypes")
-	public static final StreamCodec<ByteBuf, ServerboundConfigPacket> STREAM_CODEC = StreamCodec.composite(
+public class ServerboundConfigPacket<T> implements SelfHandlingPayload {
+	public static final StreamCodec<ByteBuf, ServerboundConfigPacket<?>> STREAM_CODEC = StreamCodec.composite(
 		ByteBufCodecs.STRING_UTF8, p -> p.modID,
 		ByteBufCodecs.STRING_UTF8, p -> p.path,
 		ByteBufCodecs.STRING_UTF8, p -> p.value,
@@ -35,8 +34,8 @@ public class ServerboundConfigPacket<T> implements ServerboundPacketPayload {
 	}
 
 	@Override
-	public PacketTypeProvider getTypeProvider() {
-		return CatnipPackets.SERVERBOUND_CONFIG;
+	public Type<? extends CustomPacketPayload> type() {
+		return CatnipPayloads.SERVERBOUND_CONFIG;
 	}
 
 	@Override

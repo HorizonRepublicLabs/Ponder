@@ -21,7 +21,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
 import net.createmod.catnip.api.data.Pair;
-import net.createmod.catnip.api.network.packets.ServerboundConfigPacket;
+import net.createmod.catnip.impl.network.ServerboundConfigPacket;
 import net.createmod.ponder.Ponder;
 
 import net.neoforged.fml.config.ModConfig;

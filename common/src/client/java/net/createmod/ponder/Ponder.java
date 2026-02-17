@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.createmod.catnip.api.lang.LangBuilder;
-import net.createmod.catnip.api.network.CatnipPackets;
+import net.createmod.catnip.api.network.LegacyCatnipPackets;
 import net.minecraft.resources.Identifier;
 
 public class Ponder {
@@ -25,7 +25,7 @@ public class Ponder {
 	}
 
 	public static void init() {
-		CatnipPackets.register();
+		LegacyCatnipPackets.register();
 	}
 
 }

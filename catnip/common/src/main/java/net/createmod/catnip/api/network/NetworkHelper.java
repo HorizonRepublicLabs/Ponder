@@ -1,10 +1,7 @@
-package net.createmod.catnip.api.platform.services;
+package net.createmod.catnip.api.network;
 
-import org.jetbrains.annotations.ApiStatus;
-
-import net.createmod.catnip.api.network.base.CatnipPacketRegistry;
-import net.createmod.catnip.api.network.packets.ClientboundSimpleActionPacket;
 import net.createmod.catnip.impl.ServiceHelper;
+import net.createmod.catnip.impl.network.ClientboundSimpleActionPacket;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerLevel;
@@ -16,8 +13,18 @@ import net.minecraft.world.phys.Vec3;
 public interface NetworkHelper {
 	NetworkHelper INSTANCE = ServiceHelper.load(NetworkHelper.class);
 
-	@ApiStatus.Internal
-	void registerPackets(CatnipPacketRegistry packetRegistry);
+	// registration
+
+	PayloadCodecRegistry clientboundCodecs();
+	PayloadCodecRegistry serverboundCodecs();
+
+	default <T extends SelfHandlingPayload> void registerSelfHandlingPayload(CustomPacketPayload.Type<T> type) {
+		this.registerPayloadHandler(type, SelfHandlingPayload::handle);
+	}
+
+	<T extends CustomPacketPayload> void registerPayloadHandler(CustomPacketPayload.Type<T> type, ServerboundPayloadHandler<T> handler);
+
+	// sending methods
 
 	void sendToClient(ServerPlayer player, CustomPacketPayload payload);
 
