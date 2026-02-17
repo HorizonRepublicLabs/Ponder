@@ -21,7 +21,7 @@ import net.createmod.catnip.api.client.gui.widget.BoxWidget;
 import net.createmod.catnip.api.client.lang.ClientFontHelper;
 import net.createmod.catnip.api.client.lang.FontHelper;
 import net.createmod.catnip.api.client.lang.FontHelper.Palette;
-import net.createmod.catnip.api.platform.CatnipServices;
+import net.createmod.catnip.api.platform.services.PlatformHelper;
 import net.createmod.ponder.Ponder;
 import net.createmod.ponder.enums.PonderGuiTextures;
 import net.createmod.ponder.foundation.PonderIndex;
@@ -106,7 +106,7 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 
 		paginationState.iterateForCurrentPage((iPage, iOverall) -> {
 			Map.Entry<String, List<PonderTag>> entry = sortedModTags.get(iOverall);
-			String modName = CatnipServices.PLATFORM.getModDisplayName(entry.getKey());
+			String modName = PlatformHelper.INSTANCE.getModDisplayName(entry.getKey());
 			List<PonderTag> tags = entry.getValue();
 
 			LayoutHelper layout = LayoutHelper.centeredHorizontal(tags.size(), 1, 28, 28, 8);

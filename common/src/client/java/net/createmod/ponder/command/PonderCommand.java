@@ -7,7 +7,8 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 
 import net.createmod.catnip.api.network.packets.ClientboundSimpleActionPacket;
-import net.createmod.catnip.api.platform.CatnipServices;
+import net.createmod.catnip.api.platform.services.ModHooksHelper;
+import net.createmod.catnip.api.platform.services.NetworkHelper;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
@@ -51,10 +52,10 @@ public class PonderCommand {
 
 	private static int openScene(String sceneId, Collection<? extends ServerPlayer> players) {
 		for (ServerPlayer player : players) {
-			if (CatnipServices.HOOKS.isPlayerFake(player))
+			if (ModHooksHelper.INSTANCE.isPlayerFake(player))
 				continue;
 
-			CatnipServices.NETWORK.sendToClient(
+			NetworkHelper.INSTANCE.sendToClient(
 				player,
 				new ClientboundSimpleActionPacket("openPonder", sceneId)
 			);
@@ -63,7 +64,7 @@ public class PonderCommand {
 	}
 
 	private static int reloadPonderIndex(ServerPlayer player) {
-		CatnipServices.NETWORK.simpleActionToClient(player, "reloadPonder", "");
+		NetworkHelper.INSTANCE.simpleActionToClient(player, "reloadPonder", "");
 
 		return Command.SINGLE_SUCCESS;
 	}

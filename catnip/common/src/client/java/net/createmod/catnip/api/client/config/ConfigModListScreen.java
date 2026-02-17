@@ -15,7 +15,7 @@ import net.createmod.catnip.api.client.gui.widget.AbstractSimiWidget;
 import net.createmod.catnip.api.client.gui.widget.BoxWidget;
 import net.createmod.catnip.api.client.lang.FontHelper;
 import net.createmod.catnip.api.client.lang.FontHelper.Palette;
-import net.createmod.catnip.api.platform.CatnipServices;
+import net.createmod.catnip.api.platform.services.PlatformHelper;
 import net.createmod.ponder.enums.PonderGuiTextures;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -48,7 +48,7 @@ public class ConfigModListScreen extends ConfigScreen {
 		addRenderableWidget(list);
 
 		allEntries = new ArrayList<>();
-		CatnipServices.PLATFORM.getLoadedMods().forEach(id -> allEntries.add(new ModEntry(id, this)));
+		PlatformHelper.INSTANCE.getLoadedMods().forEach(id -> allEntries.add(new ModEntry(id, this)));
 		allEntries.sort((e1, e2) -> {
 			int empty = (e2.button.active ? 1 : 0) - (e1.button.active ? 1 : 0);
 			if (empty != 0)
@@ -125,7 +125,7 @@ public class ConfigModListScreen extends ConfigScreen {
 		protected String id;
 
 		public ModEntry(String id, Screen parent) {
-			super(CatnipServices.PLATFORM.getModDisplayName(id));
+			super(PlatformHelper.INSTANCE.getModDisplayName(id));
 			this.id = id;
 
 			button = new BoxWidget(0, 0, 35, 16)
@@ -138,7 +138,7 @@ public class ConfigModListScreen extends ConfigScreen {
 				button.active = false;
 				button.updateGradientFromState();
 				button.modifyElement(e -> ((DelegatedStencilElement) e).withElementRenderer(BaseConfigScreen.DISABLED_RENDERER));
-				labelTooltip.add(Component.literal(CatnipServices.PLATFORM.getModDisplayName(id)));
+				labelTooltip.add(Component.literal(PlatformHelper.INSTANCE.getModDisplayName(id)));
 				labelTooltip.addAll(FontHelper.cutTextComponent(Component.translatable("catnip.ui.other_mods_config_unavailable"), Palette.ALL_GRAY));
 			}
 

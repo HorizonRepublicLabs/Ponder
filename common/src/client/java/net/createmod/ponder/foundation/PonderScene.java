@@ -33,7 +33,7 @@ import net.createmod.catnip.api.client.outliner.Outliner;
 import net.createmod.catnip.api.client.render.SuperRenderTypeBuffer;
 import net.createmod.catnip.api.data.Pair;
 import net.createmod.catnip.api.math.VecHelper;
-import net.createmod.catnip.api.platform.CatnipServices;
+import net.createmod.catnip.api.platform.services.ModHooksHelper;
 import net.createmod.ponder.api.element.ElementLink;
 import net.createmod.ponder.api.element.PonderElement;
 import net.createmod.ponder.api.element.PonderOverlayElement;
@@ -208,7 +208,7 @@ public class PonderScene {
 		Direction direction = selectedHit.getSecond().getDirection();
 		Vec3 location = selectedHit.getSecond().getLocation();
 
-		ItemStack pickBlock = CatnipServices.HOOKS.getCloneItemFromBlockstate(
+		ItemStack pickBlock = ModHooksHelper.INSTANCE.getCloneItemFromBlockstate(
 			blockState,
 			new BlockHitResult(location, direction, selectedPos, true),
 			world,

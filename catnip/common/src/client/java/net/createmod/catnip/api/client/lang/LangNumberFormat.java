@@ -3,7 +3,7 @@ package net.createmod.catnip.api.client.lang;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import net.createmod.catnip.api.client.platform.CatnipClientServices;
+import net.createmod.catnip.api.client.platform.ModClientHooksHelper;
 import net.minecraft.util.Mth;
 
 public class LangNumberFormat {
@@ -15,7 +15,7 @@ public class LangNumberFormat {
 	}
 
 	public void update() {
-		format = NumberFormat.getInstance(CatnipClientServices.CLIENT_HOOKS.getCurrentLocale());
+		format = NumberFormat.getInstance(ModClientHooksHelper.INSTANCE.getCurrentLocale());
 		format.setMaximumFractionDigits(2);
 		format.setMinimumFractionDigits(0);
 		format.setGroupingUsed(true);

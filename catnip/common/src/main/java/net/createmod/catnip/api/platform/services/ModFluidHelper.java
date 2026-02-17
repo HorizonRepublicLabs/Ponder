@@ -3,6 +3,7 @@ package net.createmod.catnip.api.platform.services;
 import org.jspecify.annotations.Nullable;
 
 import net.createmod.catnip.annotations.ClientOnly;
+import net.createmod.catnip.impl.ServiceHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -11,6 +12,8 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.material.FluidState;
 
 public interface ModFluidHelper<R> {
+	ModFluidHelper<?> INSTANCE = ServiceHelper.load(ModFluidHelper.class);
+
 	@ClientOnly
 	int getColor(R fluid, @Nullable BlockAndTintGetter level, @Nullable BlockPos pos);
 

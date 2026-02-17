@@ -5,13 +5,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.createmod.catnip.api.client.animation.AnimationTickHolder;
 import net.createmod.catnip.api.client.ghostblock.GhostBlocks;
 import net.createmod.catnip.api.client.outliner.Outliner;
-import net.createmod.catnip.api.client.platform.CatnipClientServices;
+import net.createmod.catnip.api.client.platform.ModClientHooksHelper;
 import net.createmod.catnip.api.client.render.CachedBuffers;
 import net.createmod.catnip.api.client.render.DefaultSuperRenderTypeBuffer;
 import net.createmod.catnip.api.client.render.SuperByteBufferCache;
 import net.createmod.catnip.api.client.render.SuperRenderTypeBuffer;
 import net.createmod.catnip.api.network.packets.ClientboundSimpleActionPacket;
-import net.createmod.catnip.api.platform.CatnipServices;
+import net.createmod.catnip.api.platform.services.PlatformHelper;
 import net.createmod.catnip.impl.client.ClientResourceReloadListener;
 import net.createmod.catnip.impl.client.placement.PlacementClient;
 import net.createmod.ponder.command.SimplePonderActions;
@@ -35,11 +35,11 @@ public class PonderClient {
 		ClientboundSimpleActionPacket.addAction("openPonder", () -> SimplePonderActions::openPonder);
 		ClientboundSimpleActionPacket.addAction("reloadPonder", () -> SimplePonderActions::reloadPonder);
 
-		CatnipClientServices.CLIENT_HOOKS.registerPictureInPictureRenderer(PonderSceneRenderState.class, PonderSceneRenderer::new);
+		ModClientHooksHelper.INSTANCE.registerPictureInPictureRenderer(PonderSceneRenderState.class, PonderSceneRenderer::new);
 
 		PonderIndex.addPlugin(new BasePonderPlugin());
 
-		if (CatnipServices.PLATFORM.isDevelopmentEnvironment()) {
+		if (PlatformHelper.INSTANCE.isDevelopmentEnvironment()) {
 			PonderIndex.addPlugin(new DebugPonderPlugin());
 		}
 	}

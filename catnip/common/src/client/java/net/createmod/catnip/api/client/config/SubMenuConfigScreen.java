@@ -35,7 +35,7 @@ import net.createmod.catnip.api.client.lang.FontHelper.Palette;
 import net.createmod.catnip.api.data.Couple;
 import net.createmod.catnip.api.data.Pair;
 import net.createmod.catnip.api.network.packets.ServerboundConfigPacket;
-import net.createmod.catnip.api.platform.CatnipServices;
+import net.createmod.catnip.api.platform.services.NetworkHelper;
 import net.createmod.catnip.api.theme.Color;
 import net.createmod.catnip.config.ui.ConfigScreenList.LabeledEntry;
 import net.createmod.ponder.enums.PonderGuiTextures;
@@ -142,7 +142,7 @@ public class SubMenuConfigScreen extends ConfigScreen {
 
 			if (type == ModConfig.Type.SERVER) {
 				assert ConfigScreen.modID != null;
-				CatnipServices.NETWORK.sendToServer(new ServerboundConfigPacket<>(ConfigScreen.modID, path, change.value));
+				NetworkHelper.INSTANCE.sendToServer(new ServerboundConfigPacket<>(ConfigScreen.modID, path, change.value));
 			}
 
 			String command = change.annotations.get("Execute");

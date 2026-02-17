@@ -3,7 +3,7 @@ package net.createmod.catnip.api.client.render;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.createmod.catnip.api.platform.CatnipServices;
+import net.createmod.catnip.api.platform.services.PlatformHelper;
 import net.minecraft.resources.Identifier;
 
 public class SpriteShifter {
@@ -15,7 +15,7 @@ public class SpriteShifter {
 			return ENTRY_CACHE.get(key);
 
 		SpriteShiftEntry entry = new SpriteShiftEntry();
-		CatnipServices.PLATFORM.executeOnClientOnly(() -> () -> entry.set(originalIdentifier, targetIdentifier));
+		PlatformHelper.INSTANCE.executeOnClientOnly(() -> () -> entry.set(originalIdentifier, targetIdentifier));
 		ENTRY_CACHE.put(key, entry);
 		return entry;
 	}

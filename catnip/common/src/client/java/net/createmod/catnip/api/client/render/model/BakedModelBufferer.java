@@ -6,7 +6,7 @@ import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.createmod.catnip.api.client.platform.CatnipClientServices;
+import net.createmod.catnip.api.client.platform.ModClientHooksHelper;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockAndTintGetter;
@@ -17,22 +17,22 @@ public final class BakedModelBufferer {
 	}
 
 	public static void submitModel(BlockStateModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedBufferSource bufferSource) {
-		CatnipClientServices.CLIENT_HOOKS.submitModel(model, pos, level, state, poseStack, bufferSource);
+		ModClientHooksHelper.INSTANCE.submitModel(model, pos, level, state, poseStack, bufferSource);
 	}
 
 	public static void bufferModel(BlockStateModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedBufferSource bufferSource) {
-		CatnipClientServices.CLIENT_HOOKS.bufferModel(model, pos, level, state, poseStack, bufferSource);
+		ModClientHooksHelper.INSTANCE.bufferModel(model, pos, level, state, poseStack, bufferSource);
 	}
 
 	public static void bufferModel(BlockStateModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedResultConsumer resultConsumer) {
-		CatnipClientServices.CLIENT_HOOKS.bufferModel(model, pos, level, state, poseStack, resultConsumer);
+		ModClientHooksHelper.INSTANCE.bufferModel(model, pos, level, state, poseStack, resultConsumer);
 	}
 
 	public static void bufferBlocks(Iterator<BlockPos> posIterator, BlockAndTintGetter level, @Nullable PoseStack poseStack, boolean renderFluids, ShadeSeparatedBufferSource bufferSource) {
-		CatnipClientServices.CLIENT_HOOKS.bufferBlocks(posIterator, level, poseStack, renderFluids, bufferSource);
+		ModClientHooksHelper.INSTANCE.bufferBlocks(posIterator, level, poseStack, renderFluids, bufferSource);
 	}
 
 	public static void bufferBlocks(Iterator<BlockPos> posIterator, BlockAndTintGetter level, @Nullable PoseStack poseStack, boolean renderFluids, ShadeSeparatedResultConsumer resultConsumer) {
-		CatnipClientServices.CLIENT_HOOKS.bufferBlocks(posIterator, level, poseStack, renderFluids, resultConsumer);
+		ModClientHooksHelper.INSTANCE.bufferBlocks(posIterator, level, poseStack, renderFluids, resultConsumer);
 	}
 }

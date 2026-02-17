@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
-import net.createmod.catnip.api.platform.CatnipServices;
+import net.createmod.catnip.api.platform.services.PlatformHelper;
 import net.minecraft.util.Util;
 
 public final class ShadersModHelper {
@@ -27,7 +27,7 @@ public final class ShadersModHelper {
 	);
 
 	private static final BooleanSupplier isShaderPackInUse = Util.make(() -> {
-		if (!CatnipServices.PLATFORM.isModLoaded("iris"))
+		if (!PlatformHelper.INSTANCE.isModLoaded("iris"))
 			return () -> false;
 
 		try {

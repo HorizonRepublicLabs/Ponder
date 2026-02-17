@@ -14,7 +14,7 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 
 import net.createmod.catnip.api.client.config.ConfigHelper;
-import net.createmod.catnip.api.platform.CatnipServices;
+import net.createmod.catnip.api.platform.services.PlatformHelper;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
@@ -50,7 +50,7 @@ public class ConfigPathArgument implements ArgumentType<ConfigHelper.ConfigPath>
 		}
 
 		List<String> matchingMods = new ArrayList<>();
-		for (String mod : CatnipServices.PLATFORM.getLoadedMods()) {
+		for (String mod : PlatformHelper.INSTANCE.getLoadedMods()) {
 			if (mod.startsWith(split[0])) {
 				matchingMods.add(mod + ":");
 			}

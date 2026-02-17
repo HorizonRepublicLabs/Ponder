@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.createmod.catnip.api.platform.CatnipServices;
+import net.createmod.catnip.api.platform.services.NetworkHelper;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -38,7 +38,7 @@ public class CatnipPacketRegistry {
 		if (packetsRegistered)
 			throw new IllegalStateException("Cannot call registerAllPackets() more than once!");
 
-		CatnipServices.NETWORK.registerPackets(this);
+		NetworkHelper.INSTANCE.registerPackets(this);
 		packetsRegistered = true;
 	}
 

@@ -1,5 +1,7 @@
 package net.createmod.catnip.api.platform;
 
+import net.createmod.catnip.api.platform.services.PlatformHelper;
+
 public enum Loader {
 	FABRIC, NEOFORGE;
 
@@ -12,6 +14,6 @@ public enum Loader {
 	}
 
 	public boolean isCurrent() {
-		return this == CatnipServices.PLATFORM.getLoader();
+		return this == PlatformHelper.INSTANCE.getLoader();
 	}
 }

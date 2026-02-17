@@ -12,7 +12,7 @@ import net.createmod.catnip.api.client.gui.element.BoxElement;
 import net.createmod.catnip.api.client.gui.element.TextStencilElement;
 import net.createmod.catnip.api.client.gui.widget.AbstractSimiWidget;
 import net.createmod.catnip.api.client.gui.widget.BoxWidget;
-import net.createmod.catnip.api.client.platform.CatnipClientServices;
+import net.createmod.catnip.api.client.platform.ModClientHooksHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -91,7 +91,7 @@ public class ConfirmationScreen extends AbstractSimiScreen {
 
 	public void open(Screen source) {
 		this.source = source;
-		Minecraft client = CatnipClientServices.CLIENT_HOOKS.getMinecraftFromScreen(source);
+		Minecraft client = ModClientHooksHelper.INSTANCE.getMinecraftFromScreen(source);
 		this.init(client.getWindow().getGuiScaledWidth(), client.getWindow().getGuiScaledHeight());
 		this.minecraft.screen = this;
 	}

@@ -5,8 +5,8 @@ import org.jetbrains.annotations.ApiStatus;
 import net.createmod.catnip.api.network.base.CatnipPacketRegistry;
 import net.createmod.catnip.api.network.base.ClientboundPacketPayload;
 import net.createmod.catnip.api.network.base.ServerboundPacketPayload;
-import net.createmod.catnip.api.platform.CatnipServices;
 import net.createmod.catnip.api.platform.services.NetworkHelper;
+import net.createmod.catnip.api.platform.services.PlatformHelper;
 import net.createmod.ponder.fabric.FabricPonder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -35,7 +35,7 @@ public class FabricNetworkHelper implements NetworkHelper {
 			} else if (clientbound) {
 				CatnipPacketRegistry.PacketType<ClientboundPacketPayload> casted = (CatnipPacketRegistry.PacketType<ClientboundPacketPayload>) type;
 				PayloadTypeRegistry.clientboundPlay().register(casted.type(), casted.codec());
-				if (CatnipServices.PLATFORM.getEnv().isClient())
+				if (PlatformHelper.INSTANCE.getEnv().isClient())
 					ClientPlayNetworking.registerGlobalReceiver(casted.type(), (payload, ctx) -> payload.handle(ctx.player()));
 			} else if (serverbound) {
 				CatnipPacketRegistry.PacketType<ServerboundPacketPayload> casted = (CatnipPacketRegistry.PacketType<ServerboundPacketPayload>) type;

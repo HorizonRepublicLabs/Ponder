@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 
 import org.lwjgl.glfw.GLFW;
 
-import net.createmod.catnip.api.client.platform.CatnipClientServices;
+import net.createmod.catnip.api.client.platform.ModClientHooksHelper;
 import net.createmod.ponder.Ponder;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.KeyMapping.Category;
@@ -28,7 +28,7 @@ public enum PonderKeybinds {
 	}
 
 	public boolean isDown() {
-		return !this.mapping.isUnbound() && CatnipClientServices.CLIENT_HOOKS.isKeyPressed(this.mapping);
+		return !this.mapping.isUnbound() && ModClientHooksHelper.INSTANCE.isKeyPressed(this.mapping);
 	}
 
 	public Component message() {

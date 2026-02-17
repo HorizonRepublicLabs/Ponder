@@ -1,5 +1,7 @@
 package net.createmod.catnip.api.platform;
 
+import net.createmod.catnip.api.platform.services.PlatformHelper;
+
 public enum Env {
 	CLIENT, SERVER;
 
@@ -12,6 +14,6 @@ public enum Env {
 	}
 
 	public boolean isCurrent() {
-		return this == CatnipServices.PLATFORM.getEnv();
+		return this == PlatformHelper.INSTANCE.getEnv();
 	}
 }

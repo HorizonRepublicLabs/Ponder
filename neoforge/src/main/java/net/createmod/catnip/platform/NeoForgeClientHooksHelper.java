@@ -15,10 +15,10 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.createmod.catnip.api.client.platform.ModClientHooksHelper;
+import net.createmod.catnip.api.client.render.FluidRenderHelper;
 import net.createmod.catnip.api.client.render.ShadedBlockSbbBuilder;
 import net.createmod.catnip.api.client.render.model.ShadeSeparatedBufferSource;
 import net.createmod.catnip.api.client.render.model.ShadeSeparatedResultConsumer;
-import net.createmod.catnip.api.platform.CatnipServices;
 import net.createmod.catnip.api.registry.RegisteredObjectsHelper;
 import net.createmod.catnip.impl.client.render.model.BakedModelBuffererImpl;
 import net.createmod.ponder.neoforge.mixin.client.accessor.ParticleEngineAccessor;
@@ -81,7 +81,7 @@ public class NeoForgeClientHooksHelper implements ModClientHooksHelper {
 
 	@Override
 	public void renderFullFluidState(PoseStack ms, MultiBufferSource.BufferSource buffer, FluidState fluid) {
-		CatnipServices.FLUID_RENDERER.renderFluidBox(fluid, 0, 0, 0, 1, 1, 1, buffer, ms,
+		FluidRenderHelper.FLUID_RENDERER.renderFluidBox(fluid, 0, 0, 0, 1, 1, 1, buffer, ms,
 			LightCoordsUtil.FULL_BRIGHT, false, true);
 	}
 

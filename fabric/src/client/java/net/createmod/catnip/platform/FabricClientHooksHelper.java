@@ -11,9 +11,9 @@ import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.createmod.catnip.api.client.platform.ModClientHooksHelper;
+import net.createmod.catnip.api.client.render.FluidRenderHelper;
 import net.createmod.catnip.api.client.render.model.ShadeSeparatedBufferSource;
 import net.createmod.catnip.api.client.render.model.ShadeSeparatedResultConsumer;
-import net.createmod.catnip.api.platform.CatnipServices;
 import net.createmod.catnip.impl.client.render.model.BakedModelBuffererImpl;
 import net.createmod.ponder.fabric.mixin.client.ParticleEngineAccessor;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
@@ -70,12 +70,12 @@ public class FabricClientHooksHelper implements ModClientHooksHelper {
 
 	@Override
 	public void submitFullFluidState(PoseStack ms, OrderedSubmitNodeCollector submitNode, FluidState fluid) {
-		CatnipServices.FLUID_RENDERER.submitFluidBox(fluid, 0, 0, 0, 1, 1, 1, submitNode, ms, LightCoordsUtil.FULL_BRIGHT, false, true);
+		FluidRenderHelper.FLUID_RENDERER.submitFluidBox(fluid, 0, 0, 0, 1, 1, 1, submitNode, ms, LightCoordsUtil.FULL_BRIGHT, false, true);
 	}
 
 	@Override
 	public void renderFullFluidState(PoseStack ms, MultiBufferSource.BufferSource buffer, FluidState fluid) {
-		CatnipServices.FLUID_RENDERER.renderFluidBox(fluid, 0, 0, 0, 1, 1, 1, buffer, ms, LightCoordsUtil.FULL_BRIGHT, false, true);
+		FluidRenderHelper.FLUID_RENDERER.renderFluidBox(fluid, 0, 0, 0, 1, 1, 1, buffer, ms, LightCoordsUtil.FULL_BRIGHT, false, true);
 	}
 
 	@Override

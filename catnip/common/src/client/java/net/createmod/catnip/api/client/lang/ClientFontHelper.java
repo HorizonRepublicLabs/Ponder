@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.jspecify.annotations.Nullable;
 
-import net.createmod.catnip.api.client.platform.CatnipClientServices;
+import net.createmod.catnip.api.client.platform.ModClientHooksHelper;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.FormattedText;
@@ -15,7 +15,7 @@ public class ClientFontHelper {
 	public static List<String> cutString(Font font, String text, int maxWidthPerLine) {
 		// Split words
 		List<String> words = new LinkedList<>();
-		BreakIterator iterator = BreakIterator.getLineInstance(CatnipClientServices.CLIENT_HOOKS.getCurrentLocale());
+		BreakIterator iterator = BreakIterator.getLineInstance(ModClientHooksHelper.INSTANCE.getCurrentLocale());
 		iterator.setText(text);
 		int start = iterator.first();
 		for (int end = iterator.next(); end != BreakIterator.DONE; start = end, end = iterator.next()) {

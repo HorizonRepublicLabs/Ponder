@@ -7,7 +7,7 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import net.createmod.catnip.api.network.ConfigPathArgument;
 import net.createmod.catnip.api.network.packets.ClientboundConfigPacket;
 import net.createmod.catnip.api.network.packets.ClientboundSimpleActionPacket;
-import net.createmod.catnip.api.platform.CatnipServices;
+import net.createmod.catnip.api.platform.services.NetworkHelper;
 import net.createmod.catnip.config.ui.ConfigHelper;
 import net.createmod.ponder.Ponder;
 import net.minecraft.commands.CommandSourceStack;
@@ -28,7 +28,7 @@ public class ConfigCommand {
 		return Commands.literal("config")
 			.executes(ctx -> {
 				ServerPlayer player = ctx.getSource().getPlayerOrException();
-				CatnipServices.NETWORK.sendToClient(player,
+				NetworkHelper.INSTANCE.sendToClient(player,
 					new ClientboundSimpleActionPacket("configScreen", ""));
 
 				return Command.SINGLE_SUCCESS;
@@ -37,7 +37,7 @@ public class ConfigCommand {
 				.executes(ctx -> {
 					ServerPlayer player = ctx.getSource().getPlayerOrException();
 
-					CatnipServices.NETWORK.sendToClient(player,
+					NetworkHelper.INSTANCE.sendToClient(player,
 						new ClientboundSimpleActionPacket("configScreen", ConfigPathArgument.getPath(ctx, "path").toString()));
 
 					return Command.SINGLE_SUCCESS;
@@ -52,7 +52,7 @@ public class ConfigCommand {
 							if (path.getType() == ModConfig.Type.CLIENT) {
 								ServerPlayer player = ctx.getSource().getPlayerOrException();
 
-								CatnipServices.NETWORK.sendToClient(player,
+								NetworkHelper.INSTANCE.sendToClient(player,
 									new ClientboundConfigPacket(path.toString(), value));
 
 								return Command.SINGLE_SUCCESS;

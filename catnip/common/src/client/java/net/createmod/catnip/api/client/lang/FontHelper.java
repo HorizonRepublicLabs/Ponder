@@ -7,7 +7,7 @@ import java.util.List;
 
 import com.google.common.base.Strings;
 
-import net.createmod.catnip.api.client.platform.CatnipClientServices;
+import net.createmod.catnip.api.client.platform.ModClientHooksHelper;
 import net.createmod.catnip.api.data.Couple;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -58,7 +58,7 @@ public final class FontHelper {
 
 		// Split words
 		List<String> words = new LinkedList<>();
-		BreakIterator iterator = BreakIterator.getLineInstance(CatnipClientServices.CLIENT_HOOKS.getCurrentLocale());
+		BreakIterator iterator = BreakIterator.getLineInstance(ModClientHooksHelper.INSTANCE.getCurrentLocale());
 		iterator.setText(s);
 		int start = iterator.first();
 		for (int end = iterator.next(); end != BreakIterator.DONE; start = end, end = iterator.next()) {

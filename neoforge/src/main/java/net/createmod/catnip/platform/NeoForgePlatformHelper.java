@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import net.createmod.catnip.api.client.config.ConfigScreen;
-import net.createmod.catnip.api.platform.CatnipServices;
 import net.createmod.catnip.api.platform.Env;
 import net.createmod.catnip.api.platform.Loader;
 import net.createmod.catnip.api.platform.services.PlatformHelper;
@@ -53,14 +52,14 @@ public class NeoForgePlatformHelper implements PlatformHelper {
 
 	@Override
 	public void executeOnClientOnly(Supplier<Runnable> toRun) {
-		if (CatnipServices.PLATFORM.getEnv().isClient()) {
+		if (PlatformHelper.INSTANCE.getEnv().isClient()) {
 			toRun.get().run();
 		}
 	}
 
 	@Override
 	public void executeOnServerOnly(Supplier<Runnable> toRun) {
-		if (CatnipServices.PLATFORM.getEnv().isServer()) {
+		if (PlatformHelper.INSTANCE.getEnv().isServer()) {
 			toRun.get().run();
 		}
 	}

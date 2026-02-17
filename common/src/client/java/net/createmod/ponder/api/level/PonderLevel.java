@@ -13,7 +13,7 @@ import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.createmod.catnip.api.client.level.wrapper.WrappedClientLevel;
-import net.createmod.catnip.api.client.platform.CatnipClientServices;
+import net.createmod.catnip.api.client.platform.ModClientHooksHelper;
 import net.createmod.catnip.api.level.wrapper.SchematicLevel;
 import net.createmod.ponder.Ponder;
 import net.createmod.ponder.api.VirtualBlockEntity;
@@ -241,7 +241,7 @@ public class PonderLevel extends SchematicLevel {
 	@Nullable
 	private <T extends ParticleOptions> Particle makeParticle(T data, double x, double y, double z, double mx, double my,
 															  double mz) {
-		return CatnipClientServices.CLIENT_HOOKS.createParticleFromData(data, asClientWorld.get(), x, y, z, mx, my, mz);
+		return ModClientHooksHelper.INSTANCE.createParticleFromData(data, asClientWorld.get(), x, y, z, mx, my, mz);
 	}
 
 	@Override

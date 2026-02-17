@@ -16,7 +16,7 @@ import net.createmod.catnip.api.client.gui.widget.AbstractSimiWidget;
 import net.createmod.catnip.api.client.gui.widget.BoxWidget;
 import net.createmod.catnip.api.client.lang.FontHelper;
 import net.createmod.catnip.api.client.lang.FontHelper.Palette;
-import net.createmod.catnip.api.platform.CatnipServices;
+import net.createmod.catnip.api.platform.services.PlatformHelper;
 import net.createmod.catnip.api.theme.Color;
 import net.createmod.ponder.Ponder;
 import net.createmod.ponder.enums.PonderGuiTextures;
@@ -183,7 +183,7 @@ public class BaseConfigScreen extends ConfigScreen {
 			serverText.withElementRenderer(BoxWidget.gradientFactory.apply(serverConfigWidget));
 		}
 
-		TextStencilElement titleText = new TextStencilElement(font, CatnipServices.PLATFORM.getModDisplayName(modID))
+		TextStencilElement titleText = new TextStencilElement(font, PlatformHelper.INSTANCE.getModDisplayName(modID))
 			.centered(true, true)
 			.withElementRenderer((ms, w, h, alpha) -> {
 				UIRenderHelper.angledGradient(ms, 0, 0, h / 2, h, w / 2, COLOR_TITLE_A, COLOR_TITLE_B);

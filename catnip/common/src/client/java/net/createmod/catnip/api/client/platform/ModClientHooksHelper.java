@@ -13,6 +13,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.createmod.catnip.api.client.render.ShadedBlockSbbBuilder;
 import net.createmod.catnip.api.client.render.model.ShadeSeparatedBufferSource;
 import net.createmod.catnip.api.client.render.model.ShadeSeparatedResultConsumer;
+import net.createmod.catnip.impl.ServiceHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.render.pip.PictureInPictureRenderer;
@@ -30,6 +31,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 
 public interface ModClientHooksHelper {
+	ModClientHooksHelper INSTANCE = ServiceHelper.load(ModClientHooksHelper.class);
+
 	Locale getCurrentLocale();
 
 	@Nullable

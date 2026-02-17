@@ -5,6 +5,7 @@ import org.jetbrains.annotations.ApiStatus;
 import net.createmod.catnip.annotations.ClientOnly;
 import net.createmod.catnip.api.network.base.CatnipPacketRegistry;
 import net.createmod.catnip.api.network.packets.ClientboundSimpleActionPacket;
+import net.createmod.catnip.impl.ServiceHelper;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerLevel;
@@ -14,6 +15,8 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.phys.Vec3;
 
 public interface NetworkHelper {
+	NetworkHelper INSTANCE = ServiceHelper.load(NetworkHelper.class);
+
 	@ApiStatus.Internal
 	void registerPackets(CatnipPacketRegistry packetRegistry);
 

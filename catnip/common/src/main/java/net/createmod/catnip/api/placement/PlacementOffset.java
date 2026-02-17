@@ -4,7 +4,7 @@ import java.util.function.Function;
 
 import org.jspecify.annotations.Nullable;
 
-import net.createmod.catnip.api.platform.CatnipServices;
+import net.createmod.catnip.api.platform.services.ModHooksHelper;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
@@ -128,7 +128,7 @@ public class PlacementOffset {
 			state = state.setValue(BlockStateProperties.WATERLOGGED, fluidState.getType() == Fluids.WATER);
 		}
 
-		if (CatnipServices.HOOKS.playerPlaceSingleBlock(player, world, newPos, state)) {
+		if (ModHooksHelper.INSTANCE.playerPlaceSingleBlock(player, world, newPos, state)) {
 			return InteractionResult.FAIL;
 		}
 

@@ -1,5 +1,6 @@
 package net.createmod.catnip.api.platform.services;
 
+import net.createmod.catnip.impl.ServiceHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -10,6 +11,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 
 public interface ModHooksHelper {
+	ModHooksHelper INSTANCE = ServiceHelper.load(ModHooksHelper.class);
+
 	/**
 	 * Attempts to place a single Block as a Player, and should fire according events
 	 *

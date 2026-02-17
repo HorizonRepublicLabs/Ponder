@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 
 import net.createmod.catnip.api.data.Iterate;
-import net.createmod.catnip.api.platform.CatnipServices;
 import net.createmod.catnip.api.platform.services.ModFluidHelper;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
@@ -18,6 +17,8 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 
 public final class FluidRenderHelper<T> {
+	public static final FluidRenderHelper<?> FLUID_RENDERER = new FluidRenderHelper<>();
+
 	public void submitFluidBox(FluidState fluid, float xMin, float yMin, float zMin, float xMax, float yMax, float zMax,
 							   OrderedSubmitNodeCollector submitNode, PoseStack ms, int light, boolean renderBottom, boolean invertGasses) {
 		this.submitFluidBox(submitNode, this.helper().toStack(fluid), xMin, yMin, zMin, xMax, yMax, zMax, ms, light, renderBottom, invertGasses);
@@ -193,6 +194,6 @@ public final class FluidRenderHelper<T> {
 
 	@SuppressWarnings("unchecked")
 	private ModFluidHelper<T> helper() {
-		return (ModFluidHelper<T>) CatnipServices.FLUID_HELPER;
+		return (ModFluidHelper<T>) ModFluidHelper.INSTANCE;
 	}
 }

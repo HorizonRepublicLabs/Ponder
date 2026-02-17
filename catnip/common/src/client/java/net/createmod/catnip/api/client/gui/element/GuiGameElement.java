@@ -11,7 +11,7 @@ import com.mojang.math.Axis;
 import net.createmod.catnip.api.client.gui.ILightingSettings;
 import net.createmod.catnip.api.client.gui.UIRenderHelper;
 import net.createmod.catnip.api.client.level.SinglePosVirtualBlockGetter;
-import net.createmod.catnip.api.client.platform.CatnipClientServices;
+import net.createmod.catnip.api.client.platform.ModClientHooksHelper;
 import net.createmod.catnip.api.client.render.model.BakedModelBufferer;
 import net.createmod.catnip.api.math.VecHelper;
 import net.createmod.catnip.impl.client.render.ColoringVertexConsumer;
@@ -255,7 +255,7 @@ public class GuiGameElement {
 
             if (blockState.getFluidState().isEmpty()) return;
 
-            CatnipClientServices.CLIENT_HOOKS.renderFullFluidState(
+            ModClientHooksHelper.INSTANCE.renderFullFluidState(
                     poseStack, buffer, blockState.getFluidState());
 
             buffer.endBatch();

@@ -5,8 +5,11 @@ import java.util.function.Supplier;
 
 import net.createmod.catnip.api.platform.Env;
 import net.createmod.catnip.api.platform.Loader;
+import net.createmod.catnip.impl.ServiceHelper;
 
 public interface PlatformHelper {
+	PlatformHelper INSTANCE = ServiceHelper.load(PlatformHelper.class);
+
 	/**
 	 * Gets the current loader
 	 *
