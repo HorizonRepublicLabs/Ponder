@@ -21,7 +21,6 @@ import net.createmod.catnip.api.math.VecHelper;
 import net.createmod.catnip.api.placement.IPlacementHelper;
 import net.createmod.catnip.api.placement.PlacementHelpers;
 import net.createmod.catnip.api.placement.PlacementOffset;
-import net.createmod.catnip.impl.client.mixin.GameRendererAccessor;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.ClientAvatarState;
@@ -291,7 +290,7 @@ public class PlacementClient {
 		}
 
 		// ----- adjust for fov -----
-		float fov = ((GameRendererAccessor) mc.gameRenderer).catnip$callGetFov(ari, partialTicks, true);
+		float fov = ari.getFov();
 
 		float half_height = (float) mc.getWindow()
 			.getGuiScaledHeight() / 2;

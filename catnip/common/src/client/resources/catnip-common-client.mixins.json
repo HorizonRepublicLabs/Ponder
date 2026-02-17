@@ -6,7 +6,6 @@
   "client": [
     "BufferBuilderAccessor",
     "ClientPacketListenerAccessor",
-    "GameRendererAccessor",
     "LightingAccessor",
     "ParticleEngineAccessor",
     "RenderTypeAccessor",

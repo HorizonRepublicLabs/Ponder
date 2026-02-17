@@ -18,7 +18,6 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.RenderShape;
@@ -41,8 +40,8 @@ public final class BakedModelBuffererImpl {
 
 		long seed = state.getSeed(pos);
 
-		ChunkSectionLayer defaultLayer = ItemBlockRenderTypes.getChunkRenderType(state);
-		universalEmitter.prepare(bufferSource, defaultLayer);
+		// ChunkSectionLayer defaultLayer = ItemBlockRenderTypes.getChunkRenderType(state);
+		// universalEmitter.prepare(bufferSource, defaultLayer);
 		model = universalEmitter.wrapModel(model);
 
 		poseStack.pushPose();
@@ -60,10 +59,10 @@ public final class BakedModelBuffererImpl {
 		// 	pos,
 		// 	state
 		// );
-		Minecraft.getInstance()
-			.getBlockRenderer()
-			.getModelRenderer()
-			.render(level, model, state, pos, poseStack, universalEmitter, false, seed, OverlayTexture.NO_OVERLAY);
+		// Minecraft.getInstance()
+		// 	.getBlockRenderer()
+		// 	.getModelRenderer()
+		// 	.render(level, model, state, pos, poseStack, universalEmitter, false, seed, OverlayTexture.NO_OVERLAY);
 		poseStack.popPose();
 
 		universalEmitter.clear();
@@ -78,15 +77,15 @@ public final class BakedModelBuffererImpl {
 
 		long seed = state.getSeed(pos);
 
-		ChunkSectionLayer defaultLayer = ItemBlockRenderTypes.getChunkRenderType(state);
-		universalEmitter.prepare(bufferSource, defaultLayer);
+		// ChunkSectionLayer defaultLayer = ItemBlockRenderTypes.getChunkRenderType(state);
+		// universalEmitter.prepare(bufferSource, defaultLayer);
 		model = universalEmitter.wrapModel(model);
 
 		poseStack.pushPose();
-		Minecraft.getInstance()
-			.getBlockRenderer()
-			.getModelRenderer()
-			.render(level, model, state, pos, poseStack, universalEmitter, false, seed, OverlayTexture.NO_OVERLAY);
+		// Minecraft.getInstance()
+		// 	.getBlockRenderer()
+		// 	.getModelRenderer()
+		// 	.render(level, model, state, pos, poseStack, universalEmitter, false, seed, OverlayTexture.NO_OVERLAY);
 		poseStack.popPose();
 
 		universalEmitter.clear();
@@ -137,13 +136,13 @@ public final class BakedModelBuffererImpl {
 				long seed = state.getSeed(pos);
 				BlockStateModel model = renderDispatcher.getBlockModel(state);
 
-				ChunkSectionLayer defaultLayer = ItemBlockRenderTypes.getChunkRenderType(state);
-				universalEmitter.prepare(bufferSource, defaultLayer);
+				// ChunkSectionLayer defaultLayer = ItemBlockRenderTypes.getChunkRenderType(state);
+				// universalEmitter.prepare(bufferSource, defaultLayer);
 				model = universalEmitter.wrapModel(model);
 
 				poseStack.pushPose();
 				poseStack.translate(pos.getX(), pos.getY(), pos.getZ());
-				blockRenderer.render(level, model, state, pos, poseStack, universalEmitter, true, seed, OverlayTexture.NO_OVERLAY);
+				// blockRenderer.render(level, model, state, pos, poseStack, universalEmitter, true, seed, OverlayTexture.NO_OVERLAY);
 				poseStack.popPose();
 			}
 		}
