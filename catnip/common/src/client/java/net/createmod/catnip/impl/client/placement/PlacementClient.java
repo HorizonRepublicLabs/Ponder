@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.joml.Matrix3x2f;
 import org.joml.Matrix3x2fStack;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import org.jspecify.annotations.Nullable;
 
 import com.mojang.math.Constants;
@@ -19,11 +21,17 @@ import net.createmod.catnip.api.math.VecHelper;
 import net.createmod.catnip.api.placement.IPlacementHelper;
 import net.createmod.catnip.api.placement.PlacementHelpers;
 import net.createmod.catnip.api.placement.PlacementOffset;
+import net.createmod.catnip.impl.client.mixin.GameRendererAccessor;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.ClientAvatarState;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -157,7 +165,7 @@ public class PlacementClient {
 		float b = .8f;
 		float a = progress * progress;
 
-		Vec3 projTarget = VecHelper.projectToPlayerView(VecHelper.getCenterOf(lastTarget), partialTicks);
+		Vec3 projTarget = projectToPlayerView(VecHelper.getCenterOf(lastTarget), partialTicks);
 
 		Vec3 target = new Vec3(projTarget.x, projTarget.y, 0);
 		if (projTarget.z > 0)
@@ -237,5 +245,57 @@ public class PlacementClient {
 		));
 
 		poseStack.popMatrix();
+	}
+
+	// https://forums.minecraftforge.net/topic/88562-116solved-3d-to-2d-conversion/?do=findComment&comment=413573
+	// slightly modified
+	private static Vec3 projectToPlayerView(Vec3 target, float partialTicks) {
+		/*
+		 * The (centered) location on the screen of the given 3d point in the world.
+		 * Result is (dist right of center screen, dist up from center screen, if < 0,
+		 * then in front of view plane)
+		 */
+		Camera ari = Minecraft.getInstance().gameRenderer.getMainCamera();
+		Vec3 cameraPos = ari.position();
+		Quaternionf cameraRotationConj = new Quaternionf(ari.rotation());
+		cameraRotationConj.conjugate();
+
+		Vector3f result3f = new Vector3f((float) (cameraPos.x - target.x), (float) (cameraPos.y - target.y),
+			(float) (cameraPos.z - target.z));
+		result3f.rotate(cameraRotationConj);
+
+		// ----- compensate for view bobbing (if active) -----
+		// the following code adapted from GameRenderer::applyBobbing (to invert it)
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.options.bobView().get()) {
+			Entity renderViewEntity = mc.getCameraEntity();
+			if (renderViewEntity instanceof LocalPlayer playerEntity) {
+				ClientAvatarState avatarState = playerEntity.avatarState();
+				float f = avatarState.getBackwardsInterpolatedWalkDistance(partialTicks);
+				float f1 = avatarState.getInterpolatedBob(partialTicks);
+				Quaternionf q2 =
+					com.mojang.math.Axis.XP.rotationDegrees(Math.abs(Mth.cos(f * (float) Math.PI - 0.2F) * f1) * 5.0F);
+				q2.conjugate();
+				result3f.rotate(q2);
+
+				Quaternionf q1 =
+					com.mojang.math.Axis.ZP.rotationDegrees(Mth.sin(f * (float) Math.PI) * f1 * 3.0F);
+				q1.conjugate();
+				result3f.rotate(q1);
+
+				Vector3f bob_translation = new Vector3f((Mth.sin(f * (float) Math.PI) * f1 * 0.5F),
+					(-Math.abs(Mth.cos(f * (float) Math.PI) * f1)), 0.0f);
+				bob_translation.set(bob_translation.x(), -bob_translation.y(), bob_translation.z()); // this is weird but hey, if it works
+				result3f.add(bob_translation);
+			}
+		}
+
+		// ----- adjust for fov -----
+		float fov = ((GameRendererAccessor) mc.gameRenderer).catnip$callGetFov(ari, partialTicks, true);
+
+		float half_height = (float) mc.getWindow()
+			.getGuiScaledHeight() / 2;
+		float scale_factor = half_height / (result3f.z() * (float) Math.tan(Math.toRadians(fov / 2)));
+		return new Vec3(-result3f.x() * scale_factor, result3f.y() * scale_factor, result3f.z());
 	}
 }
