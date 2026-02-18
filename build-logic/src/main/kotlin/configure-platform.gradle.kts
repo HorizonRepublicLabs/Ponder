@@ -84,7 +84,10 @@ val loom: Any? = extensions.findByName("loom")
 // reflection in the buildscript. have I hit a new low?
 // we need to call this now or else the sourceSet won't exist, and
 // I don't even know where to begin with compiling against loom here.
-loom?.javaClass?.getMethod("splitEnvironmentSourceSets")?.invoke(loom)
+loom?.javaClass?.getMethod("splitEnvironmentSourceSets")?.run {
+    invoke(loom)
+    plugins.apply("register-client-jar")
+}
 
 // generate package-infos for the main (and client, if present) sourceSet(s)
 extensions.getByType<PackageInfosExtension>().sources(sourceSets.named { it == "main" || it == "client" })

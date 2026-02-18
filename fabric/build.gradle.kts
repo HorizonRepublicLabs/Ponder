@@ -27,4 +27,5 @@ dependencies {
     minecraft(libs.minecraft)
     api(libs.bundles.fabric)
     api(project(":catnip:fabric"))
+    clientCompileOnly(project(":catnip:fabric", configuration = "clientJar"))
 }

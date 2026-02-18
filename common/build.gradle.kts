@@ -8,6 +8,7 @@ dependencies {
     compileOnly(libs.bundles.mixin)
     annotationProcessor(libs.mixin.extras)
     compileOnlyApi(project(":catnip:common"))
+    clientCompileOnly(project(":catnip:common", configuration = "clientJar"))
 }
 
 loom {
