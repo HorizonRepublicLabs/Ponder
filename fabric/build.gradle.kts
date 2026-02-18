@@ -4,6 +4,11 @@ plugins {
 }
 
 loom {
+    mods.register("ponder") {
+        sourceSet(sourceSets.main.get())
+        sourceSet(sourceSets.client.get())
+    }
+
     runs {
         named("server") {
             runDir = "run/server"
