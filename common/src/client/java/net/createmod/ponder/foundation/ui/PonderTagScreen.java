@@ -2,6 +2,7 @@ package net.createmod.ponder.foundation.ui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.joml.Matrix3x2fStack;
 import org.jspecify.annotations.Nullable;
@@ -40,7 +41,9 @@ public class PonderTagScreen extends AbstractPonderScreen {
 	private ItemStack hoveredItem = ItemStack.EMPTY;
 
 	public PonderTagScreen(Identifier tag) {
-		this.tag = PonderIndex.getTagAccess().getRegisteredTag(tag);
+		this.tag = PonderIndex.getTagAccess().getRegisteredTag(tag).orElseThrow(
+			() -> new NoSuchElementException("PonderTag " + tag.toString())
+		);
 	}
 
 	public PonderTagScreen(PonderTag tag) {

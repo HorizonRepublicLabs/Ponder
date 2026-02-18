@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -11,21 +12,15 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
-import net.createmod.ponder.Ponder;
 import net.createmod.ponder.api.registration.TagRegistryAccess;
 import net.createmod.ponder.foundation.PonderTag;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.Items;
 
 public class PonderTagRegistry implements TagRegistryAccess {
 	private final PonderLocalization localization;
 	private final Multimap<Identifier, Identifier> componentTagMap;
 	private final Map<Identifier, PonderTag> registeredTags;
 	private final List<PonderTag> listedTags;
-
-	private final PonderTag MISSING = new PonderTag(Ponder.id("not_registered"), null,
-		Items.BARRIER.getDefaultInstance(),
-		Items.BARRIER.getDefaultInstance());
 
 	private boolean allowRegistration = true;
 
@@ -70,8 +65,8 @@ public class PonderTagRegistry implements TagRegistryAccess {
 	//
 
 	@Override
-	public PonderTag getRegisteredTag(Identifier tagIdentifier) {
-		return registeredTags.getOrDefault(tagIdentifier, MISSING);
+	public Optional<PonderTag> getRegisteredTag(Identifier tagIdentifier) {
+		return Optional.ofNullable(registeredTags.get(tagIdentifier));
 	}
 
 	@Override
@@ -81,7 +76,10 @@ public class PonderTagRegistry implements TagRegistryAccess {
 
 	@Override
 	public Set<PonderTag> getTags(Identifier item) {
-		return componentTagMap.get(item).stream().map(this::getRegisteredTag).collect(Collectors.toUnmodifiableSet());
+		return componentTagMap.get(item).stream()
+			.map(this::getRegisteredTag)
+			.flatMap(Optional::stream)
+			.collect(Collectors.toUnmodifiableSet());
 	}
 
 	@Override

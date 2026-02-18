@@ -135,7 +135,7 @@ public class PonderScene {
 		outliner = new Outliner();
 		elements = new HashSet<>();
 		linkedElements = new HashMap<>();
-		this.tags = tags.stream().map(PonderIndex.getTagAccess()::getRegisteredTag).toList();
+		this.tags = tags.stream().map(PonderIndex.getTagAccess()::getRegisteredTag).flatMap(Optional::stream).toList();
 		this.orderingEntries = new ArrayList<>(orderingEntries);
 		schedule = new ArrayList<>();
 		activeSchedule = new ArrayList<>();

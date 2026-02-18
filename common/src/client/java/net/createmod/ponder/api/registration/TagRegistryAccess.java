@@ -1,6 +1,7 @@
 package net.createmod.ponder.api.registration;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import net.createmod.ponder.foundation.PonderTag;
@@ -8,7 +9,7 @@ import net.minecraft.resources.Identifier;
 
 public interface TagRegistryAccess {
 
-	PonderTag getRegisteredTag(Identifier tagIdentifier);
+	Optional<PonderTag> getRegisteredTag(Identifier tagIdentifier);
 
 	List<PonderTag> getListedTags();
 
