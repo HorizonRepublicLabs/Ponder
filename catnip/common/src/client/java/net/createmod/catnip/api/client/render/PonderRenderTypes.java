@@ -33,7 +33,7 @@ public abstract class PonderRenderTypes {
 	private static final BiFunction<Identifier, Boolean, RenderType> OUTLINE_TRANSLUCENT = Util.memoize((texture, cull) ->
 		RenderTypeAccessor.catnip$create(
 			createLayerName("outline_translucent" + (cull ? "_cull" : "")),
-			RenderSetup.builder(cull ? RenderPipelines.ITEM_ENTITY_TRANSLUCENT_CULL : RenderPipelines.ENTITY_TRANSLUCENT)
+			RenderSetup.builder(cull ? RenderPipelines.ENTITY_TRANSLUCENT_CULL : RenderPipelines.ENTITY_TRANSLUCENT)
 				.bufferSize(256)
 				.withTexture("Sampler0", texture)
 				.sortOnUpload()
