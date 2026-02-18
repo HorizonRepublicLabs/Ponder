@@ -940,9 +940,7 @@ public class PonderUI extends AbstractPonderScreen {
 
 	@Override
 	protected String getBreadcrumbTitle() {
-		return stack.getItem()
-			.getName()
-			.getString();
+		return stack.getHoverName().getString();
 	}
 
 	public Font getFontRenderer() {

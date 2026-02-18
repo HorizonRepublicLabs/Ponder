@@ -353,7 +353,7 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 
 			poseStack.pushPose();
 			poseStack.translate(pos.getX(), pos.getY(), pos.getZ());
-			Minecraft.getInstance().getBlockRenderer().renderBreakingTexture(world.getBlockState(pos), pos, world, poseStack, builder);
+			Minecraft.getInstance().getBlockRenderer().renderBreakingTexture(world.getBlockState(pos), pos, world, poseStack, builder::putBulkData);
 			poseStack.popPose();
 		}
 

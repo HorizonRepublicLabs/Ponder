@@ -272,7 +272,6 @@ public class PonderScene {
 		cameraRenderState.initialized = camera.isInitialized();
 		cameraRenderState.pos = camera.position();
 		cameraRenderState.blockPos = camera.blockPosition();
-		cameraRenderState.entityPos = camera.entity().getPosition(pt);
 		cameraRenderState.orientation.set(camera.rotation());
 
 		mc.setCameraEntity(this.renderViewEntity);
