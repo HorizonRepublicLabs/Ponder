@@ -26,7 +26,6 @@ run
 .DS_Store
 
 # Vitepress
-docs/
 docs/.vitepress/dist/
 docs/.vitepress/cache/
 
