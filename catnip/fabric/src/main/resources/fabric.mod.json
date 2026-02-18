@@ -19,7 +19,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.createmod.catnip.impl.Catnip::init"
+      "net.createmod.catnip.api.Catnip::init"
     ],
     "client": [
       "net.createmod.catnip.impl.fabric.client.CatnipFabricClient"

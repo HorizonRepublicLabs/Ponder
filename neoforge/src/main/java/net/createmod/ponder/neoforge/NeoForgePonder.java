@@ -1,7 +1,7 @@
 package net.createmod.ponder.neoforge;
 
-import net.createmod.ponder.Ponder;
-import net.createmod.ponder.command.PonderCommands;
+import net.createmod.ponder.api.Ponder;
+import net.createmod.ponder.impl.command.PonderCommands;
 
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;

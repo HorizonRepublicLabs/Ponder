@@ -1,7 +1,7 @@
 package net.createmod.catnip.api.client.gui.texture;
 
+import net.createmod.catnip.api.Catnip;
 import net.createmod.catnip.api.client.render.BindableTexture;
-import net.createmod.catnip.impl.Catnip;
 import net.minecraft.resources.Identifier;
 
 public enum CatnipSpecialTextures implements BindableTexture {

@@ -1,7 +1,7 @@
 package net.createmod.catnip.impl.neoforge;
 
+import net.createmod.catnip.api.Catnip;
 import net.createmod.catnip.api.config.ConfigPathArgument;
-import net.createmod.catnip.impl.Catnip;
 import net.createmod.catnip.impl.command.CatnipCommands;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.commands.synchronization.ArgumentTypeInfos;

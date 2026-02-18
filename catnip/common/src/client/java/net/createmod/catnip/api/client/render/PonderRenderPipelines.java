@@ -5,7 +5,7 @@ import com.mojang.blaze3d.platform.DepthTestFunction;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
-import net.createmod.catnip.impl.Catnip;
+import net.createmod.catnip.api.Catnip;
 import net.minecraft.client.renderer.RenderPipelines;
 
 public class PonderRenderPipelines {

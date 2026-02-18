@@ -6,10 +6,10 @@ import java.util.function.Function;
 import net.createmod.catnip.api.data.Couple;
 import net.createmod.catnip.api.theme.Color;
 import net.createmod.catnip.impl.neoforge.service.NeoForgeClientHooksHelper;
-import net.createmod.ponder.Ponder;
-import net.createmod.ponder.PonderClient;
-import net.createmod.ponder.enums.PonderKeybinds;
-import net.createmod.ponder.foundation.PonderTooltipHandler;
+import net.createmod.ponder.api.Ponder;
+import net.createmod.ponder.impl.client.PonderClient;
+import net.createmod.ponder.impl.client.PonderKeybinds;
+import net.createmod.ponder.impl.client.PonderTooltipHandler;
 import net.minecraft.client.gui.render.state.pip.PictureInPictureRenderState;
 
 import net.neoforged.api.distmarker.Dist;

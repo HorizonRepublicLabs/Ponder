@@ -1,7 +1,7 @@
 package net.createmod.catnip.impl.client;
 
+import net.createmod.catnip.api.Catnip;
 import net.createmod.catnip.api.client.lang.LangNumberFormat;
-import net.createmod.catnip.impl.Catnip;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;

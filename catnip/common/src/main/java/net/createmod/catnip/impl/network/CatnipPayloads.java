@@ -1,7 +1,7 @@
 package net.createmod.catnip.impl.network;
 
+import net.createmod.catnip.api.Catnip;
 import net.createmod.catnip.api.network.registry.CatnipPayloadRegistrar;
-import net.createmod.catnip.impl.Catnip;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload.Type;
 
 public final class CatnipPayloads {

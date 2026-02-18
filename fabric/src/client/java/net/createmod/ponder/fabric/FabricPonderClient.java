@@ -1,8 +1,8 @@
 package net.createmod.ponder.fabric;
 
-import net.createmod.ponder.PonderClient;
-import net.createmod.ponder.enums.PonderKeybinds;
-import net.createmod.ponder.foundation.PonderTooltipHandler;
+import net.createmod.ponder.impl.client.PonderClient;
+import net.createmod.ponder.impl.client.PonderKeybinds;
+import net.createmod.ponder.impl.client.PonderTooltipHandler;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;

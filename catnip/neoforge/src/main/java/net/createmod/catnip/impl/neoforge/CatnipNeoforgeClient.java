@@ -1,9 +1,9 @@
 package net.createmod.catnip.impl.neoforge;
 
+import net.createmod.catnip.api.Catnip;
 import net.createmod.catnip.api.client.animation.AnimationTickHolder;
 import net.createmod.catnip.api.client.level.wrapper.WrappedClientLevel;
 import net.createmod.catnip.api.client.render.StitchedSprite;
-import net.createmod.catnip.impl.Catnip;
 import net.createmod.catnip.impl.client.CatnipClient;
 import net.createmod.catnip.impl.client.CatnipReloadListener;
 import net.createmod.catnip.impl.client.placement.PlacementClient;

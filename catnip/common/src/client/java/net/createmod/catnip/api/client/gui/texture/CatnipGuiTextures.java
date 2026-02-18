@@ -1,12 +1,12 @@
 package net.createmod.catnip.api.client.gui.texture;
 
+import net.createmod.catnip.api.Catnip;
 import net.createmod.catnip.api.client.gui.TextureSheetSegment;
 import net.createmod.catnip.api.client.gui.UIRenderHelper;
 import net.createmod.catnip.api.client.gui.element.DelegatedStencilElement;
 import net.createmod.catnip.api.client.gui.element.ScreenElement;
 import net.createmod.catnip.api.client.render.ColoredRenderable;
 import net.createmod.catnip.api.theme.Color;
-import net.createmod.catnip.impl.Catnip;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;

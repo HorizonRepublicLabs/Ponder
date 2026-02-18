@@ -1,7 +1,7 @@
 package net.createmod.ponder.fabric;
 
 import net.createmod.catnip.impl.command.CatnipCommands;
-import net.createmod.ponder.command.PonderCommands;
+import net.createmod.ponder.impl.command.PonderCommands;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 

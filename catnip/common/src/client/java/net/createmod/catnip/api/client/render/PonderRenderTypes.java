@@ -2,8 +2,8 @@ package net.createmod.catnip.api.client.render;
 
 import java.util.function.BiFunction;
 
+import net.createmod.catnip.api.Catnip;
 import net.createmod.catnip.api.client.gui.texture.CatnipSpecialTextures;
-import net.createmod.catnip.impl.Catnip;
 import net.createmod.catnip.impl.client.mixin.RenderTypeAccessor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.rendertype.OutputTarget;
