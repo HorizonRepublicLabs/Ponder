@@ -1,6 +1,6 @@
 package net.createmod.catnip.api.platform.services;
 
-import net.createmod.catnip.impl.ServiceHelper;
+import net.createmod.catnip.api.platform.ServiceHelper;
 import net.minecraft.core.TypedInstance;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;

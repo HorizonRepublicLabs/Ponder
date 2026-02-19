@@ -1,6 +1,6 @@
 package net.createmod.catnip.api.client.network;
 
-import net.createmod.catnip.impl.ServiceHelper;
+import net.createmod.catnip.api.platform.ServiceHelper;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public interface ClientNetworkHelper {

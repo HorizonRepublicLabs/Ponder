@@ -1,6 +1,6 @@
 package net.createmod.catnip.api.network;
 
-import net.createmod.catnip.impl.ServiceHelper;
+import net.createmod.catnip.api.platform.ServiceHelper;
 import net.createmod.catnip.impl.network.ClientboundSimpleActionPacket;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;

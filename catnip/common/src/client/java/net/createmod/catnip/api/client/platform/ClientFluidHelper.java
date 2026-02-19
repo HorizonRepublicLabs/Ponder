@@ -2,8 +2,8 @@ package net.createmod.catnip.api.client.platform;
 
 import org.jspecify.annotations.Nullable;
 
+import net.createmod.catnip.api.platform.ServiceHelper;
 import net.createmod.catnip.api.platform.services.ModFluidHelper;
-import net.createmod.catnip.impl.ServiceHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

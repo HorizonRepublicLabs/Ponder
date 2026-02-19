@@ -1,13 +1,17 @@
-package net.createmod.catnip.impl;
+package net.createmod.catnip.api.platform;
 
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.ServiceLoader.Provider;
 
-public class ServiceHelper {
+/// Helper class for loading services with [ServiceLoader].
+public final class ServiceHelper {
+	private ServiceHelper() {}
+
+	/// Load an implementation of the given class, assuming that exactly one should exist.
 	public static <T> T load(Class<T> clazz) {
-		ServiceLoader<T> loader = ServiceLoader.load(clazz);
-		List<Provider<T>> providers = loader.stream().toList();
+		List<Provider<T>> providers = ServiceLoader.load(clazz).stream().toList();
+
 		if (providers.isEmpty()) {
 			throw new IllegalStateException("Failed to find implementation of " + clazz);
 		} else if (providers.size() > 1) {
