@@ -18,7 +18,8 @@
   "license": "MIT",
   "environment": "*",
   "mixins": [
-    "ponder-common.mixins.json"
+    "ponder-common.mixins.json",
+    "ponder-common-client.mixins.json"
   ],
   "entrypoints": {
     "main": [

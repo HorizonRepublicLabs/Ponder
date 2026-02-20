@@ -10,6 +10,7 @@ import net.createmod.ponder.impl.client.gui.PonderSceneRenderState;
 import net.createmod.ponder.impl.client.gui.PonderSceneRenderer;
 import net.createmod.ponder.impl.client.plugin.BasePonderPlugin;
 import net.createmod.ponder.impl.client.plugin.DebugPonderPlugin;
+import net.createmod.ponder.impl.client.tooltip.PonderTooltipHandler;
 
 public class PonderClient {
 	public static void init() {
@@ -19,6 +20,8 @@ public class PonderClient {
 		ClientboundSimpleActionPacket.addAction("reloadPonder", () -> SimplePonderActions::reloadPonder);
 
 		ModClientHooksHelper.INSTANCE.registerPictureInPictureRenderer(PonderSceneRenderState.class, PonderSceneRenderer::new);
+
+		PonderTooltipHandler.init();
 
 		PonderIndex.addPlugin(new BasePonderPlugin());
 
