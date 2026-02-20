@@ -26,7 +26,7 @@ public class StitchedSprite {
 		this(TextureAtlas.LOCATION_BLOCKS, id);
 	}
 
-	public static void onTextureStitchPost(TextureAtlas atlas) {
+	public static void afterAtlasStitch(TextureAtlas atlas) {
 		Identifier atlasIdentifier = atlas.location();
 		List<StitchedSprite> sprites = ALL.get(atlasIdentifier);
 		if (sprites != null) {

@@ -22,6 +22,7 @@ import net.createmod.catnip.api.placement.IPlacementHelper;
 import net.createmod.catnip.api.placement.PlacementHelpers;
 import net.createmod.catnip.api.placement.PlacementOffset;
 import net.minecraft.client.Camera;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.ClientAvatarState;
 import net.minecraft.client.gui.GuiGraphics;
@@ -140,7 +141,7 @@ public class PlacementClient {
 			lastTarget = target;
 	}
 
-	public static void onRenderCrosshairOverlay(GuiGraphics graphics, float partialTicks) {
+	public static void renderCrosshairOverlay(GuiGraphics graphics, DeltaTracker deltaTracker) {
 		Minecraft mc = Minecraft.getInstance();
 		Player player = mc.player;
 
@@ -149,7 +150,7 @@ public class PlacementClient {
 			float screenX = graphics.guiWidth() / 2f;
 			float progress = getCurrentAlpha();
 
-			drawDirectionIndicator(graphics, partialTicks, screenX, screenY, progress);
+			drawDirectionIndicator(graphics, deltaTracker, screenX, screenY, progress);
 		}
 	}
 
@@ -157,14 +158,13 @@ public class PlacementClient {
 		return Math.min(animationTick / 10f/* + event.getPartialTicks() */, 1f);
 	}
 
-	private static void drawDirectionIndicator(GuiGraphics graphics, float partialTicks, float centerX, float centerY,
-											   float progress) {
+	private static void drawDirectionIndicator(GuiGraphics graphics, DeltaTracker deltaTracker, float centerX, float centerY, float progress) {
 		float r = .8f;
 		float g = .8f;
 		float b = .8f;
 		float a = progress * progress;
 
-		Vec3 projTarget = projectToPlayerView(VecHelper.getCenterOf(lastTarget), partialTicks);
+		Vec3 projTarget = projectToPlayerView(VecHelper.getCenterOf(lastTarget), deltaTracker.getRealtimeDeltaTicks());
 
 		Vec3 target = new Vec3(projTarget.x, projTarget.y, 0);
 		if (projTarget.z > 0)

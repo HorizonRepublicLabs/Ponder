@@ -5,14 +5,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.createmod.catnip.api.client.render.StitchedSprite;
+import net.createmod.catnip.api.client.event.AtlasStitchedCallback;
 import net.minecraft.client.renderer.texture.SpriteLoader;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 
 @Mixin(TextureAtlas.class)
 public class TextureAtlasMixin {
-	@Inject(method = "upload(Lnet/minecraft/client/renderer/texture/SpriteLoader$Preparations;)V", at = @At("TAIL"))
-	private void onTailReload(SpriteLoader.Preparations preparations, CallbackInfo ci) {
-		StitchedSprite.onTextureStitchPost((TextureAtlas) (Object) this);
+	@Inject(method = "upload", at = @At("TAIL"))
+	private void afterUpload(SpriteLoader.Preparations preparations, CallbackInfo ci) {
+		AtlasStitchedCallback.EVENT.invoker().afterStitch((TextureAtlas) (Object) this);
 	}
 }

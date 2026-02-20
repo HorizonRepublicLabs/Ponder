@@ -14,6 +14,5 @@ public enum CatnipReloadListener implements ResourceManagerReloadListener {
 	@Override
 	public void onResourceManagerReload(ResourceManager resourceManager) {
 		LangNumberFormat.numberFormat.update();
-		CatnipClient.invalidateRenderers();
 	}
 }
