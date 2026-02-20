@@ -23,9 +23,7 @@ public interface ModHooksHelper {
 	 */
 	boolean playerPlaceSingleBlock(Player player, Level level, BlockPos pos, BlockState newState);
 
-	default ItemStack getCloneItemFromBlockstate(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-		return state.getCloneItemStack(level, pos, true);
-	}
+	ItemStack getCloneItemFromBlockstate(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player);
 
 	boolean isPlayerFake(ServerPlayer player);
 

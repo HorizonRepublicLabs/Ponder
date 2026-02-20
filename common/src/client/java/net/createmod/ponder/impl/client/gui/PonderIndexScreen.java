@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import net.createmod.catnip.api.client.gui.texture.CatnipGuiTextures;
+
 import org.joml.Matrix3x2fStack;
 import org.jspecify.annotations.Nullable;
 
@@ -94,7 +96,7 @@ public class PonderIndexScreen extends AbstractPonderScreen {
 			return;
 
 		addRenderableWidget(prevPage = new PonderButton(centerX - 100, maxScreenArea.getY() + maxScreenArea.getHeight() + 10)
-			.showing(PonderGuiTextures.ICON_PONDER_LEFT)
+			.showing(CatnipGuiTextures.ICON_PONDER_LEFT)
 			.withCallback(() -> {
 				paginationState.previousPage();
 				updateAfterPaginationChange();
@@ -103,7 +105,7 @@ public class PonderIndexScreen extends AbstractPonderScreen {
 		);
 
 		addRenderableWidget(nextPage = new PonderButton(centerX + 80, maxScreenArea.getY() + maxScreenArea.getHeight() + 10)
-			.showing(PonderGuiTextures.ICON_PONDER_RIGHT)
+			.showing(CatnipGuiTextures.ICON_PONDER_RIGHT)
 			.withCallback(() -> {
 				paginationState.nextPage();
 				updateAfterPaginationChange();
@@ -154,7 +156,7 @@ public class PonderIndexScreen extends AbstractPonderScreen {
 
 	@Override
 	protected void initBackTrackIcon(BoxWidget backTrack) {
-		backTrack.showing(PonderGuiTextures.ICON_PONDER_IDENTIFY);
+		backTrack.showing(CatnipGuiTextures.ICON_PONDER_IDENTIFY);
 	}
 
 	private boolean isItemIncluded(ItemEntry entry) {

@@ -1,5 +1,7 @@
 package net.createmod.ponder.impl.client.element;
 
+import net.createmod.catnip.api.client.gui.texture.CatnipGuiTextures;
+
 import org.joml.Matrix3x2fStack;
 import org.jspecify.annotations.Nullable;
 
@@ -48,19 +50,19 @@ public class InputWindowElement extends AnimatedOverlayElementBase {
 
 		@Override
 		public InputElementBuilder leftClick() {
-			icon = PonderGuiTextures.ICON_LMB;
+			icon = CatnipGuiTextures.ICON_LMB;
 			return this;
 		}
 
 		@Override
 		public InputElementBuilder scroll() {
-			icon = PonderGuiTextures.ICON_SCROLL;
+			icon = CatnipGuiTextures.ICON_SCROLL;
 			return this;
 		}
 
 		@Override
 		public InputElementBuilder rightClick() {
-			icon = PonderGuiTextures.ICON_RMB;
+			icon = CatnipGuiTextures.ICON_RMB;
 			return this;
 		}
 

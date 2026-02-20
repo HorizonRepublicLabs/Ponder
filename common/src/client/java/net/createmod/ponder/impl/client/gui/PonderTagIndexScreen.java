@@ -7,6 +7,8 @@ import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import net.createmod.catnip.api.client.gui.texture.CatnipGuiTextures;
+
 import org.joml.Matrix3x2fStack;
 import org.jspecify.annotations.Nullable;
 
@@ -71,7 +73,7 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 		int xOffset = (int) (width * 0.5);
 
 		addRenderableWidget(pagePrev = new PonderButton(xOffset - 120, height - 32)
-			.showing(PonderGuiTextures.ICON_PONDER_LEFT)
+			.showing(CatnipGuiTextures.ICON_PONDER_LEFT)
 			.withCallback(() -> {
 				paginationState.previousPage();
 				updateAfterPaginationChange();
@@ -82,7 +84,7 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 		pagePrev.updateGradientFromState();
 
 		addRenderableWidget(pageNext = new PonderButton(xOffset + 100, height - 32)
-			.showing(PonderGuiTextures.ICON_PONDER_RIGHT)
+			.showing(CatnipGuiTextures.ICON_PONDER_RIGHT)
 			.withCallback(() -> {
 				paginationState.nextPage();
 				updateAfterPaginationChange();
@@ -151,7 +153,7 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 
 	@Override
 	protected void initBackTrackIcon(BoxWidget backTrack) {
-		backTrack.showing(PonderGuiTextures.ICON_PONDER_IDENTIFY);
+		backTrack.showing(CatnipGuiTextures.ICON_PONDER_IDENTIFY);
 	}
 
 	@Override

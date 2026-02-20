@@ -16,12 +16,7 @@ public record PonderSceneRenderState(
 ) implements PictureInPictureRenderState {
 	@Override
 	public int x0() {
-		return window.getGuiScaledWidth();
-	}
-
-	@Override
-	public int x1() {
-		return window.getGuiScaledHeight();
+		return 0;
 	}
 
 	@Override
@@ -30,8 +25,13 @@ public record PonderSceneRenderState(
 	}
 
 	@Override
+	public int x1() {
+		return window.getGuiScaledWidth();
+	}
+
+	@Override
 	public int y1() {
-		return 0;
+		return window.getGuiScaledHeight();
 	}
 
 	@Override

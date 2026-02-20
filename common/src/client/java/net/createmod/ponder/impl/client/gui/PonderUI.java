@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import net.createmod.catnip.api.client.gui.texture.CatnipGuiTextures;
+
 import org.joml.Matrix3x2f;
 import org.joml.Matrix3x2fStack;
 import org.joml.Vector3f;
@@ -362,7 +364,7 @@ public class PonderUI extends AbstractPonderScreen {
 		}
 
 		addRenderableWidget(scan = new PonderButton(bX, bY).withShortcut(bindings.keyDrop)
-			.showing(PonderGuiTextures.ICON_PONDER_IDENTIFY)
+			.showing(CatnipGuiTextures.ICON_PONDER_IDENTIFY)
 			.enableFade(0, 5)
 			.withCallback(() -> {
 				identifyMode = !identifyMode;
@@ -375,38 +377,38 @@ public class PonderUI extends AbstractPonderScreen {
 		scan.atZLevel(600);
 
 		addRenderableWidget(
-			slowMode = new PonderButton(width - 20 - 31, bY).showing(PonderGuiTextures.ICON_PONDER_SLOW_MODE)
+			slowMode = new PonderButton(width - 20 - 31, bY).showing(CatnipGuiTextures.ICON_PONDER_SLOW_MODE)
 				.enableFade(0, 5)
 				.withCallback(() -> setComfyReadingEnabled(!isComfyReadingEnabled())));
 
 		if (PonderIndex.editingModeActive()) {
 			addRenderableWidget(
-				userMode = new PonderButton(width - 50 - 31, bY).showing(PonderGuiTextures.ICON_PONDER_USER_MODE)
+				userMode = new PonderButton(width - 50 - 31, bY).showing(CatnipGuiTextures.ICON_PONDER_USER_MODE)
 					.enableFade(0, 5)
 					.withCallback(() -> userViewMode = !userViewMode));
 		}
 
 		bX += 50 + spacing;
 		addRenderableWidget(left = new PonderButton(bX, bY).withShortcut(bindings.keyLeft)
-			.showing(PonderGuiTextures.ICON_PONDER_LEFT)
+			.showing(CatnipGuiTextures.ICON_PONDER_LEFT)
 			.enableFade(0, 5)
 			.withCallback(() -> this.scroll(false)));
 
 		bX += 20 + spacing;
 		addRenderableWidget(close = new PonderButton(bX, bY).withShortcut(bindings.keyInventory)
-			.showing(PonderGuiTextures.ICON_PONDER_CLOSE)
+			.showing(CatnipGuiTextures.ICON_PONDER_CLOSE)
 			.enableFade(0, 5)
 			.withCallback(this::onClose));
 
 		bX += 20 + spacing;
 		addRenderableWidget(right = new PonderButton(bX, bY).withShortcut(bindings.keyRight)
-			.showing(PonderGuiTextures.ICON_PONDER_RIGHT)
+			.showing(CatnipGuiTextures.ICON_PONDER_RIGHT)
 			.enableFade(0, 5)
 			.withCallback(() -> this.scroll(true)));
 
 		bX += 50 + spacing;
 		addRenderableWidget(replay = new PonderButton(bX, bY).withShortcut(bindings.keyDown)
-			.showing(PonderGuiTextures.ICON_PONDER_REPLAY)
+			.showing(CatnipGuiTextures.ICON_PONDER_REPLAY)
 			.enableFade(0, 5)
 			.withCallback(this::replay));
 	}
@@ -1018,8 +1020,8 @@ public class PonderUI extends AbstractPonderScreen {
 		poseStack.translate(divotX + divotRadius, divotY + divotRadius);
 		poseStack.rotate(divotRotation * Constants.DEG_TO_RAD);
 		poseStack.translate(-divotRadius, -divotRadius);
-		PonderGuiTextures.SPEECH_TOOLTIP_BACKGROUND.render(graphics, 0, 0);
-		PonderGuiTextures.SPEECH_TOOLTIP_COLOR.render(graphics, 0, 0, c);
+		CatnipGuiTextures.SPEECH_TOOLTIP_BACKGROUND.render(graphics, 0, 0);
+		CatnipGuiTextures.SPEECH_TOOLTIP_COLOR.render(graphics, 0, 0, c);
 		poseStack.popMatrix();
 
 		if (returnWithLocalTransform) {
