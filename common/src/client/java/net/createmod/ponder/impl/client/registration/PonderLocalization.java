@@ -8,8 +8,8 @@ import net.createmod.catnip.api.data.Couple;
 import net.createmod.ponder.api.Ponder;
 import net.createmod.ponder.api.client.PonderIndex;
 import net.createmod.ponder.api.client.registration.LangRegistryAccess;
-import net.createmod.ponder.impl.client.PonderTooltipHandler;
 import net.createmod.ponder.impl.client.gui.AbstractPonderScreen;
+import net.createmod.ponder.impl.client.tooltip.PonderTooltipHandler;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.resources.Identifier;
 
@@ -122,7 +122,6 @@ public class PonderLocalization implements LangRegistryAccess {
 
 	private void recordGeneral(BiConsumer<String, String> consumer) {
 		addGeneral(consumer, PonderTooltipHandler.HOLD_TO_PONDER, "Hold [%1$s] to Ponder");
-		addGeneral(consumer, PonderTooltipHandler.SUBJECT, "Subject of this scene");
 		addGeneral(consumer, AbstractPonderScreen.PONDERING, "Pondering about...");
 		addGeneral(consumer, AbstractPonderScreen.PONDERING_TAG, "Pondering about...");
 		addGeneral(consumer, AbstractPonderScreen.IDENTIFY_MODE, "Identify mode active.\nUnpause with [%1$s]");

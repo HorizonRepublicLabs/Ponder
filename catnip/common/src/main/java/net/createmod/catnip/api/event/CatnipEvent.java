@@ -11,6 +11,7 @@ public interface CatnipEvent<Callback> {
 	/// Register a new callback to this event. Threadsafe.
 	void subscribe(Callback callback);
 
+	/// Get this event's invoker. Will always return the same instance.
 	Callback invoker();
 
 	/// Create a new simple event.
@@ -27,7 +28,8 @@ public interface CatnipEvent<Callback> {
 	@FunctionalInterface
 	interface InvokerFactory<Callback> {
 		/// Create an invoker wrapping the given list of callbacks.
-		/// The given list will never be modified. If a new callback is registered, the factory will be invoked again.
+		///
+		/// The given list is an immutable view, but the backing list is live. It will be updated as callbacks are registered.
 		Callback create(List<Callback> callbacks);
 	}
 

@@ -68,6 +68,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
@@ -140,14 +141,16 @@ public class PonderUI extends AbstractPonderScreen {
 		return new PonderUI(PonderIndex.getSceneAccess().compile(id));
 	}
 
+	public static PonderUI of(Item item) {
+		return new PonderUI(PonderIndex.getSceneAccess().compile(RegisteredObjectsHelper.getKeyOrThrow(item)));
+	}
+
 	public static PonderUI of(ItemStack item) {
-		return new PonderUI(
-			PonderIndex.getSceneAccess().compile(RegisteredObjectsHelper.getKeyOrThrow(item.getItem())));
+		return of(item.getItem());
 	}
 
 	public static PonderUI of(ItemStack item, PonderTag tag) {
-		PonderUI ponderUI = new PonderUI(
-			PonderIndex.getSceneAccess().compile(RegisteredObjectsHelper.getKeyOrThrow(item.getItem())));
+		PonderUI ponderUI = of(item);
 		ponderUI.referredToByTag = tag;
 		return ponderUI;
 	}
