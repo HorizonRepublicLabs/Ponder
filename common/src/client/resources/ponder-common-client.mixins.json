@@ -4,7 +4,9 @@
   "package": "net.createmod.ponder.impl.client.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
-    "AbstractContainerScreenAccessor"
+    "AbstractContainerScreenAccessor",
+    "GuiGraphicsAccessor",
+    "TooltipRenderUtilMixin"
   ],
   "injectors": {
     "defaultRequire": 1

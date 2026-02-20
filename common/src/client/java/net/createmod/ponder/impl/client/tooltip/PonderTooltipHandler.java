@@ -2,7 +2,6 @@ package net.createmod.ponder.impl.client.tooltip;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
@@ -11,9 +10,7 @@ import net.createmod.catnip.api.client.animation.AnimationTickHolder;
 import net.createmod.catnip.api.client.event.ClientTickCallback;
 import net.createmod.catnip.api.client.gui.NavigatableSimiScreen;
 import net.createmod.catnip.api.client.gui.ScreenOpener;
-import net.createmod.catnip.api.data.Couple;
 import net.createmod.catnip.api.registry.RegisteredObjectsHelper;
-import net.createmod.catnip.api.theme.Color;
 import net.createmod.ponder.api.Ponder;
 import net.createmod.ponder.api.client.HoveredItemProvider;
 import net.createmod.ponder.api.client.PonderIndex;
@@ -39,10 +36,6 @@ public final class PonderTooltipHandler {
 	public static final Component SUBJECT = Component.translatable("ponder.ui.subject").withStyle(ChatFormatting.GREEN);
 
 	private static final List<HoveredItemProvider> hoveredItemProviders = new ArrayList<>();
-
-	private static final Color borderA = new Color(0x5000ff, false).setImmutable();
-	private static final Color borderB = new Color(0x5555ff, false).setImmutable();
-	private static final Color borderC = new Color(0xffffff, false).setImmutable();
 
 	private static final LerpedFloat openProgress = LerpedFloat.linear().startWithValue(0);
 
@@ -90,8 +83,8 @@ public final class PonderTooltipHandler {
 
 	// invoked whenever an item's tooltip is queried.
 	// this happens in a lot of places, so do our best to filter for getting the tooltip of the hovered item.
-	private static void onTooltipQuery(ItemStack stack, TooltipContext ignored, TooltipFlag flags, List<Component> tooltip) {
-		if (!hidesPonderTooltip(flags) && hasPonderScenes(stack.getItem())) {
+	private static void onTooltipQuery(ItemStack stack, TooltipContext context, TooltipFlag flags, List<Component> tooltip) {
+		if (!hidesPonderTooltip(context, flags) && hasPonderScenes(stack.getItem())) {
 			insert(tooltip, determineTooltip(stack));
 		}
 	}
@@ -111,25 +104,10 @@ public final class PonderTooltipHandler {
 		return progress <= 0 ? holdToPonderMessage() : makeProgressBar(progress);
 	}
 
-	// scales the progress value so visuals progress a bit faster than the true value
-	private static float getVisualProgress() {
+	/// @return the visual Ponder opening progress, slightly scaled so visuals reach completion faster
+	public static float getVisualProgress() {
 		float progress = openProgress.getValue(AnimationTickHolder.getPartialTicksUI());
 		return Math.min(1, progress * 8 / 7);
-	}
-
-	public static Optional<Couple<Color>> handleTooltipColor(ItemStack stack) {
-		float progress = getVisualProgress();
-		Color startC = getSmoothColorForProgress(progress);
-		Color endC = getSmoothColorForProgress(progress);
-
-		return Optional.of(Couple.create(startC, endC));
-
-	}
-
-	private static Color getSmoothColorForProgress(float progress) {
-		if (progress < 0.5)
-			return borderA.mixWith(borderB, progress * 2);
-		return borderB.mixWith(borderC, (progress - .5f) * 2);
 	}
 
 	// create a line of vertical bars (|) roughly equal in size to the hold message
@@ -199,7 +177,7 @@ public final class PonderTooltipHandler {
 		return false;
 	}
 
-	private static boolean hidesPonderTooltip(TooltipFlag flag) {
+	private static boolean hidesPonderTooltip(TooltipContext context, TooltipFlag flag) {
 		// TODO: Jade should use a custom TooltipFlag impl when querying ItemEntity
 		//  tooltips, so we can identify it and avoid adding the ponder message to it.
 		//  Any other situations like that?
