@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import net.minecraft.network.chat.Component;
+
 import org.joml.Matrix3x2fStack;
 import org.jspecify.annotations.Nullable;
 
@@ -41,13 +43,15 @@ public class PonderTagScreen extends AbstractPonderScreen {
 
 	private ItemStack hoveredItem = ItemStack.EMPTY;
 
-	public PonderTagScreen(Identifier tag) {
-		this.tag = PonderIndex.getTagAccess().getRegisteredTag(tag).orElseThrow(
-			() -> new NoSuchElementException("PonderTag " + tag.toString())
-		);
+	public PonderTagScreen(Identifier tagId) {
+		this(PonderIndex.getTagAccess().getRegisteredTag(tagId).orElseThrow(
+			() -> new NoSuchElementException("PonderTag " + tagId.toString())
+		));
 	}
 
 	public PonderTagScreen(PonderTag tag) {
+		// FIXME: title lang
+		super(Component.literal(tag.getTitle()));
 		this.tag = tag;
 	}
 
@@ -144,8 +148,9 @@ public class PonderTagScreen extends AbstractPonderScreen {
 	}
 
 	@Override
-	protected void renderWindow(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		super.renderWindow(graphics, mouseX, mouseY, partialTicks);
+	public void renderScaled(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+		super.renderScaled(graphics, mouseX, mouseY, partialTicks);
+
 		renderItems(graphics, mouseX, mouseY, partialTicks);
 
 		Matrix3x2fStack poseStack = graphics.pose();
@@ -200,6 +205,10 @@ public class PonderTagScreen extends AbstractPonderScreen {
 
 		ClientFontHelper.drawSplitString(graphics, font, desc, x, y, w, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
 		poseStack.popMatrix();
+
+		if (!hoveredItem.isEmpty()) {
+			graphics.setTooltipForNextFrame(font, hoveredItem, mouseX, mouseY);
+		}
 	}
 
 	protected void renderItems(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
@@ -218,12 +227,12 @@ public class PonderTagScreen extends AbstractPonderScreen {
 		new BoxElement()
 			.withBackground(PonderUI.BACKGROUND_FLAT)
 			.gradientBorder(PonderUI.COLOR_IDLE)
-			.at((windowWidth - stringWidth) / 2f - 5, itemArea.getY() - 21, 100)
+			.at((-stringWidth) / 2f - 5, itemArea.getY() - 21, 100)
 			.withBounds(stringWidth + 10, 10)
 			.render(graphics);
 
 //		UIRenderHelper.streak(0, itemArea.getX() - 10, itemArea.getY() - 20, 20, 180, 0x101010);
-		graphics.drawCenteredString(font, relatedTitle, windowWidth / 2, itemArea.getY() - 20, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
+		graphics.drawCenteredString(font, relatedTitle, 0, itemArea.getY() - 20, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
 
 		UIRenderHelper.streak(graphics, 0, 0, 0, itemArea.getHeight() + 10, itemArea.getWidth() / 2 + 75);
 		UIRenderHelper.streak(graphics, 180, 0, 0, itemArea.getHeight() + 10, itemArea.getWidth() / 2 + 75);
@@ -234,13 +243,6 @@ public class PonderTagScreen extends AbstractPonderScreen {
 
 	public int getItemsY() {
 		return (int) (MAIN_YMULT * height + 85);
-	}
-
-	@Override
-	protected void renderWindowForeground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		if (!hoveredItem.isEmpty()) {
-			graphics.setTooltipForNextFrame(font, hoveredItem, mouseX, mouseY);
-		}
 	}
 
 	@Override

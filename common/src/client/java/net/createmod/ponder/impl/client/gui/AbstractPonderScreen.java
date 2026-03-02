@@ -29,6 +29,10 @@ public abstract class AbstractPonderScreen extends NavigatableSimiScreen {
 
 	public static final String ASSOCIATED = UI_PREFIX + "associated";
 
+	protected AbstractPonderScreen(Component title) {
+		super(title);
+	}
+
 	@Override
 	protected void init() {
 		super.init();

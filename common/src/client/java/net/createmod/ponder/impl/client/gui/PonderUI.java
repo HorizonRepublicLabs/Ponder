@@ -158,6 +158,9 @@ public class PonderUI extends AbstractPonderScreen {
 	}
 
 	protected PonderUI(List<PonderScene> scenes) {
+		// FIXME: title lang
+		super(Component.literal("Ponder"));
+
 		Identifier location = scenes.get(0).getIdentifier();
 		stack = new ItemStack(RegisteredObjectsHelper.getItemOrBlock(location));
 
@@ -582,12 +585,14 @@ public class PonderUI extends AbstractPonderScreen {
 	}
 
 	@Override
-	protected void renderWindow(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		super.renderWindow(graphics, mouseX, mouseY, partialTicks);
-		partialTicks = getPartialTicks();
-		renderVisibleScenes(graphics, mouseX, mouseY,
-			skipCooling > 0 ? 0 : identifyMode ? ponderPartialTicksPaused : partialTicks);
-		renderWidgets(graphics, mouseX, mouseY, identifyMode ? ponderPartialTicksPaused : partialTicks);
+	public void renderScaled(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+		super.renderScaled(graphics, mouseX, mouseY, partialTicks);
+
+		float widgetTicks = this.identifyMode ? ponderPartialTicksPaused : partialTicks;
+		float sceneTicks = this.skipCooling > 0 ? 0 : widgetTicks;
+
+		this.renderVisibleScenes(graphics, mouseX, mouseY, sceneTicks);
+		this.renderWidgets(graphics, mouseX, mouseY, widgetTicks);
 	}
 
 	protected void renderVisibleScenes(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {

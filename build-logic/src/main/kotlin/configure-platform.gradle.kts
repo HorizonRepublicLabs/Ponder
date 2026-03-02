@@ -99,6 +99,7 @@ tasks.withType<JavaCompile> {
     exclude("**/ConfigPathArgument.java")
     exclude("**/CClient.java")
     exclude("**/PonderConfig.java")
+    exclude("**/ConfirmationScreen.java")
 }
 
 when (name) {

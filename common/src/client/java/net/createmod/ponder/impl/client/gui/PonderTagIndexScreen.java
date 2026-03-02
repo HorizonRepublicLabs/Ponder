@@ -51,6 +51,8 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 
 	// The main ponder entry point from menus.
 	public PonderTagIndexScreen() {
+		// FIXME: title lang
+		super(Component.literal("Tag Index"));
 	}
 
 	@Override
@@ -95,12 +97,12 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 	}
 
 	protected void setupModTagEntries() {
-		removeWidgets(children().stream().filter(widget -> {
+		this.children().stream().filter(widget -> {
 			if (!(widget instanceof PonderButton ponderButton))
 				return false;
 
 			return ponderButton.getTag() != null;
-		}).toList());
+		}).forEach(this::removeWidget);
 
 		currentModTagEntries.clear();
 
@@ -175,8 +177,15 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 	}
 
 	@Override
-	protected void renderWindow(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		super.renderWindow(graphics, mouseX, mouseY, partialTicks);
+	public void renderScaled(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+		super.renderScaled(graphics, mouseX, mouseY, partialTicks);
+
+		if (hoveredItem != null) {
+			List<Component> list = FontHelper.cutStringTextComponent(hoveredItem.getDescription(), Palette.ALL_GRAY);
+			list.addFirst(Component.literal(hoveredItem.getTitle()));
+			graphics.setComponentTooltipForNextFrame(font, list, mouseX, mouseY);
+		}
+
 		Matrix3x2fStack poseStack = graphics.pose();
 
 		poseStack.pushMatrix();
@@ -272,15 +281,6 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 		UIRenderHelper.streak(graphics, 0, 0, layoutHeight / 2, layoutHeight + 6, layoutWidth / 2 + extraLength * 15);
 		UIRenderHelper.streak(graphics, 180, 0, layoutHeight / 2, layoutHeight + 6, layoutWidth / 2 + extraLength * 15);
 
-	}
-
-	@Override
-	protected void renderWindowForeground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		if (hoveredItem != null) {
-			List<Component> list = FontHelper.cutStringTextComponent(hoveredItem.getDescription(), Palette.ALL_GRAY);
-			list.addFirst(Component.literal(hoveredItem.getTitle()));
-			graphics.setComponentTooltipForNextFrame(font, list, mouseX, mouseY);
-		}
 	}
 
 	@Override

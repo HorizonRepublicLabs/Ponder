@@ -8,6 +8,8 @@ import java.util.function.Predicate;
 
 import net.createmod.catnip.api.client.gui.texture.CatnipGuiTextures;
 
+import net.minecraft.network.chat.Component;
+
 import org.joml.Matrix3x2fStack;
 import org.jspecify.annotations.Nullable;
 
@@ -52,6 +54,9 @@ public class PonderIndexScreen extends AbstractPonderScreen {
 	private final List<Predicate<ItemLike>> exclusions;
 
 	public PonderIndexScreen() {
+		// FIXME: title lang
+		super(Component.literal("Index"));
+
 		items = new ArrayList<>();
 		// collect exclusions once at screen creation instead of every time they are needed
 		exclusions = PonderIndex.streamPlugins()
@@ -118,7 +123,7 @@ public class PonderIndexScreen extends AbstractPonderScreen {
 	}
 
 	protected void setupItemsForPage() {
-		removeWidgets(paginatedWidgets);
+		paginatedWidgets.forEach(this::removeWidget);
 
 		int itemCount = paginationState.getCurrentPageElementCount();
 		int actualItemRows = Mth.clamp((int) Math.ceil((double) itemCount / maxItemsPerRow), 1, maxItemRows);
@@ -184,8 +189,9 @@ public class PonderIndexScreen extends AbstractPonderScreen {
 	}
 
 	@Override
-	protected void renderWindow(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		super.renderWindow(graphics, mouseX, mouseY, partialTicks);
+	public void renderScaled(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+		super.renderScaled(graphics, mouseX, mouseY, partialTicks);
+
 		int centerX = width / 2;
 		int centerY = height / 2;
 
@@ -214,14 +220,10 @@ public class PonderIndexScreen extends AbstractPonderScreen {
 		graphics.drawString(font, pageString, (int) (-stringWidth / 2f), 0, UIRenderHelper.COLOR_TEXT.getFirst().getRGB(), false);
 
 		poseStack.popMatrix();
-	}
 
-	@Override
-	protected void renderWindowForeground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		if (hoveredItem.isEmpty())
-			return;
-
-		graphics.setTooltipForNextFrame(font, hoveredItem, mouseX, mouseY);
+		if (this.hoveredItem != null) {
+			graphics.setTooltipForNextFrame(this.font, this.hoveredItem, mouseX, mouseY);
+		}
 	}
 
 	@Override

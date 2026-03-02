@@ -6,12 +6,10 @@ import java.util.List;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.joml.Matrix3x2fStack;
-import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.createmod.catnip.api.animation.LerpedFloat;
 import net.createmod.catnip.api.client.gui.element.BoxElement;
@@ -45,7 +43,8 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 	@Nullable
 	protected BoxWidget backTrack;
 
-	public NavigatableSimiScreen() {
+	protected NavigatableSimiScreen(Component title) {
+		super(title);
 		Window window = Minecraft.getInstance().getWindow();
 		depthPointX = window.getGuiScaledWidth() / 2;
 		depthPointY = window.getGuiScaledHeight() / 2;
@@ -73,7 +72,7 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 		if (screenHistory.isEmpty())
 			return;
 
-		addRenderableWidget(backTrack = new BoxWidget(31, height - 31 - 20)
+		backTrack = addRenderableWidget(new BoxWidget(31, height - 31 - 20)
 			.withBounds(20, 20)
 			.withCustomBackground(BoxElement.COLOR_BACKGROUND_FLAT)
 			.enableFade(0, 5)
@@ -111,101 +110,45 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 	}
 
 	@Override
-	protected void renderWindow(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-//		renderZeloBreadcrumbs(ms, mouseX, mouseY, partialTicks);
-		if (backTrack == null)
-			return;
+	public final void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+		// apply transition scaling
+		float progress = transition.getValue(partialTicks);
+		float scale = 1 - 0.5f * (1 - progress);
 
-		Matrix3x2fStack ms = graphics.pose();
+		Matrix3x2fStack transforms = graphics.pose();
+		transforms.pushMatrix();
+		transforms.translate(this.depthPointX, this.depthPointY);
+		transforms.scale(scale, scale);
+		transforms.translate(-this.depthPointX, -this.depthPointY);
 
-		int x = (int) Mth.lerp(arrowAnimation.getValue(partialTicks), -9, 21);
-		int maxX = backTrack.getX() + backTrack.getWidth();
-		Couple<Color> colors = COLOR_NAV_ARROW;
+		this.renderScaled(graphics, mouseX, mouseY, partialTicks);
 
-		if (x + 30 < backTrack.getX())
-			UIRenderHelper.breadcrumbArrow(graphics, x + 30, height - 51, maxX - (x + 30), 20, 5, colors);
-
-		UIRenderHelper.breadcrumbArrow(graphics, x, height - 51, 30, 20, 5, colors);
-		UIRenderHelper.breadcrumbArrow(graphics, x - 30, height - 51, 30, 20, 5, colors);
-
-		if (backTrack.isHoveredOrFocused()) {
-			Component component = backTrackingComponent();
-			graphics.drawString(font, component, 41 - font.width(component) / 2, height - 16, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().getRGB(), false);
-			if (Mth.equal(arrowAnimation.getValue(), arrowAnimation.getChaseTarget())) {
-				arrowAnimation.setValue(1);
-				arrowAnimation.setValue(1);// called twice to also set the previous value to 1
-			}
-		}
+		transforms.popMatrix();
 	}
 
-	@Override
-	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-		if (!isCurrentlyRenderingPreviousScreen())
-			super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
-	}
+	public void renderScaled(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+		super.render(graphics, mouseX, mouseY, partialTicks);
 
-	@Override
-	protected void renderWindowBackground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		if (transition.getChaseTarget() == 0 || transition.settled()) {
-			renderBackground(graphics, mouseX, mouseY, partialTicks);
-			return;
-		}
+		if (this.backTrack != null) {
+			int x = (int) Mth.lerp(arrowAnimation.getValue(partialTicks), -9, 21);
+			int maxX = backTrack.getX() + backTrack.getWidth();
+			Couple<Color> colors = COLOR_NAV_ARROW;
 
-		renderBackground(graphics, mouseX, mouseY, partialTicks);
+			if (x + 30 < backTrack.getX())
+				UIRenderHelper.breadcrumbArrow(graphics, x + 30, height - 51, maxX - (x + 30), 20, 5, colors);
 
-		Matrix3x2fStack ms = graphics.pose();
+			UIRenderHelper.breadcrumbArrow(graphics, x, height - 51, 30, 20, 5, colors);
+			UIRenderHelper.breadcrumbArrow(graphics, x - 30, height - 51, 30, 20, 5, colors);
 
-		Window window = minecraft.getWindow();
-		float guiScaledWidth = window.getGuiScaledWidth();
-		float guiScaledHeight = window.getGuiScaledHeight();
-
-		Screen lastScreen = ScreenOpener.getPreviouslyRenderedScreen();
-		float tValue = transition.getValue(partialTicks);
-		float tValueAbsolute = Math.abs(tValue);
-
-		// draw last screen into buffer
-		if (lastScreen != null && lastScreen != this && !transition.settled()) {
-			currentlyRenderingPreviousScreen = true;
-			ms.pushMatrix();
-			lastScreen.render(graphics, 0, 0, partialTicks);
-
-			ms.popMatrix();
-
-			ms.pushMatrix();
-
-			int dpx = (int) (guiScaledWidth / 2);
-			int dpy = (int) (guiScaledHeight / 2);
-			if (lastScreen instanceof NavigatableSimiScreen navigableScreen && tValue > 0) {
-				dpx = navigableScreen.depthPointX;
-				dpy = navigableScreen.depthPointY;
+			if (backTrack.isHoveredOrFocused()) {
+				Component component = backTrackingComponent();
+				graphics.drawString(font, component, 41 - font.width(component) / 2, height - 16, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().getRGB(), false);
+				if (Mth.equal(arrowAnimation.getValue(), arrowAnimation.getChaseTarget())) {
+					arrowAnimation.setValue(1);
+					arrowAnimation.setValue(1);// called twice to also set the previous value to 1
+				}
 			}
-
-			float scale = 1 + (0.2f * tValue);
-
-//			RenderSystem.enableBlend(); TODO - Was this needed here?
-//			RenderSystem.defaultBlendFunc(); TODO - Was this needed here?
-			Matrix4f matrix4f = new Matrix4f().setOrtho(0.0F, guiScaledWidth, guiScaledHeight, 0.0F, 1000.0F, 3000.0F);
-			PoseStack poseStack2 = new PoseStack();
-			poseStack2.last().pose().set(matrix4f);
-			poseStack2.translate(dpx, dpy, 0);
-			poseStack2.scale(scale, scale, 1);
-			poseStack2.translate(-dpx, -dpy, 0);
-
-
-//			RenderSystem.disableBlend(); TODO - Was this needed here?
-			ms.popMatrix();
-			currentlyRenderingPreviousScreen = false;
 		}
-
-		// modify current screen as well
-		float scale = tValue > 0 ? 1 - 0.5f * (1 - tValueAbsolute) : 1 + .5f * (1 - tValueAbsolute);
-		int dpx = (int) (guiScaledWidth / 2);
-		//dpx = depthPointX;
-		int dpy = (int) (guiScaledHeight / 2);
-		//dpy = depthPointY;
-		ms.translate(dpx, dpy);
-		ms.scale(scale, scale);
-		ms.translate(-dpx, -dpy);
 	}
 
 	@Override
