@@ -6,7 +6,6 @@ plugins {
 dependencies {
     minecraft(libs.minecraft)
     compileOnly(libs.bundles.mixin)
-    annotationProcessor(libs.mixin.extras)
 }
 
 loom {

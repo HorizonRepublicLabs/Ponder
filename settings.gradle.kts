@@ -15,7 +15,7 @@ for (platform in listOf("common", "fabric", "neoforge")) {
     include(platform)
 
     include(":catnip:$platform")
-    project(":catnip:$platform").projectDir = file("catnip/$platform")
+    include(":testmod:$platform")
 }
 
 includeBuild("build-logic")

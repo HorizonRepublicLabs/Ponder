@@ -66,15 +66,18 @@ tasks.processResources {
     }
 }
 
-publishing {
-    publications.create<MavenPublication>("mavenJava") {
-        from(components["java"])
-    }
+// don't publish the testmod
+if (parent!!.name != "testmod") {
+    publishing {
+        publications.create<MavenPublication>("mavenJava") {
+            from(components["java"])
+        }
 
-    repositories {
-        maven("https://maven.createmod.net") {
-            name = "create"
-            credentials(PasswordCredentials::class)
+        repositories {
+            maven("https://maven.createmod.net") {
+                name = "create"
+                credentials(PasswordCredentials::class)
+            }
         }
     }
 }
