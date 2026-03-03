@@ -4,6 +4,8 @@ plugins {
 }
 
 loom {
+    accessWidenerPath = file("src/main/resources/catnip.accesswidener")
+
     mods.register("catnip") {
         sourceSet(sourceSets.main.get())
         sourceSet(sourceSets.client.get())

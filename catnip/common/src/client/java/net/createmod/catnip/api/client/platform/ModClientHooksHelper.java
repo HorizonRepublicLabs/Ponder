@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.function.Function;
 
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.Nullable;
 
@@ -45,6 +47,8 @@ public interface ModClientHooksHelper {
 	boolean isKeyPressed(KeyMapping mapping);
 
 	void registerPictureInPictureRenderer(Class<?> stateClass,Function<BufferSource, PictureInPictureRenderer<?>> factory);
+
+	RenderPipeline.Builder useDrawModeInGui(RenderPipeline.Builder builder);
 
 	void submitFullFluidState(PoseStack ms, OrderedSubmitNodeCollector buffer, FluidState fluid);
 

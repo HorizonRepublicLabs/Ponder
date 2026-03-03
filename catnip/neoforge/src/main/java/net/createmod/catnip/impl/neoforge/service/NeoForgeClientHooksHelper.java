@@ -6,6 +6,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.pipeline.RenderPipeline.Builder;
+
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jspecify.annotations.Nullable;
 
@@ -77,6 +80,12 @@ public class NeoForgeClientHooksHelper implements ModClientHooksHelper {
 	@Override
 	public void registerPictureInPictureRenderer(Class<?> stateClass, Function<BufferSource, PictureInPictureRenderer<?>> factory) {
 		PIP_RENDERERS.put(stateClass, factory);
+	}
+
+	@Override
+	public Builder useDrawModeInGui(Builder builder) {
+		// FIXME
+		throw new RuntimeException("NYI, no forge api right now");
 	}
 
 	@Override

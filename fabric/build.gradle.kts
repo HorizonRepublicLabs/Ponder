@@ -1,5 +1,3 @@
-import net.fabricmc.loom.task.RenderDocRunTask
-
 plugins {
     alias(libs.plugins.loom)
     alias(libs.plugins.configure.platform)

@@ -30,6 +30,7 @@
     "catnip-common-client.mixins.json",
     "catnip-fabric-client.mixins.json"
   ],
+  "accessWidener": "catnip.accesswidener",
   "depends": {
     "fabricloader": ">=${fabric_loader_version}",
     "fabric-api": ">=${fabric_api_version}",

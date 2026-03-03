@@ -6,12 +6,11 @@ plugins {
 dependencies {
     minecraft(libs.minecraft)
     compileOnly(libs.bundles.mixin)
-    annotationProcessor(libs.mixin.extras)
     compileOnlyApi(project(":catnip:common"))
     clientCompileOnly(project(":catnip:common", configuration = "clientJar"))
 }
 
 loom {
     // manually use the catnip common AW here, it won't be picked up since it's not a fabric mod
-    accessWidenerPath = project(":catnip:common").file("catnip.accesswidener")
+    accessWidenerPath = project(":catnip:common").file("catnip_common_source.accesswidener")
 }

@@ -1,6 +1,0 @@
-accessWidener v1 official
-
-# this AW is only for the common project at compile time.
-# it should be used to widen access to things that are made accessible by both fabric and neo.
-accessible field net/minecraft/client/gui/GuiGraphics guiRenderState Lnet/minecraft/client/gui/render/state/GuiRenderState;
-accessible field net/minecraft/client/renderer/RenderPipelines DEBUG_FILLED_SNIPPET Lcom/mojang/blaze3d/pipeline/RenderPipeline$Snippet;

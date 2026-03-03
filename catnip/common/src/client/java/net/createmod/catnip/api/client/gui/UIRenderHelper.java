@@ -1,7 +1,13 @@
 package net.createmod.catnip.api.client.gui;
 
+import net.createmod.catnip.impl.client.mixin.GuiGraphicsAccessor;
+import net.minecraft.client.gui.navigation.ScreenRectangle;
+
+import net.minecraft.client.gui.render.state.ColoredRectangleRenderState;
+
 import org.joml.Matrix3x2f;
 import org.joml.Matrix3x2fStack;
+import org.joml.Matrix3x2fc;
 import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -14,6 +20,8 @@ import net.createmod.catnip.api.data.Couple;
 import net.createmod.catnip.api.theme.Color;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.render.TextureSetup;
+
+import org.jspecify.annotations.Nullable;
 
 public class UIRenderHelper {
 	public static final Couple<Color> COLOR_TEXT = Couple.create(
@@ -118,22 +126,20 @@ public class UIRenderHelper {
 		breadcrumbArrow(graphics, x, y, width, height, indent, colors.getFirst(), colors.getSecond());
 	}
 
-	// draws a wide chevron-style breadcrumb arrow pointing left
+	/// Draws a wide chevron-style breadcrumb arrow pointing left.
 	public static void breadcrumbArrow(GuiGraphics graphics, int x, int y, int width, int height, int indent, Color startColor, Color endColor) {
-		Matrix3x2fStack poseStack = graphics.pose();
-		poseStack.pushMatrix();
-		poseStack.translate(x - indent, y);
+		Matrix3x2fStack transforms = graphics.pose();
+		transforms.pushMatrix();
+		transforms.translate(x - indent, y);
 
 		graphics.guiRenderState.submitGuiElement(new BreadcrumbArrowRenderState(
-			new Matrix3x2f(graphics.pose()),
-			width,
-			height,
-			indent,
-			startColor,
-			endColor
+			new Matrix3x2f(transforms),
+			width, height,
+			indent, startColor, endColor,
+			getScissor(graphics)
 		));
 
-		poseStack.popMatrix();
+		transforms.popMatrix();
 	}
 
 	/**
@@ -202,5 +208,24 @@ public class UIRenderHelper {
 
 	public static void flipForGuiRender(PoseStack poseStack) {
 		poseStack.mulPose(new Matrix4f().scaling(1, -1, 1));
+	}
+
+	/// @return the current scissor rectangle, if present
+	@Nullable
+	public static ScreenRectangle getScissor(GuiGraphics graphics) {
+		return ((GuiGraphicsAccessor) graphics).getScissorStack().peek();
+	}
+
+	/// Compute the bounds of a GUI element.
+	/// @see ColoredRectangleRenderState#getBounds(int, int, int, int, Matrix3x2fc, ScreenRectangle)
+	@SuppressWarnings("JavadocReference")
+	public static ScreenRectangle getBounds(ScreenRectangle bounds, Matrix3x2f pose, @Nullable ScreenRectangle scissor) {
+		bounds = bounds.transformMaxBounds(pose);
+
+		if (scissor != null) {
+			bounds = bounds.intersection(scissor);
+		}
+
+		return bounds;
 	}
 }

@@ -10,5 +10,5 @@ dependencies {
 }
 
 loom {
-    accessWidenerPath = file("catnip.accesswidener")
+    accessWidenerPath = file("catnip_common_source.accesswidener")
 }

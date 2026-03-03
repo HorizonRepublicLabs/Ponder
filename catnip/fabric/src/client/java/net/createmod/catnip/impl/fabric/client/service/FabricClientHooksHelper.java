@@ -4,6 +4,9 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.function.Function;
 
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.pipeline.RenderPipeline.Builder;
+
 import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.InputConstants;
@@ -66,6 +69,11 @@ public class FabricClientHooksHelper implements ModClientHooksHelper {
 	@Override
 	public void registerPictureInPictureRenderer(Class<?> stateClass, Function<BufferSource, PictureInPictureRenderer<?>> factory) {
 		PictureInPictureRendererRegistry.register(ctx -> factory.apply(ctx.bufferSource()));
+	}
+
+	@Override
+	public Builder useDrawModeInGui(Builder builder) {
+		return builder.withUsePipelineDrawModeForGui(true);
 	}
 
 	@Override

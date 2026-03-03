@@ -4,6 +4,7 @@ import net.createmod.catnip.api.Catnip;
 import net.createmod.catnip.api.client.event.AtlasStitchedCallback;
 import net.createmod.catnip.api.client.event.ClientTickCallback;
 import net.createmod.catnip.api.client.event.LevelRenderCallback;
+import net.createmod.catnip.impl.neoforge.service.NeoForgeRenderPipelineRegistry;
 import net.createmod.catnip.impl.neoforge.service.NeoforgeHudElements;
 
 import net.neoforged.api.distmarker.Dist;
@@ -22,6 +23,7 @@ public final class CatnipNeoforgeClient {
 		bus.addListener(CatnipNeoforgeClient::loadCompleted);
 		bus.addListener(CatnipNeoforgeClient::afterAtlasStitch);
 		bus.addListener(NeoforgeHudElements::registerEvent);
+		bus.addListener(NeoForgeRenderPipelineRegistry::registerEvent);
 	}
 
 	private static void loadCompleted(FMLLoadCompleteEvent event) {

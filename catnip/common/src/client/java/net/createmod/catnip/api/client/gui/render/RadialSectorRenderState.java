@@ -9,7 +9,7 @@ import org.jspecify.annotations.Nullable;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import net.createmod.catnip.api.client.render.PonderRenderPipelines;
+import net.createmod.catnip.api.client.render.CatnipRenderPipelines;
 import net.createmod.catnip.api.theme.Color;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.render.TextureSetup;
@@ -37,7 +37,7 @@ public record RadialSectorRenderState(
 
 	@Override
 	public RenderPipeline pipeline() {
-		return PonderRenderPipelines.POSITION_COLOR_STRIP;
+		return CatnipRenderPipelines.POSITION_COLOR_STRIP;
 	}
 
 	@Override
