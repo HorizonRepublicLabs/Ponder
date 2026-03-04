@@ -2,6 +2,10 @@ package net.createmod.catnip.impl.fabric.client.render;
 
 import java.util.Iterator;
 
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+
+import net.minecraft.client.renderer.block.LiquidBlockRenderer;
+
 import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -11,15 +15,12 @@ import net.createmod.catnip.api.client.render.model.ShadeSeparatedResultConsumer
 import net.createmod.catnip.impl.client.render.TransformingVertexConsumer;
 import net.createmod.catnip.impl.client.render.model.DefaultShadeSeparatedBufferSource;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
@@ -107,11 +108,8 @@ public final class BakedModelBuffererImpl {
 		UniversalMeshEmitter universalEmitter = objects.universalEmitter;
 		TransformingVertexConsumer transformingWrapper = objects.transformingWrapper;
 
-		BlockRenderDispatcher renderDispatcher = Minecraft.getInstance()
-			.getBlockRenderer();
-
-		ModelBlockRenderer blockRenderer = renderDispatcher.getModelRenderer();
-		ModelBlockRenderer.enableCaching();
+		BlockRenderDispatcher blockRenderer = Minecraft.getInstance().getBlockRenderer();
+		LiquidBlockRenderer liquidRenderer = blockRenderer.getLiquidRenderer();
 
 		while (posIterator.hasNext()) {
 			BlockPos pos = posIterator.next();
@@ -121,20 +119,20 @@ public final class BakedModelBuffererImpl {
 				FluidState fluidState = state.getFluidState();
 
 				if (!fluidState.isEmpty()) {
-					ChunkSectionLayer layer = ItemBlockRenderTypes.getRenderLayer(fluidState);
+					ChunkSectionLayer layer = liquidRenderer.getRenderLayer(fluidState);
 
 					transformingWrapper.prepare(bufferSource.getBuffer(layer, true), poseStack);
 
 					poseStack.pushPose();
 					poseStack.translate(pos.getX() - (pos.getX() & 0xF), pos.getY() - (pos.getY() & 0xF), pos.getZ() - (pos.getZ() & 0xF));
-					renderDispatcher.renderLiquid(pos, level, transformingWrapper, state, fluidState);
+					liquidRenderer.tesselate(level, pos, transformingWrapper, state, fluidState);
 					poseStack.popPose();
 				}
 			}
 
 			if (state.getRenderShape() == RenderShape.MODEL) {
 				long seed = state.getSeed(pos);
-				BlockStateModel model = renderDispatcher.getBlockModel(state);
+				BlockStateModel model = blockRenderer.getBlockModel(state);
 
 				// ChunkSectionLayer defaultLayer = ItemBlockRenderTypes.getChunkRenderType(state);
 				// universalEmitter.prepare(bufferSource, defaultLayer);
@@ -147,7 +145,6 @@ public final class BakedModelBuffererImpl {
 			}
 		}
 
-		ModelBlockRenderer.clearCache();
 		transformingWrapper.clear();
 		universalEmitter.clear();
 	}

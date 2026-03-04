@@ -1,5 +1,7 @@
 package net.createmod.catnip.api.client.render;
 
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+
 import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -7,7 +9,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.createmod.catnip.api.theme.Color;
 import net.minecraft.util.LightCoordsUtil;
-import net.minecraft.world.level.BlockAndTintGetter;
 
 public interface SuperByteBuffer {
 	static int maxLight(int packedLight1, int packedLight2) {

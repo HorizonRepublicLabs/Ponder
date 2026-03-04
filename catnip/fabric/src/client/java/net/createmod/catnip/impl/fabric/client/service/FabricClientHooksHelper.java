@@ -7,6 +7,8 @@ import java.util.function.Function;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.pipeline.RenderPipeline.Builder;
 
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+
 import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.InputConstants;
@@ -36,7 +38,6 @@ import net.minecraft.client.resources.language.LanguageManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.util.LightCoordsUtil;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 

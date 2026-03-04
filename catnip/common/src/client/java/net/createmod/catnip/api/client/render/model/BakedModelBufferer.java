@@ -2,6 +2,8 @@ package net.createmod.catnip.api.client.render.model;
 
 import java.util.Iterator;
 
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+
 import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -9,7 +11,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.createmod.catnip.api.client.platform.ModClientHooksHelper;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 
 public final class BakedModelBufferer {

@@ -1,5 +1,7 @@
 package net.createmod.catnip.api.client.render;
 
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -16,7 +18,6 @@ import net.createmod.catnip.api.theme.Color;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockAndTintGetter;
 
 @SuppressWarnings("unchecked")
 public class ShadeSeparatingSuperByteBuffer implements SuperByteBuffer {

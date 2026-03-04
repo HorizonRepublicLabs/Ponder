@@ -1,5 +1,9 @@
 package net.createmod.catnip.api.client.level.wrapper;
 
+import net.minecraft.client.multiplayer.ClientPacketListener;
+
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+
 import org.jspecify.annotations.Nullable;
 
 import net.createmod.catnip.impl.client.mixin.ClientPacketListenerAccessor;
@@ -19,15 +23,24 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 
+import java.util.Objects;
+
 public class WrappedClientLevel extends ClientLevel {
 	private static final Minecraft mc = Minecraft.getInstance();
 	protected Level level;
 
 	private WrappedClientLevel(Level level) {
-		super(mc.getConnection(), mc.level.getLevelData(), level.dimension(), level.dimensionTypeRegistration(),
-			((ClientPacketListenerAccessor) mc.getConnection()).catnip$getServerChunkRadius(),
-			mc.level.getServerSimulationDistance(), mc.levelRenderer, level.isDebug(),
-			((BiomeManagerAccessor) level.getBiomeManager()).catnip$getBiomeZoomSeed(), level.getSeaLevel());
+		// shouldn't be null, given level should have the same instance
+		ClientPacketListener connection = Objects.requireNonNull(mc.getConnection(), "connection");
+		int chunkRadius = ((ClientPacketListenerAccessor) connection).catnip$getServerChunkRadius();
+		long seed = ((BiomeManagerAccessor) level.getBiomeManager()).catnip$getBiomeZoomSeed();
+		int simDistance = Objects.requireNonNull(mc.level).getServerSimulationDistance();
+
+		super(
+			connection, mc.level.getLevelData(), level.dimension(), level.dimensionTypeRegistration(),
+			chunkRadius, simDistance, mc.levelRenderer, level.isDebug(), seed, level.getSeaLevel()
+		);
+
 		this.level = level;
 	}
 
@@ -75,7 +88,11 @@ public class WrappedClientLevel extends ClientLevel {
 
 	@Override
 	public int getBlockTint(BlockPos pos, ColorResolver resolver) {
-		return level.getBlockTint(pos, resolver);
+		if (this.level instanceof BlockAndTintGetter tintGetter) {
+			return tintGetter.getBlockTint(pos, resolver);
+		}
+
+		return 0xFFFFFFFF;
 	}
 
 	// FIXME: Emissive Lighting might not light stuff properly

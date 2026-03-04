@@ -1,5 +1,7 @@
 package net.createmod.catnip.impl.fabric.client.service;
 
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+
 import org.jspecify.annotations.Nullable;
 
 import net.createmod.catnip.api.client.platform.ClientFluidHelper;
@@ -8,7 +10,6 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.TypedInstance;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.material.Fluid;
 
 public final class FabricClientFluidHelper implements ClientFluidHelper {

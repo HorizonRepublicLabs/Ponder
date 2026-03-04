@@ -156,11 +156,6 @@ public class SchematicLevel extends WrappedLevel implements ServerLevelAccessor,
 	}
 
 	@Override
-	public float getShade(Direction face, boolean hasShade) {
-		return 1f;
-	}
-
-	@Override
 	public LevelTickAccess<Block> getBlockTicks() {
 		return BlackholeTickAccess.emptyLevelList();
 	}

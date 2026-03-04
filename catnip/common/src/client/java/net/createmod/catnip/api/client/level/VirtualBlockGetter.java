@@ -3,10 +3,11 @@ package net.createmod.catnip.api.client.level;
 import java.util.function.ToIntFunction;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.CardinalLighting;
 import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
@@ -27,11 +28,6 @@ public abstract class VirtualBlockGetter implements BlockAndTintGetter {
 	}
 
 	@Override
-	public float getShade(Direction direction, boolean shaded) {
-		return 1f;
-	}
-
-	@Override
 	public LevelLightEngine getLightEngine() {
 		return lightEngine;
 	}
@@ -40,5 +36,10 @@ public abstract class VirtualBlockGetter implements BlockAndTintGetter {
 	public int getBlockTint(BlockPos pos, ColorResolver resolver) {
 		Biome plainsBiome = Minecraft.getInstance().getConnection().registryAccess().lookupOrThrow(Registries.BIOME).getValueOrThrow(Biomes.PLAINS);
 		return resolver.getColor(plainsBiome, pos.getX(), pos.getZ());
+	}
+
+	@Override
+	public CardinalLighting cardinalLighting() {
+		return CardinalLighting.DEFAULT;
 	}
 }

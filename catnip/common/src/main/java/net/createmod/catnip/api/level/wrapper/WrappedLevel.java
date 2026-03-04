@@ -250,11 +250,6 @@ public class WrappedLevel extends Level {
 	}
 
 	@Override
-	public float getShade(Direction face, boolean hasShade) {
-		return level.getShade(face, hasShade);
-	}
-
-	@Override
 	public void updateNeighbourForOutputSignal(BlockPos pos, Block block) {
 	}
 

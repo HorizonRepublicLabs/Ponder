@@ -176,11 +176,6 @@ public class SchematicChunkSource extends ChunkSource {
 			}
 
 			@Override
-			public float getShade(Direction pDirection, boolean pShade) {
-				return 0;
-			}
-
-			@Override
 			public void sendBlockUpdated(BlockPos pPos, BlockState pOldState, BlockState pNewState, int pFlags) {
 			}
 

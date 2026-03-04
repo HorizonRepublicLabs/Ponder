@@ -6,6 +6,8 @@ import java.util.function.Function;
 
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.Nullable;
 
@@ -28,7 +30,6 @@ import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 

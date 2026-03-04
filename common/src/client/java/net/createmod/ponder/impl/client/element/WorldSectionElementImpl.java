@@ -347,13 +347,11 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 				overlayMS.last().normal().set(poseStack.last().normal());
 			}
 
-			VertexConsumer builder = new SheetedDecalTextureGenerator(
-				buffer.getBuffer(ModelBakery.DESTROY_TYPES.get(entry.getValue())), overlayMS.last(), 1
-			);
+			int progress = entry.getValue();
 
 			poseStack.pushPose();
 			poseStack.translate(pos.getX(), pos.getY(), pos.getZ());
-			Minecraft.getInstance().getBlockRenderer().renderBreakingTexture(world.getBlockState(pos), pos, world, poseStack, builder::putBulkData);
+			Minecraft.getInstance().getBlockRenderer().renderBreakingTexture(world.getBlockState(pos), pos, poseStack, buffer, progress);
 			poseStack.popPose();
 		}
 

@@ -7,6 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+
+import net.minecraft.world.level.CardinalLighting;
+import net.minecraft.world.level.ColorResolver;
+
 import org.jspecify.annotations.Nullable;
 
 import com.google.common.base.Suppliers;
@@ -54,7 +59,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class PonderLevel extends SchematicLevel {
+public class PonderLevel extends SchematicLevel implements BlockAndTintGetter {
 
 	@Nullable
 	public PonderScene scene;
@@ -172,6 +177,16 @@ public class PonderLevel extends SchematicLevel {
 		if (currentlyTickingEntities && globalPos.getY() < 0)
 			return Blocks.AIR.defaultBlockState();
 		return super.getBlockState(globalPos);
+	}
+
+	@Override
+	public int getBlockTint(BlockPos pos, ColorResolver color) {
+		return this.asClientWorld.get().getBlockTint(pos, color);
+	}
+
+	@Override
+	public CardinalLighting cardinalLighting() {
+		return this.asClientWorld.get().cardinalLighting();
 	}
 
 	@Override // For particle collision

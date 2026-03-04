@@ -5,8 +5,7 @@ import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.PoseStack.Pose;
-import com.mojang.blaze3d.vertex.QuadBrightness;
-import com.mojang.blaze3d.vertex.QuadLightmapCoords;
+import com.mojang.blaze3d.vertex.QuadInstance;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 
@@ -70,9 +69,15 @@ public class ShadedBlockSbbBuilder implements VertexConsumer {
 	}
 
 	@Override
-	public void putBulkData(Pose pose, BakedQuad quad, QuadBrightness brightness, int color, QuadLightmapCoords lightmapCoord, int overlayCoords) {
-		prepareForGeometry(quad);
-		bufferBuilder.putBulkData(pose, quad, brightness, color, lightmapCoord, overlayCoords);
+	public void putBakedQuad(Pose pose, BakedQuad quad, QuadInstance instance) {
+		this.prepareForGeometry(quad);
+		this.bufferBuilder.putBakedQuad(pose, quad, instance);
+	}
+
+	@Override
+	public void putBlockBakedQuad(float x, float y, float z, BakedQuad quad, QuadInstance instance) {
+		this.prepareForGeometry(quad);
+		this.bufferBuilder.putBlockBakedQuad(x, y, z, quad, instance);
 	}
 
 	@Override

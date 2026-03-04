@@ -8,10 +8,10 @@ import net.createmod.catnip.api.client.render.model.BakedModelBufferer;
 import net.createmod.catnip.impl.client.placement.PlacementClient;
 import net.createmod.catnip.impl.client.render.ColoringVertexConsumer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.EmptyBlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
@@ -38,7 +38,7 @@ public abstract class GhostBlockRenderer {
 
 			ms.pushPose();
 			ms.translate(pos.getX() - camera.x, pos.getY() - camera.y, pos.getZ() - camera.z);
-			BakedModelBufferer.bufferModel(model, pos, EmptyBlockAndTintGetter.INSTANCE, state, ms, (layer, shade) -> buffer.getEarlyBuffer(layer));
+			BakedModelBufferer.bufferModel(model, pos, BlockAndTintGetter.EMPTY, state, ms, (layer, shade) -> buffer.getEarlyBuffer(layer));
 			ms.popPose();
 		}
 	}
@@ -58,7 +58,7 @@ public abstract class GhostBlockRenderer {
 			ms.translate(.5, .5, .5);
 			ms.scale(.85f, .85f, .85f);
 			ms.translate(-.5, -.5, -.5);
-			BakedModelBufferer.bufferModel(model, pos, EmptyBlockAndTintGetter.INSTANCE, state, ms, (layer, shade) -> vb);
+			BakedModelBufferer.bufferModel(model, pos, BlockAndTintGetter.EMPTY, state, ms, (_, _) -> vb);
 			ms.popPose();
 		}
 	}
