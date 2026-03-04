@@ -106,7 +106,7 @@ public final class PonderTooltipHandler {
 
 	/// @return the visual Ponder opening progress, slightly scaled so visuals reach completion faster
 	public static float getVisualProgress() {
-		float progress = openProgress.getValue(AnimationTickHolder.getPartialTicksUI());
+		float progress = openProgress.getValue(AnimationTickHolder.getGuiPartialTicks());
 		return Math.min(1, progress * 8 / 7);
 	}
 

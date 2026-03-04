@@ -53,7 +53,6 @@ import net.createmod.ponder.api.client.scene.PonderScene;
 import net.createmod.ponder.api.client.scene.PonderScene.SceneTransform;
 import net.createmod.ponder.impl.client.element.TextWindowElement;
 import net.createmod.ponder.impl.client.gui.element.PonderButton;
-import net.createmod.ponder.impl.client.gui.element.PonderGuiTextures;
 import net.createmod.ponder.impl.client.gui.element.PonderProgressBar;
 import net.createmod.ponder.impl.client.plugin.DebugScenes;
 import net.minecraft.ChatFormatting;
@@ -378,7 +377,7 @@ public class PonderUI extends AbstractPonderScreen {
 					scenes.get(index)
 						.deselect();
 				else
-					ponderPartialTicksPaused = AnimationTickHolder.getPartialTicksUI();
+					ponderPartialTicksPaused = AnimationTickHolder.getGuiPartialTicks();
 			}));
 		scan.atZLevel(600);
 
@@ -604,7 +603,7 @@ public class PonderUI extends AbstractPonderScreen {
 
 	protected void renderScene(GuiGraphics graphics, int i, float partialTicks) {
 		PonderScene scene = scenes.get(i);
-		double value = lazyIndex.getValue(AnimationTickHolder.getPartialTicksUI());
+		double value = lazyIndex.getValue(AnimationTickHolder.getGuiPartialTicks());
 		double diff = i - value;
 		double slide = Mth.lerp(diff * diff, 200, 600) * diff;
 
@@ -949,11 +948,6 @@ public class PonderUI extends AbstractPonderScreen {
 		return super.mouseClicked(event, doubleClick);
 	}
 
-	@Override
-	protected String getBreadcrumbTitle() {
-		return stack.getHoverName().getString();
-	}
-
 	public Font getFontRenderer() {
 		return font;
 	}
@@ -1063,7 +1057,7 @@ public class PonderUI extends AbstractPonderScreen {
 	}
 
 	public static float getPartialTicks() {
-		float renderPartialTicks = AnimationTickHolder.getPartialTicksUI();
+		float renderPartialTicks = AnimationTickHolder.getGuiPartialTicks();
 
 		if (Minecraft.getInstance().screen instanceof PonderUI ui) {
 			if (ui.identifyMode)

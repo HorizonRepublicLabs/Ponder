@@ -72,9 +72,6 @@ public class UIRenderHelper {
 	}
 
 	private static void streak(GuiGraphics graphics, int width, int height, Color c1, Color c2, Color c3, Color c4) {
-		if (NavigatableSimiScreen.isCurrentlyRenderingPreviousScreen())
-			return;
-
 		double split1 = .5;
 		double split2 = .75;
 		graphics.fillGradient(-width, 0, width, (int) (split1 * height), c1.getRGB(), c2.getRGB());

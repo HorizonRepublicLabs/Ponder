@@ -1,8 +1,7 @@
 package net.createmod.catnip.api.client.animation;
 
-import net.createmod.catnip.impl.client.mixin.TimerAccessor;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.inventory.EnchantmentScreen;
 
 public class AnimationTickHolder {
 	private static int ticks;
@@ -38,22 +37,20 @@ public class AnimationTickHolder {
 	 * @return the fraction between the current tick to the next tick, frozen during game pause [0-1]
 	 */
 	public static float getPartialTicks() {
-		Minecraft mc = Minecraft.getInstance();
-		return mc.getDeltaTracker().getGameTimeDeltaPartialTick(false);
+		return Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
 	}
 
-	/**
-	 * @return the fraction between the current tick to the next tick, not frozen during game pause [0-1]
-	 */
-	// TODO - Check if one of the getGameTimeDeltaPartialTick methods can be used here instead
-	public static float getPartialTicksUI() {
-		Minecraft mc = Minecraft.getInstance();
-		DeltaTracker timer = mc.getDeltaTracker();
-
-		if (timer instanceof TimerAccessor timerAccessor) {
-			return timerAccessor.catnip$getDeltaTickResidual();
-		} else {
-			return getPartialTicks();
-		}
+	/// In `Screen.render`, the partialTicks value is actually incorrect.
+	///
+	/// In other cases, like entity rendering, partialTicks is an accumulated fraction of ticks that have
+	/// passed since the last game tick. It should range from 0-1, but may be larger during lag spikes.
+	///
+	/// `Screen.render` is instead given a simple frame delta, which is not very useful for smooth animations.
+	/// The value will pretty much always be the same.
+	///
+	/// This method provides access to the accumulated delta. This is actually what vanilla
+	/// does in [EnchantmentScreen], which needs a smooth animation for the book opening.
+	public static float getGuiPartialTicks() {
+		return getPartialTicks();
 	}
 }

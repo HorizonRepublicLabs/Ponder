@@ -1,6 +1,7 @@
 package net.createmod.catnip.impl.neoforge;
 
 import net.createmod.catnip.api.Catnip;
+import net.createmod.catnip.api.client.command.ClientCommands;
 import net.createmod.catnip.api.client.event.AtlasStitchedCallback;
 import net.createmod.catnip.api.client.event.ClientTickCallback;
 import net.createmod.catnip.api.client.event.LevelRenderCallback;
@@ -14,6 +15,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.TextureAtlasStitchedEvent;
 
@@ -63,6 +65,11 @@ public final class CatnipNeoforgeClient {
 			LevelRenderCallback.AFTER_TRANSLUCENT_FEATURES.invoker().onRender(
 				event.getLevelRenderer(), event.getLevelRenderState(), event.getPoseStack()
 			);
+		}
+
+		@SubscribeEvent
+		public static void registerCommands(RegisterClientCommandsEvent event) {
+			ClientCommands.registerCommands(event.getDispatcher(), event.getBuildContext());
 		}
 	}
 }

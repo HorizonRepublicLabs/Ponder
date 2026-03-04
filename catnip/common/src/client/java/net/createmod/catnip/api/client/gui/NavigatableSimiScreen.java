@@ -1,10 +1,9 @@
 package net.createmod.catnip.api.client.gui;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.mutable.MutableBoolean;
-import org.apache.commons.lang3.mutable.MutableInt;
+import net.createmod.catnip.api.client.animation.AnimationTickHolder;
+
 import org.joml.Matrix3x2fStack;
 import org.jspecify.annotations.Nullable;
 
@@ -30,8 +29,6 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 		new Color(0x80_aa9999, true),
 		new Color(0x30_aa9999)
 	).map(Color::setImmutable);
-
-	protected static boolean currentlyRenderingPreviousScreen = false;
 
 	protected int depthPointX, depthPointY;
 	public final LerpedFloat transition = LerpedFloat.linear()
@@ -65,8 +62,6 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 
 	@Override
 	protected void init() {
-		super.init();
-
 		backTrack = null;
 		List<Screen> screenHistory = ScreenOpener.getScreenHistory();
 		if (screenHistory.isEmpty())
@@ -80,7 +75,7 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 			.fade(1)
 			.withCallback(() -> ScreenOpener.openPreviousScreen(this, null)));
 
-		Screen previousScreen = screenHistory.get(0);
+		Screen previousScreen = screenHistory.getFirst();
 		if (previousScreen instanceof NavigatableSimiScreen screen) {
 			screen.initBackTrackIcon(backTrack);
 		} else {
@@ -112,8 +107,10 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 	@Override
 	public final void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
 		// apply transition scaling
-		float progress = transition.getValue(partialTicks);
-		float scale = 1 - 0.5f * (1 - progress);
+
+		// see the docs on getGuiPartialTicks for why this is used
+		float progress = transition.getValue(AnimationTickHolder.getGuiPartialTicks());
+		float scale = progress > 0 ? 1 - 0.5f * (1 - progress) : 1 + .5f * (1 + progress);
 
 		Matrix3x2fStack transforms = graphics.pose();
 		transforms.pushMatrix();
@@ -177,55 +174,5 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 	}
 
 	public void shareContextWith(NavigatableSimiScreen other) {
-	}
-
-	protected void renderZeloBreadcrumbs(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		List<Screen> history = ScreenOpener.getScreenHistory();
-		if (history.isEmpty())
-			return;
-
-		history.add(0, minecraft.screen);
-		int spacing = 20;
-
-		List<String> names = new ArrayList<>();
-		for (Screen screen : history)
-			names.add(NavigatableSimiScreen.screenTitle(screen));
-
-		int bWidth = 0;
-		for (String name : names) {
-			bWidth += font.width(name) + spacing;
-		}
-
-		MutableInt x = new MutableInt(width - bWidth);
-		MutableInt y = new MutableInt(height - 18);
-		MutableBoolean first = new MutableBoolean(true);
-
-		if (x.intValue() < 25)
-			x.setValue(25);
-
-		names.forEach(s -> {
-			int sWidth = font.width(s);
-			UIRenderHelper.breadcrumbArrow(graphics, x.intValue(), y.intValue(), sWidth + spacing, 14, spacing / 2,
-				new Color(0xdd101010), new Color(0x44101010));
-			graphics.drawString(font, s, x.intValue() + 5, y.intValue() + 3, first.get() ? 0xffeeffee : 0xffddeeff);
-			first.setFalse();
-
-			x.add(sWidth + spacing);
-		});
-	}
-
-	public static boolean isCurrentlyRenderingPreviousScreen() {
-		return currentlyRenderingPreviousScreen;
-	}
-
-	private static String screenTitle(Screen screen) {
-		if (screen instanceof NavigatableSimiScreen)
-			return ((NavigatableSimiScreen) screen).getBreadcrumbTitle();
-		return "<";
-	}
-
-	protected String getBreadcrumbTitle() {
-		return this.getClass()
-			.getSimpleName();
 	}
 }

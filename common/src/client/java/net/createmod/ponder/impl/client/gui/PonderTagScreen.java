@@ -245,11 +245,6 @@ public class PonderTagScreen extends AbstractPonderScreen {
 		return (int) (MAIN_YMULT * height + 85);
 	}
 
-	@Override
-	protected String getBreadcrumbTitle() {
-		return tag.getTitle();
-	}
-
 	public ItemStack getHoveredTooltipItem() {
 		return hoveredItem;
 	}

@@ -28,4 +28,5 @@ dependencies {
     implementation(libs.bundles.fabric)
     api(project(":fabric"))
     clientCompileOnly(project(":fabric", configuration = "clientJar"))
+    clientCompileOnly(project(":catnip:fabric", configuration = "clientJar"))
 }
