@@ -53,7 +53,7 @@ public final class PonderTooltipHandler {
 	// see FallbackHoveredItemProvider for why this is pre instead of post
 	private static void beforeClientTick() {
 		Item hoveredItem = determineHoveredItem();
-		if (hoveredItem == Items.AIR || isCurrentPonderSubject(hoveredItem)) {
+		if (hoveredItem == Items.AIR || isCurrentPonderSubject(hoveredItem) || !hasPonderScenes(hoveredItem)) {
 			openProgress.startWithValue(0);
 			return;
 		}
