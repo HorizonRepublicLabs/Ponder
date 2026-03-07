@@ -272,7 +272,7 @@ public class PonderScene {
 			forEachVisible(PonderSceneElement.class, e -> e.renderLayer(world, buffer, type, graphics, pt));
 
 		forEachVisible(PonderSceneElement.class, e -> e.renderLast(world, buffer, graphics, pt));
-		camera.set(transform.xRotation.getValue(pt) + 90, transform.yRotation.getValue(pt) + 180);
+		camera.set(-transform.xRotation.getValue(pt), transform.yRotation.getValue(pt) + 180);
 		world.renderEntities(ms, buffer, camera, pt);
 		world.renderParticles(ms, buffer, camera, pt);
 		outliner.renderOutlines(ms, buffer, Vec3.ZERO, pt);
