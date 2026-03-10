@@ -24,9 +24,8 @@ import net.createmod.catnip.api.client.gui.widget.BoxWidget;
 import net.createmod.catnip.api.registry.RegisteredObjectsHelper;
 import net.createmod.ponder.api.client.PonderIndex;
 import net.createmod.ponder.impl.client.gui.element.PonderButton;
-import net.createmod.ponder.impl.client.gui.element.PonderGuiTextures;
 import net.createmod.ponder.impl.client.registration.PonderIndexExclusionHelper;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.resources.Identifier;
@@ -189,8 +188,8 @@ public class PonderIndexScreen extends AbstractPonderScreen {
 	}
 
 	@Override
-	public void renderScaled(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		super.renderScaled(graphics, mouseX, mouseY, partialTicks);
+	public void extractScaledRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
+		super.extractScaledRenderState(graphics, mouseX, mouseY, partialTicks);
 
 		int centerX = width / 2;
 		int centerY = height / 2;
@@ -201,7 +200,7 @@ public class PonderIndexScreen extends AbstractPonderScreen {
 		poseStack.translate(centerX, centerY);
 
 		UIRenderHelper.streak(graphics, 0, usedArea.getX() - 10, usedArea.getY() - 20, 20, 220);
-		graphics.drawString(font, "Items to inspect", usedArea.getX() - 5, usedArea.getY() - 25, UIRenderHelper.COLOR_TEXT.getFirst().getRGB(), false);
+		graphics.text(font, "Items to inspect", usedArea.getX() - 5, usedArea.getY() - 25, UIRenderHelper.COLOR_TEXT.getFirst().getRGB(), false);
 
 		poseStack.popMatrix();
 
@@ -217,7 +216,7 @@ public class PonderIndexScreen extends AbstractPonderScreen {
 
 		UIRenderHelper.streak(graphics, 0, 0, 4, 14, 85);
 		UIRenderHelper.streak(graphics, 180, 0, 4, 14, 85);
-		graphics.drawString(font, pageString, (int) (-stringWidth / 2f), 0, UIRenderHelper.COLOR_TEXT.getFirst().getRGB(), false);
+		graphics.text(font, pageString, (int) (-stringWidth / 2f), 0, UIRenderHelper.COLOR_TEXT.getFirst().getRGB(), false);
 
 		poseStack.popMatrix();
 

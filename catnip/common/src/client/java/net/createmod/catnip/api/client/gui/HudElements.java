@@ -2,7 +2,7 @@ package net.createmod.catnip.api.client.gui;
 
 import net.createmod.catnip.api.platform.ServiceHelper;
 import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.resources.Identifier;
 
 /// Registry of custom HUD elements. Threadsafe on Neoforge.
@@ -14,6 +14,6 @@ public interface HudElements {
 
 	@FunctionalInterface
 	interface Element {
-		void render(GuiGraphics graphics, DeltaTracker deltaTracker);
+		void render(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker);
 	}
 }

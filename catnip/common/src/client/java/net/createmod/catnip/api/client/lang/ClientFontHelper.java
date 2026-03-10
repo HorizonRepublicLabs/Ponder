@@ -4,11 +4,12 @@ import java.text.BreakIterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+
 import org.jspecify.annotations.Nullable;
 
 import net.createmod.catnip.api.client.platform.ModClientHooksHelper;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.FormattedText;
 
 public class ClientFontHelper {
@@ -48,11 +49,11 @@ public class ClientFontHelper {
 		return lines;
 	}
 
-	public static void drawSplitString(GuiGraphics graphics, Font font, FormattedText text, int x, int y, int width, int color) {
+	public static void drawSplitString(GuiGraphicsExtractor graphics, Font font, FormattedText text, int x, int y, int width, int color) {
 		drawSplitString(graphics, font, text.getString(), x, y, width, color);
 	}
 
-	public static void drawSplitString(GuiGraphics graphics, Font font, String text, int x, int y, int width, int color) {
+	public static void drawSplitString(GuiGraphicsExtractor graphics, Font font, String text, int x, int y, int width, int color) {
 		List<String> list = cutString(font, text, width);
 
 		for (String s : list) {
@@ -67,9 +68,9 @@ public class ClientFontHelper {
 		}
 	}
 
-	private static void draw(GuiGraphics graphics, Font font, @Nullable String text, int x, int y, int color) {
+	private static void draw(GuiGraphicsExtractor graphics, Font font, @Nullable String text, int x, int y, int color) {
 		if (text != null) {
-			graphics.drawString(font, text, x, y, color, false);
+			graphics.text(font, text, x, y, color, false);
 		}
 	}
 }

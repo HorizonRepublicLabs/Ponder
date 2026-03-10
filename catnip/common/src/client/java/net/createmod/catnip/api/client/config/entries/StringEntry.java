@@ -2,7 +2,7 @@ package net.createmod.catnip.api.client.config.entries;
 
 import net.createmod.catnip.config.ui.ConfigTextField;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
@@ -24,7 +24,7 @@ public class StringEntry extends ValueEntry<String> {
 	}
 
 	@Override
-	public void renderContent(GuiGraphics graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
+	public void renderContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
 		super.renderContent(graphics, mouseX, mouseY, isHovering, partialTick);
 
 		textField.setX(getX() + getWidth() - 82 - resetWidth);

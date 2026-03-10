@@ -14,7 +14,7 @@ import net.createmod.catnip.api.client.gui.widget.AbstractSimiWidget;
 import net.createmod.catnip.api.client.gui.widget.BoxWidget;
 import net.createmod.catnip.api.client.platform.ModClientHooksHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
@@ -177,7 +177,7 @@ public class ConfirmationScreen extends AbstractSimiScreen {
 	}
 
 	@Override
-	protected void renderWindow(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+	protected void renderWindow(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
 		textBackground.render(graphics);
 		int offset = font.lineHeight + 1;
 		int lineY = y - offset;
@@ -186,12 +186,12 @@ public class ConfirmationScreen extends AbstractSimiScreen {
 			lineY += offset;
 			if (line == null)
 				continue;
-			graphics.drawString(font, line.getString(), x, lineY, 0xeaeaea, false);
+			graphics.text(font, line.getString(), x, lineY, 0xeaeaea, false);
 		}
 	}
 
 	@Override
-	protected void renderWindowBackground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+	protected void renderWindowBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
 		endFrame();
 
 		source.render(graphics, 0, 0, 10); // zero mouse coords to prevent further tooltips

@@ -12,7 +12,7 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.createmod.catnip.impl.client.mixin.BufferBuilderAccessor;
-import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.resources.model.geometry.BakedQuad;
 
 @Deprecated(forRemoval = true)
 public class ShadedBlockSbbBuilder implements VertexConsumer {
@@ -65,7 +65,8 @@ public class ShadedBlockSbbBuilder implements VertexConsumer {
 	}
 
 	protected void prepareForGeometry(BakedQuad quad) {
-		prepareForGeometry(quad.shade());
+		// TODO: FIXME
+		//prepareForGeometry(quad.shade());
 	}
 
 	@Override

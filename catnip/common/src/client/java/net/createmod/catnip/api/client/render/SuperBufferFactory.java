@@ -10,7 +10,7 @@ import net.createmod.catnip.api.client.level.EmptyVirtualBlockGetter;
 import net.createmod.catnip.api.client.render.model.BakedModelBufferer;
 import net.createmod.catnip.api.client.render.model.ShadeSeparatedResultConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -32,7 +32,7 @@ public class SuperBufferFactory {
 	}
 
 	public SuperByteBuffer createForBlock(BlockState renderedState) {
-		return createForBlock(Minecraft.getInstance().getBlockRenderer().getBlockModel(renderedState), renderedState);
+		return createForBlock(Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(renderedState), renderedState);
 	}
 
 	public SuperByteBuffer createForBlock(BlockStateModel model, BlockState referenceState) {

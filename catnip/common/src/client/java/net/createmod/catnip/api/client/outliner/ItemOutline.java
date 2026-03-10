@@ -6,7 +6,6 @@ import net.createmod.catnip.api.client.render.SuperRenderTypeBuffer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollection;
 import net.minecraft.client.renderer.SubmitNodeStorage;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.LightCoordsUtil;
@@ -43,11 +42,12 @@ public class ItemOutline extends Outline {
 			for (SubmitNodeStorage.ItemSubmit itemSubmit : collection.getItemSubmits()) {
 				ms.pushPose();
 				ms.last().set(itemSubmit.pose());
-				ItemRenderer.renderItem(
-					itemSubmit.displayContext(), ms, buffer,
-					itemSubmit.lightCoords(), itemSubmit.overlayCoords(),
-					itemSubmit.tintLayers(), itemSubmit.quads(), itemSubmit.foilType()
-				);
+				// TODO: FIXME
+//				ItemRenderer.renderItem(
+//					itemSubmit.displayContext(), ms, buffer,
+//					itemSubmit.lightCoords(), itemSubmit.overlayCoords(),
+//					itemSubmit.tintLayers(), itemSubmit.quads(), itemSubmit.foilType()
+//				);
 				ms.popPose();
 			}
 		}

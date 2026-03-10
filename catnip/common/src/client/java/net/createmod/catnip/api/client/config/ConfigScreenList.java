@@ -23,7 +23,7 @@ import net.createmod.catnip.api.client.gui.element.TextStencilElement;
 import net.createmod.catnip.api.theme.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -45,7 +45,7 @@ public class ConfigScreenList extends ObjectSelectionList<ConfigScreenList.Entry
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+	public void render(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
 		Color c = new Color(0x60_000000);
 		UIRenderHelper.angledGradient(graphics, 90, getX() + width / 2, getY(), width, 5, c, Color.TRANSPARENT_BLACK);
 		UIRenderHelper.angledGradient(graphics, -90, getX() + width / 2, getBottom(), width, 5, c, Color.TRANSPARENT_BLACK);
@@ -56,7 +56,7 @@ public class ConfigScreenList extends ObjectSelectionList<ConfigScreenList.Entry
 	}
 
 	@Override
-	protected void renderListItems(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+	protected void renderListItems(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
 		Window window = minecraft.getWindow();
 		double d0 = window.getGuiScale();
 		// TODO - Check is this still works here
@@ -206,7 +206,7 @@ public class ConfigScreenList extends ObjectSelectionList<ConfigScreenList.Entry
 		}
 
 		@Override
-		public void renderContent(GuiGraphics graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
+		public void renderContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
 			if (isCurrentValueChanged()) {
 				if (differenceAnimation.getChaseTarget() != 1)
 					differenceAnimation.chase(1, .5f, Chaser.EXP);
@@ -237,7 +237,7 @@ public class ConfigScreenList extends ObjectSelectionList<ConfigScreenList.Entry
 			}
 			if (unit != null) {
 				int unitWidth = font.width(unit);
-				graphics.drawString(font, unit, getX() + getLabelWidth(getWidth()) - unitWidth - 5, getY() + getHeight() / 2 + 2, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().getRGB());
+				graphics.text(font, unit, getX() + getLabelWidth(getWidth()) - unitWidth - 5, getY() + getHeight() / 2 + 2, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().getRGB());
 				label.at(getX() + 10, getY() + getHeight() / 2f - 10, 0).render(graphics);
 			} else {
 				label.at(getX() + 10, getY() + getHeight() / 2f - 4, 0).render(graphics);

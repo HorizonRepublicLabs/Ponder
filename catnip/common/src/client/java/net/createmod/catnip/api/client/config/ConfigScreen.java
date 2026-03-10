@@ -19,7 +19,7 @@ import net.createmod.catnip.api.client.gui.AbstractSimiScreen;
 import net.createmod.catnip.api.client.gui.element.DelegatedStencilElement;
 import net.createmod.catnip.api.client.gui.element.GuiGameElement;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -54,7 +54,7 @@ public abstract class ConfigScreen extends AbstractSimiScreen {
 	}
 
 	@Override
-	protected void renderWindowBackground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+	protected void renderWindowBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
 		if (this.minecraft.level != null) {
 			//in game
 			graphics.fill(0, 0, this.width, this.height, 0xb0_282c34);
@@ -77,7 +77,7 @@ public abstract class ConfigScreen extends AbstractSimiScreen {
 	}
 
 	@Override
-	protected void renderWindow(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+	protected void renderWindow(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public abstract class ConfigScreen extends AbstractSimiScreen {
 	 * If your mod wants to render something else, please add to the
 	 * {@code backgrounds} Map in this Class with your modID as the key.
 	 */
-	protected void renderMenuBackground(GuiGraphics graphics, float partialTicks) {
+	protected void renderMenuBackground(GuiGraphicsExtractor graphics, float partialTicks) {
 		TriConsumer<Screen, GuiGraphics, Float> customBackground = backgrounds.get(modID);
 		if (customBackground != null) {
 			customBackground.accept(this, graphics, partialTicks);
@@ -120,7 +120,7 @@ public abstract class ConfigScreen extends AbstractSimiScreen {
 		graphics.fill(0, 0, this.width, this.height, 0x90_282c34);
 	}
 
-	protected static void renderCog(GuiGraphics graphics) {
+	protected static void renderCog(GuiGraphicsExtractor graphics) {
 		float partialTicks = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
 		Matrix3x2fStack poseStack = graphics.pose();
 		poseStack.pushMatrix();

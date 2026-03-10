@@ -10,7 +10,7 @@ import net.createmod.catnip.api.client.gui.widget.BoxWidget;
 import net.createmod.catnip.config.ui.ConfigScreen;
 import net.createmod.ponder.enums.PonderGuiTextures;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
 
@@ -76,7 +76,7 @@ public class EnumEntry extends ValueEntry<Enum<?>> {
 	}
 
 	@Override
-	public void renderContent(GuiGraphics graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
+	public void renderContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
 		super.renderContent(graphics, mouseX, mouseY, isHovering, partialTick);
 
 		cycleLeft.setX(getX() + getLabelWidth(getWidth()) + 4);

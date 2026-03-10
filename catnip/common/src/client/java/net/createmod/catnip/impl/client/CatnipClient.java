@@ -20,7 +20,7 @@ import net.createmod.catnip.api.data.ReloadListenerRegistries;
 import net.createmod.catnip.impl.client.placement.PlacementClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.state.LevelRenderState;
+import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.world.phys.Vec3;
 
 public final class CatnipClient {

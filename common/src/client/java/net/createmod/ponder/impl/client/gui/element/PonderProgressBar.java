@@ -13,7 +13,7 @@ import net.createmod.ponder.impl.client.gui.PonderUI;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
@@ -98,7 +98,7 @@ public class PonderProgressBar extends AbstractSimiWidget {
 	}
 
 	@Override
-	public void doRender(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+	public void doRender(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
 		Matrix3x2fStack poseStack = graphics.pose();
 
 		isHovered = isMouseOver(mouseX, mouseY);
@@ -126,7 +126,7 @@ public class PonderProgressBar extends AbstractSimiWidget {
 		poseStack.popMatrix();
 	}
 
-	private void renderKeyframes(GuiGraphics graphics, int mouseX, float partialTicks) {
+	private void renderKeyframes(GuiGraphicsExtractor graphics, int mouseX, float partialTicks) {
 		PonderScene activeScene = ponder.getActiveScene();
 
 		Couple<Color> hover = PonderUI.COLOR_HOVER.map(c -> c.setAlpha(0xe0));
@@ -157,7 +157,7 @@ public class PonderProgressBar extends AbstractSimiWidget {
 		}
 	}
 
-	private void drawKeyframe(GuiGraphics graphics, PonderScene activeScene, boolean selected, int keyframeTime, int keyframePos, Color startColor, Color endColor, int height) {
+	private void drawKeyframe(GuiGraphicsExtractor graphics, PonderScene activeScene, boolean selected, int keyframeTime, int keyframePos, Color startColor, Color endColor, int height) {
 		Matrix3x2fStack poseStack = graphics.pose();
 		if (selected) {
 			Font font = Minecraft.getInstance().font;
@@ -172,7 +172,7 @@ public class PonderProgressBar extends AbstractSimiWidget {
 				text = "<";
 				offset = 4;
 			}
-			graphics.drawString(font, Component.literal(text)
+			graphics.text(font, Component.literal(text)
 				.withStyle(ChatFormatting.BOLD), keyframePos + offset, 10, endColor.getRGB(), false);
 			poseStack.popMatrix();
 		}

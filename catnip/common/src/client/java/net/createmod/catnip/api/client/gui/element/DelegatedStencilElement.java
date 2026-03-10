@@ -2,7 +2,7 @@ package net.createmod.catnip.api.client.gui.element;
 
 import net.createmod.catnip.api.client.gui.UIRenderHelper;
 import net.createmod.catnip.api.theme.Color;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public class DelegatedStencilElement extends AbstractRenderElement implements StencilElement {
 	protected static final FadableScreenElement EMPTY_RENDERER = (graphics, width, height, alpha) -> {};
@@ -35,12 +35,12 @@ public class DelegatedStencilElement extends AbstractRenderElement implements St
 	}
 
 	@Override
-	public void renderStencil(GuiGraphics graphics) {
+	public void renderStencil(GuiGraphicsExtractor graphics) {
 		stencil.render(graphics, width, height, 1);
 	}
 
 	@Override
-	public void renderElement(GuiGraphics graphics) {
+	public void renderElement(GuiGraphicsExtractor graphics) {
 		element.render(graphics, width, height, alpha);
 	}
 }

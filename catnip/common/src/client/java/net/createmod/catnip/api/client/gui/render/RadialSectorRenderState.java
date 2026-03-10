@@ -13,20 +13,19 @@ import net.createmod.catnip.api.client.render.CatnipRenderPipelines;
 import net.createmod.catnip.api.theme.Color;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.render.TextureSetup;
-import net.minecraft.client.gui.render.state.GuiElementRenderState;
+import net.minecraft.client.renderer.state.gui.GuiElementRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec2;
 
 public record RadialSectorRenderState(
 	Matrix3x2f pose, List<Vec2> innerPoints, List<Vec2> outerPoints, Color innerColor, Color outerColor
 ) implements GuiElementRenderState {
-	// TODO - Java 25, switch this to be a constructor instead
-	public static RadialSectorRenderState create(Matrix3x2f pose, float innerRadius, float outerRadius, float startAngle, float arcAngle, Color innerColor, Color outerColor) {
+	public RadialSectorRenderState(Matrix3x2f pose, float innerRadius, float outerRadius, float startAngle, float arcAngle, Color innerColor, Color outerColor) {
 		// if arcAngle > 0, start with inner. otherwise start with outer
 		List<Vec2> innerPoints = getPointsForCircleArc(innerRadius, startAngle, arcAngle);
 		List<Vec2> outerPoints = getPointsForCircleArc(outerRadius, startAngle, arcAngle);
 
-		return new RadialSectorRenderState(
+		this(
 			pose,
 			innerPoints,
 			outerPoints,

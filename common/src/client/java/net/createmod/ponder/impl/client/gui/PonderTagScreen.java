@@ -23,7 +23,7 @@ import net.createmod.ponder.api.Ponder;
 import net.createmod.ponder.api.client.PonderIndex;
 import net.createmod.ponder.api.client.registration.PonderTag;
 import net.createmod.ponder.impl.client.gui.element.PonderButton;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.FormattedText;
@@ -148,8 +148,8 @@ public class PonderTagScreen extends AbstractPonderScreen {
 	}
 
 	@Override
-	public void renderScaled(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		super.renderScaled(graphics, mouseX, mouseY, partialTicks);
+	public void extractScaledRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
+		super.extractScaledRenderState(graphics, mouseX, mouseY, partialTicks);
 
 		renderItems(graphics, mouseX, mouseY, partialTicks);
 
@@ -172,12 +172,12 @@ public class PonderTagScreen extends AbstractPonderScreen {
 			.withBounds(30, 30)
 			.render(graphics);
 
-		graphics.drawString(font, Ponder.lang().translate(AbstractPonderScreen.PONDERING_TAG).component(), x, y - 6, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().getRGB(), false);
+		graphics.text(font, Ponder.lang().translate(AbstractPonderScreen.PONDERING_TAG).component(), x, y - 6, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().getRGB(), false);
 		y += 8;
 		x += 0;
 		poseStack.pushMatrix();
 		poseStack.translate(x, y);
-		graphics.drawString(font, title, 0, 0, UIRenderHelper.COLOR_TEXT.getFirst().getRGB(), false);
+		graphics.text(font, title, 0, 0, UIRenderHelper.COLOR_TEXT.getFirst().getRGB(), false);
 		poseStack.popMatrix();
 
 		poseStack.pushMatrix();
@@ -211,7 +211,7 @@ public class PonderTagScreen extends AbstractPonderScreen {
 		}
 	}
 
-	protected void renderItems(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+	protected void renderItems(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
 		if (items.isEmpty())
 			return;
 

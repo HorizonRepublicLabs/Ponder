@@ -4,7 +4,11 @@ import java.util.Iterator;
 
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 
-import net.minecraft.client.renderer.block.LiquidBlockRenderer;
+import net.minecraft.client.renderer.block.BlockModelSet;
+
+import net.minecraft.client.renderer.block.BlockStateModelSet;
+import net.minecraft.client.renderer.block.FluidRenderer;
+import net.minecraft.client.renderer.block.FluidStateModelSet;
 
 import org.jspecify.annotations.Nullable;
 
@@ -17,8 +21,7 @@ import net.createmod.catnip.impl.client.render.model.DefaultShadeSeparatedBuffer
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.RenderShape;
@@ -108,8 +111,9 @@ public final class BakedModelBuffererImpl {
 		UniversalMeshEmitter universalEmitter = objects.universalEmitter;
 		TransformingVertexConsumer transformingWrapper = objects.transformingWrapper;
 
-		BlockRenderDispatcher blockRenderer = Minecraft.getInstance().getBlockRenderer();
-		LiquidBlockRenderer liquidRenderer = blockRenderer.getLiquidRenderer();
+		BlockStateModelSet blockStateModelSet = Minecraft.getInstance().getModelManager().getBlockStateModelSet();
+		FluidStateModelSet fluidStateModelSet = Minecraft.getInstance().getModelManager().getFluidStateModelSet();
+		FluidRenderer fluidRenderer = new FluidRenderer(fluidStateModelSet);
 
 		while (posIterator.hasNext()) {
 			BlockPos pos = posIterator.next();
@@ -119,20 +123,20 @@ public final class BakedModelBuffererImpl {
 				FluidState fluidState = state.getFluidState();
 
 				if (!fluidState.isEmpty()) {
-					ChunkSectionLayer layer = liquidRenderer.getRenderLayer(fluidState);
-
-					transformingWrapper.prepare(bufferSource.getBuffer(layer, true), poseStack);
+//					ChunkSectionLayer layer = fluidRenderer.getRenderLayer(fluidState);
+//
+//					transformingWrapper.prepare(bufferSource.getBuffer(layer, true), poseStack);
 
 					poseStack.pushPose();
 					poseStack.translate(pos.getX() - (pos.getX() & 0xF), pos.getY() - (pos.getY() & 0xF), pos.getZ() - (pos.getZ() & 0xF));
-					liquidRenderer.tesselate(level, pos, transformingWrapper, state, fluidState);
+					//fluidRenderer.tesselate(level, pos, transformingWrapper, state, fluidState);
 					poseStack.popPose();
 				}
 			}
 
 			if (state.getRenderShape() == RenderShape.MODEL) {
 				long seed = state.getSeed(pos);
-				BlockStateModel model = blockRenderer.getBlockModel(state);
+				BlockStateModel model = blockStateModelSet.get(state);
 
 				// ChunkSectionLayer defaultLayer = ItemBlockRenderTypes.getChunkRenderType(state);
 				// universalEmitter.prepare(bufferSource, defaultLayer);

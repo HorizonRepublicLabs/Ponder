@@ -16,10 +16,10 @@ import net.createmod.catnip.api.client.render.model.BakedModelBufferer;
 import net.createmod.catnip.api.math.VecHelper;
 import net.createmod.catnip.impl.client.render.ColoringVertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.core.BlockPos;
@@ -164,7 +164,7 @@ public class GuiGameElement {
         }
 
         @Override
-        public void render(GuiGraphics graphics) {
+        public void render(GuiGraphicsExtractor graphics) {
             // TODO
             //			PoseStack poseStack = graphics.pose();
             //			prepareMatrix(poseStack);
@@ -203,10 +203,7 @@ public class GuiGameElement {
     public static class GuiBlockEntityRenderBuilder extends GuiBlockModelRenderBuilder {
         public GuiBlockEntityRenderBuilder(
                 BlockState blockState, @Nullable BlockEntity blockEntity) {
-            super(
-                    Minecraft.getInstance().getBlockRenderer().getBlockModel(blockState),
-                    blockState,
-                    blockEntity);
+            super(Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(blockState), blockState, blockEntity);
         }
 
         @Override
@@ -236,10 +233,7 @@ public class GuiGameElement {
 
     public static class GuiBlockStateRenderBuilder extends GuiBlockModelRenderBuilder {
         public GuiBlockStateRenderBuilder(BlockState blockstate) {
-            super(
-                    Minecraft.getInstance().getBlockRenderer().getBlockModel(blockstate),
-                    blockstate,
-                    null);
+            super(Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(blockstate), blockstate, null);
         }
 
         @Override
@@ -274,7 +268,7 @@ public class GuiGameElement {
         }
 
         @Override
-        public void render(GuiGraphics graphics) {
+        public void render(GuiGraphicsExtractor graphics) {
             // PoseStack poseStack = graphics.pose();
             // prepareMatrix(poseStack);
             // transformMatrix(poseStack);

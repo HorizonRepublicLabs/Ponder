@@ -7,7 +7,7 @@ import net.createmod.catnip.api.client.gui.element.ScreenElement;
 import net.createmod.catnip.api.client.render.ColoredRenderable;
 import net.createmod.catnip.api.theme.Color;
 import net.createmod.ponder.api.Ponder;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 
@@ -46,12 +46,12 @@ public enum PonderGuiTextures implements TextureSheetSegment, ScreenElement, Col
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, int x, int y) {
+	public void render(GuiGraphicsExtractor graphics, int x, int y) {
 		graphics.blit(RenderPipelines.GUI_TEXTURED, getId(), x, y, 0, startX, startY, width, height, sheetWidth, sheetHeight);
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, int x, int y, Color c) {
+	public void render(GuiGraphicsExtractor graphics, int x, int y, Color c) {
 		UIRenderHelper.drawColoredTexture(graphics, bind(), c, x, y, startX, startY, width, height);
 	}
 

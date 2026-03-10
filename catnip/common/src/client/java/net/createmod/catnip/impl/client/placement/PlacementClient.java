@@ -25,7 +25,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.ClientAvatarState;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -141,7 +141,7 @@ public class PlacementClient {
 			lastTarget = target;
 	}
 
-	public static void renderCrosshairOverlay(GuiGraphics graphics, DeltaTracker deltaTracker) {
+	public static void renderCrosshairOverlay(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
 		Minecraft mc = Minecraft.getInstance();
 		Player player = mc.player;
 
@@ -158,7 +158,7 @@ public class PlacementClient {
 		return Math.min(animationTick / 10f/* + event.getPartialTicks() */, 1f);
 	}
 
-	private static void drawDirectionIndicator(GuiGraphics graphics, DeltaTracker deltaTracker, float centerX, float centerY, float progress) {
+	private static void drawDirectionIndicator(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker, float centerX, float centerY, float progress) {
 		float r = .8f;
 		float g = .8f;
 		float b = .8f;
@@ -197,7 +197,7 @@ public class PlacementClient {
 		// }
 	}
 
-	private static void fadedArrow(GuiGraphics graphics, float centerX, float centerY, float r, float g, float b, float a, float length) {
+	private static void fadedArrow(GuiGraphicsExtractor graphics, float centerX, float centerY, float r, float g, float b, float a, float length) {
 		Matrix3x2fStack poseStack = graphics.pose();
 		poseStack.pushMatrix();
 		poseStack.translate(centerX, centerY);
@@ -207,14 +207,14 @@ public class PlacementClient {
 		poseStack.scale((float) scale, (float) scale);
 
 		int size = (int) ((10 + length) * scale);
-		graphics.guiRenderState.submitGuiElement(new FadedArrowRenderState(
+		graphics.guiRenderState.addGuiElement(new FadedArrowRenderState(
 			new Matrix3x2f(graphics.pose()), size, length, r, g, b, a
 		));
 
 		poseStack.popMatrix();
 	}
 
-	public static void textured(GuiGraphics graphics, float centerX, float centerY, float alpha, float snappedAngle) {
+	public static void textured(GuiGraphicsExtractor graphics, float centerX, float centerY, float alpha, float snappedAngle) {
 		Matrix3x2fStack poseStack = graphics.pose();
 		poseStack.pushMatrix();
 		poseStack.translate(centerX, centerY);
@@ -232,7 +232,7 @@ public class PlacementClient {
 		float th = texSize;
 
 		int size = (int) (36 * scale);
-		graphics.guiRenderState.submitGuiElement(new TexturedArrowRenderState(
+		graphics.guiRenderState.addGuiElement(new TexturedArrowRenderState(
 			new Matrix3x2f(graphics.pose()),
 			CatnipGuiTextures.PLACEMENT_INDICATOR_SHEET.bind(),
 			size,

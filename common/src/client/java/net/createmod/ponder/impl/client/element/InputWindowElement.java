@@ -16,7 +16,7 @@ import net.createmod.ponder.api.client.scene.PonderScene;
 import net.createmod.ponder.impl.client.gui.PonderUI;
 import net.createmod.ponder.impl.client.gui.element.PonderGuiTextures;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec2;
@@ -87,7 +87,7 @@ public class InputWindowElement extends AnimatedOverlayElementBase {
 	}
 
 	@Override
-	public void render(PonderScene scene, PonderUI screen, GuiGraphics graphics, float partialTicks, float fade) {
+	public void render(PonderScene scene, PonderUI screen, GuiGraphicsExtractor graphics, float partialTicks, float fade) {
 		Font font = screen.getFontRenderer();
 		int width = 0;
 		int height = 0;
@@ -130,7 +130,7 @@ public class InputWindowElement extends AnimatedOverlayElementBase {
 		PonderUI.renderSpeechBox(graphics, 0, 0, width, height, false, direction, true);
 
 		if (hasText)
-			graphics.drawString(font, text, 2, (int) ((height - font.lineHeight) / 2f + 2),
+			graphics.text(font, text, 2, (int) ((height - font.lineHeight) / 2f + 2),
 				PonderPalette.WHITE.getColorObject().scaleAlpha(fade).getRGB(), false);
 
 		if (hasIcon) {

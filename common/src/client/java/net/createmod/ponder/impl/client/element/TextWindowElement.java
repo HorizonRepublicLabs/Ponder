@@ -15,7 +15,7 @@ import net.createmod.ponder.api.client.element.TextElementBuilder;
 import net.createmod.ponder.api.client.scene.PonderScene;
 import net.createmod.ponder.api.client.scene.PonderScene.SceneTransform;
 import net.createmod.ponder.impl.client.gui.PonderUI;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.Identifier;
@@ -122,7 +122,7 @@ public class TextWindowElement extends AnimatedOverlayElementBase {
 	}
 
 	@Override
-	public void render(PonderScene scene, PonderUI screen, GuiGraphics graphics, float partialTicks, float fade) {
+	public void render(PonderScene scene, PonderUI screen, GuiGraphicsExtractor graphics, float partialTicks, float fade) {
 		if (bakedText == null)
 			bakedText = FormattedText.of(textGetter.get());
 
@@ -183,7 +183,7 @@ public class TextWindowElement extends AnimatedOverlayElementBase {
 		}
 
 		for (int i = 0; i < lines.size(); i++) {
-			graphics.drawString(screen.getFontRenderer(), lines.get(i).getString(), (int) (targetX - 10), 3 + 9 * i, brighter.scaleAlphaForText(fade).getRGB(), false);
+			graphics.text(screen.getFontRenderer(), lines.get(i).getString(), (int) (targetX - 10), 3 + 9 * i, brighter.scaleAlphaForText(fade).getRGB(), false);
 		}
 		poseStack.popMatrix();
 	}

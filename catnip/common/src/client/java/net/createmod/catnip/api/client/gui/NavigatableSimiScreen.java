@@ -18,7 +18,7 @@ import net.createmod.catnip.api.data.Couple;
 import net.createmod.catnip.api.lang.Lang;
 import net.createmod.catnip.api.theme.Color;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
@@ -105,7 +105,7 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 	}
 
 	@Override
-	public final void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+	public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
 		// apply transition scaling
 
 		// see the docs on getGuiPartialTicks for why this is used
@@ -118,13 +118,13 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 		transforms.scale(scale, scale);
 		transforms.translate(-this.depthPointX, -this.depthPointY);
 
-		this.renderScaled(graphics, mouseX, mouseY, partialTicks);
+		this.extractScaledRenderState(graphics, mouseX, mouseY, partialTicks);
 
 		transforms.popMatrix();
 	}
 
-	public void renderScaled(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		super.render(graphics, mouseX, mouseY, partialTicks);
+	public void extractScaledRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
+		super.extractRenderState(graphics, mouseX, mouseY, partialTicks);
 
 		if (this.backTrack != null) {
 			int x = (int) Mth.lerp(arrowAnimation.getValue(partialTicks), -9, 21);
@@ -139,7 +139,7 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 
 			if (backTrack.isHoveredOrFocused()) {
 				Component component = backTrackingComponent();
-				graphics.drawString(font, component, 41 - font.width(component) / 2, height - 16, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().getRGB(), false);
+				graphics.text(font, component, 41 - font.width(component) / 2, height - 16, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().getRGB(), false);
 				if (Mth.equal(arrowAnimation.getValue(), arrowAnimation.getChaseTarget())) {
 					arrowAnimation.setValue(1);
 					arrowAnimation.setValue(1);// called twice to also set the previous value to 1

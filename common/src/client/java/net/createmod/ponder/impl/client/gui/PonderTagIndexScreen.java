@@ -29,7 +29,7 @@ import net.createmod.ponder.api.client.PonderIndex;
 import net.createmod.ponder.api.client.registration.PonderTag;
 import net.createmod.ponder.impl.client.gui.element.PonderButton;
 import net.createmod.ponder.impl.client.gui.element.PonderGuiTextures;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
@@ -177,8 +177,8 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 	}
 
 	@Override
-	public void renderScaled(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		super.renderScaled(graphics, mouseX, mouseY, partialTicks);
+	public void extractScaledRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
+		super.extractScaledRenderState(graphics, mouseX, mouseY, partialTicks);
 
 		if (hoveredItem != null) {
 			List<Component> list = FontHelper.cutStringTextComponent(hoveredItem.getDescription(), Palette.ALL_GRAY);
@@ -213,7 +213,7 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 		UIRenderHelper.streak(graphics, 0, 0, (streakHeight / 2), streakHeight, 280);
 
 		poseStack.scale(2f, 2f);
-		graphics.drawString(font, title, 3, 5, UIRenderHelper.COLOR_TEXT.getFirst().getRGB(), false);
+		graphics.text(font, title, 3, 5, UIRenderHelper.COLOR_TEXT.getFirst().getRGB(), false);
 
 		poseStack.popMatrix();
 		poseStack.translate(0, 50);
@@ -253,7 +253,7 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 
 	}
 
-	protected void renderTagsEntry(GuiGraphics graphics, ModTagsEntry entry) {
+	protected void renderTagsEntry(GuiGraphicsExtractor graphics, ModTagsEntry entry) {
 		Matrix3x2fStack poseStack = graphics.pose();
 
 		int layoutWidth = entry.layoutArea().getWidth();
@@ -272,7 +272,7 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 			.withBounds(stringWidth + 6, 10)
 			.render(graphics);
 
-		graphics.drawString(font, categories, 0, 0, UIRenderHelper.COLOR_TEXT.getFirst().getRGB(), false);
+		graphics.text(font, categories, 0, 0, UIRenderHelper.COLOR_TEXT.getFirst().getRGB(), false);
 
 		poseStack.popMatrix();
 

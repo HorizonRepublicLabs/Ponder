@@ -1,7 +1,7 @@
 package net.createmod.catnip.api.client.gui.element;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public interface ScreenElement {
-	void render(GuiGraphics graphics, int x, int y);
+	void render(GuiGraphicsExtractor graphics, int x, int y);
 }

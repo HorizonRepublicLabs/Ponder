@@ -3,13 +3,15 @@ package net.createmod.catnip.api.client.gui.widget;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+
 import org.joml.Matrix3x2fStack;
 
 import net.createmod.catnip.api.animation.LerpedFloat;
 import net.createmod.catnip.api.client.gui.element.AbstractRenderElement;
 import net.createmod.catnip.api.client.gui.element.RenderElement;
 import net.createmod.catnip.api.client.gui.element.ScreenElement;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public class ElementWidget extends AbstractSimiWidget {
 	protected RenderElement element = AbstractRenderElement.EMPTY;
@@ -116,7 +118,7 @@ public class ElementWidget extends AbstractSimiWidget {
 	}
 
 	@Override
-	protected void beforeRender(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+	protected void beforeRender(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
 		super.beforeRender(graphics, mouseX, mouseY, partialTicks);
 		isHovered = isMouseOver(mouseX, mouseY);
 
@@ -128,7 +130,7 @@ public class ElementWidget extends AbstractSimiWidget {
 	}
 
 	@Override
-	public void doRender(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+	public void doRender(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
 		Matrix3x2fStack poseStack = graphics.pose();
 		poseStack.pushMatrix();
 		poseStack.translate(getX() + paddingX, getY() + paddingY);

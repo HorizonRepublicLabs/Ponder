@@ -1,5 +1,5 @@
 [versions]
-minecraft = "26.1-snapshot-10"
+minecraft = "26.1-pre-1"
 
 # https://neoforged.net/
 neoforge = "26.1.0.0-alpha.13+snapshot-10"
@@ -8,7 +8,7 @@ mdg = "2.0.+"
 # https://fabricmc.net/develop/
 loom = "1.15.+"
 fabric-loader = "0.18.4"
-fabric-api = "0.143.7+26.1"
+fabric-api = "0.143.11+26.1"
 
 # we need to manually depend on mixin (+extras) in common
 mixin = "0.15.4+mixin.0.8.7"

@@ -9,7 +9,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 
 import net.createmod.ponder.impl.client.tooltip.PonderTooltipHandler;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.tooltip.TooltipRenderUtil;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.Identifier;
@@ -24,7 +24,7 @@ public final class TooltipRenderUtilMixin {
 			ordinal = 1
 		)
 	)
-	private static void modifyFrameWhenOpeningPonder(GuiGraphics graphics, RenderPipeline renderPipeline, Identifier location,
+	private static void modifyFrameWhenOpeningPonder(GuiGraphicsExtractor graphics, RenderPipeline renderPipeline, Identifier location,
 													 int x, int y, int width, int height, Operation<Void> original) {
 		float progress = PonderTooltipHandler.getVisualProgress();
 
@@ -52,7 +52,7 @@ public final class TooltipRenderUtilMixin {
 	}
 
 	@Unique
-	private static boolean spriteExists(GuiGraphics graphics, Identifier sprite) {
+	private static boolean spriteExists(GuiGraphicsExtractor graphics, Identifier sprite) {
 		TextureAtlas atlas = ((GuiGraphicsAccessor) graphics).getGuiSprites();
 		return atlas.getSprite(sprite) != atlas.missingSprite();
 	}

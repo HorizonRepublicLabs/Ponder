@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.createmod.catnip.api.client.render.ShadedBlockSbbBuilder;
-import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.resources.model.geometry.BakedQuad;
 
 @Deprecated(forRemoval = true)
 public class NeoForgeShadedBlockSbbBuilder extends ShadedBlockSbbBuilder implements VertexConsumer {

@@ -5,7 +5,7 @@ import org.joml.Matrix3x2f;
 import net.createmod.catnip.api.client.gui.render.BoxElementRenderState;
 import net.createmod.catnip.api.data.Couple;
 import net.createmod.catnip.api.theme.Color;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public class BoxElement extends AbstractRenderElement {
 	public static final Couple<Color> COLOR_VANILLA_BORDER = Couple.create(
@@ -67,12 +67,12 @@ public class BoxElement extends AbstractRenderElement {
 	}
 
 	@Override
-	public void render(GuiGraphics graphics) {
+	public void render(GuiGraphicsExtractor graphics) {
 		Color c1 = background.copy().scaleAlpha(alpha);
 		Color c2 = borderTop.copy().scaleAlpha(alpha);
 		Color c3 = borderBot.copy().scaleAlpha(alpha);
 
-		graphics.guiRenderState.submitGuiElement(new BoxElementRenderState(
+		graphics.guiRenderState.addGuiElement(new BoxElementRenderState(
 			new Matrix3x2f(graphics.pose()),
 			x,
 			y,

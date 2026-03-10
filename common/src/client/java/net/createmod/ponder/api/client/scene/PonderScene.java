@@ -49,7 +49,7 @@ import net.createmod.ponder.impl.client.instruction.HideAllInstruction;
 import net.createmod.ponder.impl.client.registration.PonderLocalization;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.SubmitNodeStorage;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.state.CameraRenderState;
@@ -289,7 +289,7 @@ public class PonderScene {
 		poseStack.popPose();
 	}
 
-	public void renderOverlay(PonderUI screen, GuiGraphics graphics, float partialTicks) {
+	public void renderOverlay(PonderUI screen, GuiGraphicsExtractor graphics, float partialTicks) {
 		graphics.pose().pushMatrix();
 		forEachVisible(PonderOverlayElement.class, e -> e.render(this, screen, graphics, partialTicks));
 		graphics.pose().popMatrix();

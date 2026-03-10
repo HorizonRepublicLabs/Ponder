@@ -105,7 +105,7 @@ public class PonderSceneRenderer extends PictureInPictureRenderer<PonderSceneRen
 //			poseStack.translate(0, 0, -2 / 1024f);
 //			for (int x = 0; x <= bounds.getXSpan(); x++) {
 //				poseStack.translate(-16, 0, 0);
-//				graphics.drawString(font, x == bounds.getXSpan() ? "x" : "" + x, 0, 0, 0xFFFFFFFF, false);
+//				graphics.text(font, x == bounds.getXSpan() ? "x" : "" + x, 0, 0, 0xFFFFFFFF, false);
 //			}
 //			poseStack.popPose();
 //
@@ -117,7 +117,7 @@ public class PonderSceneRenderer extends PictureInPictureRenderer<PonderSceneRen
 //			poseStack.translate(-8, -2, 2 / 64f);
 //			for (int z = 0; z <= bounds.getZSpan(); z++) {
 //				poseStack.translate(16, 0, 0);
-//				graphics.drawString(font, z == bounds.getZSpan() ? "z" : "" + z, 0, 0, 0xFFFFFFFF, false);
+//				graphics.text(font, z == bounds.getZSpan() ? "z" : "" + z, 0, 0, 0xFFFFFFFF, false);
 //			}
 //			poseStack.popPose();
 //
@@ -130,9 +130,9 @@ public class PonderSceneRenderer extends PictureInPictureRenderer<PonderSceneRen
 //				poseStack.pushPose();
 //				poseStack.translate(0, 0, bounds.getZSpan() * 16);
 //				poseStack.mulPose(Axis.XP.rotationDegrees(-90));
-//				graphics.drawString(font, d.name().substring(0, 1), 0, 0, 0x66FFFFFF, false);
-//				graphics.drawString(font, "|", 2, 10, 0x44FFFFFF, false);
-//				graphics.drawString(font, ".", 2, 14, 0x22FFFFFF, false);
+//				graphics.text(font, d.name().substring(0, 1), 0, 0, 0x66FFFFFF, false);
+//				graphics.text(font, "|", 2, 10, 0x44FFFFFF, false);
+//				graphics.text(font, ".", 2, 14, 0x22FFFFFF, false);
 //				poseStack.popPose();
 //			}
 //			poseStack.popPose();

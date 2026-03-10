@@ -4,7 +4,7 @@ import org.joml.Matrix3x2fStack;
 
 import net.createmod.catnip.api.theme.Color;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
@@ -47,7 +47,7 @@ public class TextStencilElement extends DelegatedStencilElement {
 	}
 
 	@Override
-	public void renderStencil(GuiGraphics graphics) {
+	public void renderStencil(GuiGraphicsExtractor graphics) {
 
 		float x = 0, y = 0;
 		if (centerHorizontally)
@@ -56,12 +56,12 @@ public class TextStencilElement extends DelegatedStencilElement {
 		if (centerVertically)
 			y = height / 2f - (font.lineHeight - 1) / 2f;
 
-		graphics.drawString(font, component, Math.round(x), Math.round(y), Color.BLACK.getRGB(), false);
+		graphics.text(font, component, Math.round(x), Math.round(y), Color.BLACK.getRGB(), false);
 		//graphics.flush(); TODO - Is there an replacement?
 	}
 
 	@Override
-	public void renderElement(GuiGraphics graphics) {
+	public void renderElement(GuiGraphicsExtractor graphics) {
 		float x = 0, y = 0;
 		if (centerHorizontally)
 			x = width / 2f - font.width(component) / 2f;

@@ -9,7 +9,7 @@ import net.createmod.catnip.impl.client.placement.PlacementClient;
 import net.createmod.catnip.impl.client.render.ColoringVertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
@@ -33,7 +33,7 @@ public abstract class GhostBlockRenderer {
 		@Override
 		public void render(PoseStack ms, SuperRenderTypeBuffer buffer, Vec3 camera, GhostBlockParams params) {
 			BlockState state = params.state;
-			BlockStateModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(state);
+			BlockStateModel model = Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(state);
 			BlockPos pos = params.pos;
 
 			ms.pushPose();
@@ -47,7 +47,7 @@ public abstract class GhostBlockRenderer {
 		@Override
 		public void render(PoseStack ms, SuperRenderTypeBuffer buffer, Vec3 camera, GhostBlockParams params) {
 			BlockState state = params.state;
-			BlockStateModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(state);
+			BlockStateModel model = Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(state);
 			BlockPos pos = params.pos;
 			float alpha = params.alphaSupplier.get() * .75f * PlacementClient.getCurrentAlpha();
 			VertexConsumer vb = new ColoringVertexConsumer(buffer.getEarlyBuffer(ChunkSectionLayer.TRANSLUCENT), 1, 1, 1, alpha);

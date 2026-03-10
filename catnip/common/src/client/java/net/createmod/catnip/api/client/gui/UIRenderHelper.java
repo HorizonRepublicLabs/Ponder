@@ -1,9 +1,9 @@
 package net.createmod.catnip.api.client.gui;
 
-import net.createmod.catnip.impl.client.mixin.GuiGraphicsAccessor;
+import net.createmod.catnip.api.client.gui.render.TexturedQuadRenderState;
+import net.createmod.catnip.impl.client.mixin.GuiGraphicsExtractorAccessor;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
-
-import net.minecraft.client.gui.render.state.ColoredRectangleRenderState;
 
 import org.joml.Matrix3x2f;
 import org.joml.Matrix3x2fStack;
@@ -18,7 +18,6 @@ import net.createmod.catnip.api.client.gui.render.GradientRectRenderState;
 import net.createmod.catnip.api.client.gui.render.RadialSectorRenderState;
 import net.createmod.catnip.api.data.Couple;
 import net.createmod.catnip.api.theme.Color;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.render.TextureSetup;
 
 import org.jspecify.annotations.Nullable;
@@ -50,11 +49,11 @@ public class UIRenderHelper {
 	 * @param breadth total width of the streak
 	 * @param length  total length of the streak
 	 */
-	public static void streak(GuiGraphics graphics, float angle, int x, int y, int breadth, int length) {
+	public static void streak(GuiGraphicsExtractor graphics, float angle, int x, int y, int breadth, int length) {
 		streak(graphics, angle, x, y, breadth, length, COLOR_STREAK);
 	}
 
-	public static void streak(GuiGraphics graphics, float angle, int x, int y, int breadth, int length, Color c) {
+	public static void streak(GuiGraphicsExtractor graphics, float angle, int x, int y, int breadth, int length, Color c) {
 		Color color = c.copy().setImmutable();
 		Color c1 = color.scaleAlpha(0.625f);
 		Color c2 = color.scaleAlpha(0.5f);
@@ -71,7 +70,7 @@ public class UIRenderHelper {
 		poseStack.popMatrix();
 	}
 
-	private static void streak(GuiGraphics graphics, int width, int height, Color c1, Color c2, Color c3, Color c4) {
+	private static void streak(GuiGraphicsExtractor graphics, int width, int height, Color c1, Color c2, Color c3, Color c4) {
 		double split1 = .5;
 		double split2 = .75;
 		graphics.fillGradient(-width, 0, width, (int) (split1 * height), c1.getRGB(), c2.getRGB());
@@ -80,9 +79,9 @@ public class UIRenderHelper {
 	}
 
 	/**
-	 * @see #angledGradient(GuiGraphics, float, int, int, float, float, Color, Color)
+	 * @see #angledGradient(GuiGraphicsExtractor, float, int, int, float, float, Color, Color)
 	 */
-	public static void angledGradient(GuiGraphics graphics, float angle, int x, int y, float breadth, float length, Couple<Color> c) {
+	public static void angledGradient(GuiGraphicsExtractor graphics, float angle, int x, int y, float breadth, float length, Couple<Color> c) {
 		angledGradient(graphics, angle, x, y, breadth, length, c.getFirst(), c.getSecond());
 	}
 
@@ -94,7 +93,7 @@ public class UIRenderHelper {
 	 * @param endColor   the color at the ending edge
 	 * @param breadth    the total width of the gradient
 	 */
-	public static void angledGradient(GuiGraphics graphics, float angle, int x, int y, float breadth, float length, Color startColor, Color endColor) {
+	public static void angledGradient(GuiGraphicsExtractor graphics, float angle, int x, int y, float breadth, float length, Color startColor, Color endColor) {
 		Matrix3x2fStack poseStack = graphics.pose();
 		poseStack.pushMatrix();
 		poseStack.translate(x, y);
@@ -107,8 +106,8 @@ public class UIRenderHelper {
 		poseStack.popMatrix();
 	}
 
-	public static void drawGradientRect(GuiGraphics graphics, float left, float top, float right, float bottom, Color startColor, Color endColor) {
-		graphics.guiRenderState.submitGuiElement(new GradientRectRenderState(
+	public static void drawGradientRect(GuiGraphicsExtractor graphics, float left, float top, float right, float bottom, Color startColor, Color endColor) {
+		graphics.guiRenderState.addGuiElement(new GradientRectRenderState(
 			new Matrix3x2f(graphics.pose()),
 			left,
 			top,
@@ -119,17 +118,17 @@ public class UIRenderHelper {
 		));
 	}
 
-	public static void breadcrumbArrow(GuiGraphics graphics, int x, int y, int width, int height, int indent, Couple<Color> colors) {
+	public static void breadcrumbArrow(GuiGraphicsExtractor graphics, int x, int y, int width, int height, int indent, Couple<Color> colors) {
 		breadcrumbArrow(graphics, x, y, width, height, indent, colors.getFirst(), colors.getSecond());
 	}
 
 	/// Draws a wide chevron-style breadcrumb arrow pointing left.
-	public static void breadcrumbArrow(GuiGraphics graphics, int x, int y, int width, int height, int indent, Color startColor, Color endColor) {
+	public static void breadcrumbArrow(GuiGraphicsExtractor graphics, int x, int y, int width, int height, int indent, Color startColor, Color endColor) {
 		Matrix3x2fStack transforms = graphics.pose();
 		transforms.pushMatrix();
 		transforms.translate(x - indent, y);
 
-		graphics.guiRenderState.submitGuiElement(new BreadcrumbArrowRenderState(
+		graphics.guiRenderState.addGuiElement(new BreadcrumbArrowRenderState(
 			new Matrix3x2f(transforms),
 			width, height,
 			indent, startColor, endColor,
@@ -144,8 +143,8 @@ public class UIRenderHelper {
 	 *
 	 * @param arcAngle length of the sector arc
 	 */
-	public static void drawRadialSector(GuiGraphics graphics, float innerRadius, float outerRadius, float startAngle, float arcAngle, Color innerColor, Color outerColor) {
-		graphics.guiRenderState.submitGuiElement(RadialSectorRenderState.create(
+	public static void drawRadialSector(GuiGraphicsExtractor graphics, float innerRadius, float outerRadius, float startAngle, float arcAngle, Color innerColor, Color outerColor) {
+		graphics.guiRenderState.addGuiElement(new RadialSectorRenderState(
 			new Matrix3x2f(graphics.pose()),
 			innerRadius,
 			outerRadius,
@@ -157,16 +156,16 @@ public class UIRenderHelper {
 	}
 
 	//just like AbstractGui#drawTexture, but with a color at every vertex
-	public static void drawColoredTexture(GuiGraphics graphics, TextureSetup texture, Color c, int x, int y, int texLeft, int texTop, int width, int height) {
+	public static void drawColoredTexture(GuiGraphicsExtractor graphics, TextureSetup texture, Color c, int x, int y, int texLeft, int texTop, int width, int height) {
 		drawColoredTexture(graphics, texture, c, x, y, (float) texLeft, (float) texTop, width, height, 256, 256);
 	}
 
-	public static void drawColoredTexture(GuiGraphics graphics, TextureSetup texture, Color c, int x, int y, float texLeft, float texTop, int width, int height, int sheetWidth, int sheetHeight) {
+	public static void drawColoredTexture(GuiGraphicsExtractor graphics, TextureSetup texture, Color c, int x, int y, float texLeft, float texTop, int width, int height, int sheetWidth, int sheetHeight) {
 		//noinspection SuspiciousNameCombination
 		drawColoredTexture(graphics, texture, c, x, x + width, y, y + height, width, height, texLeft, texTop, sheetWidth, sheetHeight);
 	}
 
-	public static void drawStretched(GuiGraphics graphics, int left, int top, int w, int h, TextureSheetSegment tex) {
+	public static void drawStretched(GuiGraphicsExtractor graphics, int left, int top, int w, int h, TextureSheetSegment tex) {
 		drawTexturedQuad(
 			graphics, tex.bind(), Color.WHITE, left, left + w, top, top + h,
 			tex.getStartX() / 256f, (tex.getStartX() + tex.getWidth()) / 256f,
@@ -174,7 +173,7 @@ public class UIRenderHelper {
 		);
 	}
 
-	public static void drawCropped(GuiGraphics graphics, int left, int top, int w, int h, TextureSheetSegment tex) {
+	public static void drawCropped(GuiGraphicsExtractor graphics, int left, int top, int w, int h, TextureSheetSegment tex) {
 		drawTexturedQuad(
 			graphics, tex.bind(), Color.WHITE, left, left + w, top, top + h,
 			tex.getStartX() / 256f, (tex.getStartX() + w) / 256f,
@@ -182,25 +181,25 @@ public class UIRenderHelper {
 		);
 	}
 
-	private static void drawColoredTexture(GuiGraphics graphics, TextureSetup texture, Color c, int left, int right, int top, int bot, int texWidth, int texHeight, float texLeft, float texRight, int sheetWidth, int sheetHeight) {
+	private static void drawColoredTexture(GuiGraphicsExtractor graphics, TextureSetup texture, Color c, int left, int right, int top, int bot, int texWidth, int texHeight, float texLeft, float texRight, int sheetWidth, int sheetHeight) {
 		drawTexturedQuad(graphics, texture, c, left, right, top, bot, (texLeft + 0.0F) / (float) sheetWidth, (texLeft + (float) texWidth) / (float) sheetWidth, (texRight + 0.0F) / (float) sheetHeight, (texRight + (float) texHeight) / (float) sheetHeight);
 	}
 
-	private static void drawTexturedQuad(GuiGraphics graphics, TextureSetup texture, Color c, int left, int right, int top, int bot, float u1, float u2, float v1, float v2) {
-		// graphics.guiRenderState.submitGuiElement(new TexturedQuadRenderState(
-		// 	new Matrix3x2f(graphics.pose()),
-		// 	graphics.scissorStack.peek(),
-		// 	texture,
-		// 	c,
-		// 	left,
-		// 	right,
-		// 	top,
-		// 	bot,
-		// 	u1,
-		// 	u2,
-		// 	v1,
-		// 	v2
-		// ));
+	private static void drawTexturedQuad(GuiGraphicsExtractor graphics, TextureSetup texture, Color c, int left, int right, int top, int bot, float u1, float u2, float v1, float v2) {
+		graphics.guiRenderState.addGuiElement(new TexturedQuadRenderState(
+			new Matrix3x2f(graphics.pose()),
+			getScissor(graphics),
+			texture,
+			c,
+			left,
+			right,
+			top,
+			bot,
+			u1,
+			u2,
+			v1,
+			v2
+		));
 	}
 
 	public static void flipForGuiRender(PoseStack poseStack) {
@@ -209,8 +208,8 @@ public class UIRenderHelper {
 
 	/// @return the current scissor rectangle, if present
 	@Nullable
-	public static ScreenRectangle getScissor(GuiGraphics graphics) {
-		return ((GuiGraphicsAccessor) graphics).getScissorStack().peek();
+	public static ScreenRectangle getScissor(GuiGraphicsExtractor graphics) {
+		return ((GuiGraphicsExtractorAccessor) graphics).catnip$getScissorStack().peek();
 	}
 
 	/// Compute the bounds of a GUI element.

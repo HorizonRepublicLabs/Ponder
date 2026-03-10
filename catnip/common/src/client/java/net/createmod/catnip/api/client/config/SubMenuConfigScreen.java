@@ -40,7 +40,7 @@ import net.createmod.catnip.config.ui.ConfigScreenList.LabeledEntry;
 import net.createmod.catnip.impl.network.ServerboundConfigPacket;
 import net.createmod.ponder.enums.PonderGuiTextures;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
@@ -353,7 +353,7 @@ public class SubMenuConfigScreen extends ConfigScreen {
 	}
 
 	@Override
-	protected void renderWindow(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+	protected void renderWindow(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
 		super.renderWindow(graphics, mouseX, mouseY, partialTicks);
 
 		int x = width / 2;
@@ -361,7 +361,7 @@ public class SubMenuConfigScreen extends ConfigScreen {
 	}
 
 	@Override
-	protected void renderWindowForeground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+	protected void renderWindowForeground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
 		super.renderWindowForeground(graphics, mouseX, mouseY, partialTicks);
 	}
 

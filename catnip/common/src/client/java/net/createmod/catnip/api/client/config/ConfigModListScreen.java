@@ -17,7 +17,7 @@ import net.createmod.catnip.api.client.lang.FontHelper;
 import net.createmod.catnip.api.client.lang.FontHelper.Palette;
 import net.createmod.catnip.api.platform.services.PlatformHelper;
 import net.createmod.ponder.enums.PonderGuiTextures;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -156,7 +156,7 @@ public class ConfigModListScreen extends ConfigScreen {
 		}
 
 		@Override
-		public void renderContent(GuiGraphics graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
+		public void renderContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
 			super.renderContent(graphics, mouseX, mouseY, isHovering, partialTick);
 
 			button.setX(getX() + getWidth() - 108);

@@ -8,7 +8,7 @@ import net.createmod.catnip.api.client.gui.widget.BoxWidget;
 import net.createmod.catnip.config.ui.ConfigScreenList;
 import net.createmod.catnip.config.ui.SubMenuConfigScreen;
 import net.createmod.ponder.enums.PonderGuiTextures;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
 
@@ -34,7 +34,7 @@ public class SubMenuEntry extends ConfigScreenList.LabeledEntry {
 	}
 
 	@Override
-	public void renderContent(GuiGraphics graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
+	public void renderContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
 		super.renderContent(graphics, mouseX, mouseY, isHovering, partialTick);
 
 		button.setX(getX() + getWidth() - 108);
