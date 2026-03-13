@@ -222,7 +222,7 @@ public class BaseConfigScreen extends ConfigScreen {
 
 	@Override
 	protected void renderWindow(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
-		graphics.drawCenteredString(font, Component.translatable("catnip.ui.other_mods_config_title"), width / 2, height / 2 - 105, UIRenderHelper.COLOR_TEXT_STRONG_ACCENT.getFirst().getRGB());
+		graphics.centeredText(font, Component.translatable("catnip.ui.other_mods_config_title"), width / 2, height / 2 - 105, UIRenderHelper.COLOR_TEXT_STRONG_ACCENT.getFirst().getRGB());
 	}
 
 	private void linkTo(@Nullable Screen screen) {

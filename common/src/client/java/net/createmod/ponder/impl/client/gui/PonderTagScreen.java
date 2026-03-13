@@ -232,7 +232,7 @@ public class PonderTagScreen extends AbstractPonderScreen {
 			.render(graphics);
 
 //		UIRenderHelper.streak(0, itemArea.getX() - 10, itemArea.getY() - 20, 20, 180, 0x101010);
-		graphics.drawCenteredString(font, relatedTitle, 0, itemArea.getY() - 20, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
+		graphics.centeredText(font, relatedTitle, 0, itemArea.getY() - 20, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
 
 		UIRenderHelper.streak(graphics, 0, 0, 0, itemArea.getHeight() + 10, itemArea.getWidth() / 2 + 75);
 		UIRenderHelper.streak(graphics, 180, 0, 0, itemArea.getHeight() + 10, itemArea.getWidth() / 2 + 75);

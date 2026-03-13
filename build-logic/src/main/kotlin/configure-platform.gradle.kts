@@ -36,7 +36,9 @@ fun versionOf(name: String): String {
     // thank you fabric loader for mangling all non-release versions
     // FIXME remove when on full 26.1
     if (name == "minecraft" && project.name == "fabric")
-        return version.replace("snapshot-", "alpha.")
+        return version
+            .replace("snapshot-", "alpha.")
+            .replace("pre-", "pre.")
 
     return version
 }
@@ -94,6 +96,12 @@ loom?.javaClass?.getMethod("splitEnvironmentSourceSets")?.run {
 
 // generate package-infos for the main (and client, if present) sourceSet(s)
 extensions.getByType<PackageInfosExtension>().sources(sourceSets.named { it == "main" || it == "client" })
+
+if (name != "common") {
+    tasks.withType<Jar> {
+        dependsOn(project(":common").tasks.named("generatePackageInfos"))
+    }
+}
 
 // FIXME: temporary hack - disable everything config-related
 tasks.withType<JavaCompile> {

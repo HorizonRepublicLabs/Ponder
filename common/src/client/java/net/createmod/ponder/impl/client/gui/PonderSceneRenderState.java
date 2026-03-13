@@ -1,5 +1,7 @@
 package net.createmod.ponder.impl.client.gui;
 
+import net.minecraft.client.renderer.state.gui.pip.PictureInPictureRenderState;
+
 import org.joml.Matrix3x2f;
 import org.jspecify.annotations.Nullable;
 
@@ -8,7 +10,6 @@ import com.mojang.blaze3d.platform.Window;
 import net.createmod.catnip.api.animation.LerpedFloat;
 import net.createmod.ponder.api.client.scene.PonderScene;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
-import net.minecraft.client.gui.render.state.pip.PictureInPictureRenderState;
 
 public record PonderSceneRenderState(
 	Matrix3x2f pose, PonderScene scene, int width, int height, double slide, LerpedFloat finishingFlash,

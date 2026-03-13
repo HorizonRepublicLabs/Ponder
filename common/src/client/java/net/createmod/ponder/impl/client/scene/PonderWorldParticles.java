@@ -7,6 +7,11 @@ import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.Queue;
 
+import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.client.renderer.state.level.ParticlesRenderState;
+
+import net.minecraft.client.renderer.state.level.QuadParticleRenderState;
+
 import org.joml.Matrix4f;
 import org.joml.Matrix4fStack;
 
@@ -35,9 +40,6 @@ import net.minecraft.client.renderer.SubmitNodeStorage;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.feature.ParticleFeatureRenderer;
 import net.minecraft.client.renderer.feature.ParticleFeatureRenderer.ParticleBufferCache;
-import net.minecraft.client.renderer.state.CameraRenderState;
-import net.minecraft.client.renderer.state.ParticlesRenderState;
-import net.minecraft.client.renderer.state.QuadParticleRenderState;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.core.particles.ParticleLimit;
 

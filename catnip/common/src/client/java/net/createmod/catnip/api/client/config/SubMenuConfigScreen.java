@@ -357,7 +357,7 @@ public class SubMenuConfigScreen extends ConfigScreen {
 		super.renderWindow(graphics, mouseX, mouseY, partialTicks);
 
 		int x = width / 2;
-		graphics.drawCenteredString(minecraft.font, ConfigScreen.modID + " > " + type.toString().toLowerCase(Locale.ROOT) + " > " + title, x, 15, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
+		graphics.centeredText(minecraft.font, ConfigScreen.modID + " > " + type.toString().toLowerCase(Locale.ROOT) + " > " + title, x, 15, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
 	}
 
 	@Override

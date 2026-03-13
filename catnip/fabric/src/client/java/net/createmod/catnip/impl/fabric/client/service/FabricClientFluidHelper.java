@@ -2,6 +2,7 @@ package net.createmod.catnip.impl.fabric.client.service;
 
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jspecify.annotations.Nullable;
 
 import net.createmod.catnip.api.client.platform.ClientFluidHelper;
@@ -21,6 +22,7 @@ public final class FabricClientFluidHelper implements ClientFluidHelper {
 	@Override
 	@Nullable
 	public TextureAtlasSprite getStillTexture(TypedInstance<Fluid> fluid) {
-		return FluidVariantRendering.getSprite((FluidVariant) fluid);
+		throw new NotImplementedException(); // TODO
+		//return FluidVariantRendering.getSprite((FluidVariant) fluid);
 	}
 }

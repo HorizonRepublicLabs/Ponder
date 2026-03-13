@@ -17,10 +17,10 @@ import net.minecraft.resources.Identifier;
 @Mixin(TooltipRenderUtil.class)
 public final class TooltipRenderUtilMixin {
 	@WrapOperation(
-		method = "renderTooltipBackground",
+		method = "extractTooltipBackground",
 		at = @At(
 			value = "INVOKE",
-			target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V",
+			target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V",
 			ordinal = 1
 		)
 	)
@@ -53,7 +53,7 @@ public final class TooltipRenderUtilMixin {
 
 	@Unique
 	private static boolean spriteExists(GuiGraphicsExtractor graphics, Identifier sprite) {
-		TextureAtlas atlas = ((GuiGraphicsAccessor) graphics).getGuiSprites();
+		TextureAtlas atlas = ((GuiGraphicsExtractorAccessor) graphics).ponder$getGuiSprites();
 		return atlas.getSprite(sprite) != atlas.missingSprite();
 	}
 }

@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.world.level.CardinalLighting;
 import net.minecraft.world.level.ColorResolver;
 
@@ -35,7 +36,6 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.SubmitNodeStorage;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -195,7 +195,7 @@ public class PonderLevel extends SchematicLevel implements BlockAndTintGetter {
 	}
 
 	public void renderEntities(PoseStack poseStack, SubmitNodeCollector queue, Camera camera,
-							   CameraRenderState cameraRenderState, float pt) {
+	                           CameraRenderState cameraRenderState, float pt) {
 		Vec3 vec3 = camera.position();
 		double camX = vec3.x();
 		double camY = vec3.y();

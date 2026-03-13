@@ -2,6 +2,8 @@ package net.createmod.ponder.impl.client.element;
 
 import java.util.function.Supplier;
 
+import net.minecraft.client.renderer.state.level.CameraRenderState;
+
 import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -18,7 +20,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.animal.parrot.Parrot;
 import net.minecraft.world.phys.Vec3;
@@ -118,7 +119,7 @@ public class ParrotElementImpl extends AnimatedSceneElementBase implements Parro
 
 	@Override
 	protected void renderLast(PonderLevel world, MultiBufferSource buffer, SubmitNodeCollector queue, Camera camera,
-							  CameraRenderState cameraRenderState, PoseStack poseStack, float fade, float pt) {
+	                          CameraRenderState cameraRenderState, PoseStack poseStack, float fade, float pt) {
 		EntityRenderDispatcher dispatcher = Minecraft.getInstance()
 			.getEntityRenderDispatcher();
 

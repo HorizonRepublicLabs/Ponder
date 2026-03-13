@@ -609,7 +609,7 @@ public class PonderUI extends AbstractPonderScreen {
 
 		RenderSystem.backupProjectionMatrix();
 
-		graphics.guiRenderState.submitPicturesInPictureState(new PonderSceneRenderState(
+		graphics.guiRenderState.addPicturesInPictureState(new PonderSceneRenderState(
 			new Matrix3x2f(graphics.pose()),
 			scene,
 			width,
@@ -773,19 +773,19 @@ public class PonderUI extends AbstractPonderScreen {
 	private void renderHoverTooltips(GuiGraphicsExtractor graphics, int tooltipColor) {
 		int tooltipY = height - 16;
 		if (scan.isHoveredOrFocused())
-			graphics.drawCenteredString(font, Ponder.lang().translate(AbstractPonderScreen.IDENTIFY).component(), scan.getX() + 10, tooltipY, tooltipColor);
+			graphics.centeredText(font, Ponder.lang().translate(AbstractPonderScreen.IDENTIFY).component(), scan.getX() + 10, tooltipY, tooltipColor);
 		if (index != 0 && left.isHoveredOrFocused())
-			graphics.drawCenteredString(font, Ponder.lang().translate(AbstractPonderScreen.PREVIOUS).component(), left.getX() + 10, tooltipY, tooltipColor);
+			graphics.centeredText(font, Ponder.lang().translate(AbstractPonderScreen.PREVIOUS).component(), left.getX() + 10, tooltipY, tooltipColor);
 		if (close.isHoveredOrFocused())
-			graphics.drawCenteredString(font, Ponder.lang().translate(AbstractPonderScreen.CLOSE).component(), close.getX() + 10, tooltipY, tooltipColor);
+			graphics.centeredText(font, Ponder.lang().translate(AbstractPonderScreen.CLOSE).component(), close.getX() + 10, tooltipY, tooltipColor);
 		if (index != scenes.size() - 1 && right.isHoveredOrFocused())
-			graphics.drawCenteredString(font, Ponder.lang().translate(AbstractPonderScreen.NEXT).component(), right.getX() + 10, tooltipY, tooltipColor);
+			graphics.centeredText(font, Ponder.lang().translate(AbstractPonderScreen.NEXT).component(), right.getX() + 10, tooltipY, tooltipColor);
 		if (replay.isHoveredOrFocused())
-			graphics.drawCenteredString(font, Ponder.lang().translate(AbstractPonderScreen.REPLAY).component(), replay.getX() + 10, tooltipY, tooltipColor);
+			graphics.centeredText(font, Ponder.lang().translate(AbstractPonderScreen.REPLAY).component(), replay.getX() + 10, tooltipY, tooltipColor);
 		if (slowMode.isHoveredOrFocused())
-			graphics.drawCenteredString(font, Ponder.lang().translate(AbstractPonderScreen.SLOW_TEXT).component(), slowMode.getX() + 5, tooltipY, tooltipColor);
+			graphics.centeredText(font, Ponder.lang().translate(AbstractPonderScreen.SLOW_TEXT).component(), slowMode.getX() + 5, tooltipY, tooltipColor);
 		if (PonderIndex.editingModeActive() && userMode.isHoveredOrFocused())
-			graphics.drawCenteredString(font, "Editor View", userMode.getX() + 10, tooltipY, tooltipColor);
+			graphics.centeredText(font, "Editor View", userMode.getX() + 10, tooltipY, tooltipColor);
 	}
 
 	private void renderNextUp(GuiGraphicsExtractor graphics, float partialTicks, @Nullable PonderScene nextScene) {
@@ -805,8 +805,8 @@ public class PonderUI extends AbstractPonderScreen {
 		int boxWidth = (Math.max(font.width(nextScene.getTitle()), font.width(nextUpComponent)) + 5);
 		renderSpeechBox(graphics, 0, 0, boxWidth, 20, right.isHoveredOrFocused(), Pointing.DOWN, false);
 		poseStack.translate(0, -29);
-		graphics.drawCenteredString(font, nextUpComponent, 0, 0, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().getRGB());
-		graphics.drawCenteredString(font, nextScene.getTitle(), 0, 10, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
+		graphics.centeredText(font, nextUpComponent, 0, 0, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().getRGB());
+		graphics.centeredText(font, nextScene.getTitle(), 0, 10, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
 		poseStack.popMatrix();
 	}
 

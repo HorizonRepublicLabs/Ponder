@@ -7,13 +7,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
+
 import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.SheetedDecalTextureGenerator;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 
 import net.createmod.catnip.api.client.animation.AnimationTickHolder;
@@ -42,8 +43,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.state.CameraRenderState;
-import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -317,8 +316,8 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 	}
 
 	@Override
-	protected void renderFirst(PonderLevel world, MultiBufferSource buffer, SubmitNodeCollector queue, Camera camera,
-							   CameraRenderState cameraRenderState, PoseStack poseStack, float fade, float pt) {
+	protected void renderFirst(PonderLevel level, MultiBufferSource buffer, SubmitNodeCollector queue, Camera camera,
+	                           CameraRenderState cameraRenderState, PoseStack poseStack, float fade, float pt) {
 		int light = -1;
 		if (fade != 1)
 			light = (int) (Mth.lerp(fade, 5, 15));
@@ -329,11 +328,11 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 
 		poseStack.pushPose();
 		transformMS(poseStack, pt);
-		world.pushFakeLight(light);
-		renderBlockEntities(world, poseStack, queue, camera, cameraRenderState, poseStack, pt);
-		world.popLight();
+		level.pushFakeLight(light);
+		renderBlockEntities(level, poseStack, queue, camera, cameraRenderState, poseStack, pt);
+		level.popLight();
 
-		Map<BlockPos, Integer> blockBreakingProgressions = world.getBlockBreakingProgressions();
+		Map<BlockPos, Integer> blockBreakingProgressions = level.getBlockBreakingProgressions();
 		PoseStack overlayMS = null;
 
 		for (Entry<BlockPos, Integer> entry : blockBreakingProgressions.entrySet()) {
@@ -351,7 +350,9 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 
 			poseStack.pushPose();
 			poseStack.translate(pos.getX(), pos.getY(), pos.getZ());
-			Minecraft.getInstance().getBlockRenderer().renderBreakingTexture(world.getBlockState(pos), pos, poseStack, buffer, progress);
+			BlockState state = level.getBlockState(pos);
+			BlockStateModel model = Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(state);
+			queue.submitBreakingBlockModel(poseStack, model, state.getSeed(pos), progress);
 			poseStack.popPose();
 		}
 
