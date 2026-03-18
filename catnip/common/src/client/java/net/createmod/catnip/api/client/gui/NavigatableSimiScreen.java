@@ -119,13 +119,12 @@ public abstract class NavigatableSimiScreen extends AbstractSimiScreen {
 		transforms.translate(-this.depthPointX, -this.depthPointY);
 
 		this.extractScaledRenderState(graphics, mouseX, mouseY, partialTicks);
+		super.extractRenderState(graphics, mouseX, mouseY, partialTicks);
 
 		transforms.popMatrix();
 	}
 
 	public void extractScaledRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
-		super.extractRenderState(graphics, mouseX, mouseY, partialTicks);
-
 		if (this.backTrack != null) {
 			int x = (int) Mth.lerp(arrowAnimation.getValue(partialTicks), -9, 21);
 			int maxX = backTrack.getX() + backTrack.getWidth();
