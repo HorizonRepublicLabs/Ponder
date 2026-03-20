@@ -8,7 +8,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public interface StencilElement extends RenderElement {
 	@Override
-	default void render(GuiGraphicsExtractor graphics) {
+	default void submit(GuiGraphicsExtractor graphics) {
 		graphics.pose().pushMatrix();
 		transform(graphics);
 		prepareStencil(graphics);

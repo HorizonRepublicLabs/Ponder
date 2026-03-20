@@ -2,27 +2,19 @@ package net.createmod.catnip.api.client.gui.element;
 
 import java.util.Objects;
 
+import org.joml.Matrix3x2f;
 import org.joml.Matrix3x2fStack;
+import org.joml.Vector2f;
 import org.jspecify.annotations.Nullable;
-
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 
 import net.createmod.catnip.api.client.gui.ILightingSettings;
 import net.createmod.catnip.api.client.gui.UIRenderHelper;
-import net.createmod.catnip.api.client.level.SinglePosVirtualBlockGetter;
-import net.createmod.catnip.api.client.platform.ModClientHooksHelper;
-import net.createmod.catnip.api.client.render.model.BakedModelBufferer;
-import net.createmod.catnip.api.math.VecHelper;
-import net.createmod.catnip.impl.client.render.ColoringVertexConsumer;
+import net.createmod.catnip.api.client.gui.render.pip.GuiBlockEntityRenderState;
+import net.createmod.catnip.api.client.gui.render.pip.GuiBlockModelRenderState;
+import net.createmod.catnip.api.client.gui.render.pip.GuiFluidStateRenderState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.core.BlockPos;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
@@ -32,7 +24,6 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.phys.Vec3;
 
 public class GuiGameElement {
     public static GuiRenderBuilder of(ItemStack stack) {
@@ -61,16 +52,16 @@ public class GuiGameElement {
     }
 
     public abstract static class GuiRenderBuilder extends AbstractRenderElement {
-        protected double xLocal, yLocal, zLocal;
+        protected float xLocal, yLocal, zLocal;
         protected double xRot, yRot, zRot;
         protected double scale = 1;
         protected int color = 0xFFFFFF;
-        protected Vec3 rotationOffset = Vec3.ZERO;
+        protected Vector2f rotationOffset = new Vector2f();
 
         @Nullable
         protected ILightingSettings customLighting = null;
 
-        public GuiRenderBuilder atLocal(double x, double y, double z) {
+        public GuiRenderBuilder atLocal(float x, float y, float z) {
             this.xLocal = x;
             this.yLocal = y;
             this.zLocal = z;
@@ -86,7 +77,7 @@ public class GuiGameElement {
 
         public GuiRenderBuilder rotateBlock(double xRot, double yRot, double zRot) {
             return this.rotate(xRot, yRot, zRot)
-                    .withRotationOffset(VecHelper.getCenterOf(BlockPos.ZERO));
+                    .withRotationOffset(new Vector2f(0.5f, 0.5f));
         }
 
         public GuiRenderBuilder scale(double scale) {
@@ -99,7 +90,7 @@ public class GuiGameElement {
             return this;
         }
 
-        public GuiRenderBuilder withRotationOffset(Vec3 offset) {
+        public GuiRenderBuilder withRotationOffset(Vector2f offset) {
             this.rotationOffset = offset;
             return this;
         }
@@ -109,8 +100,8 @@ public class GuiGameElement {
             return this;
         }
 
-        protected void prepareMatrix(PoseStack poseStack) {
-            poseStack.pushPose();
+        protected void prepareMatrix(Matrix3x2fStack poseStack) {
+            poseStack.pushMatrix();
             // RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             // RenderSystem.enableDepthTest();
             // RenderSystem.enableBlend();
@@ -118,16 +109,17 @@ public class GuiGameElement {
             prepareLighting();
         }
 
-        protected void transformMatrix(PoseStack poseStack) {
-            poseStack.translate(x, y, z);
-            poseStack.scale((float) scale, (float) scale, (float) scale);
-            poseStack.translate(xLocal, yLocal, zLocal);
-            UIRenderHelper.flipForGuiRender(poseStack);
-            poseStack.translate(rotationOffset.x, rotationOffset.y, rotationOffset.z);
-            poseStack.mulPose(Axis.ZP.rotationDegrees((float) zRot));
-            poseStack.mulPose(Axis.XP.rotationDegrees((float) xRot));
-            poseStack.mulPose(Axis.YP.rotationDegrees((float) yRot));
-            poseStack.translate(-rotationOffset.x, -rotationOffset.y, -rotationOffset.z);
+        protected void transformMatrix(Matrix3x2fStack poseStack) {
+			poseStack.translate(x, y);
+			poseStack.scale((float) scale, (float) scale);
+			poseStack.translate(xLocal, yLocal);
+			UIRenderHelper.flipForGuiRender(poseStack);
+			poseStack.translate(rotationOffset.x, rotationOffset.y);
+			// TODO: how
+//            poseStack.mulPose(Axis.ZP.rotationDegrees((float) zRot));
+//            poseStack.mulPose(Axis.XP.rotationDegrees((float) xRot));
+//            poseStack.mulPose(Axis.YP.rotationDegrees((float) yRot));
+            poseStack.translate(-rotationOffset.x, -rotationOffset.y);
         }
 
         protected void cleanUpMatrix(Matrix3x2fStack poseStack) {
@@ -164,39 +156,25 @@ public class GuiGameElement {
         }
 
         @Override
-        public void render(GuiGraphicsExtractor graphics) {
-            // TODO
-            //			PoseStack poseStack = graphics.pose();
-            //			prepareMatrix(poseStack);
-            //
-            //			MultiBufferSource.BufferSource buffer = graphics.bufferSource();
-            //
-            //			transformMatrix(poseStack);
-            //
-            //			RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
-            //			renderModel(buffer, poseStack);
-            //
-            //			cleanUpMatrix(poseStack);
+        public void submit(GuiGraphicsExtractor graphics) {
+			Matrix3x2fStack poseStack = graphics.pose();
+			prepareMatrix(poseStack);
+			transformMatrix(poseStack);
+
+			submitModel(graphics);
+
+			cleanUpMatrix(poseStack);
         }
 
-        protected void renderModel(MultiBufferSource.BufferSource buffer, PoseStack ms) {
-            SinglePosVirtualBlockGetter level = SinglePosVirtualBlockGetter.createFullBright();
-            level.blockState(blockState);
-            level.blockEntity(blockEntity);
-            BakedModelBufferer.bufferModel(
-                    blockStateModel, BlockPos.ZERO, level, blockState, ms, (layer, shade) -> {
-                        RenderType type = layer == ChunkSectionLayer.TRANSLUCENT
-                                ? Sheets.translucentBlockItemSheet()
-                                : Sheets.cutoutBlockSheet();
-                        return new ColoringVertexConsumer(
-                                buffer.getBuffer(type),
-                                ARGB.red(color) / 255f,
-                                ARGB.green(color) / 255f,
-                                ARGB.blue(color) / 255f,
-                                1);
-                    });
-
-            buffer.endBatch();
+        protected void submitModel(GuiGraphicsExtractor graphics) {
+			graphics.guiRenderState.addPicturesInPictureState(
+				new GuiBlockModelRenderState(blockState, blockEntity,
+					new Matrix3x2f(graphics.pose()),
+					ARGB.color(255, color),
+					0, 0, 16, 16, 1,
+					null, null
+				)
+			);
         }
     }
 
@@ -207,27 +185,21 @@ public class GuiGameElement {
         }
 
         @Override
-        protected void renderModel(MultiBufferSource.BufferSource buffer, PoseStack ms) {
-            renderBlockEntity(buffer, ms);
+        protected void submitModel(GuiGraphicsExtractor graphics) {
+            submitBlockEntity(graphics);
 
-            super.renderModel(buffer, ms);
+            super.submitModel(graphics);
         }
 
-        private void renderBlockEntity(MultiBufferSource.BufferSource buffer, PoseStack ms) {
-            // TODO
-            //			if (blockEntity == null)
-            //				return;
-            //
-            //			BlockEntityRenderer<BlockEntity> renderer =
-            // Minecraft.getInstance().getBlockEntityRenderDispatcher().getRenderer(blockEntity);
-            //			if (renderer == null)
-            //				return;
-            //
-            //			BlockState stateBefore = blockEntity.getBlockState();
-            //			blockEntity.setBlockState(blockState);
-            //			renderer.render(blockEntity, /*partials*/0, ms, buffer, LightCoordsUtil.FULL_BRIGHT,
-            // OverlayTexture.NO_OVERLAY);
-            //			blockEntity.setBlockState(stateBefore);
+        private void submitBlockEntity(GuiGraphicsExtractor graphics) {
+			if (blockEntity == null)
+				return;
+
+			BlockState stateBefore = blockEntity.getBlockState();
+			blockEntity.setBlockState(this.blockState);
+			net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState blockEntityRenderState = Minecraft.getInstance().getBlockEntityRenderDispatcher().tryExtractRenderState(blockEntity, Minecraft.getInstance().getDeltaTracker().getRealtimeDeltaTicks(), null);
+			graphics.guiRenderState.addPicturesInPictureState(new GuiBlockEntityRenderState(blockEntityRenderState, new Matrix3x2f(graphics.pose()), 0, 0, 16, 16, 1, null, null));
+			blockEntity.setBlockState(stateBefore);
         }
     }
 
@@ -237,22 +209,20 @@ public class GuiGameElement {
         }
 
         @Override
-        protected void renderModel(MultiBufferSource.BufferSource buffer, PoseStack poseStack) {
+        protected void submitModel(GuiGraphicsExtractor graphics) {
             if (blockState.getBlock() instanceof BaseFireBlock) {
                 ILightingSettings.ITEMS_FLAT.apply();
-                super.renderModel(buffer, poseStack);
+                super.submitModel(graphics);
                 ILightingSettings.ITEMS_3D.apply();
                 return;
             }
 
-            super.renderModel(buffer, poseStack);
+            super.submitModel(graphics);
 
             if (blockState.getFluidState().isEmpty()) return;
 
-            ModClientHooksHelper.INSTANCE.renderFullFluidState(
-                    poseStack, buffer, blockState.getFluidState());
-
-            buffer.endBatch();
+			graphics.guiRenderState.addPicturesInPictureState(new GuiFluidStateRenderState(blockState.getFluidState(), new Matrix3x2f(graphics.pose()),
+				0, 0, 16, 16, 1, null, null));
         }
     }
 
@@ -268,12 +238,12 @@ public class GuiGameElement {
         }
 
         @Override
-        public void render(GuiGraphicsExtractor graphics) {
-            // PoseStack poseStack = graphics.pose();
-            // prepareMatrix(poseStack);
-            // transformMatrix(poseStack);
-			// graphics.renderItem(this.stack, (int) this.x, (int) this.y);
-            // cleanUpMatrix(poseStack);
+        public void submit(GuiGraphicsExtractor graphics) {
+             Matrix3x2fStack poseStack = graphics.pose();
+             prepareMatrix(poseStack);
+             transformMatrix(poseStack);
+			 graphics.item(this.stack, (int) this.x, (int) this.y);
+             cleanUpMatrix(poseStack);
         }
     }
 }

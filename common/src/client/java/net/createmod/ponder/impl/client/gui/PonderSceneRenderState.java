@@ -1,19 +1,17 @@
 package net.createmod.ponder.impl.client.gui;
 
-import net.minecraft.client.renderer.state.gui.pip.PictureInPictureRenderState;
-
 import org.joml.Matrix3x2f;
 import org.jspecify.annotations.Nullable;
-
-import com.mojang.blaze3d.platform.Window;
 
 import net.createmod.catnip.api.animation.LerpedFloat;
 import net.createmod.ponder.api.client.scene.PonderScene;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
+import net.minecraft.client.renderer.state.WindowRenderState;
+import net.minecraft.client.renderer.state.gui.pip.PictureInPictureRenderState;
 
 public record PonderSceneRenderState(
 	Matrix3x2f pose, PonderScene scene, int width, int height, double slide, LerpedFloat finishingFlash,
-	float partialTicks, Window window
+	float partialTicks, WindowRenderState window
 ) implements PictureInPictureRenderState {
 	@Override
 	public int x0() {
@@ -27,12 +25,12 @@ public record PonderSceneRenderState(
 
 	@Override
 	public int x1() {
-		return window.getGuiScaledWidth();
+		return window.width / window.guiScale;
 	}
 
 	@Override
 	public int y1() {
-		return window.getGuiScaledHeight();
+		return window.height / window.guiScale;
 	}
 
 	@Override

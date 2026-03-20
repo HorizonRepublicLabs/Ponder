@@ -1,14 +1,10 @@
 package net.createmod.catnip.api.client.gui;
 
-import net.createmod.catnip.api.client.gui.render.TexturedQuadRenderState;
-import net.createmod.catnip.impl.client.mixin.GuiGraphicsExtractorAccessor;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.navigation.ScreenRectangle;
-
 import org.joml.Matrix3x2f;
 import org.joml.Matrix3x2fStack;
 import org.joml.Matrix3x2fc;
 import org.joml.Matrix4f;
+import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Constants;
@@ -16,11 +12,14 @@ import com.mojang.math.Constants;
 import net.createmod.catnip.api.client.gui.render.BreadcrumbArrowRenderState;
 import net.createmod.catnip.api.client.gui.render.GradientRectRenderState;
 import net.createmod.catnip.api.client.gui.render.RadialSectorRenderState;
+import net.createmod.catnip.api.client.gui.render.TexturedQuadRenderState;
 import net.createmod.catnip.api.data.Couple;
 import net.createmod.catnip.api.theme.Color;
+import net.createmod.catnip.impl.client.mixin.GuiGraphicsExtractorAccessor;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.render.TextureSetup;
-
-import org.jspecify.annotations.Nullable;
+import net.minecraft.util.Mth;
 
 public class UIRenderHelper {
 	public static final Couple<Color> COLOR_TEXT = Couple.create(
@@ -204,6 +203,11 @@ public class UIRenderHelper {
 
 	public static void flipForGuiRender(PoseStack poseStack) {
 		poseStack.mulPose(new Matrix4f().scaling(1, -1, 1));
+	}
+
+	public static void flipForGuiRender(Matrix3x2fStack poseStack) {
+		poseStack.scale(-1, -1);
+		poseStack.rotate(180 * Mth.DEG_TO_RAD);
 	}
 
 	/// @return the current scissor rectangle, if present

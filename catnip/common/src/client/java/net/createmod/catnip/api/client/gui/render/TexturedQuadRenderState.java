@@ -8,8 +8,8 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.createmod.catnip.api.theme.Color;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.render.TextureSetup;
-import net.minecraft.client.renderer.state.gui.GuiElementRenderState;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.state.gui.GuiElementRenderState;
 
 public record TexturedQuadRenderState(
 	Matrix3x2f pose, ScreenRectangle scissorArea, TextureSetup textureSetup, Color color,
@@ -22,14 +22,15 @@ public record TexturedQuadRenderState(
 
 	@Override
 	public void buildVertices(VertexConsumer consumer) {
-		consumer.addVertexWith2DPose(pose, (float) left, (float) bot).setColor(color.getRGB()).setUv(u1, v2);
-		consumer.addVertexWith2DPose(pose, (float) right, (float) bot).setColor(color.getRGB()).setUv(u2, v2);
-		consumer.addVertexWith2DPose(pose, (float) right, (float) top).setColor(color.getRGB()).setUv(u2, v1);
-		consumer.addVertexWith2DPose(pose, (float) left, (float) top).setColor(color.getRGB()).setUv(u1, v1);
+		consumer.addVertexWith2DPose(pose, (float) left, (float) top).setUv(u1, v1).setColor(color.getRGB());
+		consumer.addVertexWith2DPose(pose, (float) left, (float) bot).setUv(u1, v2).setColor(color.getRGB());
+		consumer.addVertexWith2DPose(pose, (float) right, (float) bot).setUv(u2, v2).setColor(color.getRGB());
+		consumer.addVertexWith2DPose(pose, (float) right, (float) top).setUv(u2, v1).setColor(color.getRGB());
 	}
 
 	@Override
 	public ScreenRectangle bounds() {
-		return new ScreenRectangle(left, top, right - left, bot - top).transformMaxBounds(pose);
+		ScreenRectangle bounds = new ScreenRectangle(left, top, right - left, bot - top).transformMaxBounds(pose);
+		return scissorArea != null ? scissorArea.intersection(bounds) : bounds;
 	}
 }

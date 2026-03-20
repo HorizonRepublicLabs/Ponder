@@ -30,7 +30,7 @@ class UniversalMeshEmitter {//implements BlockMultiBufferSource {
 
 	public BlockStateModel wrapModel(BlockStateModel model) {
 		wrapperModel.setWrapped(model);
-		return null;//wrapperModel;
+		return model;//wrapperModel;
 	}
 
 	// private void prepareForGeometry(MutableQuadView quad) {

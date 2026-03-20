@@ -146,7 +146,7 @@ public class BoxWidget extends ElementWidget {
 			.gradientBorder(gradientColor)
 			.at(getX(), getY(), z)
 			.withBounds(width, height)
-			.render(graphics);
+			.submit(graphics);
 
 		super.doRender(graphics, mouseX, mouseY, partialTicks);
 

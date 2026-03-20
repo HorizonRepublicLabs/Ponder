@@ -10,8 +10,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import net.createmod.catnip.api.client.gui.texture.CatnipGuiTextures;
-
 import org.joml.Matrix3x2f;
 import org.joml.Matrix3x2fStack;
 import org.joml.Vector3f;
@@ -34,6 +32,7 @@ import net.createmod.catnip.api.client.gui.ScreenOpener;
 import net.createmod.catnip.api.client.gui.UIRenderHelper;
 import net.createmod.catnip.api.client.gui.element.BoxElement;
 import net.createmod.catnip.api.client.gui.element.GuiGameElement;
+import net.createmod.catnip.api.client.gui.texture.CatnipGuiTextures;
 import net.createmod.catnip.api.client.gui.widget.BoxWidget;
 import net.createmod.catnip.api.client.lang.ClientFontHelper;
 import net.createmod.catnip.api.data.Couple;
@@ -617,7 +616,7 @@ public class PonderUI extends AbstractPonderScreen {
 			slide,
 			finishingFlash,
 			partialTicks,
-			Minecraft.getInstance().getWindow()
+			Minecraft.getInstance().gameRenderer.getGameRenderState().windowRenderState
 		));
 
 		RenderSystem.restoreProjectionMatrix();
@@ -866,12 +865,12 @@ public class PonderUI extends AbstractPonderScreen {
 			.gradientBorder(COLOR_IDLE)
 			.at(-34, 2, 100)
 			.withBounds(30, 30)
-			.render(graphics);
+			.submit(graphics);
 
 		GuiGameElement.of(stack)
 			.scale(2)
-			.at(-35, 1)
-			.render(graphics);
+			.at(-12, 1)
+			.submit(graphics);
 
 		// pondering about text
 		poseStack.translate(4, 6);
@@ -1016,7 +1015,7 @@ public class PonderUI extends AbstractPonderScreen {
 			.gradientBorder(borderColors)
 			.at(boxX, boxY, 100)
 			.withBounds(w, h)
-			.render(graphics);
+			.submit(graphics);
 
 		poseStack.pushMatrix();
 		poseStack.translate(divotX + divotRadius, divotY + divotRadius);

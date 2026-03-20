@@ -67,7 +67,7 @@ public class BoxElement extends AbstractRenderElement {
 	}
 
 	@Override
-	public void render(GuiGraphicsExtractor graphics) {
+	public void submit(GuiGraphicsExtractor graphics) {
 		Color c1 = background.copy().scaleAlpha(alpha);
 		Color c2 = borderTop.copy().scaleAlpha(alpha);
 		Color c3 = borderBot.copy().scaleAlpha(alpha);

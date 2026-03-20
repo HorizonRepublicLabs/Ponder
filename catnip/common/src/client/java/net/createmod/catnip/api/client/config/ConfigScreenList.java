@@ -238,9 +238,9 @@ public class ConfigScreenList extends ObjectSelectionList<ConfigScreenList.Entry
 			if (unit != null) {
 				int unitWidth = font.width(unit);
 				graphics.text(font, unit, getX() + getLabelWidth(getWidth()) - unitWidth - 5, getY() + getHeight() / 2 + 2, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().getRGB());
-				label.at(getX() + 10, getY() + getHeight() / 2f - 10, 0).render(graphics);
+				label.at(getX() + 10, getY() + getHeight() / 2f - 10, 0).submit(graphics);
 			} else {
-				label.at(getX() + 10, getY() + getHeight() / 2f - 4, 0).render(graphics);
+				label.at(getX() + 10, getY() + getHeight() / 2f - 4, 0).submit(graphics);
 			}
 
 			if (annotations.containsKey("highlight")) {

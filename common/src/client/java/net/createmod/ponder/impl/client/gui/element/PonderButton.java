@@ -78,7 +78,7 @@ public class PonderButton extends BoxWidget {
 		this.item = item;
 		return super.showingElement(GuiGameElement.of(item)
 			.scale(1.5f)
-			.at(-4, -4));
+			.at(-1.5f, -1.5f));
 	}
 
 	public void flash() {

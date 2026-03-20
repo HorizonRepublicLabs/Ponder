@@ -108,7 +108,7 @@ public class PonderProgressBar extends AbstractSimiWidget {
 			.gradientBorder(PonderUI.COLOR_IDLE)
 			.at(getX(), getY(), 400)
 			.withBounds(width, height)
-			.render(graphics);
+			.submit(graphics);
 
 		poseStack.pushMatrix();
 		poseStack.translate(getX() - 2, getY() - 2);

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import net.minecraft.network.chat.Component;
-
 import org.joml.Matrix3x2fStack;
 import org.jspecify.annotations.Nullable;
 
@@ -26,6 +24,7 @@ import net.createmod.ponder.impl.client.gui.element.PonderButton;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.renderer.Rect2i;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
@@ -170,7 +169,7 @@ public class PonderTagScreen extends AbstractPonderScreen {
 			.gradientBorder(PonderUI.COLOR_IDLE)
 			.at(21, 21, 100)
 			.withBounds(30, 30)
-			.render(graphics);
+			.submit(graphics);
 
 		graphics.text(font, Ponder.lang().translate(AbstractPonderScreen.PONDERING_TAG).component(), x, y - 6, UIRenderHelper.COLOR_TEXT_DARKER.getFirst().getRGB(), false);
 		y += 8;
@@ -201,7 +200,7 @@ public class PonderTagScreen extends AbstractPonderScreen {
 			.gradientBorder(PonderUI.COLOR_IDLE)
 			.at(x - 3, y - 3, 90)
 			.withBounds(w + 6, h + 6)
-			.render(graphics);
+			.submit(graphics);
 
 		ClientFontHelper.drawSplitString(graphics, font, desc, x, y, w, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
 		poseStack.popMatrix();
@@ -229,7 +228,7 @@ public class PonderTagScreen extends AbstractPonderScreen {
 			.gradientBorder(PonderUI.COLOR_IDLE)
 			.at((-stringWidth) / 2f - 5, itemArea.getY() - 21, 100)
 			.withBounds(stringWidth + 10, 10)
-			.render(graphics);
+			.submit(graphics);
 
 //		UIRenderHelper.streak(0, itemArea.getX() - 10, itemArea.getY() - 20, 20, 180, 0x101010);
 		graphics.centeredText(font, relatedTitle, 0, itemArea.getY() - 20, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());

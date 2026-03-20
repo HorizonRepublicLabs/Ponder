@@ -1,12 +1,11 @@
 package net.createmod.ponder.impl.client.element;
 
-import net.createmod.catnip.api.client.gui.texture.CatnipGuiTextures;
-
 import org.joml.Matrix3x2fStack;
 import org.jspecify.annotations.Nullable;
 
 import net.createmod.catnip.api.client.gui.element.GuiGameElement;
 import net.createmod.catnip.api.client.gui.element.ScreenElement;
+import net.createmod.catnip.api.client.gui.texture.CatnipGuiTextures;
 import net.createmod.catnip.api.math.Pointing;
 import net.createmod.ponder.api.Ponder;
 import net.createmod.ponder.api.client.PonderIndex;
@@ -14,7 +13,6 @@ import net.createmod.ponder.api.client.PonderPalette;
 import net.createmod.ponder.api.client.element.InputElementBuilder;
 import net.createmod.ponder.api.client.scene.PonderScene;
 import net.createmod.ponder.impl.client.gui.PonderUI;
-import net.createmod.ponder.impl.client.gui.element.PonderGuiTextures;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.resources.Identifier;
@@ -145,7 +143,7 @@ public class InputWindowElement extends AnimatedOverlayElementBase {
 			GuiGameElement.of(item)
 				.<GuiGameElement.GuiRenderBuilder>at(keyWidth + (hasIcon ? 24 : 0), 0)
 				.scale(1.5)
-				.render(graphics);
+				.submit(graphics);
 		}
 
 		poseStack.popMatrix();

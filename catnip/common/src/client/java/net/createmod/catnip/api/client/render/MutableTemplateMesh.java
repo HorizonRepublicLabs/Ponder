@@ -60,7 +60,7 @@ public class MutableTemplateMesh extends TemplateMesh {
 			v(dstIndex + i, vertexBuffer.getFloat(srcIndex + i * stride + 20));
 			overlay(dstIndex + i, OverlayTexture.NO_OVERLAY);
 			light(dstIndex + i, vertexBuffer.getInt(srcIndex + i * stride + 24));
-			normal(dstIndex + i, vertexBuffer.getInt(srcIndex + i * stride + 28));
+//			normal(dstIndex + i, vertexBuffer.getInt(srcIndex + i * stride + 28));
 		}
 	}
 

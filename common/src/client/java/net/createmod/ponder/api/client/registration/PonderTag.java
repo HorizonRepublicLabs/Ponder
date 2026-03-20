@@ -63,7 +63,7 @@ public class PonderTag implements ScreenElement {
 			GuiGameElement.of(itemIcon)
 				.scale(1.25f)
 				.at(-2, -2)
-				.render(graphics);
+				.submit(graphics);
 		}
 		poseStack.popMatrix();
 	}

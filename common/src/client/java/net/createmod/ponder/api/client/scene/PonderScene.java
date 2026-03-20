@@ -16,8 +16,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import net.minecraft.client.renderer.state.level.CameraRenderState;
-
 import org.apache.commons.lang3.mutable.MutableDouble;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.joml.Matrix4f;
@@ -54,6 +52,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.SubmitNodeStorage;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -547,6 +546,8 @@ public class PonderScene {
 		private double offset;
 		private Matrix4f cachedMat;
 
+		private int guiScale = 1;
+
 		public SceneTransform() {
 			xRotation = LerpedFloat.angular()
 				.disableSmartAngleChasing()
@@ -561,10 +562,11 @@ public class PonderScene {
 			yRotation.tickChaser();
 		}
 
-		public void updateScreenParams(int width, int height, double offset) {
+		public void updateScreenParams(int width, int height, double offset, int guiScale) {
 			this.width = width;
 			this.height = height;
 			this.offset = offset;
+			this.guiScale = guiScale;
 			cachedMat = null;
 		}
 
@@ -586,6 +588,7 @@ public class PonderScene {
 			UIRenderHelper.flipForGuiRender(ms);
 			float f = 30 * scaleFactor;
 			ms.scale(f, f, f);
+			ms.scale(guiScale, guiScale, guiScale);
 			ms.translate(
 				basePlateSize / -2f - basePlateOffsetX,
 				-1f + yOffset,

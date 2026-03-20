@@ -98,6 +98,6 @@ public class PonderIndex {
 
 	public static boolean editingModeActive() {
 		// FIXME: config
-		return false;//PonderConfig.client().editingMode.get();
+		return true;//PonderConfig.client().editingMode.get();
 	}
 }

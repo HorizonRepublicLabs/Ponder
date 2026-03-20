@@ -178,7 +178,7 @@ public class ConfirmationScreen extends AbstractSimiScreen {
 
 	@Override
 	protected void renderWindow(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
-		textBackground.render(graphics);
+		textBackground.submit(graphics);
 		int offset = font.lineHeight + 1;
 		int lineY = y - offset;
 

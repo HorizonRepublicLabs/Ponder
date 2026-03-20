@@ -167,7 +167,7 @@ public class TextWindowElement extends AnimatedOverlayElementBase {
 			.gradientBorder(COLOR_WINDOW_BORDER)
 			.at(targetX - 10, 3, -101)
 			.withBounds(boxWidth, boxHeight - 1)
-			.render(graphics);
+			.submit(graphics);
 
 		Color brighter = palette.getColorObject().mixWith(new Color(0xff_ffffdd), 0.5f).setImmutable();
 		Color c1 = new Color(0xff_494949);

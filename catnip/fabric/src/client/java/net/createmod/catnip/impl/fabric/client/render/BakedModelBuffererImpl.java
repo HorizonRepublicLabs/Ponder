@@ -1,29 +1,37 @@
 package net.createmod.catnip.impl.fabric.client.render;
 
+import java.util.ArrayList;
 import java.util.Iterator;
-
-import net.minecraft.client.renderer.block.BlockAndTintGetter;
-
-import net.minecraft.client.renderer.block.BlockModelSet;
-
-import net.minecraft.client.renderer.block.BlockStateModelSet;
-import net.minecraft.client.renderer.block.FluidRenderer;
-import net.minecraft.client.renderer.block.FluidStateModelSet;
+import java.util.List;
 
 import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.QuadInstance;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.createmod.catnip.api.client.render.model.ShadeSeparatedBufferSource;
 import net.createmod.catnip.api.client.render.model.ShadeSeparatedResultConsumer;
 import net.createmod.catnip.impl.client.render.TransformingVertexConsumer;
 import net.createmod.catnip.impl.client.render.model.DefaultShadeSeparatedBufferSource;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.renderer.block.BlockModelRenderState;
+import net.minecraft.client.renderer.block.BlockStateModelSet;
+import net.minecraft.client.renderer.block.FluidRenderer;
+import net.minecraft.client.renderer.block.FluidStateModelSet;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.geometry.BakedQuad;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.LightCoordsUtil;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
@@ -35,7 +43,7 @@ public final class BakedModelBuffererImpl {
 	private BakedModelBuffererImpl() {
 	}
 
-	public static void submitModel(BlockStateModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, MultiBufferSource.BufferSource buffers, ShadeSeparatedBufferSource bufferSource, OrderedSubmitNodeCollector submitNodeCollector) {
+	public static void submitModel(BlockStateModel model, BlockPos pos, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedBufferSource bufferSource, OrderedSubmitNodeCollector submitNodeCollector) {
 		ThreadLocalObjects objects = THREAD_LOCAL_OBJECTS.get();
 		if (poseStack == null) {
 			poseStack = objects.identityPoseStack;
@@ -44,29 +52,20 @@ public final class BakedModelBuffererImpl {
 
 		long seed = state.getSeed(pos);
 
-		// ChunkSectionLayer defaultLayer = ItemBlockRenderTypes.getChunkRenderType(state);
-		// universalEmitter.prepare(bufferSource, defaultLayer);
+		universalEmitter.prepare(bufferSource, model.hasMaterialFlag(BakedQuad.FLAG_TRANSLUCENT) ? ChunkSectionLayer.TRANSLUCENT : ChunkSectionLayer.CUTOUT);
 		model = universalEmitter.wrapModel(model);
 
+		RenderType layer = model.hasMaterialFlag(BakedQuad.FLAG_TRANSLUCENT) ? Sheets.translucentBlockSheet() : Sheets.cutoutBlockSheet();
+		List<BlockStateModelPart> parts = new ArrayList<>();
+
+		model.collectParts(RandomSource.create(seed), parts);
+
 		poseStack.pushPose();
-		// submitNodeCollector.submitBlockStateModel(
-		// 	poseStack,
-		// 	layer -> bufferSource.getBuffer(layer, false),
-		// 	model,
-		// 	1,
-		// 	1,
-		// 	1,
-		// 	LightCoordsUtil.FULL_BRIGHT,
-		// 	OverlayTexture.NO_OVERLAY,
-		// 	0,
-		// 	level,
-		// 	pos,
-		// 	state
-		// );
-		// Minecraft.getInstance()
-		// 	.getBlockRenderer()
-		// 	.getModelRenderer()
-		// 	.render(level, model, state, pos, poseStack, universalEmitter, false, seed, OverlayTexture.NO_OVERLAY);
+		submitNodeCollector.submitBlockModel(
+			poseStack, layer, parts,
+			BlockModelRenderState.EMPTY_TINTS,
+			LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0
+		);
 		poseStack.popPose();
 
 		universalEmitter.clear();
@@ -81,15 +80,35 @@ public final class BakedModelBuffererImpl {
 
 		long seed = state.getSeed(pos);
 
-		// ChunkSectionLayer defaultLayer = ItemBlockRenderTypes.getChunkRenderType(state);
-		// universalEmitter.prepare(bufferSource, defaultLayer);
+		ChunkSectionLayer defaultLayer = model.hasMaterialFlag(BakedQuad.FLAG_TRANSLUCENT) ? ChunkSectionLayer.TRANSLUCENT : ChunkSectionLayer.CUTOUT;
+		universalEmitter.prepare(bufferSource, defaultLayer);
 		model = universalEmitter.wrapModel(model);
 
+		List<BlockStateModelPart> parts = new ArrayList<>();
+		model.collectParts(RandomSource.create(seed), parts);
+
 		poseStack.pushPose();
-		// Minecraft.getInstance()
-		// 	.getBlockRenderer()
-		// 	.getModelRenderer()
-		// 	.render(level, model, state, pos, poseStack, universalEmitter, false, seed, OverlayTexture.NO_OVERLAY);
+
+		VertexConsumer buffer = bufferSource.getBuffer(defaultLayer, false);
+		QuadInstance instance = new QuadInstance();
+
+		instance.setLightCoords(level.getLightEmission(pos));
+		instance.setOverlayCoords(OverlayTexture.NO_OVERLAY);
+
+		for (Direction direction : Direction.values()) {
+			for (BlockStateModelPart part : parts) {
+				for (BakedQuad quad : part.getQuads(direction)) {
+					buffer.putBakedQuad(poseStack.last(), quad, instance);
+				}
+			}
+		}
+
+		for (BlockStateModelPart part : parts) {
+			for (BakedQuad quad : part.getQuads(null)) {
+				buffer.putBakedQuad(poseStack.last(), quad, instance);
+			}
+		}
+
 		poseStack.popPose();
 
 		universalEmitter.clear();
@@ -123,13 +142,15 @@ public final class BakedModelBuffererImpl {
 				FluidState fluidState = state.getFluidState();
 
 				if (!fluidState.isEmpty()) {
-//					ChunkSectionLayer layer = fluidRenderer.getRenderLayer(fluidState);
-//
-//					transformingWrapper.prepare(bufferSource.getBuffer(layer, true), poseStack);
-
 					poseStack.pushPose();
 					poseStack.translate(pos.getX() - (pos.getX() & 0xF), pos.getY() - (pos.getY() & 0xF), pos.getZ() - (pos.getZ() & 0xF));
-					//fluidRenderer.tesselate(level, pos, transformingWrapper, state, fluidState);
+
+					PoseStack finalPoseStack = poseStack;
+
+					fluidRenderer.tesselate(level, pos, layer -> {
+						transformingWrapper.prepare(bufferSource.getBuffer(layer, true), finalPoseStack);
+						return transformingWrapper;
+					}, state, fluidState);
 					poseStack.popPose();
 				}
 			}
@@ -138,13 +159,36 @@ public final class BakedModelBuffererImpl {
 				long seed = state.getSeed(pos);
 				BlockStateModel model = blockStateModelSet.get(state);
 
-				// ChunkSectionLayer defaultLayer = ItemBlockRenderTypes.getChunkRenderType(state);
-				// universalEmitter.prepare(bufferSource, defaultLayer);
+				ChunkSectionLayer defaultLayer = model.hasMaterialFlag(BakedQuad.FLAG_TRANSLUCENT) ? ChunkSectionLayer.TRANSLUCENT : ChunkSectionLayer.CUTOUT;
+				transformingWrapper.prepare(bufferSource.getBuffer(defaultLayer, true), poseStack);
+				universalEmitter.prepare(bufferSource, defaultLayer);
 				model = universalEmitter.wrapModel(model);
 
 				poseStack.pushPose();
-				poseStack.translate(pos.getX(), pos.getY(), pos.getZ());
-				// blockRenderer.render(level, model, state, pos, poseStack, universalEmitter, true, seed, OverlayTexture.NO_OVERLAY);
+				poseStack.translate(pos.getX() * 0.5, pos.getY() * 0.5, pos.getZ() * 0.5);
+
+				List<BlockStateModelPart> parts = new ArrayList<>();
+				model.collectParts(RandomSource.create(seed), parts);
+
+				QuadInstance instance = new QuadInstance();
+
+				instance.setLightCoords(level.getLightEmission(pos));
+				instance.setOverlayCoords(OverlayTexture.NO_OVERLAY);
+
+				for (Direction direction : Direction.values()) {
+					for (BlockStateModelPart part : parts) {
+						for (BakedQuad quad : part.getQuads(direction)) {
+							transformingWrapper.putBakedQuad(poseStack.last(), quad, instance);
+						}
+					}
+				}
+
+				for (BlockStateModelPart part : parts) {
+					for (BakedQuad quad : part.getQuads(null)) {
+						transformingWrapper.putBakedQuad(poseStack.last(), quad, instance);
+					}
+				}
+
 				poseStack.popPose();
 			}
 		}

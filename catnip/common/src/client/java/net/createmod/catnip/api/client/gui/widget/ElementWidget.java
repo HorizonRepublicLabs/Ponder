@@ -3,8 +3,6 @@ package net.createmod.catnip.api.client.gui.widget;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-
 import org.joml.Matrix3x2fStack;
 
 import net.createmod.catnip.api.animation.LerpedFloat;
@@ -145,7 +143,7 @@ public class ElementWidget extends AbstractSimiWidget {
 			innerWidth /= xScale;
 			innerHeight /= yScale;
 		}
-		element.withBounds((int) innerWidth, (int) innerHeight).render(graphics);
+		element.withBounds((int) innerWidth, (int) innerHeight).submit(graphics);
 		poseStack.popMatrix();
 		if (rescaleElement) {
 			element.at(eX, eY);

@@ -85,7 +85,7 @@ public class EnumEntry extends ValueEntry<Enum<?>> {
 
 		valueText.at(cycleLeft.getX() + cycleWidth - 8, getY() + 10, 200)
 			.withBounds(getWidth() - getLabelWidth(getWidth()) - 2 * cycleWidth - resetWidth - 4, 16)
-			.render(graphics);
+			.submit(graphics);
 
 		cycleRight.setX(getX() + getWidth() - cycleWidth * 2 - resetWidth + 10);
 		cycleRight.setY(getY() + 10);
@@ -96,7 +96,7 @@ public class EnumEntry extends ValueEntry<Enum<?>> {
 			.flatBorder(0x01_000000)
 			.withBounds(48, 6)
 			.at(cycleLeft.getX() + 22, cycleLeft.getY() + 5)
-			.render(graphics);
+			.submit(graphics);
 	}
 
 	@Override

@@ -1,7 +1,5 @@
 package net.createmod.catnip.api.client.render;
 
-import net.minecraft.client.renderer.block.BlockAndTintGetter;
-
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -16,6 +14,7 @@ import it.unimi.dsi.fastutil.longs.Long2IntMap;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import net.createmod.catnip.api.theme.Color;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 
@@ -181,7 +180,7 @@ public class ShadeSeparatingSuperByteBuffer implements SuperByteBuffer {
 				light = SuperByteBuffer.maxLight(light, getLight(levelWithLight, lightPos));
 			}
 
-			builder.addVertex(pos.x(), pos.y(), pos.z()).setColor(r, g, b, a).setUv(u, v).setOverlay(overlay).setLight(light).setNormal(normal.x(), normal.y(), normal.z());
+			builder.addVertex(pos.x(), pos.y(), pos.z()).setColor(r, g, b, a).setUv(u, v).setLight(light);
 		}
 
 		reset();

@@ -65,7 +65,7 @@ public abstract class ConfigScreen extends AbstractSimiScreen {
 
 		shadowElement
 			.at(width * 0.5f, height * 0.5f, 0)
-			.render(graphics);
+			.submit(graphics);
 
 		super.renderWindowBackground(graphics, mouseX, mouseY, partialTicks);
 
@@ -129,7 +129,7 @@ public abstract class ConfigScreen extends AbstractSimiScreen {
 		poseStack.scale(200, 200);
 		GuiGameElement.of(shadowState)
 			.rotateBlock(22.5, cogSpin.getValue(partialTicks), 22.5)
-			.render(graphics);
+			.submit(graphics);
 
 		poseStack.popMatrix();
 	}

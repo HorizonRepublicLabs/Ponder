@@ -10,13 +10,20 @@ import net.createmod.catnip.api.client.event.LevelRenderCallback;
 import net.createmod.catnip.api.client.event.LevelRendererReloadCallback;
 import net.createmod.catnip.api.client.ghostblock.GhostBlocks;
 import net.createmod.catnip.api.client.gui.HudElements;
+import net.createmod.catnip.api.client.gui.render.pip.GuiBlockEntityRenderState;
+import net.createmod.catnip.api.client.gui.render.pip.GuiBlockModelRenderState;
+import net.createmod.catnip.api.client.gui.render.pip.GuiFluidStateRenderState;
 import net.createmod.catnip.api.client.outliner.Outliner;
+import net.createmod.catnip.api.client.platform.ModClientHooksHelper;
 import net.createmod.catnip.api.client.render.CachedBuffers;
 import net.createmod.catnip.api.client.render.DefaultSuperRenderTypeBuffer;
 import net.createmod.catnip.api.client.render.StitchedSprite;
 import net.createmod.catnip.api.client.render.SuperByteBufferCache;
 import net.createmod.catnip.api.client.render.SuperRenderTypeBuffer;
 import net.createmod.catnip.api.data.ReloadListenerRegistries;
+import net.createmod.catnip.impl.client.gui.element.pip.GuiBlockEntityRenderer;
+import net.createmod.catnip.impl.client.gui.element.pip.GuiBlockModelRenderer;
+import net.createmod.catnip.impl.client.gui.element.pip.GuiFluidStateRenderer;
 import net.createmod.catnip.impl.client.placement.PlacementClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -32,6 +39,10 @@ public final class CatnipClient {
 		LevelRendererReloadCallback.EVENT.subscribe(CatnipClient::onRendererReload);
 		LevelRenderCallback.AFTER_TRANSLUCENT_FEATURES.subscribe(CatnipClient::onLevelRender);
 		AtlasStitchedCallback.EVENT.subscribe(StitchedSprite::afterAtlasStitch);
+
+		ModClientHooksHelper.INSTANCE.registerPictureInPictureRenderer(GuiBlockModelRenderState.class, GuiBlockModelRenderer::new);
+		ModClientHooksHelper.INSTANCE.registerPictureInPictureRenderer(GuiBlockEntityRenderState.class, GuiBlockEntityRenderer::new);
+		ModClientHooksHelper.INSTANCE.registerPictureInPictureRenderer(GuiFluidStateRenderState.class, GuiFluidStateRenderer::new);
 
 		ReloadListenerRegistries.INSTANCE.assets().register(CatnipReloadListener.ID, CatnipReloadListener.INSTANCE);
 		HudElements.INSTANCE.register(Catnip.id("placement_helper"), PlacementClient::renderCrosshairOverlay);

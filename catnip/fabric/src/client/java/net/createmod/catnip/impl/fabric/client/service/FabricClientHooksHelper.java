@@ -4,13 +4,9 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.function.Function;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.pipeline.RenderPipeline.Builder;
-
-import net.minecraft.client.renderer.block.BlockAndTintGetter;
-
 import org.jspecify.annotations.Nullable;
 
+import com.mojang.blaze3d.pipeline.RenderPipeline.Builder;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -33,6 +29,7 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
 import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.resources.language.LanguageManager;
 import net.minecraft.core.BlockPos;
@@ -88,8 +85,8 @@ public class FabricClientHooksHelper implements ModClientHooksHelper {
 	}
 
 	@Override
-	public void submitModel(BlockStateModel model, BlockPos pos, BlockAndTintGetter level, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedBufferSource bufferSource) {
-		BakedModelBuffererImpl.bufferModel(model, pos, level, state, poseStack, bufferSource);
+	public void submitModel(BlockStateModel model, BlockPos pos, BlockState state, @Nullable PoseStack poseStack, ShadeSeparatedBufferSource bufferSource, OrderedSubmitNodeCollector submitNodeCollector) {
+		BakedModelBuffererImpl.submitModel(model, pos, state, poseStack, bufferSource, submitNodeCollector);
 	}
 
 	@Override

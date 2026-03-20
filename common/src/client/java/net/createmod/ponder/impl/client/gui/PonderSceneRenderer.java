@@ -4,7 +4,6 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import com.mojang.blaze3d.platform.Lighting;
-import com.mojang.blaze3d.platform.Lighting.Entry;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -14,7 +13,6 @@ import net.createmod.catnip.api.client.render.DefaultSuperRenderTypeBuffer;
 import net.createmod.catnip.api.client.render.PonderRenderTypes;
 import net.createmod.catnip.api.client.render.SuperRenderTypeBuffer;
 import net.createmod.catnip.api.theme.Color;
-import net.createmod.catnip.impl.client.mixin.LightingAccessor;
 import net.createmod.ponder.api.client.scene.PonderScene;
 import net.createmod.ponder.api.client.scene.PonderScene.SceneTransform;
 import net.minecraft.client.Minecraft;
@@ -41,20 +39,29 @@ public class PonderSceneRenderer extends PictureInPictureRenderer<PonderSceneRen
 		FeatureRenderDispatcher renderDispatcher = gameRenderer.getFeatureRenderDispatcher();
 
 		// we use a different light angle, can't use an existing CardinalLightType
-		((LightingAccessor) lighting).callUpdateBuffer(Entry.LEVEL, DIFFUSE_LIGHT_0, DIFFUSE_LIGHT_1);
+//		((LightingAccessor) lighting).callUpdateBuffer(Entry.LEVEL, DIFFUSE_LIGHT_0, DIFFUSE_LIGHT_1); // FIXME: this is causing problems with in-game lighting, needs to be reset. maybe use RenderPass or something?
 
 		SubmitNodeStorage queue = renderDispatcher.getSubmitNodeStorage();
+		poseStack.pushPose();
+		poseStack.setIdentity();
+
+		poseStack.translate(state.width() / 2, state.height() / 2, 0); // FIXME: this only seems to work at GUI scale 2...
+
 		renderScene(state, poseStack, queue);
 		renderDispatcher.renderAllFeatures();
+
+		poseStack.popPose();
 	}
 
 	private void renderScene(PonderSceneRenderState state, PoseStack poseStack, SubmitNodeStorage queue) {
 		float partialTicks = state.partialTicks();
 		SuperRenderTypeBuffer buffer = DefaultSuperRenderTypeBuffer.getInstance();
 		PonderScene scene = state.scene();
+
+		poseStack.pushPose();
 		poseStack.translate(0, 0, -800);
 		SceneTransform transform = scene.getTransform();
-		transform.updateScreenParams(state.width(), state.height(), state.slide());
+		transform.updateScreenParams(state.width(), state.height(), state.slide(), state.window().guiScale);
 		transform.apply(poseStack, partialTicks);
 		transform.updateSceneRVE(partialTicks);
 		scene.renderScene(buffer, queue, poseStack, partialTicks);
@@ -92,6 +99,8 @@ public class PonderSceneRenderer extends PictureInPictureRenderer<PonderSceneRen
 			}
 			poseStack.popPose();
 		}
+
+		buffer.draw();
 
 //		// coords for debug
 //		if (PonderIndex.editingModeActive() && !userViewMode) {
@@ -139,6 +148,7 @@ public class PonderSceneRenderer extends PictureInPictureRenderer<PonderSceneRen
 //			buffer.draw();
 //		}
 
+		poseStack.popPose();
 		poseStack.popPose();
 	}
 

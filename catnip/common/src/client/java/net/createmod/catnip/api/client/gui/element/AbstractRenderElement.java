@@ -5,7 +5,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 public abstract class AbstractRenderElement implements RenderElement {
 	public static RenderElement EMPTY = new AbstractRenderElement() {
 		@Override
-		public void render(GuiGraphicsExtractor graphics) {}
+		public void submit(GuiGraphicsExtractor graphics) {}
 	};
 
 	protected int width = 16, height = 16;
@@ -73,7 +73,7 @@ public abstract class AbstractRenderElement implements RenderElement {
 		}
 
 		@Override
-		public void render(GuiGraphicsExtractor graphics) {
+		public void submit(GuiGraphicsExtractor graphics) {
 			renderable.render(graphics, (int) x, (int) y);
 		}
 	}

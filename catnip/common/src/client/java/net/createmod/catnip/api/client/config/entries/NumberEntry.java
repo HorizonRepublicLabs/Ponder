@@ -150,13 +150,13 @@ public abstract class NumberEntry<T extends Number> extends ValueEntry<T> {
 			minText
 				.at(textField.getX() - minOffset, textField.getY(), 0)
 				.withBounds(minOffset, textField.getHeight())
-				.render(graphics);
+				.submit(graphics);
 
 		if (maxText != null)
 			maxText
 				.at(textField.getX() + textField.getWidth(), textField.getY(), 0)
 				.withBounds(maxOffset, textField.getHeight())
-				.render(graphics);
+				.submit(graphics);
 	}
 
 	public static class IntegerEntry extends NumberEntry<Integer> {

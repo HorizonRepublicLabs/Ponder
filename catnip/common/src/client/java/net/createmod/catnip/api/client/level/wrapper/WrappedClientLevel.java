@@ -1,8 +1,6 @@
 package net.createmod.catnip.api.client.level.wrapper;
 
-import net.minecraft.client.multiplayer.ClientPacketListener;
-
-import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import java.util.Objects;
 
 import org.jspecify.annotations.Nullable;
 
@@ -10,6 +8,7 @@ import net.createmod.catnip.impl.client.mixin.ClientPacketListenerAccessor;
 import net.createmod.catnip.impl.mixin.BiomeManagerAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.sounds.SoundEvent;
@@ -22,8 +21,6 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-
-import java.util.Objects;
 
 public class WrappedClientLevel extends ClientLevel {
 	private static final Minecraft mc = Minecraft.getInstance();
@@ -88,9 +85,9 @@ public class WrappedClientLevel extends ClientLevel {
 
 	@Override
 	public int getBlockTint(BlockPos pos, ColorResolver resolver) {
-		if (this.level instanceof BlockAndTintGetter tintGetter) {
+		/*if (this.level instanceof BlockAndTintGetter tintGetter) { // FIXME: recursive calls
 			return tintGetter.getBlockTint(pos, resolver);
-		}
+		}*/
 
 		return 0xFFFFFFFF;
 	}

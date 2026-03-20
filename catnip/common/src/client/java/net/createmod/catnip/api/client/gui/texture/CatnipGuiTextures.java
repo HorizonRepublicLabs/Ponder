@@ -72,7 +72,7 @@ public enum CatnipGuiTextures implements TextureSheetSegment, ScreenElement, Col
 
 	@Override
 	public void render(GuiGraphicsExtractor graphics, int x, int y) {
-		graphics.blit(RenderPipelines.GUI_TEXTURED, getId(), x, y, 0, startX, startY, width, height, sheetWidth, sheetHeight);
+		graphics.blit(RenderPipelines.GUI_TEXTURED, getId(), x, y, startX, startY, width, height, sheetWidth, sheetHeight);
 	}
 
 	@Override

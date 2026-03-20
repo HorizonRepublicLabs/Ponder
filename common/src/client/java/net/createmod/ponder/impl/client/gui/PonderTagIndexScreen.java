@@ -7,8 +7,6 @@ import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import net.createmod.catnip.api.client.gui.texture.CatnipGuiTextures;
-
 import org.joml.Matrix3x2fStack;
 import org.jspecify.annotations.Nullable;
 
@@ -19,6 +17,7 @@ import net.createmod.catnip.api.client.gui.UIRenderHelper;
 import net.createmod.catnip.api.client.gui.element.BoxElement;
 import net.createmod.catnip.api.client.gui.layout.LayoutHelper;
 import net.createmod.catnip.api.client.gui.layout.PaginationState;
+import net.createmod.catnip.api.client.gui.texture.CatnipGuiTextures;
 import net.createmod.catnip.api.client.gui.widget.BoxWidget;
 import net.createmod.catnip.api.client.lang.ClientFontHelper;
 import net.createmod.catnip.api.client.lang.FontHelper;
@@ -201,7 +200,7 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 			.gradientBorder(PonderUI.COLOR_IDLE)
 			.at(0, 0, 0)
 			.withBounds(30, 30)
-			.render(graphics);
+			.submit(graphics);
 
 		PonderGuiTextures.LOGO.render(graphics, -1, -1);
 
@@ -235,7 +234,7 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 			.gradientBorder(PonderUI.COLOR_IDLE)
 			.at(-3, -3, 0)
 			.withBounds(maxWidth + 6, descHeight + 5)
-			.render(graphics);
+			.submit(graphics);
 
 		ClientFontHelper.drawSplitString(graphics, font, desc, 0, 0, maxWidth, UIRenderHelper.COLOR_TEXT.getFirst().getRGB());
 		poseStack.popMatrix();
@@ -270,7 +269,7 @@ public class PonderTagIndexScreen extends AbstractPonderScreen {
 			.gradientBorder(PonderUI.COLOR_IDLE)
 			.at(-3, -1, 0)
 			.withBounds(stringWidth + 6, 10)
-			.render(graphics);
+			.submit(graphics);
 
 		graphics.text(font, categories, 0, 0, UIRenderHelper.COLOR_TEXT.getFirst().getRGB(), false);
 
