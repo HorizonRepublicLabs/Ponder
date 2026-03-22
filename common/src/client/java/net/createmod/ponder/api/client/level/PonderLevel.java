@@ -7,12 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import net.minecraft.client.renderer.block.BlockAndTintGetter;
-
-import net.minecraft.client.renderer.state.level.CameraRenderState;
-import net.minecraft.world.level.CardinalLighting;
-import net.minecraft.world.level.ColorResolver;
-
 import org.jspecify.annotations.Nullable;
 
 import com.google.common.base.Suppliers;
@@ -34,8 +28,10 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.SubmitNodeStorage;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -47,6 +43,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.CardinalLighting;
+import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
@@ -76,6 +74,7 @@ public class PonderLevel extends SchematicLevel implements BlockAndTintGetter {
 	@Nullable
 	Selection mask;
 	boolean currentlyTickingEntities;
+	CardinalLighting overrideLighting;
 
 	public PonderLevel(BlockPos anchor, Level original) {
 		super(anchor, original);
@@ -184,8 +183,20 @@ public class PonderLevel extends SchematicLevel implements BlockAndTintGetter {
 		return this.asClientWorld.get().getBlockTint(pos, color);
 	}
 
+	public void pushCardinalLighting(CardinalLighting lighting) {
+		this.overrideLighting = lighting;
+	}
+
+	public void popCardinalLighting() {
+		this.overrideLighting = null;
+	}
+
 	@Override
 	public CardinalLighting cardinalLighting() {
+		if (this.overrideLighting != null) {
+			return this.overrideLighting;
+		}
+
 		return this.asClientWorld.get().cardinalLighting();
 	}
 

@@ -7,9 +7,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 
-import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
-import net.minecraft.client.renderer.state.level.CameraRenderState;
-
 import org.jspecify.annotations.Nullable;
 
 import com.mojang.blaze3d.pipeline.RenderPipeline;
@@ -39,13 +36,16 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.CardinalLighting;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -62,6 +62,7 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 
 	public static final Compartment<Pair<Integer, Integer>> PONDER_WORLD_SECTION = new Compartment<>();
 
+	private static final CardinalLighting SCENE_LIGHTING = new CardinalLighting(0.4f, 1f, 0.7f, 1f, 0.5f, 0.6f);
 	private static final ThreadLocal<ThreadLocalObjects> THREAD_LOCAL_OBJECTS = ThreadLocal.withInitial(ThreadLocalObjects::new);
 
 	@Nullable
@@ -329,7 +330,9 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 		poseStack.pushPose();
 		transformMS(poseStack, pt);
 		level.pushFakeLight(light);
+		level.pushCardinalLighting(SCENE_LIGHTING);
 		renderBlockEntities(level, poseStack, queue, camera, cameraRenderState, poseStack, pt);
+		level.popCardinalLighting();
 		level.popLight();
 
 		Map<BlockPos, Integer> blockBreakingProgressions = level.getBlockBreakingProgressions();
@@ -453,9 +456,11 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 
 		world.setMask(section);
 		world.pushFakeLight(0);
+		world.pushCardinalLighting(SCENE_LIGHTING);
 
 		BakedModelBufferer.bufferBlocks(section.iterator(), world, null, true, sbbBuilder);
 
+		world.popCardinalLighting();
 		world.popLight();
 		world.clearMask();
 

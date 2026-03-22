@@ -4,8 +4,6 @@ import java.nio.ByteBuffer;
 
 import com.mojang.blaze3d.vertex.MeshData;
 
-import net.minecraft.client.renderer.texture.OverlayTexture;
-
 public class MutableTemplateMesh extends TemplateMesh {
 	public MutableTemplateMesh() {
 		this(0);
@@ -58,9 +56,7 @@ public class MutableTemplateMesh extends TemplateMesh {
 			color(dstIndex + i, vertexBuffer.getInt(srcIndex + i * stride + 12));
 			u(dstIndex + i, vertexBuffer.getFloat(srcIndex + i * stride + 16));
 			v(dstIndex + i, vertexBuffer.getFloat(srcIndex + i * stride + 20));
-			overlay(dstIndex + i, OverlayTexture.NO_OVERLAY);
 			light(dstIndex + i, vertexBuffer.getInt(srcIndex + i * stride + 24));
-//			normal(dstIndex + i, vertexBuffer.getInt(srcIndex + i * stride + 28));
 		}
 	}
 
@@ -96,16 +92,8 @@ public class MutableTemplateMesh extends TemplateMesh {
 		data[index * INT_STRIDE + V_OFFSET] = Float.floatToRawIntBits(v);
 	}
 
-	public void overlay(int index, int overlay) {
-		data[index * INT_STRIDE + OVERLAY_OFFSET] = overlay;
-	}
-
 	public void light(int index, int light) {
 		data[index * INT_STRIDE + LIGHT_OFFSET] = light;
-	}
-
-	public void normal(int index, int normal) {
-		data[index * INT_STRIDE + NORMAL_OFFSET] = normal;
 	}
 
 	public TemplateMesh toImmutable() {

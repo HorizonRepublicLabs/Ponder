@@ -588,7 +588,6 @@ public class PonderScene {
 			UIRenderHelper.flipForGuiRender(ms);
 			float f = 30 * scaleFactor;
 			ms.scale(f, f, f);
-			ms.scale(guiScale, guiScale, guiScale);
 			ms.translate(
 				basePlateSize / -2f - basePlateOffsetX,
 				-1f + yOffset,

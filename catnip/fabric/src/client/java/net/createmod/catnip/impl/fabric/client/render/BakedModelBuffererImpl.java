@@ -15,9 +15,11 @@ import net.createmod.catnip.api.client.render.model.ShadeSeparatedResultConsumer
 import net.createmod.catnip.impl.client.render.TransformingVertexConsumer;
 import net.createmod.catnip.impl.client.render.model.DefaultShadeSeparatedBufferSource;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.renderer.block.BlockModelLighter;
 import net.minecraft.client.renderer.block.BlockModelRenderState;
 import net.minecraft.client.renderer.block.BlockStateModelSet;
 import net.minecraft.client.renderer.block.FluidRenderer;
@@ -32,6 +34,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
@@ -39,6 +42,7 @@ import net.minecraft.world.level.material.FluidState;
 // Modified from https://github.com/Engine-Room/Flywheel/blob/2f67f54c8898d91a48126c3c753eefa6cd224f84/fabric/src/lib/java/dev/engine_room/flywheel/lib/model/baked/BakedModelBufferer.java
 public final class BakedModelBuffererImpl {
 	private static final ThreadLocal<ThreadLocalObjects> THREAD_LOCAL_OBJECTS = ThreadLocal.withInitial(ThreadLocalObjects::new);
+	private static final BlockModelLighter lighter = new BlockModelLighter();
 
 	private BakedModelBuffererImpl() {
 	}
@@ -90,14 +94,21 @@ public final class BakedModelBuffererImpl {
 		poseStack.pushPose();
 
 		VertexConsumer buffer = bufferSource.getBuffer(defaultLayer, false);
-		QuadInstance instance = new QuadInstance();
 
-		instance.setLightCoords(level.getLightEmission(pos));
+		QuadInstance instance = new QuadInstance();
+		boolean useAo = Minecraft.getInstance().gameRenderer.getGameRenderState().optionsRenderState.ambientOcclusion;
+		int light = LightCoordsUtil.pack(level.getBrightness(LightLayer.BLOCK, pos), level.getBrightness(LightLayer.SKY, pos));
+
 		instance.setOverlayCoords(OverlayTexture.NO_OVERLAY);
 
 		for (Direction direction : Direction.values()) {
 			for (BlockStateModelPart part : parts) {
 				for (BakedQuad quad : part.getQuads(direction)) {
+					if (useAo)
+						lighter.prepareQuadAmbientOcclusion(level, state, pos, quad, instance);
+					else
+						lighter.prepareQuadFlat(level, state, pos, light, quad, instance);
+
 					buffer.putBakedQuad(poseStack.last(), quad, instance);
 				}
 			}
@@ -105,6 +116,11 @@ public final class BakedModelBuffererImpl {
 
 		for (BlockStateModelPart part : parts) {
 			for (BakedQuad quad : part.getQuads(null)) {
+				if (useAo)
+					lighter.prepareQuadAmbientOcclusion(level, state, pos, quad, instance);
+				else
+					lighter.prepareQuadFlat(level, state, pos, light, quad, instance);
+
 				buffer.putBakedQuad(poseStack.last(), quad, instance);
 			}
 		}
@@ -171,13 +187,19 @@ public final class BakedModelBuffererImpl {
 				model.collectParts(RandomSource.create(seed), parts);
 
 				QuadInstance instance = new QuadInstance();
+				boolean useAo = Minecraft.getInstance().gameRenderer.getGameRenderState().optionsRenderState.ambientOcclusion;
+				int light = LevelRenderer.getLightCoords(level, pos);
 
-				instance.setLightCoords(level.getLightEmission(pos));
 				instance.setOverlayCoords(OverlayTexture.NO_OVERLAY);
 
 				for (Direction direction : Direction.values()) {
 					for (BlockStateModelPart part : parts) {
 						for (BakedQuad quad : part.getQuads(direction)) {
+							if (useAo)
+								lighter.prepareQuadAmbientOcclusion(level, state, pos, quad, instance);
+							else
+								lighter.prepareQuadFlat(level, state, pos, light, quad, instance);
+
 							transformingWrapper.putBakedQuad(poseStack.last(), quad, instance);
 						}
 					}
@@ -185,6 +207,11 @@ public final class BakedModelBuffererImpl {
 
 				for (BlockStateModelPart part : parts) {
 					for (BakedQuad quad : part.getQuads(null)) {
+						if (useAo)
+							lighter.prepareQuadAmbientOcclusion(level, state, pos, quad, instance);
+						else
+							lighter.prepareQuadFlat(level, state, pos, light, quad, instance);
+
 						transformingWrapper.putBakedQuad(poseStack.last(), quad, instance);
 					}
 				}

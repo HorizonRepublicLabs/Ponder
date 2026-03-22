@@ -2,7 +2,6 @@ package net.createmod.catnip.api.client.render;
 
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.joml.Vector4f;
 import org.jspecify.annotations.Nullable;
@@ -54,9 +53,6 @@ public class ShadeSeparatingSuperByteBuffer implements SuperByteBuffer {
 	private final Matrix4f modelMat = new Matrix4f();
 	private final Matrix3f normalMat = new Matrix3f();
 	private final Vector4f pos = new Vector4f();
-	private final Vector3f normal = new Vector3f();
-	private final Vector3f lightDir0 = new Vector3f();
-	private final Vector3f lightDir1 = new Vector3f();
 	private final ShiftOutput shiftOutput = new ShiftOutput();
 	private final Vector4f lightPos = new Vector4f();
 
@@ -97,27 +93,12 @@ public class ShadeSeparatingSuperByteBuffer implements SuperByteBuffer {
 		normalMat.mul(localNormalTransforms);
 
 		Vector4f pos = this.pos;
-		Vector3f normal = this.normal;
 		ShiftOutput shiftOutput = this.shiftOutput;
-		Vector3f lightDir0 = this.lightDir0;
-		Vector3f lightDir1 = this.lightDir1;
 		Vector4f lightPos = this.lightPos;
 
-		boolean applyDiffuse = !disableDiffuse && !ShadersModHelper.isShaderPackInUse();
 		boolean shaded = true;
 		int shadeSwapIndex = 0;
 		int nextShadeSwapVertex = shadeSwapIndex < shadeSwapVertices.length ? shadeSwapVertices[shadeSwapIndex] : -1;
-		float unshadedDiffuse = 1;
-		if (applyDiffuse) {
-			//lightDir0.set(RenderSystemAccessor.catnip$getShaderLightDirections()[0]).normalize();
-			//lightDir1.set(RenderSystemAccessor.catnip$getShaderLightDirections()[1]).normalize();
-			if (shadeSwapVertices.length > 0) {
-				// Pretend unshaded faces always point up to get the correct max diffuse value for the current level.
-				normal.set(0, invertFakeDiffuseNormal ? -1 : 1, 0);
-				// Don't apply the normal matrix since that would cause upside down objects to be dark.
-				unshadedDiffuse = calculateDiffuse(normal, lightDir0, lightDir1);
-			}
-		}
 
 		int vertexCount = template.vertexCount();
 		for (int i = 0; i < vertexCount; i++) {
@@ -133,24 +114,7 @@ public class ShadeSeparatingSuperByteBuffer implements SuperByteBuffer {
 			pos.set(x, y, z, 1.0f);
 			pos.mul(modelMat);
 
-			int packedNormal = template.normal(i);
-			float normalX = ((byte) (packedNormal & 0xFF)) / 127.0f;
-			float normalY = ((byte) ((packedNormal >>> 8) & 0xFF)) / 127.0f;
-			float normalZ = ((byte) ((packedNormal >>> 16) & 0xFF)) / 127.0f;
-			normal.set(normalX, normalY, normalZ);
-			normal.mul(normalMat);
-
 			int color = template.color(i);
-			float r = (color & 0xFF) / 255.0f * this.r;
-			float g = ((color >>> 8) & 0xFF) / 255.0f * this.g;
-			float b = ((color >>> 16) & 0xFF) / 255.0f * this.b;
-			float a = ((color >>> 24) & 0xFF) / 255.0f * this.a;
-			if (applyDiffuse) {
-				float diffuse = shaded ? calculateDiffuse(normal, lightDir0, lightDir1) : unshadedDiffuse;
-				r *= diffuse;
-				g *= diffuse;
-				b *= diffuse;
-			}
 
 			float u = template.u(i);
 			float v = template.v(i);
@@ -158,13 +122,6 @@ public class ShadeSeparatingSuperByteBuffer implements SuperByteBuffer {
 				spriteShiftFunc.shift(u, v, shiftOutput);
 				u = shiftOutput.u;
 				v = shiftOutput.v;
-			}
-
-			int overlay;
-			if (hasCustomOverlay) {
-				overlay = this.overlay;
-			} else {
-				overlay = template.overlay(i);
 			}
 
 			int light = template.light(i);
@@ -180,7 +137,7 @@ public class ShadeSeparatingSuperByteBuffer implements SuperByteBuffer {
 				light = SuperByteBuffer.maxLight(light, getLight(levelWithLight, lightPos));
 			}
 
-			builder.addVertex(pos.x(), pos.y(), pos.z()).setColor(r, g, b, a).setUv(u, v).setLight(light);
+			builder.addVertex(pos.x(), pos.y(), pos.z()).setColor(color).setUv(u, v).setLight(light);
 		}
 
 		reset();

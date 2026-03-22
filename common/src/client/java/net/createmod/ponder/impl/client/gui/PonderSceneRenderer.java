@@ -1,9 +1,7 @@
 package net.createmod.ponder.impl.client.gui;
 
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 
-import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -24,9 +22,6 @@ import net.minecraft.client.renderer.feature.FeatureRenderDispatcher;
 
 // TODO - Check if this actually works
 public class PonderSceneRenderer extends PictureInPictureRenderer<PonderSceneRenderState> {
-	private static final Vector3f DIFFUSE_LIGHT_0 = new Vector3f(0.4F, -1.0F, 0.7F).normalize();
-	private static final Vector3f DIFFUSE_LIGHT_1 = new Vector3f(-0.4F, -0.5F, 0.7F).normalize();
-
 	public PonderSceneRenderer(BufferSource bufferSource) {
 		super(bufferSource);
 	}
@@ -35,17 +30,14 @@ public class PonderSceneRenderer extends PictureInPictureRenderer<PonderSceneRen
 	protected void renderToTexture(PonderSceneRenderState state, PoseStack poseStack) {
 		Minecraft mc = Minecraft.getInstance();
 		GameRenderer gameRenderer = mc.gameRenderer;
-		Lighting lighting = gameRenderer.getLighting();
 		FeatureRenderDispatcher renderDispatcher = gameRenderer.getFeatureRenderDispatcher();
 
 		// we use a different light angle, can't use an existing CardinalLightType
-//		((LightingAccessor) lighting).callUpdateBuffer(Entry.LEVEL, DIFFUSE_LIGHT_0, DIFFUSE_LIGHT_1); // FIXME: this is causing problems with in-game lighting, needs to be reset. maybe use RenderPass or something?
-
 		SubmitNodeStorage queue = renderDispatcher.getSubmitNodeStorage();
 		poseStack.pushPose();
 		poseStack.setIdentity();
 
-		poseStack.translate(state.width() / 2, state.height() / 2, 0); // FIXME: this only seems to work at GUI scale 2...
+		poseStack.translate(state.window().width / 4, state.window().height / 4, 0); // FIXME: this only seems to work at GUI scale 2...
 
 		renderScene(state, poseStack, queue);
 		renderDispatcher.renderAllFeatures();
