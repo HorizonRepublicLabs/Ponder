@@ -39,6 +39,7 @@ fun versionOf(name: String): String {
         return version
             .replace("snapshot-", "alpha.")
             .replace("pre-", "pre.")
+            .replace("rc-", "rc.")
 
     return version
 }
