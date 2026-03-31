@@ -869,7 +869,7 @@ public class PonderUI extends AbstractPonderScreen {
 
 		GuiGameElement.of(stack)
 			.scale(2)
-			.at(-12, 1)
+			.at(-35, 1)
 			.submit(graphics);
 
 		// pondering about text
