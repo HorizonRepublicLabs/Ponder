@@ -242,7 +242,7 @@ public class GuiGameElement {
              Matrix3x2fStack poseStack = graphics.pose();
              prepareMatrix(poseStack);
              transformMatrix(poseStack);
-			 graphics.item(this.stack, (int) this.x, (int) this.y);
+			 graphics.item(this.stack, 0, 0);
              cleanUpMatrix(poseStack);
         }
     }
