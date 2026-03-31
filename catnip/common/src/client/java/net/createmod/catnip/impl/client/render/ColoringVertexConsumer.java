@@ -24,7 +24,7 @@ public record ColoringVertexConsumer(VertexConsumer delegate, float red, float g
 		int g = ARGB.green(packedColor);
 		int b = ARGB.blue(packedColor);
 		int a = ARGB.alpha(packedColor);
-		delegate.setColor(ARGB.color((int) (r * red), (int) (g * green), (int) (b * blue), (int) (a * alpha)));
+		delegate.setColor(ARGB.color((int) (a * alpha), (int) (r * red), (int) (g * green), (int) (b * blue)));
 		return this;
 	}
 

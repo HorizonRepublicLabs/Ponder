@@ -180,7 +180,11 @@ public class PonderLevel extends SchematicLevel implements BlockAndTintGetter {
 
 	@Override
 	public int getBlockTint(BlockPos pos, ColorResolver color) {
-		return this.asClientWorld.get().getBlockTint(pos, color);
+		if (this.level instanceof BlockAndTintGetter tintGetter) {
+			return tintGetter.getBlockTint(pos, color);
+		}
+
+		return 0xFFFFFFFF;
 	}
 
 	public void pushCardinalLighting(CardinalLighting lighting) {
@@ -197,7 +201,11 @@ public class PonderLevel extends SchematicLevel implements BlockAndTintGetter {
 			return this.overrideLighting;
 		}
 
-		return this.asClientWorld.get().cardinalLighting();
+		if (this.level instanceof BlockAndTintGetter tintGetter) {
+			return tintGetter.cardinalLighting();
+		}
+
+		return CardinalLighting.DEFAULT;
 	}
 
 	@Override // For particle collision

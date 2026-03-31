@@ -9,6 +9,7 @@ import net.createmod.catnip.impl.mixin.BiomeManagerAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.sounds.SoundEvent;
@@ -85,9 +86,9 @@ public class WrappedClientLevel extends ClientLevel {
 
 	@Override
 	public int getBlockTint(BlockPos pos, ColorResolver resolver) {
-		/*if (this.level instanceof BlockAndTintGetter tintGetter) { // FIXME: recursive calls
+		if (this.level instanceof BlockAndTintGetter tintGetter) {
 			return tintGetter.getBlockTint(pos, resolver);
-		}*/
+		}
 
 		return 0xFFFFFFFF;
 	}

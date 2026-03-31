@@ -1,5 +1,7 @@
 package net.createmod.catnip.api.client.render;
 
+import net.minecraft.util.ARGB;
+
 public class TemplateMesh {
 	public static final int INT_STRIDE = 7;
 	public static final int BYTE_STRIDE = INT_STRIDE * Integer.BYTES;
@@ -41,9 +43,16 @@ public class TemplateMesh {
 		return Float.intBitsToFloat(data[index * INT_STRIDE + Z_OFFSET]);
 	}
 
-	// 0xAABBGGRR
+	// 0xAABBGGRR, needs to be converted to 0xAARRGGBB
 	public int color(int index) {
-		return data[index * INT_STRIDE + COLOR_OFFSET];
+		// FIXME: why is this ABGR?
+		int abgr = data[index * INT_STRIDE + COLOR_OFFSET];
+		return ARGB.color(
+			ARGB.alpha(abgr),
+			ARGB.blue(abgr),
+			ARGB.green(abgr),
+			ARGB.red(abgr)
+		);
 	}
 
 	public float u(int index) {
