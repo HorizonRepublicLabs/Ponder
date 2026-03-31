@@ -113,6 +113,8 @@ public class PonderWorldParticles {
 		TextureManager textureManager = minecraft.getTextureManager();
 		RenderTarget mainTarget = minecraft.getMainRenderTarget();
 		RenderTarget particleTarget = minecraft.levelRenderer.getParticlesTarget();
+		GpuTextureView overrideColorView = RenderSystem.outputColorTextureOverride;
+		GpuTextureView overrideDepthView = RenderSystem.outputDepthTextureOverride;
 
 		for (ParticleGroupRenderer renderer : renderers) {
 			if (renderer.isEmpty())
@@ -124,8 +126,8 @@ public class PonderWorldParticles {
 				continue;
 
 			boolean useParticleTarget = particleTarget != null && translucent;
-			GpuTextureView colorTextureView = useParticleTarget ? particleTarget.getColorTextureView() : mainTarget.getColorTextureView();
-			GpuTextureView depthTextureView = useParticleTarget ? particleTarget.getDepthTextureView() : mainTarget.getDepthTextureView();
+			GpuTextureView colorTextureView = overrideColorView != null ? overrideColorView : useParticleTarget ? particleTarget.getColorTextureView() : mainTarget.getColorTextureView();
+			GpuTextureView depthTextureView = overrideDepthView != null ? overrideDepthView : useParticleTarget ? particleTarget.getDepthTextureView() : mainTarget.getDepthTextureView();
 
 			try (RenderPass renderPass = createRenderPass(device, colorTextureView, depthTextureView, translucent)) {
 				this.prepareRenderPass(renderPass);
