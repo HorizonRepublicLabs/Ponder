@@ -45,6 +45,6 @@ public record PonderSceneRenderState(
 
 	@Override
 	public ScreenRectangle bounds() {
-		return new ScreenRectangle(y0(), y1(), x0(), x1()).transformMaxBounds(pose);
+		return new ScreenRectangle(x0(), y0(), x1(), y1()).transformMaxBounds(pose);
 	}
 }

@@ -20,7 +20,6 @@ import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
 import net.minecraft.client.renderer.SubmitNodeStorage;
 import net.minecraft.client.renderer.feature.FeatureRenderDispatcher;
 
-// TODO - Check if this actually works
 public class PonderSceneRenderer extends PictureInPictureRenderer<PonderSceneRenderState> {
 	public PonderSceneRenderer(BufferSource bufferSource) {
 		super(bufferSource);
@@ -32,7 +31,6 @@ public class PonderSceneRenderer extends PictureInPictureRenderer<PonderSceneRen
 		GameRenderer gameRenderer = mc.gameRenderer;
 		FeatureRenderDispatcher renderDispatcher = gameRenderer.getFeatureRenderDispatcher();
 
-		// we use a different light angle, can't use an existing CardinalLightType
 		SubmitNodeStorage queue = renderDispatcher.getSubmitNodeStorage();
 		poseStack.pushPose();
 		poseStack.setIdentity();
