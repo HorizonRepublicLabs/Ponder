@@ -1,5 +1,7 @@
 package net.createmod.catnip.api.client.render;
 
+import java.util.function.Consumer;
+
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.pipeline.RenderPipeline.Builder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -11,8 +13,6 @@ import net.createmod.catnip.api.client.platform.ModClientHooksHelper;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 
-import java.util.function.Consumer;
-
 /// Additional [RenderPipeline]s and [Snippets][RenderPipeline.Snippet]s  provided by Catnip.
 public class CatnipRenderPipelines {
 	/// Normally in GUI rendering the [VertexFormat.Mode] of a pipeline is ignored, and assumed to be quads.
@@ -21,7 +21,8 @@ public class CatnipRenderPipelines {
 
 	public static final RenderPipeline GUI_TRIANGLES = register(
 		"gui_triangles",
-		builder -> builder.withVertexFormat(DefaultVertexFormat.POSITION_COLOR, Mode.TRIANGLES),
+		builder -> builder.withVertexFormat(DefaultVertexFormat.POSITION_COLOR, Mode.TRIANGLES)
+			.withCull(false), // TODO: this is set to false specifically for breadcrumb arrows, should this be its own pipeline?
 		RenderPipelines.GUI_SNIPPET, USE_DRAW_MODE_IN_GUI_SNIPPET
 	),
 
