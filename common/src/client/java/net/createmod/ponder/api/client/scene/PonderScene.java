@@ -563,8 +563,8 @@ public class PonderScene {
 		}
 
 		public void updateScreenParams(int width, int height, double offset, int guiScale) {
-			this.width = width;
-			this.height = height;
+			this.width = width * guiScale;
+			this.height = height * guiScale;
 			this.offset = offset;
 			this.guiScale = guiScale;
 			cachedMat = null;
@@ -586,7 +586,7 @@ public class PonderScene {
 			ms.mulPose(com.mojang.math.Axis.YP.rotationDegrees(yRotation.getValue(pt)));
 
 			UIRenderHelper.flipForGuiRender(ms);
-			float f = 30 * scaleFactor;
+			float f = 30 * scaleFactor * guiScale;
 			ms.scale(f, f, f);
 			ms.translate(
 				basePlateSize / -2f - basePlateOffsetX,
@@ -616,7 +616,7 @@ public class PonderScene {
 			vec = VecHelper.rotate(vec, -xRotation.getValue(pt), Axis.X);
 			vec = VecHelper.rotate(vec, -yRotation.getValue(pt), Axis.Y);
 
-			float f = 1f / (30 * scaleFactor);
+			float f = 1f / (30 * scaleFactor * guiScale);
 
 			vec = vec.multiply(f, -f, f);
 			vec = vec.subtract(
@@ -632,6 +632,7 @@ public class PonderScene {
 			refreshMatrix(pt);
 			Vector4f vec4 = new Vector4f((float) vec.x, (float) vec.y, (float) vec.z, 1);
 			vec4.mul(cachedMat);
+			vec4.div(guiScale);
 			return new Vec2(vec4.x(), vec4.y());
 		}
 
@@ -640,6 +641,18 @@ public class PonderScene {
 				return;
 			cachedMat = apply(new PoseStack(), pt).last()
 				.pose();
+		}
+
+		public int guiScale() {
+			return guiScale;
+		}
+
+		public int width() {
+			return width;
+		}
+
+		public int height() {
+			return height;
 		}
 	}
 

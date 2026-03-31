@@ -37,8 +37,6 @@ public class PonderSceneRenderer extends PictureInPictureRenderer<PonderSceneRen
 		poseStack.pushPose();
 		poseStack.setIdentity();
 
-		poseStack.translate(state.window().width / 4, state.window().height / 4, 0); // FIXME: this only seems to work at GUI scale 2...
-
 		renderScene(state, poseStack, queue);
 		renderDispatcher.renderAllFeatures();
 
