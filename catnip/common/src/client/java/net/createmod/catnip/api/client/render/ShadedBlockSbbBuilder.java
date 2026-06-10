@@ -57,7 +57,7 @@ public class ShadedBlockSbbBuilder implements VertexConsumer {
 		return bufferBuilder;
 	}
 
-	private void prepareForGeometry(boolean shade) {
+	protected void prepareForGeometry(boolean shade) {
 		if (shade != currentShade) {
 			shadeSwapVertices.add(((BufferBuilderAccessor) bufferBuilder).catnip$getVertices());
 			currentShade = shade;
@@ -65,8 +65,7 @@ public class ShadedBlockSbbBuilder implements VertexConsumer {
 	}
 
 	protected void prepareForGeometry(BakedQuad quad) {
-		// TODO: FIXME
-		//prepareForGeometry(quad.shade());
+		prepareForGeometry(quad.materialInfo().shade());
 	}
 
 	@Override

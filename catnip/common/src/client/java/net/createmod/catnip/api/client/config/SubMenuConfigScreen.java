@@ -74,8 +74,8 @@ public class SubMenuConfigScreen extends ConfigScreen {
 	protected String title;
 	protected Set<String> highlights = new HashSet<>();
 
-	public static SubMenuConfigScreen find(ConfigHelper.ConfigPath path) {
-		ModConfigSpec spec = ConfigHelper.findModConfigSpecFor(path.getType(), path.getModID());
+	public static SubMenuConfigScreen find(net.createmod.catnip.api.config.ConfigHelper.ConfigPath path) {
+		ModConfigSpec spec = net.createmod.catnip.api.config.ConfigHelper.findModConfigSpecFor(path.getType(), path.getModID());
 		UnmodifiableConfig values = spec.getValues();
 		net.createmod.catnip.config.ui.BaseConfigScreen base = new BaseConfigScreen(null, path.getModID());
 		SubMenuConfigScreen screen = new SubMenuConfigScreen(base, "root", path.getType(), spec, values);
@@ -125,7 +125,7 @@ public class SubMenuConfigScreen extends ConfigScreen {
 	}
 
 	protected void clearChanges() {
-		ConfigHelper.changes.clear();
+		net.createmod.catnip.api.config.ConfigHelper.changes.clear();
 		for (ConfigScreenList.Entry e : list.children()) {
 			if (e instanceof ValueEntry<?> valueEntry) {
 				valueEntry.onValueChange();
@@ -135,7 +135,7 @@ public class SubMenuConfigScreen extends ConfigScreen {
 
 	protected void saveChanges() {
 		UnmodifiableConfig values = spec.getValues();
-		ConfigHelper.changes.forEach((path, change) -> {
+		net.createmod.catnip.api.config.ConfigHelper.changes.forEach((path, change) -> {
 			ModConfigSpec.ConfigValue<Object> configValue = values.get(path);
 			configValue.set(change.value);
 			configValue.save();
@@ -166,9 +166,9 @@ public class SubMenuConfigScreen extends ConfigScreen {
 				if (valueSpec.getComment() != null)
 					comments.addAll(Arrays.asList(valueSpec.getComment().split("\n")));
 
-				Pair<String, Map<String, String>> metadata = ConfigHelper.readMetadataFromComment(comments);
+				Pair<String, Map<String, String>> metadata = net.createmod.catnip.api.config.ConfigHelper.readMetadataFromComment(comments);
 
-				ConfigHelper.setValue(String.join(".", configValue.getPath()), configValue, valueSpec.getDefault(), metadata.getSecond());
+				net.createmod.catnip.api.config.ConfigHelper.setValue(String.join(".", configValue.getPath()), configValue, valueSpec.getDefault(), metadata.getSecond());
 			}
 		});
 
@@ -209,12 +209,12 @@ public class SubMenuConfigScreen extends ConfigScreen {
 		saveChanges = new BoxWidget(listL - 30, yCenter - 25, 20, 20)
 			.withPadding(2, 2)
 			.withCallback((x, y) -> {
-				if (ConfigHelper.changes.isEmpty())
+				if (net.createmod.catnip.api.config.ConfigHelper.changes.isEmpty())
 					return;
 
 				ConfirmationScreen confirm = new ConfirmationScreen()
 					.centered()
-					.withText(Component.translatable("catnip.ui.saving_changes_message", ConfigHelper.changes.size(), Component.translatable(ConfigHelper.changes.size() != 1 ? "catnip.ui.changed_values_plural" : "catnip.ui.changed_values_singular")))
+					.withText(Component.translatable("catnip.ui.saving_changes_message", net.createmod.catnip.api.config.ConfigHelper.changes.size(), Component.translatable(net.createmod.catnip.api.config.ConfigHelper.changes.size() != 1 ? "catnip.ui.changed_values_plural" : "catnip.ui.changed_values_singular")))
 					.withAction(success -> {
 						if (success)
 							saveChanges();
@@ -229,12 +229,12 @@ public class SubMenuConfigScreen extends ConfigScreen {
 		discardChanges = new BoxWidget(listL - 30, yCenter + 5, 20, 20)
 			.withPadding(2, 2)
 			.withCallback((x, y) -> {
-				if (ConfigHelper.changes.isEmpty())
+				if (net.createmod.catnip.api.config.ConfigHelper.changes.isEmpty())
 					return;
 
 				new ConfirmationScreen()
 					.centered()
-					.withText(Component.translatable("catnip.ui.discarding_changes_message", ConfigHelper.changes.size(), Component.translatable(ConfigHelper.changes.size() != 1 ? "catnip.ui.value_changes_plural" : "catnip.ui.value_changes_singular")))
+					.withText(Component.translatable("catnip.ui.discarding_changes_message", net.createmod.catnip.api.config.ConfigHelper.changes.size(), Component.translatable(net.createmod.catnip.api.config.ConfigHelper.changes.size() != 1 ? "catnip.ui.value_changes_plural" : "catnip.ui.value_changes_singular")))
 					.withAction(success -> {
 						if (success)
 							clearChanges();
@@ -408,7 +408,7 @@ public class SubMenuConfigScreen extends ConfigScreen {
 	}
 
 	private void attemptBackstep() {
-		if (ConfigHelper.changes.isEmpty() || !(parent instanceof BaseConfigScreen)) {
+		if (net.createmod.catnip.api.config.ConfigHelper.changes.isEmpty() || !(parent instanceof BaseConfigScreen)) {
 			ScreenOpener.open(parent);
 			return;
 		}
@@ -418,14 +418,14 @@ public class SubMenuConfigScreen extends ConfigScreen {
 				return;
 			if (success == Response.Confirm)
 				saveChanges();
-			ConfigHelper.changes.clear();
+			net.createmod.catnip.api.config.ConfigHelper.changes.clear();
 			ScreenOpener.open(parent);
 		});
 	}
 
 	@Override
 	public void onClose() {
-		if (ConfigHelper.changes.isEmpty()) {
+		if (net.createmod.catnip.api.config.ConfigHelper.changes.isEmpty()) {
 			super.onClose();
 			return;
 		}
@@ -435,7 +435,7 @@ public class SubMenuConfigScreen extends ConfigScreen {
 				return;
 			if (success == Response.Confirm)
 				saveChanges();
-			ConfigHelper.changes.clear();
+			net.createmod.catnip.api.config.ConfigHelper.changes.clear();
 			super.onClose();
 		});
 	}
@@ -444,7 +444,7 @@ public class SubMenuConfigScreen extends ConfigScreen {
 		ConfirmationScreen screen = new ConfirmationScreen()
 			.centered()
 			.withThreeActions(action)
-			.addText(Component.translatable("catnip.ui.leaving_with_changes_message", ConfigHelper.changes.size(), Component.translatable(ConfigHelper.changes.size() != 1 ? "catnip.ui.value_changes_plural" : "catnip.ui.value_changes_singular")));
+			.addText(Component.translatable("catnip.ui.leaving_with_changes_message", net.createmod.catnip.api.config.ConfigHelper.changes.size(), Component.translatable(net.createmod.catnip.api.config.ConfigHelper.changes.size() != 1 ? "catnip.ui.value_changes_plural" : "catnip.ui.value_changes_singular")));
 
 		addAnnotationsToConfirm(screen).open(this);
 	}
@@ -452,7 +452,7 @@ public class SubMenuConfigScreen extends ConfigScreen {
 	private ConfirmationScreen addAnnotationsToConfirm(ConfirmationScreen screen) {
 		AtomicBoolean relog = new AtomicBoolean(false);
 		AtomicBoolean restart = new AtomicBoolean(false);
-		ConfigHelper.changes.values().forEach(change -> {
+		net.createmod.catnip.api.config.ConfigHelper.changes.values().forEach(change -> {
 			if (change.annotations.containsKey(ConfigAnnotations.RequiresRelog.TRUE.getName()))
 				relog.set(true);
 

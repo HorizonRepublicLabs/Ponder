@@ -16,6 +16,7 @@ import net.createmod.catnip.api.client.gui.render.pip.GuiFluidStateRenderState;
 import net.createmod.catnip.api.client.outliner.Outliner;
 import net.createmod.catnip.api.client.platform.ModClientHooksHelper;
 import net.createmod.catnip.api.client.render.CachedBuffers;
+import net.createmod.catnip.api.client.render.CatnipRenderPipelines;
 import net.createmod.catnip.api.client.render.DefaultSuperRenderTypeBuffer;
 import net.createmod.catnip.api.client.render.StitchedSprite;
 import net.createmod.catnip.api.client.render.SuperByteBufferCache;
@@ -31,6 +32,10 @@ import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.world.phys.Vec3;
 
 public final class CatnipClient {
+	public static void preInit() {
+		CatnipRenderPipelines.init();
+	}
+
 	public static void init() {
 		SuperByteBufferCache.getInstance().registerCompartment(CachedBuffers.GENERIC_BLOCK);
 	    CatnipClientPayloadHandlers.register();

@@ -12,14 +12,14 @@ import net.createmod.catnip.api.client.gui.ScreenOpener;
 import net.createmod.catnip.api.client.gui.UIRenderHelper;
 import net.createmod.catnip.api.client.gui.element.FadableScreenElement;
 import net.createmod.catnip.api.client.gui.element.TextStencilElement;
+import net.createmod.catnip.api.client.gui.texture.CatnipGuiTextures;
 import net.createmod.catnip.api.client.gui.widget.AbstractSimiWidget;
 import net.createmod.catnip.api.client.gui.widget.BoxWidget;
 import net.createmod.catnip.api.client.lang.FontHelper;
 import net.createmod.catnip.api.client.lang.FontHelper.Palette;
+import net.createmod.catnip.api.config.ConfigHelper;
 import net.createmod.catnip.api.platform.services.PlatformHelper;
 import net.createmod.catnip.api.theme.Color;
-import net.createmod.ponder.Ponder;
-import net.createmod.ponder.enums.PonderGuiTextures;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
@@ -89,26 +89,26 @@ public class BaseConfigScreen extends ConfigScreen {
 	 * please use {@link #withSpecs(ModConfigSpec, ModConfigSpec, ModConfigSpec)} instead
 	 */
 	public BaseConfigScreen searchForConfigSpecs() {
-		if (!ConfigHelper.hasAnyForgeConfig(this.modID)) {
+		if (!net.createmod.catnip.api.config.ConfigHelper.hasAnyForgeConfig(this.modID)) {
 			return this;
 		}
 
 		try {
-			clientSpec = ConfigHelper.findModConfigSpecFor(ModConfig.Type.CLIENT, modID);
+			clientSpec = net.createmod.catnip.api.config.ConfigHelper.findModConfigSpecFor(ModConfig.Type.CLIENT, modID);
 		} catch (ClassCastException | NullPointerException e) {
-			Ponder.LOGGER.debug("Unable to find ClientConfigSpec for mod: {}", modID);
+			ConfigHelper.LOGGER.debug("Unable to find ClientConfigSpec for mod: {}", modID);
 		}
 
 		try {
-			commonSpec = ConfigHelper.findModConfigSpecFor(ModConfig.Type.COMMON, modID);
+			commonSpec = net.createmod.catnip.api.config.ConfigHelper.findModConfigSpecFor(ModConfig.Type.COMMON, modID);
 		} catch (ClassCastException | NullPointerException e) {
-			Ponder.LOGGER.debug("Unable to find CommonConfigSpec for mod: {}", modID);
+			ConfigHelper.LOGGER.debug("Unable to find CommonConfigSpec for mod: {}", modID);
 		}
 
 		try {
-			serverSpec = ConfigHelper.findModConfigSpecFor(ModConfig.Type.SERVER, modID);
+			serverSpec = net.createmod.catnip.api.config.ConfigHelper.findModConfigSpecFor(ModConfig.Type.SERVER, modID);
 		} catch (ClassCastException | NullPointerException e) {
-			Ponder.LOGGER.debug("Unable to find ServerConfigSpec for mod: {}", modID);
+			ConfigHelper.LOGGER.debug("Unable to find ServerConfigSpec for mod: {}", modID);
 		}
 
 		return this;
@@ -143,7 +143,7 @@ public class BaseConfigScreen extends ConfigScreen {
 		addRenderableWidget(clientConfigWidget = new BoxWidget(width / 2 - 100, height / 2 - 15 - 30, 200, 16).showingElement(clientText));
 
 		if (clientSpec != null) {
-			clientConfigWidget.withCallback(() -> linkTo(new net.createmod.catnip.config.ui.SubMenuConfigScreen(this, ModConfig.Type.CLIENT, clientSpec)));
+			clientConfigWidget.withCallback(() -> linkTo(new SubMenuConfigScreen(this, ModConfig.Type.CLIENT, clientSpec)));
 			clientText.withElementRenderer(BoxWidget.gradientFactory.apply(clientConfigWidget));
 		} else {
 			clientConfigWidget.active = false;
@@ -207,7 +207,7 @@ public class BaseConfigScreen extends ConfigScreen {
 
 		goBack = new BoxWidget(width / 2 - 134, height / 2, 20, 20).withPadding(2, 2)
 			.withCallback(() -> linkTo(parent));
-		goBack.showingElement(PonderGuiTextures.ICON_CONFIG_BACK.asStencil()
+		goBack.showingElement(CatnipGuiTextures.ICON_CONFIG_BACK.asStencil()
 			.withElementRenderer(BoxWidget.gradientFactory.apply(goBack)));
 		goBack.getToolTip()
 			.add(Component.translatable("catnip.ui.go_back_button"));

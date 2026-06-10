@@ -5,7 +5,6 @@
   "compatibilityLevel": "JAVA_25",
   "mixins": [],
   "client": [
-    "net.createmod.catnip.impl.neoforge.mixin.ParticleEngineAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

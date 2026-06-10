@@ -19,6 +19,12 @@ group = "net.createmod.$modName"
 // keep version synchronized with the root project
 version = rootProject.version
 
+repositories {
+    mavenLocal() // TODO: remove when Flywheel is pushed
+    maven("https://maven.createmod.net") // Flywheel
+    maven("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/") // Forge Config API Port
+}
+
 java {
     withSourcesJar()
     toolchain.languageVersion = JavaLanguageVersion.of(25)

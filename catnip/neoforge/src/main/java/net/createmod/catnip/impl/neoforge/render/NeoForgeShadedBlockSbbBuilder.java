@@ -1,22 +1,18 @@
 package net.createmod.catnip.impl.neoforge.render;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.PoseStack.Pose;
+import com.mojang.blaze3d.vertex.QuadInstance;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.createmod.catnip.api.client.render.ShadedBlockSbbBuilder;
-import net.minecraft.client.resources.model.geometry.BakedQuad;
+
+import net.neoforged.neoforge.client.model.quad.MutableQuad;
 
 @Deprecated(forRemoval = true)
 public class NeoForgeShadedBlockSbbBuilder extends ShadedBlockSbbBuilder implements VertexConsumer {
 	@Override
-	public void putBulkData(PoseStack.Pose pose, BakedQuad quad, float red, float green, float blue, float alpha, int light, int overlay, boolean readExistingColor) {
-		prepareForGeometry(quad);
-		bufferBuilder.putBulkData(pose, quad, red, green, blue, alpha, light, overlay, readExistingColor);
-	}
-
-	@Override
-	public void putBulkData(PoseStack.Pose pose, BakedQuad quad, float[] brightnesses, float red, float green, float blue, float alpha, int[] lights, int overlay, boolean readExistingColor) {
-		prepareForGeometry(quad);
-		bufferBuilder.putBulkData(pose, quad, brightnesses, red, green, blue, alpha, lights, overlay, readExistingColor);
+	public void putMutableQuad(Pose pose, MutableQuad quad, QuadInstance instance) {
+		this.prepareForGeometry(quad.shade());
+		this.bufferBuilder.putMutableQuad(pose, quad, instance);
 	}
 }

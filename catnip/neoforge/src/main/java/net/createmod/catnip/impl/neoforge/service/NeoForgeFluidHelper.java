@@ -1,49 +1,21 @@
 package net.createmod.catnip.impl.neoforge.service;
 
-import org.jspecify.annotations.Nullable;
-
 import net.createmod.catnip.api.platform.services.ModFluidHelper;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.core.BlockPos;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.core.TypedInstance;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 
-public class NeoForgeFluidHelper implements ModFluidHelper<FluidStack> {
-	@OnlyIn(Dist.CLIENT)
+public class NeoForgeFluidHelper implements ModFluidHelper {
 	@Override
-	public int getColor(FluidStack stack, @Nullable BlockAndTintGetter level, @Nullable BlockPos pos) {
-		Fluid fluid = stack.getFluid();
-		IClientFluidTypeExtensions extension = IClientFluidTypeExtensions.of(fluid);
-		if (level == null || pos == null)
-			return extension.getTintColor(stack);
-		return extension.getTintColor(fluid.defaultFluidState(), level, pos);
+	public int getLuminosity(TypedInstance<Fluid> fluid) {
+		return ((FluidStack) fluid).getFluidType().getLightLevel();
 	}
 
 	@Override
-	public int getLuminosity(FluidStack fluid) {
-		return fluid.getFluid().getFluidType().getLightLevel();
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	@Nullable
-	public TextureAtlasSprite getStillTexture(FluidStack fluid) {
-		Identifier id = IClientFluidTypeExtensions.of(fluid.getFluid()).getStillTexture(fluid);
-		return id == null ? null : Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(id);
-	}
-
-	@Override
-	public boolean isLighterThanAir(FluidStack fluid) {
-		return fluid.getFluid().getFluidType().isLighterThanAir();
+	public boolean isLighterThanAir(TypedInstance<Fluid> fluid) {
+		return ((FluidStack) fluid).getFluidType().isLighterThanAir();
 	}
 
 	@Override

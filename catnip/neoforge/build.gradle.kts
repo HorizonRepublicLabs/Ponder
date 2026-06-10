@@ -28,3 +28,8 @@ neoForge {
         sourceSet(sourceSets.main.get())
     }
 }
+
+dependencies {
+    api(libs.flywheel.neoforge.api)
+    runtimeOnly(libs.flywheel.neoforge.asProvider())
+}

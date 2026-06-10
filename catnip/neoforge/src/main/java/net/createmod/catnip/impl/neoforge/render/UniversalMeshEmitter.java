@@ -2,24 +2,28 @@ package net.createmod.catnip.impl.neoforge.render;
 
 import org.jetbrains.annotations.UnknownNullability;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.PoseStack.Pose;
+import com.mojang.blaze3d.vertex.QuadInstance;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.createmod.catnip.api.client.render.model.ShadeSeparatedBufferSource;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.resources.model.geometry.BakedQuad;
-import net.minecraft.client.renderer.rendertype.RenderType;
+
+import net.neoforged.neoforge.client.model.quad.MutableQuad;
 
 // Modified from https://github.com/Engine-Room/Flywheel/blob/2f67f54c8898d91a48126c3c753eefa6cd224f84/forge/src/lib/java/dev/engine_room/flywheel/lib/model/baked/MeshEmitter.java
 class UniversalMeshEmitter implements VertexConsumer {
 	@UnknownNullability
 	private ShadeSeparatedBufferSource bufferSource;
 	@UnknownNullability
-	private RenderType layer;
+	private ChunkSectionLayer defaultLayer;
+	@UnknownNullability
+	private boolean currentShade;
 
-	public void prepare(ShadeSeparatedBufferSource bufferSource, RenderType layer) {
+	public void prepare(ShadeSeparatedBufferSource bufferSource, ChunkSectionLayer layer) {
 		this.bufferSource = bufferSource;
-		this.layer = layer;
+		this.defaultLayer = layer;
 	}
 
 	public void clear() {
@@ -27,50 +31,68 @@ class UniversalMeshEmitter implements VertexConsumer {
 	}
 
 	@Override
-	public void putBulkData(Pose pose, BakedQuad quad, float red, float green, float blue, float alpha, int light, int overlay) {
-		VertexConsumer buffer = bufferSource.getBuffer(layer, quad.shade());
-		buffer.putBulkData(pose, quad, red, green, blue, alpha, light, overlay);
+	public void putBakedQuad(Pose pose, BakedQuad quad, QuadInstance instance) {
+		var buffer = bufferSource.getBuffer(quad.materialInfo().layer(), quad.materialInfo().shade());
+		buffer.putBakedQuad(pose, quad, instance);
 	}
 
 	@Override
-	public void putBulkData(PoseStack.Pose pose, BakedQuad quad, float red, float green, float blue, float alpha, int light, int overlay, boolean readExistingColor) {
-		VertexConsumer buffer = bufferSource.getBuffer(layer, quad.shade());
-		buffer.putBulkData(pose, quad, red, green, blue, alpha, light, overlay, readExistingColor);
+	public void putMutableQuad(Pose pose, MutableQuad quad, QuadInstance instance) {
+		var buffer = bufferSource.getBuffer(quad.chunkLayer(), quad.shade());
+		buffer.putMutableQuad(pose, quad, instance);
 	}
 
 	@Override
-	public void putBulkData(PoseStack.Pose pose, BakedQuad quad, float[] brightnesses, float red, float green, float blue, float alpha, int[] lights, int overlay, boolean readExistingColor) {
-		VertexConsumer buffer = bufferSource.getBuffer(layer, quad.isShade());
-		buffer.putBulkData(pose, quad, brightnesses, red, green, blue, alpha, lights, overlay, readExistingColor);
+	public void putBlockBakedQuad(float x, float y, float z, BakedQuad quad, QuadInstance instance) {
+		var buffer = bufferSource.getBuffer(quad.materialInfo().layer(), quad.materialInfo().shade());
+		buffer.putBlockBakedQuad(x, y, z, quad, instance);
 	}
 
 	@Override
-	public VertexConsumer addVertex(float x, float y, float z) {
-		throw new UnsupportedOperationException("UniversalMeshEmitter only supports putBulkData!");
+	public VertexConsumer addVertex(float v, float v1, float v2) {
+		var buffer = bufferSource.getBuffer(defaultLayer, currentShade);
+		return buffer.addVertex(v, v1, v2);
 	}
 
 	@Override
-	public VertexConsumer setColor(int red, int green, int blue, int alpha) {
-		throw new UnsupportedOperationException("UniversalMeshEmitter only supports putBulkData!");
+	public VertexConsumer setColor(int i, int i1, int i2, int i3) {
+		var buffer = bufferSource.getBuffer(defaultLayer, currentShade);
+		return buffer.setColor(i, i1, i2, i3);
 	}
 
 	@Override
-	public VertexConsumer setUv(float u, float v) {
-		throw new UnsupportedOperationException("UniversalMeshEmitter only supports putBulkData!");
+	public VertexConsumer setColor(int i) {
+		var buffer = bufferSource.getBuffer(defaultLayer, currentShade);
+		return buffer.setColor(i);
 	}
 
 	@Override
-	public VertexConsumer setUv1(int u, int v) {
-		throw new UnsupportedOperationException("UniversalMeshEmitter only supports putBulkData!");
+	public VertexConsumer setUv(float v, float v1) {
+		var buffer = bufferSource.getBuffer(defaultLayer, currentShade);
+		return buffer.setUv(v, v1);
 	}
 
 	@Override
-	public VertexConsumer setUv2(int u, int v) {
-		throw new UnsupportedOperationException("UniversalMeshEmitter only supports putBulkData!");
+	public VertexConsumer setUv1(int i, int i1) {
+		var buffer = bufferSource.getBuffer(defaultLayer, currentShade);
+		return buffer.setUv1(i, i1);
 	}
 
 	@Override
-	public VertexConsumer setNormal(float x, float y, float z) {
-		throw new UnsupportedOperationException("UniversalMeshEmitter only supports putBulkData!");
+	public VertexConsumer setUv2(int i, int i1) {
+		var buffer = bufferSource.getBuffer(defaultLayer, currentShade);
+		return buffer.setUv2(i, i1);
+	}
+
+	@Override
+	public VertexConsumer setNormal(float v, float v1, float v2) {
+		var buffer = bufferSource.getBuffer(defaultLayer, currentShade);
+		return buffer.setNormal(v, v1, v2);
+	}
+
+	@Override
+	public VertexConsumer setLineWidth(float v) {
+		var buffer = bufferSource.getBuffer(defaultLayer, currentShade);
+		return buffer.setLineWidth(v);
 	}
 }

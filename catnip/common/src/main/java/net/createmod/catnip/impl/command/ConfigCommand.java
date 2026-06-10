@@ -4,12 +4,11 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 
+import net.createmod.catnip.api.config.ConfigHelper;
 import net.createmod.catnip.api.config.ConfigPathArgument;
 import net.createmod.catnip.api.network.NetworkHelper;
-import net.createmod.catnip.config.ui.ConfigHelper;
 import net.createmod.catnip.impl.network.ClientboundConfigPacket;
 import net.createmod.catnip.impl.network.ClientboundSimpleActionPacket;
-import net.createmod.ponder.Ponder;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
@@ -67,7 +66,7 @@ public class ConfigCommand {
 								return 0;
 							} catch (Exception e) {
 								ctx.getSource().sendFailure(Component.literal("Something went wrong while trying to set config value. Check the server logs for more information"));
-								Ponder.LOGGER.warn("Exception during server-side config value set:", e);
+								ConfigHelper.LOGGER.warn("Exception during server-side config value set:", e);
 								return 0;
 							}
 						})

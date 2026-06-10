@@ -38,6 +38,8 @@ public class CatnipRenderPipelines {
 		RenderPipelines.DEBUG_FILLED_SNIPPET
 	);
 
+	public static void init() {}
+
 	private static RenderPipeline register(String name, Consumer<RenderPipeline.Builder> consumer, RenderPipeline.Snippet... snippets) {
 		Identifier id = Catnip.id("pipeline/" + name);
 

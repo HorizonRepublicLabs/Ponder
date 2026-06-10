@@ -1,13 +1,9 @@
 package net.createmod.ponder.neoforge;
 
-import java.util.function.Function;
-
-import net.createmod.catnip.impl.neoforge.service.NeoForgeClientHooksHelper;
 import net.createmod.ponder.api.Ponder;
 import net.createmod.ponder.api.client.event.TooltipQueryCallback;
 import net.createmod.ponder.impl.client.PonderClient;
 import net.createmod.ponder.impl.client.PonderKeybinds;
-import net.minecraft.client.gui.render.state.pip.PictureInPictureRenderState;
 
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -17,25 +13,16 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
-import net.neoforged.neoforge.client.event.RegisterPictureInPictureRenderersEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
 @Mod(value = Ponder.MOD_ID, dist = Dist.CLIENT)
 public class NeoForgePonderClient {
 	public NeoForgePonderClient(IEventBus modEventBus) {
+		PonderClient.init();
 		modEventBus.addListener(NeoForgePonderClient::init);
-		modEventBus.addListener(NeoForgePonderClient::registerPictureInPictureRenderers);
 	}
 
 	public static void init(FMLClientSetupEvent event) {
-		PonderClient.init();
-	}
-
-	public static void registerPictureInPictureRenderers(RegisterPictureInPictureRenderersEvent event) {
-		NeoForgeClientHooksHelper.PIP_RENDERERS.forEach((state, factory) -> {
-			//noinspection unchecked,rawtypes
-			event.register((Class<PictureInPictureRenderState>) state, (Function) factory);
-		});
 	}
 
 	@EventBusSubscriber(Dist.CLIENT)
@@ -46,7 +33,7 @@ public class NeoForgePonderClient {
 		}
 	}
 
-	@EventBusSubscriber(value = Dist.CLIENT, bus = Bus.MOD)
+	@EventBusSubscriber(value = Dist.CLIENT)
 	public static class ModBusClientEvents {
 		@SubscribeEvent
 		public static void loadCompleted(FMLLoadCompleteEvent event) {

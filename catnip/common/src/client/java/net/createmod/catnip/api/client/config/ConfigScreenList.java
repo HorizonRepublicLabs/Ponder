@@ -173,7 +173,7 @@ public class ConfigScreenList extends ObjectSelectionList<ConfigScreenList.Entry
 			if (path == null) {
 				return false;
 			}
-			return ConfigHelper.changes.containsKey(path);
+			return net.createmod.catnip.api.config.ConfigHelper.changes.containsKey(path);
 		}
 	}
 

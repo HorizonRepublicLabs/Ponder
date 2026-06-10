@@ -13,12 +13,12 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Window;
 
 import net.createmod.catnip.api.client.config.ConfigAnnotations;
-import net.createmod.catnip.api.client.config.ConfigHelper;
 import net.createmod.catnip.api.client.config.ConfigScreen;
 import net.createmod.catnip.api.client.gui.element.DelegatedStencilElement;
 import net.createmod.catnip.api.client.gui.widget.BoxWidget;
 import net.createmod.catnip.api.client.lang.FontHelper;
 import net.createmod.catnip.api.client.lang.FontHelper.Palette;
+import net.createmod.catnip.api.config.ConfigHelper;
 import net.createmod.catnip.api.data.Pair;
 import net.createmod.catnip.config.ui.ConfigScreenList;
 import net.createmod.catnip.config.ui.SubMenuConfigScreen;

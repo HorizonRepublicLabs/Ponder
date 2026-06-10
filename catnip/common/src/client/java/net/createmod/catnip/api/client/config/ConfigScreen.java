@@ -21,12 +21,13 @@ import net.createmod.catnip.api.client.gui.element.GuiGameElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class ConfigScreen extends AbstractSimiScreen {
 
-	public static final Map<String, TriConsumer<Screen, GuiGraphics, Float>> backgrounds = new HashMap<>();
+	public static final Map<String, TriConsumer<Screen, GuiGraphicsExtractor, Float>> backgrounds = new HashMap<>();
 	public static final PhysicalFloat cogSpin = PhysicalFloat.create().withLimit(10f).withDrag(0.3).addForce(new Force.Static(.2f));
 	@Nullable
 	public static String modID = null;
@@ -40,6 +41,7 @@ public abstract class ConfigScreen extends AbstractSimiScreen {
 	);
 
 	public ConfigScreen(@Nullable Screen parent) {
+		super(Component.empty());
 		this.parent = parent;
 	}
 
@@ -50,24 +52,24 @@ public abstract class ConfigScreen extends AbstractSimiScreen {
 	}
 
 	@Override
-	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+	public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
 	}
 
 	@Override
-	protected void renderWindowBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
+	protected void extractMenuBackground(GuiGraphicsExtractor graphics, int x, int y, int width, int height) {
 		if (this.minecraft.level != null) {
 			//in game
 			graphics.fill(0, 0, this.width, this.height, 0xb0_282c34);
 		} else {
 			//in menus
-			renderMenuBackground(graphics, partialTicks);
+			extractMenuBackground(graphics);
 		}
 
 		shadowElement
 			.at(width * 0.5f, height * 0.5f, 0)
 			.submit(graphics);
 
-		super.renderWindowBackground(graphics, mouseX, mouseY, partialTicks);
+		super.extractMenuBackground(graphics, x, y, width, height);
 
 	}
 
@@ -75,7 +77,7 @@ public abstract class ConfigScreen extends AbstractSimiScreen {
 	protected void prepareFrame() {
 		GlStateManager._clear(GL30.GL_STENCIL_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT);
 	}
-
+	
 	@Override
 	protected void renderWindow(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
 	}

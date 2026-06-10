@@ -1,31 +1,52 @@
 package net.createmod.catnip.impl.neoforge;
 
+import java.util.function.Function;
+
 import net.createmod.catnip.api.Catnip;
 import net.createmod.catnip.api.client.command.ClientCommands;
 import net.createmod.catnip.api.client.event.AtlasStitchedCallback;
 import net.createmod.catnip.api.client.event.ClientTickCallback;
 import net.createmod.catnip.api.client.event.LevelRenderCallback;
+import net.createmod.catnip.impl.client.CatnipClient;
+import net.createmod.catnip.impl.neoforge.service.NeoForgeClientHooksHelper;
 import net.createmod.catnip.impl.neoforge.service.NeoForgeRenderPipelineRegistry;
 import net.createmod.catnip.impl.neoforge.service.NeoforgeHudElements;
+import net.minecraft.client.renderer.state.gui.pip.PictureInPictureRenderState;
 
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
+import net.neoforged.neoforge.client.event.RegisterPictureInPictureRenderersEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.TextureAtlasStitchedEvent;
 
 @Mod(value = Catnip.ID, dist = Dist.CLIENT)
 public final class CatnipNeoforgeClient {
 	public CatnipNeoforgeClient(IEventBus bus) {
+		CatnipClient.preInit();
+		bus.addListener(CatnipNeoforgeClient::setup);
 		bus.addListener(CatnipNeoforgeClient::loadCompleted);
 		bus.addListener(CatnipNeoforgeClient::afterAtlasStitch);
 		bus.addListener(NeoforgeHudElements::registerEvent);
 		bus.addListener(NeoForgeRenderPipelineRegistry::registerEvent);
+		bus.addListener(CatnipNeoforgeClient::registerPictureInPictureRenderers);
+	}
+
+	private static void setup(FMLClientSetupEvent event) {
+		event.enqueueWork(CatnipClient::init);
+	}
+
+	private static void registerPictureInPictureRenderers(RegisterPictureInPictureRenderersEvent event) {
+		NeoForgeClientHooksHelper.PIP_RENDERERS.forEach((state, factory) -> {
+			//noinspection unchecked,rawtypes
+			event.register((Class<PictureInPictureRenderState>) state, (Function) factory);
+		});
 	}
 
 	private static void loadCompleted(FMLLoadCompleteEvent event) {

@@ -11,12 +11,12 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.createmod.catnip.api.client.gui.ScreenOpener;
 import net.createmod.catnip.api.client.gui.UIRenderHelper;
 import net.createmod.catnip.api.client.gui.element.DelegatedStencilElement;
+import net.createmod.catnip.api.client.gui.texture.CatnipGuiTextures;
 import net.createmod.catnip.api.client.gui.widget.AbstractSimiWidget;
 import net.createmod.catnip.api.client.gui.widget.BoxWidget;
 import net.createmod.catnip.api.client.lang.FontHelper;
 import net.createmod.catnip.api.client.lang.FontHelper.Palette;
 import net.createmod.catnip.api.platform.services.PlatformHelper;
-import net.createmod.ponder.enums.PonderGuiTextures;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
@@ -61,7 +61,7 @@ public class ConfigModListScreen extends ConfigScreen {
 
 		goBack = new BoxWidget(width / 2 - listWidth / 2 - 30, height / 2 + 65, 20, 20).withPadding(2, 2)
 			.withCallback(() -> ScreenOpener.open(parent));
-		goBack.showingElement(PonderGuiTextures.ICON_CONFIG_BACK.asStencil()
+		goBack.showingElement(CatnipGuiTextures.ICON_CONFIG_BACK.asStencil()
 			.withElementRenderer(BoxWidget.gradientFactory.apply(goBack)));
 		goBack.getToolTip()
 			.add(Component.translatable("catnip.ui.go_back_button"));
@@ -129,11 +129,11 @@ public class ConfigModListScreen extends ConfigScreen {
 			this.id = id;
 
 			button = new BoxWidget(0, 0, 35, 16)
-				.showingElement(PonderGuiTextures.ICON_CONFIG_OPEN.asStencil().at(10, 0));
+				.showingElement(CatnipGuiTextures.ICON_CONFIG_OPEN.asStencil().at(10, 0));
 			button.modifyElement(e -> ((DelegatedStencilElement) e).withElementRenderer(BoxWidget.gradientFactory.apply(button)));
 
-			if (ConfigHelper.hasAnyForgeConfig(id)) {
-				button.withCallback(() -> ScreenOpener.open(new net.createmod.catnip.config.ui.BaseConfigScreen(parent, id)));
+			if (net.createmod.catnip.api.config.ConfigHelper.hasAnyForgeConfig(id)) {
+				button.withCallback(() -> ScreenOpener.open(new BaseConfigScreen(parent, id)));
 			} else {
 				button.active = false;
 				button.updateGradientFromState();
@@ -162,7 +162,7 @@ public class ConfigModListScreen extends ConfigScreen {
 			button.setX(getX() + getWidth() - 108);
 			button.setY(getY() + 10);
 			button.setHeight(getHeight() - 20);
-			button.render(graphics, mouseX, mouseY, partialTick);
+			button.extractRenderState(graphics, mouseX, mouseY, partialTick);
 		}
 
 		@Override

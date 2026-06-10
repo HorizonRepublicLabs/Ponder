@@ -1,4 +1,4 @@
-package net.createmod.catnip.api.client.config;
+package net.createmod.catnip.api.config;
 
 import java.io.Serial;
 import java.util.Arrays;
@@ -15,20 +15,23 @@ import java.util.regex.Pattern;
 
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
+import org.slf4j.Logger;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.mojang.logging.LogUtils;
 
+import net.createmod.catnip.api.Catnip;
 import net.createmod.catnip.api.data.Pair;
 import net.createmod.catnip.impl.network.ServerboundConfigPacket;
-import net.createmod.ponder.Ponder;
 
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.config.ModConfigs;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class ConfigHelper {
+	public static final Logger LOGGER = LogUtils.getLogger();
 
 	public static final Pattern unitPattern = Pattern.compile("\\[(in .*)]");
 	public static final Pattern annotationPattern = Pattern.compile("\\[@cui:([^:]*)(?::(.*))?]");
@@ -140,7 +143,7 @@ public class ConfigHelper {
 	}
 
 	public static class ConfigPath {
-		private String modID = Ponder.MOD_ID;
+		private String modID = Catnip.ID;
 		private ModConfig.Type type = ModConfig.Type.CLIENT;
 		private String[] path = new String[0];
 

@@ -6,6 +6,7 @@ val commonPath = project.parent!!.path + ":common"
 
 dependencies {
     compileOnly(project(commonPath))
+    compileOnly(project(commonPath, configuration = "commonClientOutput"))
     commonJava(project(path = commonPath, configuration = "commonMainJava"))
     commonJava(project(path = commonPath, configuration = "commonClientJava"))
     commonResources(project(path = commonPath, configuration = "commonMainResources"))
