@@ -2,9 +2,12 @@ package net.createmod.catnip.api.animation;
 
 import org.jspecify.annotations.Nullable;
 
+import com.mojang.serialization.Codec;
+
 import net.createmod.catnip.api.math.AngleHelper;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class LerpedFloat {
 
@@ -113,26 +116,25 @@ public class LerpedFloat {
 		forcedSync = true;
 	}
 
-	public CompoundTag writeNBT() {
-		CompoundTag compoundNBT = new CompoundTag();
-		compoundNBT.putFloat("Speed", chaseSpeed);
-		compoundNBT.putFloat("Target", chaseTarget);
-		compoundNBT.putFloat("Value", value);
+	public void write(ValueOutput output) {
+		output.putFloat("Speed", chaseSpeed);
+		output.putFloat("Target", chaseTarget);
+		output.putFloat("Value", value);
 		if (forcedSync)
-			compoundNBT.putBoolean("Force", true);
+			output.putBoolean("Force", true);
 		forcedSync = false;
-		return compoundNBT;
 	}
 
-	public void readNBT(CompoundTag compoundNBT, boolean clientPacket) {
-		if (!clientPacket || compoundNBT.contains("Force"))
-			compoundNBT.getFloat("Value").ifPresent(this::startWithValue);
-		readChaser(compoundNBT);
+	public void read(ValueInput input, boolean clientPacket) {
+		if (!clientPacket || input.getBooleanOr("Force", false))
+			// ValueInput only provides "getFloatOr", but we need the optional behaviour...
+			input.read("Value", Codec.FLOAT).ifPresent(this::startWithValue);
+		readChaser(input);
 	}
 
-	protected void readChaser(CompoundTag compoundNBT) {
-		compoundNBT.getFloat("Speed").ifPresent(i -> chaseSpeed = i);
-		compoundNBT.getFloat("Target").ifPresent(i -> chaseTarget = i);
+	protected void readChaser(ValueInput input) {
+		input.read("Speed", Codec.FLOAT).ifPresent(i -> chaseSpeed = i);
+		input.read("Target", Codec.FLOAT).ifPresent(i -> chaseTarget = i);
 	}
 
 	@FunctionalInterface
