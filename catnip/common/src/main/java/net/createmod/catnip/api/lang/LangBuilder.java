@@ -1,6 +1,7 @@
 package net.createmod.catnip.api.lang;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.jspecify.annotations.Nullable;
 
@@ -165,6 +166,10 @@ public class LangBuilder {
 
 	public void addTo(List<? super MutableComponent> tooltip) {
 		tooltip.add(component());
+	}
+
+	public void addTo(Consumer<Component> tooltip) {
+		tooltip.accept(component());
 	}
 
 	//
