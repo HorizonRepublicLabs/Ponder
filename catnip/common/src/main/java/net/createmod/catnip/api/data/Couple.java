@@ -18,6 +18,10 @@ import net.createmod.catnip.api.nbt.NBTHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueInput.ValueInputList;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.level.storage.ValueOutput.ValueOutputList;
 
 public class Couple<T> extends Pair<T, T> implements Iterable<T> {
 
@@ -122,10 +126,20 @@ public class Couple<T> extends Pair<T, T> implements Iterable<T> {
 		return NBTHelper.writeCompoundList(ImmutableList.of(first, second), serializer);
 	}
 
+	public void serializeEach(ValueOutputList outputList, BiConsumer<ValueOutput, T> serializer) {
+		serializer.accept(outputList.addChild(), first);
+		serializer.accept(outputList.addChild(), second);
+	}
+
 	@Deprecated(forRemoval = true)
 	public static <S> Couple<S> deserializeEach(ListTag list, Function<CompoundTag, S> deserializer) {
 		List<S> readCompoundList = NBTHelper.readCompoundList(list, deserializer);
 		return new Couple<>(readCompoundList.get(0), readCompoundList.get(1));
+	}
+
+	public static <T> Couple<T> deserializeEach(ValueInputList inputList, Function<ValueInput, T> valueProvider) {
+		List<ValueInput> list = inputList.stream().toList();
+		return Couple.create(valueProvider.apply(list.get(0)), valueProvider.apply(list.get(1)));
 	}
 
 	public static <T> Codec<Couple<T>> codec(Codec<T> codec) {
