@@ -129,10 +129,15 @@ public class Couple<T> extends Pair<T, T> implements Iterable<T> {
 	}
 
 	public static <T> Codec<Couple<T>> codec(Codec<T> codec) {
-		return RecordCodecBuilder.create(instance -> instance.group(
-			codec.fieldOf("first").forGetter(Couple::getFirst),
-			codec.fieldOf("second").forGetter(Couple::getSecond)
-		).apply(instance, Couple::new));
+		return Codec.withAlternative(
+			RecordCodecBuilder.create(instance -> instance.group(
+				codec.fieldOf("first").forGetter(Couple::getFirst),
+				codec.fieldOf("second").forGetter(Couple::getSecond)
+			).apply(instance, Couple::new)),
+
+			// legacy support
+			codec.listOf(2, 2).xmap(list -> Couple.create(list.get(0), list.get(1)), couple -> List.of(couple.getFirst(), couple.getSecond()))
+		);
 	}
 
 	public static <B, T> StreamCodec<B, Couple<T>> streamCodec(StreamCodec<? super B, T> codec) {
