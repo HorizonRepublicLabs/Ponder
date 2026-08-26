@@ -23,9 +23,10 @@ loom {
     }
 }
 
-tasks.runClientRenderDoc {
-    renderDocExecutable = file("/usr/bin/renderdoccmd")
-}
+// Loom no longer registers runClientRenderDoc; RenderDoc launch is a dev convenience only.
+//tasks.runClientRenderDoc {
+//    renderDocExecutable = file("/usr/bin/renderdoccmd")
+//}
 
 dependencies {
     minecraft(libs.minecraft)
