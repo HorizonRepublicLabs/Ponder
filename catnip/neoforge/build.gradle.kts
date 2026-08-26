@@ -30,6 +30,6 @@ neoForge {
 }
 
 dependencies {
-    api(libs.flywheel.neoforge.api)
-    runtimeOnly(libs.flywheel.neoforge.asProvider())
+    api(variantOf(libs.flywheel.neoforge) { classifier("api") })
+    runtimeOnly(libs.flywheel.neoforge)
 }

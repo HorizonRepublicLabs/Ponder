@@ -29,6 +29,6 @@ dependencies {
     minecraft(libs.minecraft)
     implementation(libs.bundles.fabric)
 
-    api(libs.flywheel.fabric.api)
-    runtimeOnly(libs.flywheel.fabric.asProvider())
+    api(variantOf(libs.flywheel.fabric) { classifier("api") })
+    runtimeOnly(libs.flywheel.fabric)
 }
