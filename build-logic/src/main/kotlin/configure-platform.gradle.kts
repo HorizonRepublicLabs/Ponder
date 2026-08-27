@@ -124,9 +124,15 @@ if (name != "common") {
     }
 }
 
-// FIXME: temporary hack - disable everything config-related
+// The config GUI is still disabled upstream and several of its registration
+// call sites are commented out, so it stays excluded. The value API
+// (net/createmod/catnip/api/config) is back in: it no longer references
+// NeoForge's ModConfigSpec directly, so it compiles in common, and consumers
+// need ConfigBase and its ConfigInt/ConfigBool/ConfigEnum.
 tasks.withType<JavaCompile> {
-    exclude("**/config")
+    exclude("**/client/config/**")
+    exclude("**/api/config/ConfigHelper.java")
+    exclude("**/api/config/ConfigPathArgument.java")
     exclude("**/ConfigCommand.java")
     exclude("**/ConfigPathArgument.java")
     exclude("**/CClient.java")

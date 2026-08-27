@@ -7,24 +7,19 @@ import java.util.function.Supplier;
 
 import org.jspecify.annotations.Nullable;
 
-import net.neoforged.neoforge.common.ModConfigSpec;
-import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
-import net.neoforged.neoforge.common.ModConfigSpec.Builder;
-import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
-import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
-import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
-import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 public abstract class ConfigBase {
 
+	/// The platform's built specification, kept opaque so common code does not
+	/// need the platform's config types.
 	@Nullable
-	public ModConfigSpec specification;
+	public Object specification;
 
 	protected int depth;
 	protected List<CValue<?, ?>> allValues = new ArrayList<>();
 	protected List<ConfigBase> children = new ArrayList<>();
 
-	public void registerAll(final Builder builder) {
+	public void registerAll(final ConfigSpecBuilder builder) {
 		for (CValue<?, ?> cValue : allValues)
 			cValue.register(builder);
 	}
@@ -42,8 +37,8 @@ public abstract class ConfigBase {
 	public abstract String getName();
 
 	@FunctionalInterface
-	protected interface IValueProvider<V, T extends ConfigValue<V>>
-		extends Function<Builder, T> {
+	protected interface IValueProvider<V, T extends ConfigValueAccess<V>>
+		extends Function<ConfigSpecBuilder, T> {
 	}
 
 	protected ConfigBool b(boolean current, String name, String... comment) {
@@ -81,7 +76,7 @@ public abstract class ConfigBase {
 	protected <T extends ConfigBase> T nested(int depth, Supplier<T> constructor, String... comment) {
 		T config = constructor.get();
 		new ConfigGroup(config.getName(), depth, comment);
-		new CValue<Boolean, BooleanValue>(config.getName(), builder -> {
+		new CValue<Boolean, ConfigValueAccess<Boolean>>(config.getName(), builder -> {
 			config.depth = depth;
 			config.registerAll(builder);
 			if (config.depth > depth)
@@ -92,9 +87,9 @@ public abstract class ConfigBase {
 		return config;
 	}
 
-	public class CValue<V, T extends ConfigValue<V>> {
+	public class CValue<V, T extends ConfigValueAccess<V>> {
 		@Nullable
-		protected ConfigValue<V> value;
+		protected T value;
 		protected String name;
 		private final IValueProvider<V, T> provider;
 
@@ -107,7 +102,7 @@ public abstract class ConfigBase {
 			allValues.add(this);
 		}
 
-		public void addComments(Builder builder, String... comment) {
+		public void addComments(ConfigSpecBuilder builder, String... comment) {
 			if (comment.length > 0) {
 				String[] comments = new String[comment.length + 1];
 				comments[0] = ".";
@@ -117,7 +112,7 @@ public abstract class ConfigBase {
 				builder.comment(".");
 		}
 
-		public void register(Builder builder) {
+		public void register(ConfigSpecBuilder builder) {
 			value = provider.apply(builder);
 		}
 
@@ -144,7 +139,7 @@ public abstract class ConfigBase {
 	/**
 	 * Marker for config subgroups
 	 */
-	public class ConfigGroup extends CValue<Boolean, BooleanValue> {
+	public class ConfigGroup extends CValue<Boolean, ConfigValueAccess<Boolean>> {
 
 		private final int groupDepth;
 		private final String[] comment;
@@ -156,7 +151,7 @@ public abstract class ConfigBase {
 		}
 
 		@Override
-		public void register(Builder builder) {
+		public void register(ConfigSpecBuilder builder) {
 			if (depth > groupDepth)
 				builder.pop(depth - groupDepth);
 			depth = groupDepth;
@@ -167,14 +162,14 @@ public abstract class ConfigBase {
 
 	}
 
-	public class ConfigBool extends CValue<Boolean, BooleanValue> {
+	public class ConfigBool extends CValue<Boolean, ConfigValueAccess<Boolean>> {
 
 		public ConfigBool(String name, boolean def, String... comment) {
 			super(name, builder -> builder.define(name, def), comment);
 		}
 	}
 
-	public class ConfigEnum<T extends Enum<T>> extends CValue<T, EnumValue<T>> {
+	public class ConfigEnum<T extends Enum<T>> extends CValue<T, ConfigValueAccess<T>> {
 
 		public ConfigEnum(String name, T defaultValue, String[] comment) {
 			super(name, builder -> builder.defineEnum(name, defaultValue), comment);
@@ -182,7 +177,7 @@ public abstract class ConfigBase {
 
 	}
 
-	public class ConfigFloat extends CValue<Double, DoubleValue> {
+	public class ConfigFloat extends CValue<Double, ConfigValueAccess<Double>> {
 
 		public ConfigFloat(String name, float current, float min, float max, String... comment) {
 			super(name, builder -> builder.defineInRange(name, current, min, max), comment);
@@ -193,7 +188,7 @@ public abstract class ConfigBase {
 		}
 	}
 
-	public class ConfigInt extends CValue<Integer, IntValue> {
+	public class ConfigInt extends CValue<Integer, ConfigValueAccess<Integer>> {
 
 		public ConfigInt(String name, int current, int min, int max, String... comment) {
 			super(name, builder -> builder.defineInRange(name, current, min, max), comment);
