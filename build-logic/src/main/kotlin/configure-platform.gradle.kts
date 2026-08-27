@@ -105,8 +105,22 @@ loom?.javaClass?.getMethod("splitEnvironmentSourceSets")?.run {
 extensions.getByType<PackageInfosExtension>().sources(sourceSets.named { it == "main" || it == "client" })
 
 if (name != "common") {
+    // Gradle 9 fails the build on undeclared task dependencies, and this needs to
+    // resolve the sibling common project (":catnip:common" for catnip's platforms,
+    // ":common" for ponder's) rather than always the root one. JavaCompile consumes
+    // the generated sources too, not just Jar.
+    val commonPath = parent?.takeIf { it != rootProject }?.let { "${it.path}:common" } ?: ":common"
+    val commonProject = rootProject.findProject(commonPath) ?: rootProject.project(":common")
+    // one generator per source set: generatePackageInfos, generateClientPackageInfos, ...
+    val generateCommonPackageInfos = commonProject.tasks.matching {
+        it.name.startsWith("generate") && it.name.endsWith("PackageInfos")
+    }
+
     tasks.withType<Jar> {
-        dependsOn(project(":common").tasks.named("generatePackageInfos"))
+        dependsOn(generateCommonPackageInfos)
+    }
+    tasks.withType<JavaCompile> {
+        dependsOn(generateCommonPackageInfos)
     }
 }
 
