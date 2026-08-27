@@ -1,5 +1,11 @@
 package net.createmod.ponder.impl.client.element;
 
+import net.minecraft.util.RandomSource;
+
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -34,7 +40,6 @@ import net.createmod.ponder.api.client.scene.PonderScene;
 import net.createmod.ponder.api.client.scene.Selection;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -317,7 +322,7 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 	}
 
 	@Override
-	protected void renderFirst(PonderLevel level, MultiBufferSource buffer, SubmitNodeCollector queue, Camera camera,
+	protected void renderFirst(PonderLevel level, SuperRenderTypeBuffer buffer, SubmitNodeCollector queue, Camera camera,
 	                           CameraRenderState cameraRenderState, PoseStack poseStack, float fade, float pt) {
 		int light = -1;
 		if (fade != 1)
@@ -355,7 +360,11 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 			poseStack.translate(pos.getX(), pos.getY(), pos.getZ());
 			BlockState state = level.getBlockState(pos);
 			BlockStateModel model = Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(state);
-			queue.submitBreakingBlockModel(poseStack, model, state.getSeed(pos), progress);
+			// 26.2 takes the collected parts rather than the model plus a seed
+			List<BlockStateModelPart> parts = new ArrayList<>();
+			RandomSource random = RandomSource.create(state.getSeed(pos));
+			model.collectParts(BlockAndTintGetter.EMPTY, BlockPos.ZERO, state, random, parts);
+			queue.submitBreakingBlockModel(poseStack, List.copyOf(parts), progress);
 			poseStack.popPose();
 		}
 
@@ -363,7 +372,7 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 	}
 
 	@Override
-	protected void renderLayer(PonderLevel world, MultiBufferSource buffer, ChunkSectionLayer layer,
+	protected void renderLayer(PonderLevel world, SuperRenderTypeBuffer buffer, ChunkSectionLayer layer,
 							   SubmitNodeCollector queue, Camera camera, CameraRenderState cameraRenderState,
 							   PoseStack poseStack, float fade, float pt) {
 		SuperByteBufferCache bufferCache = SuperByteBufferCache.getInstance();
@@ -388,7 +397,7 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 	}
 
 	@Override
-	protected void renderLast(PonderLevel world, MultiBufferSource buffer, SubmitNodeCollector queue, Camera camera,
+	protected void renderLast(PonderLevel world, SuperRenderTypeBuffer buffer, SubmitNodeCollector queue, Camera camera,
 							  CameraRenderState cameraRenderState, PoseStack poseStack, float fade, float pt) {
 		redraw = false;
 		if (selectedBlock == null)
@@ -410,7 +419,7 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 			.lineWidth(1 / 64f)
 			.colored(0xefefef)
 			.disableLineNormals();
-		aabbOutline.render(poseStack, (SuperRenderTypeBuffer) buffer, Vec3.ZERO, pt);
+		aabbOutline.render(poseStack, buffer, Vec3.ZERO, pt);
 
 		poseStack.popPose();
 	}

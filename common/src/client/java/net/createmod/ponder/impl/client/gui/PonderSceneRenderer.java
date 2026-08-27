@@ -15,35 +15,25 @@ import net.createmod.ponder.api.client.scene.PonderScene;
 import net.createmod.ponder.api.client.scene.PonderScene.SceneTransform;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.render.pip.PictureInPictureRenderer;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
-import net.minecraft.client.renderer.SubmitNodeStorage;
-import net.minecraft.client.renderer.feature.FeatureRenderDispatcher;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 
 public class PonderSceneRenderer extends PictureInPictureRenderer<PonderSceneRenderState> {
-	public PonderSceneRenderer(BufferSource bufferSource) {
-		super(bufferSource);
-	}
-
 	@Override
-	protected void renderToTexture(PonderSceneRenderState state, PoseStack poseStack) {
-		Minecraft mc = Minecraft.getInstance();
-		GameRenderer gameRenderer = mc.gameRenderer;
-		FeatureRenderDispatcher renderDispatcher = gameRenderer.getFeatureRenderDispatcher();
-
-		SubmitNodeStorage queue = renderDispatcher.getSubmitNodeStorage();
+	protected void renderToTexture(PonderSceneRenderState state, PoseStack poseStack, SubmitNodeCollector queue) {
+		// 26.2 hands the collector in rather than making us reach through the
+		// feature render dispatcher, and flushing it is the caller's job now.
 		poseStack.pushPose();
 		poseStack.setIdentity();
 
 		renderScene(state, poseStack, queue);
-		renderDispatcher.renderAllFeatures();
 
 		poseStack.popPose();
 	}
 
-	private void renderScene(PonderSceneRenderState state, PoseStack poseStack, SubmitNodeStorage queue) {
+	private void renderScene(PonderSceneRenderState state, PoseStack poseStack, SubmitNodeCollector queue) {
 		float partialTicks = state.partialTicks();
 		SuperRenderTypeBuffer buffer = DefaultSuperRenderTypeBuffer.getInstance();
+		buffer.setCollector(queue);
 		PonderScene scene = state.scene();
 
 		poseStack.pushPose();
@@ -149,7 +139,7 @@ public class PonderSceneRenderer extends PictureInPictureRenderer<PonderSceneRen
 		int col1,
 		int col2
 	) {
-		VertexConsumer buffer = bufferSource.getBuffer(PonderRenderTypes.gui());
+		VertexConsumer buffer = DefaultSuperRenderTypeBuffer.getInstance().getBuffer(PonderRenderTypes.gui());
 		Matrix4f pose = poseStack.last().pose();
 		buffer.addVertex(pose, x0, y0, 0).setColor(col1);
 		buffer.addVertex(pose, x0, y1, 0).setColor(col2);
