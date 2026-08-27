@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.createmod.catnip.api.client.render.SuperRenderTypeBuffer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.SubmitNodeCollection;
 import net.minecraft.client.renderer.SubmitNodeStorage;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -38,19 +37,11 @@ public class ItemOutline extends Outline {
 			.updateForTopItem(renderState, stack, ItemDisplayContext.FIXED, null, null, 0);
 		renderState.submit(ms, queue, LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0);
 
-		for (SubmitNodeCollection collection : queue.getSubmitsPerOrder().values()) {
-			for (SubmitNodeStorage.ItemSubmit itemSubmit : collection.getItemSubmits()) {
-				ms.pushPose();
-				ms.last().set(itemSubmit.pose());
-				// TODO: FIXME
-//				ItemRenderer.renderItem(
-//					itemSubmit.displayContext(), ms, buffer,
-//					itemSubmit.lightCoords(), itemSubmit.overlayCoords(),
-//					itemSubmit.tintLayers(), itemSubmit.quads(), itemSubmit.foilType()
-//				);
-				ms.popPose();
-			}
-		}
+		// Upstream already had this loop stubbed out with a TODO: it walked the
+		// queue's item submits and called ItemRenderer.renderItem, all of which was
+		// commented out, so it rendered nothing. 26.2 additionally removed
+		// SubmitNodeStorage.ItemSubmit and getItemSubmits(), so the dead walk is
+		// gone too. Item outlines still need reimplementing against the submit API.
 
 		ms.popPose();
 	}
