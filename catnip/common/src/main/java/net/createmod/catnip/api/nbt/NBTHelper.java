@@ -6,7 +6,12 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -68,5 +73,64 @@ public class NBTHelper {
 
 	public static int intFromCompound(CompoundTag compoundTag) {
 		return compoundTag.getIntOr("V", 0);
+	}
+
+	/// Writes an enum constant by name.
+	///
+	/// Storing the name rather than the ordinal keeps saves readable and, more
+	/// importantly, survives constants being reordered.
+	public static <T extends Enum<T>> void writeEnum(CompoundTag nbt, String key, T enumConstant) {
+		nbt.putString(key, enumConstant.name());
+	}
+
+	/// Reads an enum constant written by [#writeEnum].
+	///
+	/// Falls back to the first constant when the key is missing or names a
+	/// constant that no longer exists, so an old save cannot crash the load.
+	public static <T extends Enum<T>> T readEnum(CompoundTag nbt, String key, Class<T> enumClass) {
+		T[] constants = enumClass.getEnumConstants();
+		if (constants == null || constants.length == 0) {
+			throw new IllegalArgumentException("Non-enum class passed to readEnum: " + enumClass);
+		}
+		String name = nbt.getStringOr(key, "");
+		for (T constant : constants) {
+			if (constant.name().equals(name)) {
+				return constant;
+			}
+		}
+		return constants[0];
+	}
+
+	public static void writeResourceLocation(CompoundTag nbt, String key, Identifier location) {
+		nbt.putString(key, location.toString());
+	}
+
+	public static Identifier readResourceLocation(CompoundTag nbt, String key) {
+		return Identifier.parse(nbt.getStringOr(key, ""));
+	}
+
+	/// Writes item stacks as a list, skipping empty ones.
+	///
+	/// ItemStack#save and #parse were replaced by codecs in 26.2, so this goes
+	/// through ItemStack.CODEC with a registry-aware ops.
+	public static ListTag writeItemList(List<ItemStack> stacks, HolderLookup.Provider registries) {
+		RegistryOps<Tag> ops = registries.createSerializationContext(NbtOps.INSTANCE);
+		ListTag tag = new ListTag();
+		for (ItemStack stack : stacks) {
+			if (!stack.isEmpty()) {
+				ItemStack.CODEC.encodeStart(ops, stack).result().ifPresent(tag::add);
+			}
+		}
+		return tag;
+	}
+
+	/// Reads a list written by [#writeItemList], dropping entries that no longer parse.
+	public static List<ItemStack> readItemList(ListTag tag, HolderLookup.Provider registries) {
+		RegistryOps<Tag> ops = registries.createSerializationContext(NbtOps.INSTANCE);
+		List<ItemStack> stacks = new ArrayList<>();
+		for (Tag entry : tag) {
+			ItemStack.CODEC.parse(ops, entry).result().ifPresent(stacks::add);
+		}
+		return stacks;
 	}
 }
