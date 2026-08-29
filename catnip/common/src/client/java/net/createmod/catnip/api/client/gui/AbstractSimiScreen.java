@@ -1,5 +1,11 @@
 package net.createmod.catnip.api.client.gui;
 
+import net.minecraft.client.gui.narration.NarratableEntry;
+
+import net.minecraft.client.gui.components.events.GuiEventListener;
+
+import java.util.Collection;
+
 import java.util.List;
 
 import net.createmod.catnip.impl.client.mixin.ScreenAccessor;
@@ -57,6 +63,30 @@ public abstract class AbstractSimiScreen extends Screen implements CatnipScreenE
 	protected void renderWindow(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {}
 
 	protected void renderWindowForeground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {}
+
+	/// Convenience for the screens that add widgets in bulk, matching what
+	/// Create's container screen already offered.
+	@SafeVarargs
+	protected final <W extends GuiEventListener & Renderable & NarratableEntry> void addRenderableWidgets(W... widgets) {
+		for (W widget : widgets)
+			addRenderableWidget(widget);
+	}
+
+	protected final <W extends GuiEventListener & Renderable & NarratableEntry> void addRenderableWidgets(
+		Collection<W> widgets) {
+		for (W widget : widgets)
+			addRenderableWidget(widget);
+	}
+
+	protected void removeWidgets(GuiEventListener... widgets) {
+		for (GuiEventListener widget : widgets)
+			removeWidget(widget);
+	}
+
+	protected void removeWidgets(Collection<? extends GuiEventListener> widgets) {
+		for (GuiEventListener widget : widgets)
+			removeWidget(widget);
+	}
 
 	@Override
 	public boolean isPauseScreen() {
