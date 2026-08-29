@@ -168,6 +168,20 @@ public class LangBuilder {
 		tooltip.add(component());
 	}
 
+	/// Goggle overlay lines carry a leading indent so they sit under whatever
+	/// they annotate.
+	public void forGoggles(List<? super MutableComponent> tooltip) {
+		forGoggles(tooltip, 0);
+	}
+
+	public void forGoggles(List<? super MutableComponent> tooltip, int indent) {
+		LangBuilder line = new LangBuilder(namespace);
+		for (int i = 0; i < indent + 1; i++)
+			line.space();
+		tooltip.add(line.add(component())
+			.component());
+	}
+
 	public void addTo(Consumer<Component> tooltip) {
 		tooltip.accept(component());
 	}
