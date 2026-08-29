@@ -15,11 +15,32 @@ import net.createmod.catnip.api.theme.Color;
 import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import org.joml.Quaternionfc;
 import net.minecraft.core.BlockPos;
 
 @SuppressWarnings("unchecked")
 public class ShadeSeparatingSuperByteBuffer implements SuperByteBuffer {
 	private static final Long2IntMap WORLD_LIGHT_CACHE = new Long2IntOpenHashMap();
+
+	/// Affine's primitives; the transforms themselves live on the PoseStack this
+	/// buffer already carries.
+	@Override
+	public ShadeSeparatingSuperByteBuffer translate(float x, float y, float z) {
+		getTransforms().translate(x, y, z);
+		return this;
+	}
+
+	@Override
+	public ShadeSeparatingSuperByteBuffer rotate(Quaternionfc quaternion) {
+		getTransforms().mulPose(quaternion);
+		return this;
+	}
+
+	@Override
+	public ShadeSeparatingSuperByteBuffer scale(float factorX, float factorY, float factorZ) {
+		getTransforms().scale(factorX, factorY, factorZ);
+		return this;
+	}
 
 	private final TemplateMesh template;
 	private final int[] shadeSwapVertices;

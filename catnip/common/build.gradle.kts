@@ -6,6 +6,8 @@ plugins {
 dependencies {
     minecraft(libs.minecraft)
     compileOnly(libs.bundles.mixin)
+    // SuperByteBuffer's transform surface is Flywheel's Affine
+    compileOnly(variantOf(libs.flywheel.common) { classifier("api") })
 }
 
 loom {
