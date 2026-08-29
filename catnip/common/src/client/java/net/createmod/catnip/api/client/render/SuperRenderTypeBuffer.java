@@ -27,6 +27,11 @@ public interface SuperRenderTypeBuffer {
 	/// Supplies the collector that [#draw()] will submit through, for the current frame.
 	void setCollector(@Nullable SubmitNodeCollector collector);
 
+	/// Anything that submits render states of its own -- item stacks, for one --
+	/// needs the collector rather than a VertexConsumer.
+	@Nullable
+	SubmitNodeCollector getCollector();
+
 	VertexConsumer getEarlyBuffer(RenderType type);
 
 	VertexConsumer getBuffer(RenderType type);

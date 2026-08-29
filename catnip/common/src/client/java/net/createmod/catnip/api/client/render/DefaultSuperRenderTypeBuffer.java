@@ -31,6 +31,12 @@ public class DefaultSuperRenderTypeBuffer implements SuperRenderTypeBuffer {
 	}
 
 	@Override
+	@Nullable
+	public SubmitNodeCollector getCollector() {
+		return collector;
+	}
+
+	@Override
 	public VertexConsumer getEarlyBuffer(RenderType type) {
 		return earlyBuffer.buffer(type);
 	}
