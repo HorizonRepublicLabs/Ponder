@@ -7,6 +7,8 @@ dependencies {
     minecraft(libs.minecraft)
     compileOnly(libs.bundles.mixin)
     compileOnlyApi(project(":catnip:common"))
+    // SuperByteBuffer exposes flywheel's Affine and Transform on its surface
+    compileOnly(variantOf(libs.flywheel.common) { classifier("api") })
     clientCompileOnly(project(":catnip:common", configuration = "clientJar"))
 }
 

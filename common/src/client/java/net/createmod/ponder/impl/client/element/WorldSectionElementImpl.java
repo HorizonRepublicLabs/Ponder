@@ -360,10 +360,12 @@ public class WorldSectionElementImpl extends AnimatedSceneElementBase implements
 			poseStack.translate(pos.getX(), pos.getY(), pos.getZ());
 			BlockState state = level.getBlockState(pos);
 			BlockStateModel model = Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(state);
-			// 26.2 takes the collected parts rather than the model plus a seed
+			// 26.2 takes the collected parts rather than the model plus a seed.
+			// The level-aware overload lives on NeoForge's extension, which this
+			// loader-agnostic module cannot see, so use the vanilla one.
 			List<BlockStateModelPart> parts = new ArrayList<>();
 			RandomSource random = RandomSource.create(state.getSeed(pos));
-			model.collectParts(BlockAndTintGetter.EMPTY, BlockPos.ZERO, state, random, parts);
+			model.collectParts(random, parts);
 			queue.submitBreakingBlockModel(poseStack, List.copyOf(parts), progress);
 			poseStack.popPose();
 		}
