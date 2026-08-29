@@ -15,6 +15,8 @@ import net.createmod.catnip.api.theme.Color;
 import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import org.joml.Matrix3fc;
+import org.joml.Matrix4fc;
 import org.joml.Quaternionfc;
 import net.minecraft.core.BlockPos;
 
@@ -33,6 +35,20 @@ public class ShadeSeparatingSuperByteBuffer implements SuperByteBuffer {
 	@Override
 	public ShadeSeparatingSuperByteBuffer rotate(Quaternionfc quaternion) {
 		getTransforms().mulPose(quaternion);
+		return this;
+	}
+
+	@Override
+	public ShadeSeparatingSuperByteBuffer mulPose(Matrix4fc pose) {
+		getTransforms().mulPose(pose);
+		return this;
+	}
+
+	@Override
+	public ShadeSeparatingSuperByteBuffer mulNormal(Matrix3fc normal) {
+		getTransforms().last()
+			.normal()
+			.mul(normal);
 		return this;
 	}
 

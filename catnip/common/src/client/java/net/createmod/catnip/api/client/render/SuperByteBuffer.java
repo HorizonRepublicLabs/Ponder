@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import org.joml.Matrix4f;
 
 import dev.engine_room.flywheel.lib.transform.Affine;
+import dev.engine_room.flywheel.lib.transform.Transform;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -14,7 +15,7 @@ import net.minecraft.util.LightCoordsUtil;
 /// Extends Flywheel's Affine so the whole rotate/translate/scale surface --
 /// rotateCentered and friends -- is available on the buffer, as it was before
 /// the api split.
-public interface SuperByteBuffer extends Affine<SuperByteBuffer> {
+public interface SuperByteBuffer extends Affine<SuperByteBuffer>, Transform<SuperByteBuffer> {
 	static int maxLight(int packedLight1, int packedLight2) {
 		int blockLight1 = LightCoordsUtil.block(packedLight1);
 		int skyLight1 = LightCoordsUtil.sky(packedLight1);
