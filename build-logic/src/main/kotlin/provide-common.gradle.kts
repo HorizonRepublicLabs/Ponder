@@ -17,6 +17,8 @@ artifacts {
     sourceSets["client"].run {
         java.sourceDirectories.forEach { add("commonClientJava", it) }
         resources.sourceDirectories.forEach { add("commonClientResources", it) }
-        output.forEach { add("commonClientOutput", it) }
+        // The output has to name the task that builds it, or a consumer
+        // compiling against it races the compile that produces it.
+        output.forEach { file -> add("commonClientOutput", file) { builtBy(output) } }
     }
 }
