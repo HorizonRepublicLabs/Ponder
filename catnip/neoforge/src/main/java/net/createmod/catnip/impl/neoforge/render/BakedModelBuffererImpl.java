@@ -178,7 +178,7 @@ public final class BakedModelBuffererImpl {
 				universalEmitter.prepare(bufferSource, defaultLayer);
 
 				poseStack.pushPose();
-				poseStack.translate(pos.getX() * 0.5, pos.getY() * 0.5, pos.getZ() * 0.5);
+				poseStack.translate(pos.getX(), pos.getY(), pos.getZ());
 
 				List<BlockStateModelPart> parts = new ArrayList<>();
 				model.collectParts(RandomSource.create(seed), parts);
