@@ -125,12 +125,7 @@ public class GuiGameElement {
 			poseStack.scale((float) scale, (float) scale);
 			poseStack.translate(xLocal, yLocal);
 			UIRenderHelper.flipForGuiRender(poseStack);
-			poseStack.translate(rotationOffset.x, rotationOffset.y);
-			// TODO: how
-//            poseStack.mulPose(Axis.ZP.rotationDegrees((float) zRot));
-//            poseStack.mulPose(Axis.XP.rotationDegrees((float) xRot));
-//            poseStack.mulPose(Axis.YP.rotationDegrees((float) yRot));
-            poseStack.translate(-rotationOffset.x, -rotationOffset.y);
+			// The rotations are 3d; they ride on the render state instead.
         }
 
         protected void cleanUpMatrix(Matrix3x2fStack poseStack) {
@@ -182,6 +177,7 @@ public class GuiGameElement {
 				new GuiBlockModelRenderState(blockStateModel, blockState, blockEntity,
 					new Matrix3x2f(graphics.pose()),
 					ARGB.color(255, color),
+					(float) xRot, (float) yRot, (float) zRot, rotationOffset.x, rotationOffset.y,
 					0, 0, 16, 16, 1,
 					null, null
 				)

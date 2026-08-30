@@ -13,8 +13,10 @@ public record GuiBlockModelRenderState(
 	BlockStateModel model,
 	BlockState state,
 	@Nullable BlockEntity blockEntity,
-	Matrix3x2f pose, // FIXME: actually do something with this information
+	Matrix3x2f pose,
 	int color,
+	float xRot, float yRot, float zRot,
+	float rotationOffsetX, float rotationOffsetY,
 	int x0, int y0,
 	int x1, int y1,
 	float scale, @Nullable ScreenRectangle scissorArea, @Nullable ScreenRectangle bounds

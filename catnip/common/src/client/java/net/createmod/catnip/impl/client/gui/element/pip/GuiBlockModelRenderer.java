@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import com.mojang.math.Axis;
+
 import net.createmod.catnip.api.client.gui.render.pip.GuiBlockModelRenderState;
 import net.createmod.catnip.api.client.level.SinglePosVirtualBlockGetter;
 import net.createmod.catnip.api.client.render.model.BakedModelBufferer;
@@ -28,6 +30,14 @@ public class GuiBlockModelRenderer extends PictureInPictureRenderer<GuiBlockMode
 
 	@Override
 	protected void renderToTexture(GuiBlockModelRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
+		// The gui stack is 2d, so a block element's rotation rides on the render
+		// state and is applied here, where a real pose stack is on hand.
+		poseStack.translate(renderState.rotationOffsetX(), renderState.rotationOffsetY(), 0);
+		poseStack.mulPose(Axis.ZP.rotationDegrees(renderState.zRot()));
+		poseStack.mulPose(Axis.XP.rotationDegrees(renderState.xRot()));
+		poseStack.mulPose(Axis.YP.rotationDegrees(renderState.yRot()));
+		poseStack.translate(-renderState.rotationOffsetX(), -renderState.rotationOffsetY(), 0);
+
 		SinglePosVirtualBlockGetter level = SinglePosVirtualBlockGetter.createFullBright();
 		level.blockState(renderState.state());
 		level.blockEntity(renderState.blockEntity());
