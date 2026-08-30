@@ -7,6 +7,8 @@ import org.joml.Matrix3x2fStack;
 import org.joml.Vector2f;
 import org.jspecify.annotations.Nullable;
 
+import dev.engine_room.flywheel.lib.model.baked.PartialModel;
+
 import net.createmod.catnip.api.client.gui.ILightingSettings;
 import net.createmod.catnip.api.client.gui.UIRenderHelper;
 import net.createmod.catnip.api.client.gui.render.pip.GuiBlockEntityRenderState;
@@ -44,6 +46,15 @@ public class GuiGameElement {
 
     public static GuiRenderBuilder of(BlockEntity blockEntity) {
         return of(blockEntity.getBlockState(), blockEntity);
+    }
+
+    /// A partial model has no block state of its own; it draws as itself.
+    public static GuiRenderBuilder of(PartialModel partial) {
+        return new GuiBlockModelRenderBuilder(partial.get(), null, null);
+    }
+
+    public static GuiRenderBuilder of(BlockStateModel model) {
+        return new GuiBlockModelRenderBuilder(model, null, null);
     }
 
     public static GuiRenderBuilder of(Fluid fluid) {
@@ -168,7 +179,7 @@ public class GuiGameElement {
 
         protected void submitModel(GuiGraphicsExtractor graphics) {
 			graphics.guiRenderState.addPicturesInPictureState(
-				new GuiBlockModelRenderState(blockState, blockEntity,
+				new GuiBlockModelRenderState(blockStateModel, blockState, blockEntity,
 					new Matrix3x2f(graphics.pose()),
 					ARGB.color(255, color),
 					0, 0, 16, 16, 1,

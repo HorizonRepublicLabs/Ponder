@@ -38,7 +38,7 @@ public class GuiBlockModelRenderer extends PictureInPictureRenderer<GuiBlockMode
 		Map<RenderType, RecordedGeometry> recordings = new LinkedHashMap<>();
 
 		int color = renderState.color();
-		BakedModelBufferer.bufferModel(Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(renderState.state()), BlockPos.ZERO, level, renderState.state(),
+		BakedModelBufferer.bufferModel(renderState.model(), BlockPos.ZERO, level, renderState.state(),
 			poseStack, (layer, shade) -> {
 				RenderType type = layer == ChunkSectionLayer.TRANSLUCENT
 					? Sheets.translucentBlockItemSheet()

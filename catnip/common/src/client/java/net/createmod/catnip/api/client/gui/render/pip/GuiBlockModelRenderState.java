@@ -4,11 +4,13 @@ import org.joml.Matrix3x2f;
 import org.jspecify.annotations.Nullable;
 
 import net.minecraft.client.gui.navigation.ScreenRectangle;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.state.gui.pip.PictureInPictureRenderState;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public record GuiBlockModelRenderState(
+	BlockStateModel model,
 	BlockState state,
 	@Nullable BlockEntity blockEntity,
 	Matrix3x2f pose, // FIXME: actually do something with this information
